@@ -15,6 +15,17 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 
+import { AboutHero } from '@/blocks/AboutHero/config'
+import { AboutValues } from '@/blocks/AboutValues/config'
+import { AboutApproach } from '@/blocks/AboutApproach/config'
+import { AboutExpertise } from '@/blocks/AboutExpertise/config'
+import { AboutHobbies } from '@/blocks/AboutHobbies/config'
+import { AboutDuoBio } from '@/blocks/AboutDuoBio/config'
+import { AboutCollaboration } from '@/blocks/AboutCollaboration/config'
+import { AboutInstagram } from '@/blocks/AboutInstagram/config'
+import { AboutCta } from '@/blocks/AboutCta/config'
+import { AboutNewsletter } from '@/blocks/AboutNewsletter/config'
+
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
   access: {
@@ -59,7 +70,18 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [],
+              blocks: [
+                AboutHero,
+                AboutValues,
+                AboutApproach,
+                AboutExpertise,
+                AboutHobbies,
+                AboutDuoBio,
+                AboutCollaboration,
+                AboutInstagram,
+                AboutCta,
+                AboutNewsletter,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,

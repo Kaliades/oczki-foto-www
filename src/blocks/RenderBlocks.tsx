@@ -10,6 +10,16 @@ import { HomepagePhilosophy } from './HomepagePhilosophy/Component'
 import { HomepageProcess } from './HomepageProcess/Component'
 import { HomepageServices } from './HomepageServices/Component'
 import { HomepageTestimonials } from './HomepageTestimonials/Component'
+import { AboutHero } from './AboutHero/Component'
+import { AboutValues } from './AboutValues/Component'
+import { AboutApproach } from './AboutApproach/Component'
+import { AboutExpertise } from './AboutExpertise/Component'
+import { AboutHobbies } from './AboutHobbies/Component'
+import { AboutDuoBio } from './AboutDuoBio/Component'
+import { AboutCollaboration } from './AboutCollaboration/Component'
+import { AboutInstagram } from './AboutInstagram/Component'
+import { AboutCta } from './AboutCta/Component'
+import { AboutNewsletter } from './AboutNewsletter/Component'
 
 const blockComponents: Record<string, React.FC<any>> = {
   homepageAboutTeaser: HomepageAboutTeaser,
@@ -22,6 +32,16 @@ const blockComponents: Record<string, React.FC<any>> = {
   homepageProcess: HomepageProcess,
   homepageServices: HomepageServices,
   homepageTestimonials: HomepageTestimonials,
+  aboutHero: AboutHero,
+  aboutValues: AboutValues,
+  aboutApproach: AboutApproach,
+  aboutExpertise: AboutExpertise,
+  aboutHobbies: AboutHobbies,
+  aboutDuoBio: AboutDuoBio,
+  aboutCollaboration: AboutCollaboration,
+  aboutInstagram: AboutInstagram,
+  aboutCta: AboutCta,
+  aboutNewsletter: AboutNewsletter,
 }
 
 export const RenderBlocks: React.FC<{

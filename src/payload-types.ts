@@ -152,7 +152,18 @@ export interface UserAuthOperations {
 export interface Page {
   id: number;
   title: string;
-  layout: unknown[];
+  layout: (
+    | AboutHeroBlock
+    | AboutValuesBlock
+    | AboutApproachBlock
+    | AboutExpertiseBlock
+    | AboutHobbiesBlock
+    | AboutDuoBioBlock
+    | AboutCollaborationBlock
+    | AboutInstagramBlock
+    | AboutCtaBlock
+    | AboutNewsletterBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -179,6 +190,34 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutHeroBlock".
+ */
+export interface AboutHeroBlock {
+  /**
+   * Tekst wyświetlany jako okruszek nawigacyjny ponad nagłówkiem.
+   */
+  breadcrumbLabel?: string | null;
+  heading: string;
+  /**
+   * Krótki akapit opisowy pod nagłówkiem.
+   */
+  lead?: string | null;
+  primaryButton: {
+    label: string;
+    url: string;
+    openInNewTab?: boolean | null;
+  };
+  portrait: number | Media;
+  /**
+   * Alternatywny opis zdjęcia portretowego (dla czytników ekranu i SEO). Jeśli puste, używany jest alt z kolekcji Media.
+   */
+  portraitAlt?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aboutHero';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -298,6 +337,170 @@ export interface FolderInterface {
   folderType?: 'media'[] | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutValuesBlock".
+ */
+export interface AboutValuesBlock {
+  heading: string;
+  lead?: string | null;
+  photo: number | Media;
+  photoAlt?: string | null;
+  pillars?:
+    | {
+        title: string;
+        body: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aboutValues';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutApproachBlock".
+ */
+export interface AboutApproachBlock {
+  heading: string;
+  lead?: string | null;
+  cards: {
+    title: string;
+    body: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aboutApproach';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutExpertiseBlock".
+ */
+export interface AboutExpertiseBlock {
+  heading: string;
+  lead?: string | null;
+  cards?:
+    | {
+        title: string;
+        body: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aboutExpertise';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutHobbiesBlock".
+ */
+export interface AboutHobbiesBlock {
+  heading: string;
+  lead?: string | null;
+  photo: number | Media;
+  photoAlt?: string | null;
+  imagePosition?: ('left' | 'right') | null;
+  cards?:
+    | {
+        title: string;
+        body: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aboutHobbies';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutDuoBioBlock".
+ */
+export interface AboutDuoBioBlock {
+  heading: string;
+  lead?: string | null;
+  subLead?: string | null;
+  photo: number | Media;
+  photoAlt?: string | null;
+  cards?:
+    | {
+        title: string;
+        body: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aboutDuoBio';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutCollaborationBlock".
+ */
+export interface AboutCollaborationBlock {
+  heading: string;
+  lead?: string | null;
+  cards: {
+    title: string;
+    body: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aboutCollaboration';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutInstagramBlock".
+ */
+export interface AboutInstagramBlock {
+  heading: string;
+  lead?: string | null;
+  tiles?:
+    | {
+        photo: number | Media;
+        photoAlt?: string | null;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aboutInstagram';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutCtaBlock".
+ */
+export interface AboutCtaBlock {
+  heading: string;
+  lead?: string | null;
+  buttonLabel: string;
+  buttonUrl: string;
+  tone?: ('dark' | 'light') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aboutCta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutNewsletterBlock".
+ */
+export interface AboutNewsletterBlock {
+  heading: string;
+  lead?: string | null;
+  nameLabel?: string | null;
+  emailLabel?: string | null;
+  consentText: string;
+  consentLinkLabel?: string | null;
+  consentLinkUrl?: string | null;
+  submitLabel: string;
+  successMessage?: string | null;
+  errorMessage?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aboutNewsletter';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -569,7 +772,20 @@ export interface PayloadMigration {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
-  layout?: T | {};
+  layout?:
+    | T
+    | {
+        aboutHero?: T | AboutHeroBlockSelect<T>;
+        aboutValues?: T | AboutValuesBlockSelect<T>;
+        aboutApproach?: T | AboutApproachBlockSelect<T>;
+        aboutExpertise?: T | AboutExpertiseBlockSelect<T>;
+        aboutHobbies?: T | AboutHobbiesBlockSelect<T>;
+        aboutDuoBio?: T | AboutDuoBioBlockSelect<T>;
+        aboutCollaboration?: T | AboutCollaborationBlockSelect<T>;
+        aboutInstagram?: T | AboutInstagramBlockSelect<T>;
+        aboutCta?: T | AboutCtaBlockSelect<T>;
+        aboutNewsletter?: T | AboutNewsletterBlockSelect<T>;
+      };
   meta?:
     | T
     | {
@@ -592,6 +808,185 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutHeroBlock_select".
+ */
+export interface AboutHeroBlockSelect<T extends boolean = true> {
+  breadcrumbLabel?: T;
+  heading?: T;
+  lead?: T;
+  primaryButton?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        openInNewTab?: T;
+      };
+  portrait?: T;
+  portraitAlt?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutValuesBlock_select".
+ */
+export interface AboutValuesBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lead?: T;
+  photo?: T;
+  photoAlt?: T;
+  pillars?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutApproachBlock_select".
+ */
+export interface AboutApproachBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lead?: T;
+  cards?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutExpertiseBlock_select".
+ */
+export interface AboutExpertiseBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lead?: T;
+  cards?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutHobbiesBlock_select".
+ */
+export interface AboutHobbiesBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lead?: T;
+  photo?: T;
+  photoAlt?: T;
+  imagePosition?: T;
+  cards?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutDuoBioBlock_select".
+ */
+export interface AboutDuoBioBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lead?: T;
+  subLead?: T;
+  photo?: T;
+  photoAlt?: T;
+  cards?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutCollaborationBlock_select".
+ */
+export interface AboutCollaborationBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lead?: T;
+  cards?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutInstagramBlock_select".
+ */
+export interface AboutInstagramBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lead?: T;
+  tiles?:
+    | T
+    | {
+        photo?: T;
+        photoAlt?: T;
+        url?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutCtaBlock_select".
+ */
+export interface AboutCtaBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lead?: T;
+  buttonLabel?: T;
+  buttonUrl?: T;
+  tone?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutNewsletterBlock_select".
+ */
+export interface AboutNewsletterBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lead?: T;
+  nameLabel?: T;
+  emailLabel?: T;
+  consentText?: T;
+  consentLinkLabel?: T;
+  consentLinkUrl?: T;
+  submitLabel?: T;
+  successMessage?: T;
+  errorMessage?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
