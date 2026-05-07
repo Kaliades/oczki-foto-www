@@ -24,6 +24,7 @@ skills:
   - figma-use
   - payload-cms
   - payload
+  - vercel-react-best-practices
 memory: project
 maxTurns: 50
 ---
@@ -57,7 +58,7 @@ Jeśli któryś z **wymaganych** parametrów nie został podany, zatrzymaj się 
 
 # 🚨 Krok zerowy — ZAWSZE WYKONAJ
 
-Skille `figma-use`, `payload-cms` i `payload` są **automatycznie załadowane** do twojego kontekstu na starcie (pole `skills:` we frontmatter agenta). NIE wywołuj `Skill` żeby je "załadować" — one już są.
+Skille `figma-use`, `payload-cms`, `payload` i `vercel-react-best-practices` są **automatycznie załadowane** do twojego kontekstu na starcie (pole `skills:` we frontmatter agenta). NIE wywołuj `Skill` żeby je "załadować" — one już są.
 
 **Przed pierwszym wywołaniem `use_figma` MCP** zerknij do sekcji "Gotchas" skilla `figma-use`, który masz już w kontekście — opisuje pułapki API (np. zabronione `figma.notify()`, ograniczenia sandboxu pluginu).
 
@@ -154,6 +155,18 @@ Przejrzyj metadata i zidentyfikuj:
 - Obrazy renderowane przez `next/image` (z `Media` collection helpers — sprawdź `src/components/Media/`)
 - Responsive: domyślnie zostaw layout desktopowy; jeśli widzisz oczywiste mobile patterns w Figma metadata zastosuj `md:` / `lg:` breakpointy
 - **W TYM PASSIE**: jeśli ten block ma drugi/trzeci wariant responsywny (mobile/tablet) — DODAJ TODO komentarz na górze pliku, ale nie próbuj domyślać się mobile wersji
+
+### React/Next.js — bezwzględnie stosuj `vercel-react-best-practices`
+
+Skill `vercel-react-best-practices` jest w twoim kontekście (z frontmatter). **Każdy `Component.tsx` musi być zgodny z jego wytycznymi** — to nie jest opcjonalne, bo to jedyny sposób żeby bloki generowane równolegle przez różne wywołania agenta były spójne jakościowo. W szczególności:
+
+- **Default = Server Component**. `'use client'` tylko gdy KONKRETNIE używasz hooków (`useState`/`useEffect`/`useRef`), event handlerów (`onClick`, `onChange`), browser-only API, lub kontekstu kliencko-only. Jeśli możesz przenieść interakcję do client child component, zostaw rodzica jako server.
+- **Granica klient/serwer** — jeśli musisz mieć client component, zrób go możliwie najmniejszym (sam guzik, sam form, sam motion wrapper) i otaczaj go server component'ami. Nie rób całej sekcji client tylko dlatego, że ma jeden klikalny element.
+- **Data fetching** — w server component preferuj bezpośredni fetch w body komponentu, bez useEffect.
+- **Performance**: nie odpalaj zbędnie `useMemo`/`useCallback`, nie owijaj wszystkiego w `<Suspense>` "na zapas". Zerknij do skilla po konkretne reguły.
+- **Bundle**: nie importuj bibliotek client-side z server component (wymusza to całość → client).
+
+Przed napisaniem `Component.tsx` przejrzyj wskazania skilla — jest częścią twojego briefingu, nie referencją do otwarcia "jeśli będę miał czas".
 
 Przykładowa struktura:
 ```tsx
@@ -332,5 +345,6 @@ Przed generowaniem każdego nowego block'a **zacznij od przeczytania `MEMORY.md`
 Jeśli potrzebujesz pomocy:
 - **Figma Plugin API**: skill `figma-use` jest już w twoim kontekście (frontmatter), zerknij na sekcję Gotchas
 - **Payload patterns**: skille `payload-cms` i `payload` też już są — niejasne jak modelować pole/relację → tam zaglądaj
+- **React / Next.js patterns**: skill `vercel-react-best-practices` (auto-loaded) — server vs client components, granice serializacji, performance, bundle hygiene. **Obowiązkowy** dla każdego `Component.tsx`.
 - **Konwencje projektu**: `CLAUDE.md` w root (auto-loaded)
 - **Skasowane domyślne bloki**: zobacz raport sprzątania w `docs/figma-pages-analysis.md` (jeśli istnieje)
