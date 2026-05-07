@@ -23,3 +23,6 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Orchestrator skill — sub-agent status reports (session state)
+.subagents/
