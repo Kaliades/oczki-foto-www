@@ -31,6 +31,8 @@ import { GalleryQuoteBand } from '@/blocks/GalleryQuoteBand/config'
 import { GalleryFaq } from '@/blocks/GalleryFaq/config'
 import { GalleryCta } from '@/blocks/GalleryCta/config'
 import { GalleryNewsletter } from '@/blocks/GalleryNewsletter/config'
+import { PolicyHero } from '@/blocks/PolicyHero/config'
+import { PolicyContent } from '@/blocks/PolicyContent/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -93,6 +95,8 @@ export const Pages: CollectionConfig<'pages'> = {
                 GalleryFaq,
                 GalleryCta,
                 GalleryNewsletter,
+                PolicyHero,
+                PolicyContent,
               ],
               required: true,
               admin: {

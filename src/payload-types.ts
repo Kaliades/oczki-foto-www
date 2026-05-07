@@ -169,6 +169,8 @@ export interface Page {
     | GalleryFaqBlock
     | GalleryCtaBlock
     | GalleryNewsletterBlock
+    | PolicyHeroBlock
+    | PolicyContentBlock
   )[];
   meta?: {
     title?: string | null;
@@ -628,6 +630,48 @@ export interface GalleryNewsletterBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PolicyHeroBlock".
+ */
+export interface PolicyHeroBlock {
+  breadcrumbLabel?: string | null;
+  heading: string;
+  /**
+   * Wyświetlana pod nagłówkiem w formacie dd.MM.yyyy
+   */
+  lastUpdated?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'policyHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PolicyContentBlock".
+ */
+export interface PolicyContentBlock {
+  /**
+   * Pełny tekst polityki prywatności. Dostępne: H2, H3, listy, pogrubienie, kursywa, linki, cytaty, separatory.
+   */
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'policyContent';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -915,6 +959,8 @@ export interface PagesSelect<T extends boolean = true> {
         galleryFaq?: T | GalleryFaqBlockSelect<T>;
         galleryCta?: T | GalleryCtaBlockSelect<T>;
         galleryNewsletter?: T | GalleryNewsletterBlockSelect<T>;
+        policyHero?: T | PolicyHeroBlockSelect<T>;
+        policyContent?: T | PolicyContentBlockSelect<T>;
       };
   meta?:
     | T
@@ -1227,6 +1273,26 @@ export interface GalleryNewsletterBlockSelect<T extends boolean = true> {
   submitLabel?: T;
   successMessage?: T;
   errorMessage?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PolicyHeroBlock_select".
+ */
+export interface PolicyHeroBlockSelect<T extends boolean = true> {
+  breadcrumbLabel?: T;
+  heading?: T;
+  lastUpdated?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PolicyContentBlock_select".
+ */
+export interface PolicyContentBlockSelect<T extends boolean = true> {
+  body?: T;
   id?: T;
   blockName?: T;
 }

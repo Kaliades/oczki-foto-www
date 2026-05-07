@@ -26,6 +26,8 @@ import { GalleryQuoteBand } from './GalleryQuoteBand/Component'
 import { GalleryFaq } from './GalleryFaq/Component'
 import { GalleryCta } from './GalleryCta/Component'
 import { GalleryNewsletter } from './GalleryNewsletter/Component'
+import { PolicyHero } from './PolicyHero/Component'
+import { PolicyContent } from './PolicyContent/Component'
 
 const blockComponents: Record<string, React.FC<any>> = {
   homepageAboutTeaser: HomepageAboutTeaser,
@@ -54,6 +56,8 @@ const blockComponents: Record<string, React.FC<any>> = {
   galleryFaq: GalleryFaq,
   galleryCta: GalleryCta,
   galleryNewsletter: GalleryNewsletter,
+  policyHero: PolicyHero,
+  policyContent: PolicyContent,
 }
 
 export const RenderBlocks: React.FC<{
