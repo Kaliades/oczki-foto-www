@@ -26,3 +26,6 @@ node_modules/
 
 # Orchestrator skill — sub-agent status reports (session state)
 .subagents/
+
+# Claude Code session-only state
+.claude/scheduled_tasks*

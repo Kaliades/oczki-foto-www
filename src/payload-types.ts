@@ -99,8 +99,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    homepage: Homepage;
+  };
+  globalsSelect: {
+    homepage: HomepageSelect<false> | HomepageSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -759,6 +763,416 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage".
+ */
+export interface Homepage {
+  id: number;
+  heroImage: number | Media;
+  heroHeading: string;
+  heroSubheading?: string | null;
+  heroPrimaryButtonLabel: string;
+  heroPrimaryButtonUrl: string;
+  heroSecondaryButtonLabel?: string | null;
+  heroSecondaryButtonUrl?: string | null;
+  layout?:
+    | (
+        | HomepageIntroBlock
+        | HomepageServicesBlock
+        | HomepagePhilosophyBlock
+        | HomepageGalleryBlock
+        | HomepageProcessBlock
+        | HomepageTestimonialsBlock
+        | HomepageAboutTeaserBlock
+        | HomepageInstagramBlock
+        | HomepageCtaBlock
+      )[]
+    | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageIntroBlock".
+ */
+export interface HomepageIntroBlock {
+  heading: string;
+  /**
+   * Kursywny blok cytatu, np. "Asia, ja naprawdę nie umiem pozować"
+   */
+  pullQuote?: string | null;
+  /**
+   * Tekst główny sekcji (2–3 akapity). Dostępne: pogrubienie, kursywa.
+   */
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Zdjęcie w stylu polaroidu po prawej stronie.
+   */
+  photo: number | Media;
+  /**
+   * Tekst w stylu odręcznym nakładany na polaroid, np. "I found a love for me…"
+   */
+  photoQuote?: string | null;
+  /**
+   * Tekst alternatywny zdjęcia dla czytników ekranu.
+   */
+  photoAlt?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homepageIntro';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageServicesBlock".
+ */
+export interface HomepageServicesBlock {
+  heading: string;
+  subheading?: string | null;
+  services: {
+    photo: number | Media;
+    title: string;
+    description: string;
+    linkUrl?: string | null;
+    id?: string | null;
+  }[];
+  customSessionHeading?: string | null;
+  customSessionText?: string | null;
+  customSessionButtonLabel?: string | null;
+  customSessionButtonUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homepageServices';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepagePhilosophyBlock".
+ */
+export interface HomepagePhilosophyBlock {
+  heading: string;
+  lead?: string | null;
+  pillars: {
+    title: string;
+    body: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homepagePhilosophy';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageGalleryBlock".
+ */
+export interface HomepageGalleryBlock {
+  heading: string;
+  subheading?: string | null;
+  galleryLinkLabel?: string | null;
+  galleryLinkUrl?: string | null;
+  photos: {
+    image: number | Media;
+    captionTitle?: string | null;
+    captionSubtitle?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homepageGallery';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageProcessBlock".
+ */
+export interface HomepageProcessBlock {
+  heading: string;
+  lead?: string | null;
+  buttonLabel?: string | null;
+  buttonUrl?: string | null;
+  steps: {
+    title: string;
+    description: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homepageProcess';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageTestimonialsBlock".
+ */
+export interface HomepageTestimonialsBlock {
+  heading: string;
+  testimonials: {
+    quote: string;
+    clientName: string;
+    photo?: (number | null) | Media;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homepageTestimonials';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageAboutTeaserBlock".
+ */
+export interface HomepageAboutTeaserBlock {
+  heading: string;
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  linkLabel?: string | null;
+  linkUrl?: string | null;
+  photo: number | Media;
+  photoAlt?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homepageAboutTeaser';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageInstagramBlock".
+ */
+export interface HomepageInstagramBlock {
+  heading: string;
+  instagramHandle: string;
+  instagramUrl: string;
+  avatarImage?: (number | null) | Media;
+  photos: {
+    image: number | Media;
+    linkUrl?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homepageInstagram';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageCtaBlock".
+ */
+export interface HomepageCtaBlock {
+  heading: string;
+  subheading?: string | null;
+  buttonLabel: string;
+  buttonUrl: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homepageCta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage_select".
+ */
+export interface HomepageSelect<T extends boolean = true> {
+  heroImage?: T;
+  heroHeading?: T;
+  heroSubheading?: T;
+  heroPrimaryButtonLabel?: T;
+  heroPrimaryButtonUrl?: T;
+  heroSecondaryButtonLabel?: T;
+  heroSecondaryButtonUrl?: T;
+  layout?:
+    | T
+    | {
+        homepageIntro?: T | HomepageIntroBlockSelect<T>;
+        homepageServices?: T | HomepageServicesBlockSelect<T>;
+        homepagePhilosophy?: T | HomepagePhilosophyBlockSelect<T>;
+        homepageGallery?: T | HomepageGalleryBlockSelect<T>;
+        homepageProcess?: T | HomepageProcessBlockSelect<T>;
+        homepageTestimonials?: T | HomepageTestimonialsBlockSelect<T>;
+        homepageAboutTeaser?: T | HomepageAboutTeaserBlockSelect<T>;
+        homepageInstagram?: T | HomepageInstagramBlockSelect<T>;
+        homepageCta?: T | HomepageCtaBlockSelect<T>;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageIntroBlock_select".
+ */
+export interface HomepageIntroBlockSelect<T extends boolean = true> {
+  heading?: T;
+  pullQuote?: T;
+  body?: T;
+  photo?: T;
+  photoQuote?: T;
+  photoAlt?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageServicesBlock_select".
+ */
+export interface HomepageServicesBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  services?:
+    | T
+    | {
+        photo?: T;
+        title?: T;
+        description?: T;
+        linkUrl?: T;
+        id?: T;
+      };
+  customSessionHeading?: T;
+  customSessionText?: T;
+  customSessionButtonLabel?: T;
+  customSessionButtonUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepagePhilosophyBlock_select".
+ */
+export interface HomepagePhilosophyBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lead?: T;
+  pillars?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageGalleryBlock_select".
+ */
+export interface HomepageGalleryBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  galleryLinkLabel?: T;
+  galleryLinkUrl?: T;
+  photos?:
+    | T
+    | {
+        image?: T;
+        captionTitle?: T;
+        captionSubtitle?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageProcessBlock_select".
+ */
+export interface HomepageProcessBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lead?: T;
+  buttonLabel?: T;
+  buttonUrl?: T;
+  steps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageTestimonialsBlock_select".
+ */
+export interface HomepageTestimonialsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  testimonials?:
+    | T
+    | {
+        quote?: T;
+        clientName?: T;
+        photo?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageAboutTeaserBlock_select".
+ */
+export interface HomepageAboutTeaserBlockSelect<T extends boolean = true> {
+  heading?: T;
+  body?: T;
+  linkLabel?: T;
+  linkUrl?: T;
+  photo?: T;
+  photoAlt?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageInstagramBlock_select".
+ */
+export interface HomepageInstagramBlockSelect<T extends boolean = true> {
+  heading?: T;
+  instagramHandle?: T;
+  instagramUrl?: T;
+  avatarImage?: T;
+  photos?:
+    | T
+    | {
+        image?: T;
+        linkUrl?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageCtaBlock_select".
+ */
+export interface HomepageCtaBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  buttonLabel?: T;
+  buttonUrl?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

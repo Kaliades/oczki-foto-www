@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Users } from './collections/Users'
+import { Homepage } from './globals/Homepage'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -52,7 +53,7 @@ export default buildConfig({
   }),
   collections: [Pages, Media, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [],
+  globals: [Homepage],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

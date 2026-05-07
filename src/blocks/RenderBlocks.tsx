@@ -1,6 +1,26 @@
 import React, { Fragment } from 'react'
 
-const blockComponents: Record<string, React.FC<any>> = {}
+import { HomepageAboutTeaser } from './HomepageAboutTeaser/Component'
+import { HomepageCta } from './HomepageCta/Component'
+import { HomepageGallery } from './HomepageGallery/Component'
+import { HomepageInstagram } from './HomepageInstagram/Component'
+import { HomepageIntro } from './HomepageIntro/Component'
+import { HomepagePhilosophy } from './HomepagePhilosophy/Component'
+import { HomepageProcess } from './HomepageProcess/Component'
+import { HomepageServices } from './HomepageServices/Component'
+import { HomepageTestimonials } from './HomepageTestimonials/Component'
+
+const blockComponents: Record<string, React.FC<any>> = {
+  homepageAboutTeaser: HomepageAboutTeaser,
+  homepageCta: HomepageCta,
+  homepageGallery: HomepageGallery,
+  homepageInstagram: HomepageInstagram,
+  homepageIntro: HomepageIntro,
+  homepagePhilosophy: HomepagePhilosophy,
+  homepageProcess: HomepageProcess,
+  homepageServices: HomepageServices,
+  homepageTestimonials: HomepageTestimonials,
+}
 
 export const RenderBlocks: React.FC<{
   blocks: unknown[]
@@ -20,11 +40,7 @@ export const RenderBlocks: React.FC<{
             const Block = blockComponents[blockType]
 
             if (Block) {
-              return (
-                <div className="my-16" key={index}>
-                  <Block {...b} />
-                </div>
-              )
+              return <Block {...b} key={index} />
             }
           }
           return null
