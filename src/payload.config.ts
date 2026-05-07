@@ -12,6 +12,7 @@ import { Homepage } from './globals/Homepage'
 import { Navbar } from './globals/Navbar'
 import { Footer } from './globals/Footer/config'
 import { newsletterSubscribeHandler } from './endpoints/newsletter/subscribe'
+import { contactSendMessageHandler } from './endpoints/contact/sendMessage'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -63,6 +64,11 @@ export default buildConfig({
       path: '/newsletter/subscribe',
       method: 'post',
       handler: newsletterSubscribeHandler,
+    },
+    {
+      path: '/contact',
+      method: 'post',
+      handler: contactSendMessageHandler,
     },
   ],
   plugins,

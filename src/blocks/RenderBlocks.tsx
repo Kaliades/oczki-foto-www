@@ -20,6 +20,12 @@ import { AboutCollaboration } from './AboutCollaboration/Component'
 import { AboutInstagram } from './AboutInstagram/Component'
 import { AboutCta } from './AboutCta/Component'
 import { AboutNewsletter } from './AboutNewsletter/Component'
+import { GalleryHero } from './GalleryHero/Component'
+import { GalleryGrid } from './GalleryGrid/Component'
+import { GalleryQuoteBand } from './GalleryQuoteBand/Component'
+import { GalleryFaq } from './GalleryFaq/Component'
+import { GalleryCta } from './GalleryCta/Component'
+import { GalleryNewsletter } from './GalleryNewsletter/Component'
 
 const blockComponents: Record<string, React.FC<any>> = {
   homepageAboutTeaser: HomepageAboutTeaser,
@@ -42,6 +48,12 @@ const blockComponents: Record<string, React.FC<any>> = {
   aboutInstagram: AboutInstagram,
   aboutCta: AboutCta,
   aboutNewsletter: AboutNewsletter,
+  galleryHero: GalleryHero,
+  galleryGrid: GalleryGrid,
+  galleryQuoteBand: GalleryQuoteBand,
+  galleryFaq: GalleryFaq,
+  galleryCta: GalleryCta,
+  galleryNewsletter: GalleryNewsletter,
 }
 
 export const RenderBlocks: React.FC<{

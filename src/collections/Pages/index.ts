@@ -25,6 +25,12 @@ import { AboutCollaboration } from '@/blocks/AboutCollaboration/config'
 import { AboutInstagram } from '@/blocks/AboutInstagram/config'
 import { AboutCta } from '@/blocks/AboutCta/config'
 import { AboutNewsletter } from '@/blocks/AboutNewsletter/config'
+import { GalleryHero } from '@/blocks/GalleryHero/config'
+import { GalleryGrid } from '@/blocks/GalleryGrid/config'
+import { GalleryQuoteBand } from '@/blocks/GalleryQuoteBand/config'
+import { GalleryFaq } from '@/blocks/GalleryFaq/config'
+import { GalleryCta } from '@/blocks/GalleryCta/config'
+import { GalleryNewsletter } from '@/blocks/GalleryNewsletter/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -81,6 +87,12 @@ export const Pages: CollectionConfig<'pages'> = {
                 AboutInstagram,
                 AboutCta,
                 AboutNewsletter,
+                GalleryHero,
+                GalleryGrid,
+                GalleryQuoteBand,
+                GalleryFaq,
+                GalleryCta,
+                GalleryNewsletter,
               ],
               required: true,
               admin: {

@@ -163,6 +163,12 @@ export interface Page {
     | AboutInstagramBlock
     | AboutCtaBlock
     | AboutNewsletterBlock
+    | GalleryHeroBlock
+    | GalleryGridBlock
+    | GalleryQuoteBandBlock
+    | GalleryFaqBlock
+    | GalleryCtaBlock
+    | GalleryNewsletterBlock
   )[];
   meta?: {
     title?: string | null;
@@ -504,6 +510,124 @@ export interface AboutNewsletterBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryHeroBlock".
+ */
+export interface GalleryHeroBlock {
+  breadcrumbLabel?: string | null;
+  heading: string;
+  lead?: string | null;
+  categoryFilters?:
+    | {
+        label: string;
+        /**
+         * Musi pokrywać się ze slugiem kategorii w bloku 'Siatka zdjęć (Galeria)'
+         */
+        slug: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'galleryHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryGridBlock".
+ */
+export interface GalleryGridBlock {
+  initialVisible?: number | null;
+  loadMoreLabel?: string | null;
+  emptyStateLabel?: string | null;
+  photos: {
+    image: number | Media;
+    alt?: string | null;
+    /**
+     * Musi pokrywać się ze slugiem filtra w bloku 'Hero (Galeria)'
+     */
+    category: string;
+    sortOrder?: number | null;
+    captionTitle?: string | null;
+    captionSubtitle?: string | null;
+    href?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'galleryGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryQuoteBandBlock".
+ */
+export interface GalleryQuoteBandBlock {
+  photo: number | Media;
+  photoAlt?: string | null;
+  heading: string;
+  lead: string;
+  side?: ('left' | 'right') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'galleryQuoteBand';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryFaqBlock".
+ */
+export interface GalleryFaqBlock {
+  heading: string;
+  lead?: string | null;
+  items: {
+    question: string;
+    answer: string;
+    defaultOpen?: boolean | null;
+    id?: string | null;
+  }[];
+  contactBox: {
+    heading: string;
+    messageLabel?: string | null;
+    submitLabel?: string | null;
+    successMessage?: string | null;
+    errorMessage?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'galleryFaq';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryCtaBlock".
+ */
+export interface GalleryCtaBlock {
+  heading: string;
+  lead?: string | null;
+  buttonLabel: string;
+  buttonUrl: string;
+  tone?: ('dark' | 'light') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'galleryCta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryNewsletterBlock".
+ */
+export interface GalleryNewsletterBlock {
+  heading: string;
+  lead?: string | null;
+  nameLabel?: string | null;
+  emailLabel?: string | null;
+  consentText: string;
+  consentLinkLabel?: string | null;
+  consentLinkUrl?: string | null;
+  submitLabel: string;
+  successMessage?: string | null;
+  errorMessage?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'galleryNewsletter';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -785,6 +909,12 @@ export interface PagesSelect<T extends boolean = true> {
         aboutInstagram?: T | AboutInstagramBlockSelect<T>;
         aboutCta?: T | AboutCtaBlockSelect<T>;
         aboutNewsletter?: T | AboutNewsletterBlockSelect<T>;
+        galleryHero?: T | GalleryHeroBlockSelect<T>;
+        galleryGrid?: T | GalleryGridBlockSelect<T>;
+        galleryQuoteBand?: T | GalleryQuoteBandBlockSelect<T>;
+        galleryFaq?: T | GalleryFaqBlockSelect<T>;
+        galleryCta?: T | GalleryCtaBlockSelect<T>;
+        galleryNewsletter?: T | GalleryNewsletterBlockSelect<T>;
       };
   meta?:
     | T
@@ -975,6 +1105,118 @@ export interface AboutCtaBlockSelect<T extends boolean = true> {
  * via the `definition` "AboutNewsletterBlock_select".
  */
 export interface AboutNewsletterBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lead?: T;
+  nameLabel?: T;
+  emailLabel?: T;
+  consentText?: T;
+  consentLinkLabel?: T;
+  consentLinkUrl?: T;
+  submitLabel?: T;
+  successMessage?: T;
+  errorMessage?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryHeroBlock_select".
+ */
+export interface GalleryHeroBlockSelect<T extends boolean = true> {
+  breadcrumbLabel?: T;
+  heading?: T;
+  lead?: T;
+  categoryFilters?:
+    | T
+    | {
+        label?: T;
+        slug?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryGridBlock_select".
+ */
+export interface GalleryGridBlockSelect<T extends boolean = true> {
+  initialVisible?: T;
+  loadMoreLabel?: T;
+  emptyStateLabel?: T;
+  photos?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        category?: T;
+        sortOrder?: T;
+        captionTitle?: T;
+        captionSubtitle?: T;
+        href?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryQuoteBandBlock_select".
+ */
+export interface GalleryQuoteBandBlockSelect<T extends boolean = true> {
+  photo?: T;
+  photoAlt?: T;
+  heading?: T;
+  lead?: T;
+  side?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryFaqBlock_select".
+ */
+export interface GalleryFaqBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lead?: T;
+  items?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        defaultOpen?: T;
+        id?: T;
+      };
+  contactBox?:
+    | T
+    | {
+        heading?: T;
+        messageLabel?: T;
+        submitLabel?: T;
+        successMessage?: T;
+        errorMessage?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryCtaBlock_select".
+ */
+export interface GalleryCtaBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lead?: T;
+  buttonLabel?: T;
+  buttonUrl?: T;
+  tone?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryNewsletterBlock_select".
+ */
+export interface GalleryNewsletterBlockSelect<T extends boolean = true> {
   heading?: T;
   lead?: T;
   nameLabel?: T;
