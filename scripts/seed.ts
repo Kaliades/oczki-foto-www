@@ -1,11 +1,11 @@
 import 'dotenv/config'
 import { getPayload } from 'payload'
 import config from '../src/payload.config.js'
-import { seedHomepage } from '../src/seeds/homepage.js'
+import { seedAll } from '../src/seeds/index.js'
 
 const main = async () => {
   const payload = await getPayload({ config })
-  await seedHomepage(payload)
+  await seedAll(payload)
   console.log('✅ Seed complete')
 }
 

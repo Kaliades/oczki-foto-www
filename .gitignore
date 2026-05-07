@@ -33,3 +33,4 @@ node_modules/
 
 # Claude Code session-only state
 .claude/scheduled_tasks*
+oczki-foto-www.db*

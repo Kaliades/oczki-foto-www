@@ -70,6 +70,7 @@ export interface Config {
     pages: Page;
     media: Media;
     users: User;
+    'newsletter-subscribers': NewsletterSubscriber;
     redirects: Redirect;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
@@ -87,6 +88,7 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'newsletter-subscribers': NewsletterSubscribersSelect<false> | NewsletterSubscribersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
@@ -101,9 +103,13 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     homepage: Homepage;
+    navbar: Navbar;
+    footer: Footer;
   };
   globalsSelect: {
     homepage: HomepageSelect<false> | HomepageSelect<true>;
+    navbar: NavbarSelect<false> | NavbarSelect<true>;
+    footer: FooterSelect<false> | FooterSelect<true>;
   };
   locale: null;
   widgets: {
@@ -321,6 +327,41 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletter-subscribers".
+ */
+export interface NewsletterSubscriber {
+  id: number;
+  /**
+   * Adres e-mail subskrybenta. Pole readOnly po pierwszym zapisie.
+   */
+  email: string;
+  source?: ('footer' | 'landing' | 'import' | 'other') | null;
+  /**
+   * Czy subskrybent potwierdził zapis przez e-mail.
+   */
+  confirmed?: boolean | null;
+  /**
+   * Ustawiane automatycznie na serwerze przy zapisie.
+   */
+  consentGivenAt?: string | null;
+  unsubscribedAt?: string | null;
+  /**
+   * Ustawiane automatycznie na serwerze przy zapisie.
+   */
+  ipAddress?: string | null;
+  /**
+   * Nagłówek User-Agent przeglądarki przy zapisie.
+   */
+  userAgent?: string | null;
+  /**
+   * Wewnętrzne notatki administratora.
+   */
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -467,6 +508,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'newsletter-subscribers';
+        value: number | NewsletterSubscriber;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -664,6 +709,22 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletter-subscribers_select".
+ */
+export interface NewsletterSubscribersSelect<T extends boolean = true> {
+  email?: T;
+  source?: T;
+  confirmed?: T;
+  consentGivenAt?: T;
+  unsubscribedAt?: T;
+  ipAddress?: T;
+  userAgent?: T;
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1005,6 +1066,112 @@ export interface HomepageCtaBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navbar".
+ */
+export interface Navbar {
+  id: number;
+  logo?: (number | null) | Media;
+  /**
+   * Wyświetlane gdy logo nie jest ustawione (fallback wordmark)
+   */
+  logoLabel?: string | null;
+  /**
+   * Maksymalnie 8 pozycji
+   */
+  navItems?:
+    | {
+        label: string;
+        /**
+         * np. /oferta, /galeria
+         */
+        href: string;
+        openInNewTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  cta?: {
+    label?: string | null;
+    href?: string | null;
+    openInNewTab?: boolean | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer".
+ */
+export interface Footer {
+  id: number;
+  /**
+   * Logo wyświetlane w stopce. Jeśli nie ustawione, zostanie użyty placeholder tekstowy.
+   */
+  logo?: (number | null) | Media;
+  /**
+   * Maksymalnie 6 linków do mediów społecznościowych.
+   */
+  socialLinks?:
+    | {
+        platform: 'instagram' | 'facebook' | 'tiktok' | 'pinterest' | 'youtube' | 'other';
+        url: string;
+        /**
+         * Tekst alternatywny / aria-label dla linku.
+         */
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  columnServices?: {
+    heading?: string | null;
+    links?:
+      | {
+          label: string;
+          href: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  columnSite?: {
+    heading?: string | null;
+    links?:
+      | {
+          label: string;
+          href: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  newsletter?: {
+    enabled?: boolean | null;
+    heading?: string | null;
+    subheading?: string | null;
+    placeholder?: string | null;
+    buttonLabel?: string | null;
+    successMessage?: string | null;
+    errorMessage?: string | null;
+    consentText?: string | null;
+  };
+  /**
+   * Użyj {{year}} jako placeholder dla bieżącego roku.
+   */
+  copyright?: string | null;
+  /**
+   * Np. Polityka prywatności, Ustawienia cookies.
+   */
+  legalLinks?:
+    | {
+        label: string;
+        href: string;
+        id?: string | null;
+      }[]
+    | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "homepage_select".
  */
 export interface HomepageSelect<T extends boolean = true> {
@@ -1204,6 +1371,96 @@ export interface HomepageCtaBlockSelect<T extends boolean = true> {
   buttonUrl?: T;
   id?: T;
   blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navbar_select".
+ */
+export interface NavbarSelect<T extends boolean = true> {
+  logo?: T;
+  logoLabel?: T;
+  navItems?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        openInNewTab?: T;
+        id?: T;
+      };
+  cta?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        openInNewTab?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer_select".
+ */
+export interface FooterSelect<T extends boolean = true> {
+  logo?: T;
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
+  columnServices?:
+    | T
+    | {
+        heading?: T;
+        links?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+      };
+  columnSite?:
+    | T
+    | {
+        heading?: T;
+        links?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+      };
+  newsletter?:
+    | T
+    | {
+        enabled?: T;
+        heading?: T;
+        subheading?: T;
+        placeholder?: T;
+        buttonLabel?: T;
+        successMessage?: T;
+        errorMessage?: T;
+        consentText?: T;
+      };
+  copyright?: T;
+  legalLinks?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        id?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

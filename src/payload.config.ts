@@ -7,7 +7,11 @@ import { fileURLToPath } from 'url'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Users } from './collections/Users'
+import { NewsletterSubscribers } from './collections/NewsletterSubscribers'
 import { Homepage } from './globals/Homepage'
+import { Navbar } from './globals/Navbar'
+import { Footer } from './globals/Footer/config'
+import { newsletterSubscribeHandler } from './endpoints/newsletter/subscribe'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -51,9 +55,16 @@ export default buildConfig({
       url: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Media, Users],
+  collections: [Pages, Media, Users, NewsletterSubscribers],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Homepage],
+  globals: [Homepage, Navbar, Footer],
+  endpoints: [
+    {
+      path: '/newsletter/subscribe',
+      method: 'post',
+      handler: newsletterSubscribeHandler,
+    },
+  ],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,
