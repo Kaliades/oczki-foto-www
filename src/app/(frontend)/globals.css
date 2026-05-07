@@ -214,11 +214,4 @@
   }
 }
 
-html {
-  opacity: 0;
-}
-
-html[data-theme='dark'],
-html[data-theme='light'] {
-  opacity: initial;
-}
+/* trigger rebuild 1778184289 */
