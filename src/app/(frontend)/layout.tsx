@@ -11,6 +11,7 @@ import { draftMode } from 'next/headers'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
+import { Providers } from '@/providers'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
@@ -27,7 +28,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             preview: isEnabled,
           }}
         />
-        <main>{children}</main>
+        <Providers>
+          <main>{children}</main>
+        </Providers>
       </body>
     </html>
   )
