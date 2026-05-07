@@ -58,6 +58,10 @@ export async function uploadMedia(
       name: filename,
       size: buffer.byteLength,
     },
+    // Without this, repeated seed runs (or files lingering in public/media/
+    // from prior runs) cause Payload to suffix-increment filenames forever
+    // and eventually hit the unique-filename validator on a stale ghost name.
+    overwriteExistingFiles: true,
   })
   cache.set(filename, doc.id)
   payload.logger.info(`[seed] uploaded ${filename} → media id ${doc.id}`)

@@ -5,15 +5,14 @@ import { seedHomepage } from '../src/seeds/homepage.js'
 
 const main = async () => {
   const payload = await getPayload({ config })
-  try {
-    await seedHomepage(payload)
-    console.log('✅ Seed complete')
-  } finally {
-    process.exit(0)
-  }
+  await seedHomepage(payload)
+  console.log('✅ Seed complete')
 }
 
-main().catch((err) => {
-  console.error('❌ Seed failed:', err)
-  process.exit(1)
-})
+main()
+  .then(() => process.exit(0))
+  .catch((err) => {
+    console.error('❌ Seed failed:')
+    console.error(err)
+    process.exit(1)
+  })
