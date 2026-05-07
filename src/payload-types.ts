@@ -770,15 +770,9 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Homepage {
   id: number;
-  heroImage: number | Media;
-  heroHeading: string;
-  heroSubheading?: string | null;
-  heroPrimaryButtonLabel: string;
-  heroPrimaryButtonUrl: string;
-  heroSecondaryButtonLabel?: string | null;
-  heroSecondaryButtonUrl?: string | null;
   layout?:
     | (
+        | HomepageHeroBlock
         | HomepageIntroBlock
         | HomepageServicesBlock
         | HomepagePhilosophyBlock
@@ -793,6 +787,26 @@ export interface Homepage {
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageHeroBlock".
+ */
+export interface HomepageHeroBlock {
+  photo: number | Media;
+  heading: string;
+  subheading?: string | null;
+  primaryButton: {
+    label: string;
+    url: string;
+  };
+  secondaryButton?: {
+    label?: string | null;
+    url?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homepageHero';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -994,16 +1008,10 @@ export interface HomepageCtaBlock {
  * via the `definition` "homepage_select".
  */
 export interface HomepageSelect<T extends boolean = true> {
-  heroImage?: T;
-  heroHeading?: T;
-  heroSubheading?: T;
-  heroPrimaryButtonLabel?: T;
-  heroPrimaryButtonUrl?: T;
-  heroSecondaryButtonLabel?: T;
-  heroSecondaryButtonUrl?: T;
   layout?:
     | T
     | {
+        homepageHero?: T | HomepageHeroBlockSelect<T>;
         homepageIntro?: T | HomepageIntroBlockSelect<T>;
         homepageServices?: T | HomepageServicesBlockSelect<T>;
         homepagePhilosophy?: T | HomepagePhilosophyBlockSelect<T>;
@@ -1018,6 +1026,29 @@ export interface HomepageSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageHeroBlock_select".
+ */
+export interface HomepageHeroBlockSelect<T extends boolean = true> {
+  photo?: T;
+  heading?: T;
+  subheading?: T;
+  primaryButton?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  secondaryButton?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

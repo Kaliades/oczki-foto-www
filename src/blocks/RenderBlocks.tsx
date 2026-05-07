@@ -3,6 +3,7 @@ import React, { Fragment } from 'react'
 import { HomepageAboutTeaser } from './HomepageAboutTeaser/Component'
 import { HomepageCta } from './HomepageCta/Component'
 import { HomepageGallery } from './HomepageGallery/Component'
+import { HomepageHero } from './HomepageHero/Component'
 import { HomepageInstagram } from './HomepageInstagram/Component'
 import { HomepageIntro } from './HomepageIntro/Component'
 import { HomepagePhilosophy } from './HomepagePhilosophy/Component'
@@ -14,6 +15,7 @@ const blockComponents: Record<string, React.FC<any>> = {
   homepageAboutTeaser: HomepageAboutTeaser,
   homepageCta: HomepageCta,
   homepageGallery: HomepageGallery,
+  homepageHero: HomepageHero,
   homepageInstagram: HomepageInstagram,
   homepageIntro: HomepageIntro,
   homepagePhilosophy: HomepagePhilosophy,
