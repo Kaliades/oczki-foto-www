@@ -1,303 +1,174 @@
-# Payload Website Template
+# Oczki Fotografia — portfolio website (AI-built experiment)
 
-This is the official [Payload Website Template](https://github.com/payloadcms/payload/blob/3.x/templates/website). Use it to power websites, blogs, or portfolios from small to enterprise. This repo includes a fully-working backend, enterprise-grade admin panel, and a beautifully designed, production-ready website.
+Portfolio fotografki "Oczki Fotografia" zbudowane jako **eksperyment z budowaniem strony www w 100% przez AI** (Claude Code, Anthropic). Cały kod, decyzje architektoniczne, plany implementacji i większość commitów zostały wygenerowane przez agenta Claude Opus 4.7 współpracującego z użytkownikiem (s.kulinski@getprintbox.com) w trybie konwersacyjnym, używając MCP-serverów Figma i Chrome DevTools.
 
-This template is right for you if you are working on:
+## Stack
 
-- A personal or enterprise-grade website, blog, or portfolio
-- A content publishing platform with a fully featured publication workflow
-- Exploring the capabilities of Payload
+- **Payload CMS 3.x** — backend + admin panel + collections
+- **Next.js 16** (App Router, Turbopack) — frontend
+- **React 19** — Server Components first
+- **Tailwind CSS** — stylowanie
+- **TypeScript** strict
+- **PostgreSQL** (Payload backend)
+- **Geist Sans / Geist Mono** — załadowane przez `geist/font/*`
 
-Core features:
-
-- [Pre-configured Payload Config](#how-it-works)
-- [Authentication](#users-authentication)
-- [Access Control](#access-control)
-- [Layout Builder](#layout-builder)
-- [Draft Preview](#draft-preview)
-- [Live Preview](#live-preview)
-- [On-demand Revalidation](#on-demand-revalidation)
-- [SEO](#seo)
-- [Search](#search)
-- [Redirects](#redirects)
-- [Jobs and Scheduled Publishing](#jobs-and-scheduled-publish)
-- [Website](#website)
-
-## Quick Start
-
-To spin up this example locally, follow these steps:
-
-### Clone
-
-If you have not done so already, you need to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
-
-Use the `create-payload-app` CLI to clone this template directly to your machine:
+## Quick start
 
 ```bash
-pnpx create-payload-app my-project -t website
+cp .env.example .env       # uzupełnij PAYLOAD_SECRET, DATABASE_URI, etc.
+pnpm install
+pnpm dev                   # http://localhost:3000
 ```
 
-### Development
+Pierwsze logowanie: `http://localhost:3000/admin` → utwórz pierwszego admina.
 
-1. First [clone the repo](#clone) if you have not done so already
-1. `cd my-project && cp .env.example .env` to copy the example environment variables
-1. `pnpm install && pnpm dev` to install dependencies and start the dev server
-1. open `http://localhost:3000` to open the app in your browser
+## Co tutaj jest
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+### Strony produkcyjne (V1, CMS-powered)
 
-## How it works
+Tradycyjna implementacja Payload — strony zasilane z `Pages` collection, bloki rejestrowane w `RenderBlocks.tsx`, treść edytowalna w admin panelu.
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+- `/` — strona główna
+- `/galeria` — galeria portfolio (commit `0acbec7`)
+- `/o-mnie` — about (commit `c8c00b3`)
+- `/polityka-prywatnosci` — polityka prywatności (commit `ca5174a`)
 
-### Collections
+Globale: `Navbar`, `Footer` (commit `d77a495`), kolekcja `newsletter-subscribers`.
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+### Strony showcase / test (V2, hardcoded)
 
-- #### Users (Authentication)
+3 strony zaimplementowane **bez Payload CMS** — czysty Next.js + Tailwind, każda sekcja jako jeden React Server Component bez propsów. Cel: porównać podejście **CMS-powered vs hardcoded** wizualnie pod kątem zgodności z designem Figma.
 
-  Users are auth-enabled collections that have access to the admin panel and unpublished content. See [Access Control](#access-control) for more details.
+- `/test/v2/homepage` — 10 sekcji
+- `/test/v2/galeria` — 8 sekcji
+- `/test/v2/o-mnie` — 11 sekcji
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/3.x/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+**Architektura layoutów**: V2 strony żyją pod osobnym route group `app/(test-bare)/` jako trzeci niezależny root layout (obok `app/(frontend)/` i `app/(payload)/`). To pattern Next.js multi-root layouts — pozwala V2 stronom omijać globalny shell Payloada (Navbar/Footer/AdminBar) bez middleware-based routing guards.
 
-- #### Posts
+### Test sandbox
 
-  Posts are used to generate blog posts, news articles, or any other type of content that is published over time. All posts are layout builder enabled so you can generate unique layouts for each post using layout-building blocks, see [Layout Builder](#layout-builder) for more details. Posts are also draft-enabled so you can preview them before publishing them to your website, see [Draft Preview](#draft-preview) for more details.
+`/test` — strona indeksowa z showdownami implementacji (V1 vs V2 dla pojedynczych komponentów: `WybierzV1.tsx`/`WybierzV2.tsx`, `ProcessV1.tsx`/`ProcessV2.tsx`) plus linki do 3 stron V2.
 
-- #### Pages
+## Eksperyment AI — co testowaliśmy
 
-  All pages are layout builder enabled so you can generate unique layouts for each page using layout-building blocks, see [Layout Builder](#layout-builder) for more details. Pages are also draft-enabled so you can preview them before publishing them to your website, see [Draft Preview](#draft-preview) for more details.
+### Tiered Figma → React workflow
 
-- #### Media
+Każda sekcja Figmy traktowana była jako jeden React Server Component. Workflow miał 2 poziomy:
 
-  This is the uploads enabled collection used by pages, posts, and projects to contain media like images, videos, downloads, and other assets. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+- **Tier 1** (default): `mcp__plugin_figma_figma__get_design_context` z `excludeScreenshot: true` — zwraca semantyczny kod referencyjny + tokeny + assety. Wystarczyło dla 25 z 29 komponentów.
+- **Tier 2** (eskalacja): dodaj `get_screenshot` + `get_variable_defs` + `curl` do pobrania assetów Figmy z S3. Stosowane gdy Tier 1 zwracał generic output (raw hex, absolute positioning bez Code Connect) — np. `HomepageHero`, `GaleriaHero`, `OMnieFullWidthImage`.
 
-- #### Categories
+`excludeScreenshot: true` było krytyczne — bez tej flagi MCP stallował na 600s+ przy frame'ach z setkami sub-spacerów.
 
-  A taxonomy used to group posts together. Categories can be nested inside of one another, for example "News > Technology". See the official [Payload Nested Docs Plugin](https://payloadcms.com/docs/plugins/nested-docs) for more details.
+### Subagenty `general-purpose` w batchach
 
-### Globals
+Implementacja per-frame przez równoległych subagentów (zwykle 5-8 na batch). Każdy dostawał self-contained prompt: fileKey, nodeId, slug, krótki kontekst sekcji + sztywne reguły (no `import React`, no Payload, plik kończy `}`, sprawdź `.png` plików komendą `file` bo Figma czasem eksportuje SVG z błędnym rozszerzeniem).
 
-See the [Globals](https://payloadcms.com/docs/configuration/globals) docs for details on how to extend this functionality.
+Łącznie: **3 batche dla Strony głównej (10 + późniejszy fix), 1 batch dla Galerii (8), 2 batche dla O mnie (11)**.
 
-- `Header`
+### Dwie iteracje V2
 
-  The data required by the header on your front-end like nav links.
+Projekt ma **dwie rundy V2** w git history:
 
-- `Footer`
+**Runda 1 (rev. 1, NIEUDANA)** — plan zinwentaryzował frame'y z canvasu `0:1` "🗂️ Architektura informacji". Implementacja wytworzyła 35 komponentów, ale po sprawdzeniu okazało się że to canvas **schematyczny / mapa serwisu**, nie produkcyjne strony. Frame'y zawierały po 2 warianty każdej sekcji (Hero V1+V2, Wyróżniki V1+V2 itp.) — sygnał designerski że to przegląd. Cały kod tej rundy został usunięty (commit `2146654` startuje od czystego stanu).
 
-  Same as above but for the footer of your site.
+**Runda 2 (rev. 2, OBECNA)** — plan na bazie canvasu `1:3` "🌐 Strony" gdzie są prawdziwe page-frame'y produkcyjne (1366×N, jeden wariant per sekcja). 29 komponentów, 3 strony.
 
-## Access control
+**Lekcja**: zanim plan ruszy, sprawdź wszystkie Pages w Figma file (`get_metadata` z różnymi nodeId), nie pierwszy widoczny canvas. Emoji w nazwie canvasu (🗂️ vs 🌐) to często sygnał czy to mapa/inwentarz vs produkcyjne page.
 
-Basic access control is setup to limit access to various content based based on publishing status.
+### Slugi z autonomicznymi renamami
 
-- `users`: Users can access the admin panel and create or edit content.
-- `posts`: Everyone can access published posts, but only users can create, update, or delete them.
-- `pages`: Everyone can access published pages, but only users can create, update, or delete them.
+Subagenty potrafiły zaproponować lepsze nazwy gdy Figma frame name był generic (`Container`, `Frame 12345`, `Main Container`) lub mylący. Główny agent decydował:
 
-For more details on how to extend this functionality, see the [Payload Access Control](https://payloadcms.com/docs/access-control/overview#access-control) docs.
+| Plan-proposed | Renamed → | Powód |
+|---|---|---|
+| HomepageWyrozniki | **HomepageObalamyMit** | sekcja to cytat klientki o niefotogeniczności, nie wyróżniki |
+| HomepageOMnieTeaser | **HomepageWybierzHistorie** | 5 kart produktów, nie teaser O mnie |
+| HomepageProces | **HomepageOMnieTeaser** | "Hej, jestem Asia" — faktyczny teaser O mnie |
+| GaleriaIntro | **GaleriaOMnieTeaser** | manifest fotografki, lustrzany do Homepage |
+| GaleriaProces | **GaleriaCallout** | dekor callout, nie pełny stepper |
+| OMniePageHeader | **OMnieHero** | klasyczny hero |
+| OMnieIntro | **OMnieManifest** | 3 zasady, nie intro |
+| OMnieGaleria | **OMnieSesjaJakSpotkanie** | 4 ponumerowane karty (Figma name "Navbar" — błąd designerski) |
+| OMnieFeatureCards | **OMnieKompetencje** | 4 wyróżniki warsztatu |
+| OMnieMissionSplit | **OMnieDuet** | intro Łukasza, drugiego fotografa |
+| OMnieKrokiRealizacji | **OMnieKroki** | spójność z `HomepageKroki` |
 
-## Layout Builder
+### Weryfikacja Chrome DevTools MCP
 
-Create unique page layouts for any type of content using a powerful layout builder. This template comes pre-configured with the following layout building blocks:
+Każda strona po implementacji weryfikowana przez Chrome DevTools MCP:
+- `navigate_page` → `list_console_messages` (zero errors)
+- `evaluate_script` ze scrollem 10-12 kroków + `complete`/`naturalWidth` check (zero broken images)
+- DOM count: `mains`, `nav,header`, `footer` count + `main > *` sections
+- `take_screenshot fullPage` → ja oglądałem przez `Read` na PNG
 
-- Hero
-- Content
-- Media
-- Call To Action
-- Archive
+Wszystkie 3 strony przeszły: 0 errors, 0 broken (228 obrazków total), poprawna struktura DOM.
 
-Each block is fully designed and built into the front-end website that comes with this template. See [Website](#website) for more details.
+### Pixel-by-pixel Figma vs Chrome
 
-## Lexical editor
+Próba pełnego diff'u przez 3 subagenty parallel — każdy pobierał Figma `get_screenshot` per nodeId + Chrome `take_screenshot` per sekcja, potem `Read` obu i porównywał wizualnie.
 
-A deep editorial experience that allows complete freedom to focus just on writing content without breaking out of the flow with support for Payload blocks, media, links and other features provided out of the box. See [Lexical](https://payloadcms.com/docs/rich-text/overview) docs.
+**Co poszło nie tak**: Chrome DevTools MCP **nie izoluje sesji per agent context** mimo `isolatedContext` parametru. Race condition: subagent A `select_page` zmienia globalnie aktywną kartę, subagent B robi `take_screenshot` na cudzej stronie. Wynik: 8/10 chrome screenshotów homepage, 7/8 galerii, 2/11 o-mnie były **skażone** (pokazywały content innych stron).
 
-## Draft Preview
+**Co dało się ustalić mimo race**:
+- 1 twardy MAJOR rozjazd: `OMnieFullWidthImage` — brak overlay-karty „A poza fotografią…" z bulletami (Bycie sobą / Lupa szczerości / Kobieca solidarność). Implementacja to gołe `<Image fill>`, 18 linii kodu. Karta jest sub-childem frame'a Figma `6972:15584`, subagent ją pominął.
+- Minor: HomepageHero scalopowany pasek jako 25 spans, GaleriaCallout uproszczony (brak 4 ellips), botaniczne dekoracje w Manifest/Duet/Kompetencje uproszczone.
+- Potwierdzone OK: `GaleriaFaq` 1:1 z Figmą (subagent skorygował błędne wcześniejsze założenie o placeholderach).
 
-All posts and pages are draft-enabled so you can preview them before publishing them to your website. To do this, these collections use [Versions](https://payloadcms.com/docs/configuration/collections#versions) with `drafts` set to `true`. This means that when you create a new post, project, or page, it will be saved as a draft and will not be visible on your website until you publish it. This also means that you can preview your draft before publishing it to your website. To do this, we automatically format a custom URL which redirects to your front-end to securely fetch the draft version of your content.
+Wszystkie referencyjne Figma screenshoty (29 plików, ~26 MB) zachowane w `docs/screenshots/v2-figma-vs-chrome/{homepage,galeria,o-mnie}/figma-NN-*.png`.
 
-Since the front-end of this template is statically generated, this also means that pages, posts, and projects will need to be regenerated as changes are made to published documents. To do this, we use an `afterChange` hook to regenerate the front-end when a document has changed and its `_status` is `published`.
+## Co działa ✅
 
-For more details on how to extend this functionality, see the official [Draft Preview Example](https://github.com/payloadcms/payload/tree/3.x/examples/draft-preview).
+- 29 komponentów V2 renderuje się bez crashy w izolowanym route group
+- 0 console errors na każdej z 3 stron
+- 196 obrazków ładuje się poprawnie (po fix `localPatterns: ['/blocks-v2/**']` w `next.config.ts`)
+- `pnpm exec tsc --noEmit` zielono
+- Multi-root layout pattern: `(frontend)`, `(payload)`, `(test-bare)` żyją obok siebie
+- Asset reuse: `OMnieFooterNewsletter` używa skopiowanych assetów z `homepagefooternewsletter` (oszczędność 18 plików)
 
-## Live preview
+## Co nie działa 🔴
 
-In addition to draft previews you can also enable live preview to view your end resulting page as you're editing content with full support for SSR rendering. See [Live preview docs](https://payloadcms.com/docs/live-preview/overview) for more details.
+### MAJOR
 
-## On-demand Revalidation
+1. **`OMnieFullWidthImage`** — brak overlay-karty z 3 bulletami (zob. raport).
+2. **Fonty The Seasons / Instrument Sans / Dancing Script nie są załadowane** — wszystkie 29 komponentów używa `font-['The_Seasons',serif]` etc., ale żadne `next/font` ani `@font-face` nie istnieje. Wszystko leci na fallback serif/sans/cursive. To globalnie psuje spójność z Figmą. The Seasons jest komercyjny (Connary Fagen) — wymaga zakupu lub zamiany. Instrument Sans i Dancing Script są dostępne w Google Fonts.
 
-We've added hooks to collections and globals so that all of your pages, posts, footer, or header changes will automatically be updated in the frontend via on-demand revalidation supported by Nextjs.
+### Złamane linki
 
-> Note: if an image has been changed, for example it's been cropped, you will need to republish the page it's used on in order to be able to revalidate the Nextjs image cache.
+- `<form action="/api/newsletter">` w 3 stopkach — endpoint nie istnieje (`src/app/api/` brak)
+- `href="#kontakt"` w 4 CTA — anchor `id="kontakt"` nie istnieje nigdzie
+- Social linki `href="#"` w 3 stopkach (placeholdery)
 
-## SEO
+### Pixel-perfect
 
-This template comes pre-configured with the official [Payload SEO Plugin](https://payloadcms.com/docs/plugins/seo) for complete SEO control from the admin panel. All SEO data is fully integrated into the front-end website that comes with this template. See [Website](#website) for more details.
+- 8/29 sekcji ma niepełną weryfikację wizualną (Chrome MCP race) — figma referencje są kompletne, chrome capture częściowe
 
-## Search
+## Dokumentacja
 
-This template also pre-configured with the official [Payload Search Plugin](https://payloadcms.com/docs/plugins/search) to showcase how SSR search features can easily be implemented into Next.js with Payload. See [Website](#website) for more details.
+- **Pełen raport stanu**: [`docs/v2-status-report.md`](./docs/v2-status-report.md) — szczegółowa analiza co działa / co nie / inwentarz 29 komponentów / znane rozjazdy
+- **Plan implementacji V2 (rev. 2)**: [`docs/plan/twoim-zadaniem-jest-rozplanowanie-soft-shore.md`](./docs/plan/twoim-zadaniem-jest-rozplanowanie-soft-shore.md) — plan z lessons learned z rev. 1
+- **Plan strony głównej V1**: [`docs/plan/homepage-configuration-plan.md`](./docs/plan/homepage-configuration-plan.md)
+- **Analiza pages Figma**: [`docs/figma-pages-analysis.md`](./docs/figma-pages-analysis.md)
+- **Screenshoty Figma vs Chrome**: [`docs/screenshots/v2-figma-vs-chrome/`](./docs/screenshots/v2-figma-vs-chrome/) — 29 referencji Figma + częściowe captures Chrome (skażone race condition w MCP — patrz raport)
 
-## Redirects
+## Rzeczy które AI **nie zrobił** (i dlaczego)
 
-If you are migrating an existing site or moving content to a new URL, you can use the `redirects` collection to create a proper redirect from old URLs to new ones. This will ensure that proper request status codes are returned to search engines and that your users are not left with a broken link. This template comes pre-configured with the official [Payload Redirects Plugin](https://payloadcms.com/docs/plugins/redirects) for complete redirect control from the admin panel. All redirects are fully integrated into the front-end website that comes with this template. See [Website](#website) for more details.
+- **Fix overlay `OMnieFullWidthImage`** — wymaga reanalizy frame'u Figma, decyzja użytkownika czy pixel-perfect priorytet
+- **Załadowanie fontów** — wymaga decyzji o The Seasons (kupić / podmienić) i czy zmieniać też V1
+- **Implementacja `/api/newsletter`** — wymaga decyzji czy Payload-backed (collection `newsletter-subscribers` istnieje) czy mock
+- **Dodanie `id="kontakt"`** — wymaga decyzji czy sekcja w stopce vs osobna route
+- **Pełen diff Figma↔Chrome bez race** — wymaga sekwencyjnego (nie parallel) re-runu, ~30 min compute
+- **Sprzątnięcie `.bak` files** — Bash sandbox blokuje `rm -rf` w workspace
+- **Vercel deploy** — wymaga konfiguracji env vars + Postgres
 
-## Jobs and Scheduled Publish
+## Stack agentowy (jak to powstało)
 
-We have configured [Scheduled Publish](https://payloadcms.com/docs/versions/drafts#scheduled-publish) which uses the [jobs queue](https://payloadcms.com/docs/jobs-queue/jobs) in order to publish or unpublish your content on a scheduled time. The tasks are run on a cron schedule and can also be run as a separate instance if needed.
+- **Claude Opus 4.7 (1M context)** w Claude Code CLI
+- **Figma MCP** (`plugin:figma`) — `get_design_context`, `get_screenshot`, `get_metadata`, `get_variable_defs`
+- **Chrome DevTools MCP** (`plugin:chrome-devtools-mcp`) — `new_page`, `navigate_page`, `evaluate_script`, `take_screenshot`, `list_console_messages`
+- **Subagenty**: `general-purpose` (Tools: *) — implementacja per-frame, sanity checks, raporty
+- Tryb pracy: Auto Mode (autonomous execution) z manualnymi gate'ami dla destruktywnych akcji
 
-> Note: When deployed on Vercel, depending on the plan tier, you may be limited to daily cron only.
+---
 
-## Website
-
-This template includes a beautifully designed, production-ready front-end built with the [Next.js App Router](https://nextjs.org), served right alongside your Payload app in a instance. This makes it so that you can deploy both your backend and website where you need it.
-
-Core features:
-
-- [Next.js App Router](https://nextjs.org)
-- [TypeScript](https://www.typescriptlang.org)
-- [React Hook Form](https://react-hook-form.com)
-- [Payload Admin Bar](https://github.com/payloadcms/payload/tree/3.x/packages/admin-bar)
-- [TailwindCSS styling](https://tailwindcss.com/)
-- [shadcn/ui components](https://ui.shadcn.com/)
-- User Accounts and Authentication
-- Fully featured blog
-- Publication workflow
-- Dark mode
-- Pre-made layout building blocks
-- SEO
-- Search
-- Redirects
-- Live preview
-
-### Cache
-
-Although Next.js includes a robust set of caching strategies out of the box, Payload Cloud proxies and caches all files through Cloudflare using the [Official Cloud Plugin](https://www.npmjs.com/package/@payloadcms/payload-cloud). This means that Next.js caching is not needed and is disabled by default. If you are hosting your app outside of Payload Cloud, you can easily reenable the Next.js caching mechanisms by removing the `no-store` directive from all fetch requests in `./src/app/_api` and then removing all instances of `export const dynamic = 'force-dynamic'` from pages files, such as `./src/app/(pages)/[slug]/page.tsx`. For more details, see the official [Next.js Caching Docs](https://nextjs.org/docs/app/building-your-application/caching).
-
-## Development
-
-To spin up this example locally, follow the [Quick Start](#quick-start). Then [Seed](#seed) the database with a few pages, posts, and projects.
-
-### Working with Postgres
-
-Postgres and other SQL-based databases follow a strict schema for managing your data. In comparison to our MongoDB adapter, this means that there's a few extra steps to working with Postgres.
-
-Note that often times when making big schema changes you can run the risk of losing data if you're not manually migrating it.
-
-#### Local development
-
-Ideally we recommend running a local copy of your database so that schema updates are as fast as possible. By default the Postgres adapter has `push: true` for development environments. This will let you add, modify and remove fields and collections without needing to run any data migrations.
-
-If your database is pointed to production you will want to set `push: false` otherwise you will risk losing data or having your migrations out of sync.
-
-#### Migrations
-
-[Migrations](https://payloadcms.com/docs/database/migrations) are essentially SQL code versions that keeps track of your schema. When deploy with Postgres you will need to make sure you create and then run your migrations.
-
-Locally create a migration
-
-```bash
-pnpm payload migrate:create
-```
-
-This creates the migration files you will need to push alongside with your new configuration.
-
-On the server after building and before running `pnpm start` you will want to run your migrations
-
-```bash
-pnpm payload migrate
-```
-
-This command will check for any migrations that have not yet been run and try to run them and it will keep a record of migrations that have been run in the database.
-
-### Docker
-
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
-
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
-
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
-
-### Seed
-
-To seed the database with a few pages, posts, and projects you can click the 'seed database' link from the admin panel.
-
-The seed script will also create a demo user for demonstration purposes only:
-
-- Demo Author
-  - Email: `demo-author@payloadcms.com`
-  - Password: `password`
-
-> NOTICE: seeding the database is destructive because it drops your current database to populate a fresh one from the seed template. Only run this command if you are starting a new project or can afford to lose your current data.
-
-## Production
-
-To run Payload in production, you need to build and start the Admin panel. To do so, follow these steps:
-
-1. Invoke the `next build` script by running `pnpm build` or `npm run build` in your project root. This creates a `.next` directory with a production-ready admin bundle.
-1. Finally run `pnpm start` or `npm run start` to run Node in production and serve Payload from the `.build` directory.
-1. When you're ready to go live, see Deployment below for more details.
-
-### Deploying to Vercel
-
-This template can also be deployed to Vercel for free. You can get started by choosing the Vercel DB adapter during the setup of the template or by manually installing and configuring it:
-
-```bash
-pnpm add @payloadcms/db-vercel-postgres
-```
-
-```ts
-// payload.config.ts
-import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
-
-export default buildConfig({
-  // ...
-  db: vercelPostgresAdapter({
-    pool: {
-      connectionString: process.env.POSTGRES_URL || '',
-    },
-  }),
-  // ...
-```
-
-We also support Vercel's blob storage:
-
-```bash
-pnpm add @payloadcms/storage-vercel-blob
-```
-
-```ts
-// payload.config.ts
-import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
-
-export default buildConfig({
-  // ...
-  plugins: [
-    vercelBlobStorage({
-      collections: {
-        [Media.slug]: true,
-      },
-      token: process.env.BLOB_READ_WRITE_TOKEN || '',
-    }),
-  ],
-  // ...
-```
-
-There is also a simplified [one click deploy](https://github.com/payloadcms/payload/tree/3.x/templates/with-vercel-postgres) to Vercel should you need it.
-
-### Self-hosting
-
-Before deploying your app, you need to:
-
-1. Ensure your app builds and serves in production. See [Production](#production) for more details.
-2. You can then deploy Payload as you would any other Node.js or Next.js application either directly on a VPS, DigitalOcean's Apps Platform, via Coolify or more. More guides coming soon.
-
-You can also deploy your app manually, check out the [deployment documentation](https://payloadcms.com/docs/production/deployment) for full details.
-
-## Questions
-
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+**Repo**: https://github.com/Kaliades/oczki-foto-www
