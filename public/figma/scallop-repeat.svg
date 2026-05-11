@@ -1,0 +1,39 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 68.0001 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Image Container">
+<g id="Horizontal Container">
+<rect x="10.0001" y="9" width="18" height="18" rx="8.7907" transform="rotate(-30 10.0001 9)" fill="var(--fill-0, #F6F5F2)"/>
+<circle id="Ellipse 28" cx="20.4234" cy="10.8293" r="1.5" transform="rotate(-30 20.4234 10.8293)" fill="var(--fill-0, #DBA0A0)"/>
+</g>
+<g id="Horizontal Container_2">
+<rect x="26.0001" width="18" height="18" rx="8.7907" fill="var(--fill-0, #F6F5F2)"/>
+<circle id="Ellipse 28_2" cx="34.1123" cy="6.79592" r="1.5" fill="var(--fill-0, #DBA0A0)"/>
+</g>
+<g id="Horizontal Container_3">
+<rect width="18" height="18" rx="8.7907" transform="matrix(-0.5 -0.866026 -0.866026 0.5 67.0001 26)" fill="var(--fill-0, #F6F5F2)"/>
+<circle id="Ellipse 28_3" cx="1.5" cy="1.5" r="1.5" transform="matrix(-0.5 -0.866026 -0.866026 0.5 59.1075 22.9216)" fill="var(--fill-0, #DBA0A0)"/>
+</g>
+<g id="Horizontal Container_4">
+<rect width="18" height="18" rx="8.7907" transform="matrix(0.5 -0.866025 -0.866025 -0.5 59.0001 48)" fill="var(--fill-0, #F6F5F2)"/>
+<circle id="Ellipse 28_4" cx="1.5" cy="1.5" r="1.5" transform="matrix(0.5 -0.866025 -0.866025 -0.5 57.7198 39.6257)" fill="var(--fill-0, #DBA0A0)"/>
+</g>
+<g id="Horizontal Container_5">
+<rect x="9.00006" y="48" width="18" height="18" rx="8.7907" transform="rotate(-120 9.00006 48)" fill="var(--fill-0, #F6F5F2)"/>
+<circle id="Ellipse 28_5" cx="10.8294" cy="37.5766" r="1.5" transform="rotate(-120 10.8294 37.5766)" fill="var(--fill-0, #DBA0A0)"/>
+</g>
+<g id="Horizontal Container_6">
+<rect width="18" height="18" rx="8.7907" transform="matrix(-0.5 0.866026 0.866026 0.5 10.0001 11)" fill="var(--fill-0, #F6F5F2)"/>
+<circle id="Ellipse 28_6" cx="1.5" cy="1.5" r="1.5" transform="matrix(-0.5 0.866026 0.866026 0.5 11.2803 19.3743)" fill="var(--fill-0, #DBA0A0)"/>
+</g>
+<circle id="Ellipse 27" cx="34.5001" cy="33.5" r="20.5" fill="var(--fill-0, #F6F5F2)"/>
+<g id="Icon Vector Container">
+<path id="Vector 1143" d="M28.0003 29.8864V23.7979C28.0003 23.1828 28.4989 22.6842 29.114 22.6842H30.6969C30.9923 22.6842 31.2756 22.5669 31.4844 22.358L32.5163 21.3262C32.7251 21.1173 33.0084 21 33.3037 21H36.0442C36.352 21 36.6461 21.1274 36.8566 21.352L37.7756 22.3322C37.9862 22.5568 38.2802 22.6842 38.5881 22.6842H40.1499C40.7649 22.6842 41.2635 23.1828 41.2635 23.7979V29.8864C41.2635 30.5014 40.7649 31 40.1499 31H29.114C28.4989 31 28.0003 30.5014 28.0003 29.8864Z" fill="var(--fill-0, #DBA0A0)"/>
+<circle id="Ellipse 29" cx="35.0001" cy="27" r="3" fill="var(--fill-0, #F6F5F2)"/>
+<ellipse id="Ellipse 30" cx="35.0001" cy="27" rx="2" ry="2" fill="var(--fill-0, #DBA0A0)"/>
+<circle id="Ellipse 31" cx="39.5001" cy="23.5" r="0.5" fill="var(--fill-0, #F6F5F2)"/>
+</g>
+<g id="Horizontal Container_7">
+<rect width="18" height="18" rx="8.7907" transform="matrix(-0.866025 -0.5 -0.5 0.866025 59.0001 9)" fill="var(--fill-0, #F6F5F2)"/>
+<circle id="Ellipse 28_7" cx="1.5" cy="1.5" r="1.5" transform="matrix(-0.866025 -0.5 -0.5 0.866025 50.6257 10.2803)" fill="var(--fill-0, #DBA0A0)"/>
+</g>
+</g>
+</svg>

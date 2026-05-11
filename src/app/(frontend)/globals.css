@@ -48,6 +48,30 @@
 }
 
 @layer utilities {
+  .oczki-body-l {
+    font-family: var(--font-oczki-body);
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 1.48;
+  }
+
+  .oczki-body-m {
+    font-family: var(--font-oczki-body);
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.48;
+  }
+
+  .oczki-body-m-medium {
+    font-family: var(--font-oczki-body);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.48;
+  }
+
   .container {
     width: 100%;
     margin-inline: auto;
@@ -123,6 +147,15 @@
   --success: oklch(78% 0.08 200deg);
   --warning: oklch(89% 0.1 75deg);
   --error: oklch(75% 0.15 25deg);
+  --oczki-primary-400: #d8b68f;
+  --oczki-primary-500: #cba783;
+  --oczki-primary-700: #6b5947;
+  --oczki-primary-800: #4f3a26;
+  --oczki-primary-900: #392818;
+  --oczki-pink: #dfa0a3;
+  --font-oczki-display: var(--font-oczki-display-loaded), Georgia, serif;
+  --font-oczki-body: var(--font-instrument-sans), 'Instrument Sans', var(--font-geist-sans),
+    sans-serif;
 }
 
 [data-theme='dark'] {
@@ -211,6 +244,19 @@
   }
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
+    font-family: var(--font-oczki-body);
+    font-feature-settings:
+      'ss01' 1,
+      'ss02' 1,
+      'ss03' 1,
+      'ss08' 1,
+      'ss10' 1,
+      'ss12' 1,
+      'lnum' 1,
+      'pnum' 1;
+    font-variation-settings: 'wdth' 100;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 

@@ -1,0 +1,17 @@
+import Image from 'next/image'
+
+export function HeroBackground() {
+  return (
+    <>
+      <Image
+        alt=""
+        className="absolute inset-0 -z-20 size-full scale-[1.4] object-cover object-[66%_50%] md:scale-100 md:object-center"
+        fill
+        priority
+        sizes="100vw"
+        src="/figma/home-hero-bg.png"
+      />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-white/30 via-white/10 to-transparent" />
+    </>
+  )
+}

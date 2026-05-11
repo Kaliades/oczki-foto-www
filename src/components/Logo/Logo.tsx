@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import Image from 'next/image'
 import React from 'react'
 
 interface Props {
@@ -14,16 +15,24 @@ export const Logo = (props: Props) => {
   const priority = priorityFromProps || 'low'
 
   return (
-    /* eslint-disable @next/next/no-img-element */
-    <img
-      alt="Payload Logo"
-      width={193}
-      height={34}
-      loading={loading}
-      fetchPriority={priority}
-      decoding="async"
-      className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
-      src="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-logo-light.svg"
-    />
+    <span className={clsx('flex h-[22px] w-[91px] items-center gap-[3px]', className)}>
+      <Image
+        alt=""
+        className="h-[22px] w-[15px]"
+        height={22}
+        loading={loading}
+        src="/figma/oczki-sygnet.svg"
+        width={15}
+      />
+      <Image
+        alt="Oczki fotografia"
+        className="h-[21px] w-[72px]"
+        fetchPriority={priority}
+        height={21}
+        loading={loading}
+        src="/figma/oczki-logotyp.svg"
+        width={72}
+      />
+    </span>
   )
 }

@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 import { cn } from '@/utilities/ui'
+import { Cormorant_Garamond, Instrument_Sans } from 'next/font/google'
 import { GeistMono } from 'geist/font/mono'
-import { GeistSans } from 'geist/font/sans'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
@@ -16,11 +16,29 @@ import { draftMode } from 'next/headers'
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 
+const instrumentSans = Instrument_Sans({
+  display: 'swap',
+  subsets: ['latin-ext'],
+  variable: '--font-instrument-sans',
+})
+
+const cormorantGaramond = Cormorant_Garamond({
+  display: 'swap',
+  style: ['normal', 'italic'],
+  subsets: ['latin-ext'],
+  variable: '--font-oczki-display-loaded',
+  weight: ['300', '400'],
+})
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
 
   return (
-    <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
+    <html
+      className={cn(instrumentSans.variable, cormorantGaramond.variable, GeistMono.variable)}
+      lang="pl"
+      suppressHydrationWarning
+    >
       <head>
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
