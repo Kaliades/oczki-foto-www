@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { cn } from '@/utilities/ui'
-import { Cormorant_Garamond, Instrument_Sans } from 'next/font/google'
+import { Cormorant_Garamond, Dancing_Script, Instrument_Sans } from 'next/font/google'
 import { GeistMono } from 'geist/font/mono'
 import React from 'react'
 
@@ -30,12 +30,24 @@ const cormorantGaramond = Cormorant_Garamond({
   weight: ['300', '400'],
 })
 
+const dancingScript = Dancing_Script({
+  display: 'swap',
+  subsets: ['latin-ext'],
+  variable: '--font-oczki-handwritten',
+  weight: ['400'],
+})
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
 
   return (
     <html
-      className={cn(instrumentSans.variable, cormorantGaramond.variable, GeistMono.variable)}
+      className={cn(
+        instrumentSans.variable,
+        cormorantGaramond.variable,
+        dancingScript.variable,
+        GeistMono.variable,
+      )}
       lang="pl"
       suppressHydrationWarning
     >

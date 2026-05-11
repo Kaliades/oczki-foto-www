@@ -72,6 +72,36 @@
     line-height: 1.48;
   }
 
+  .oczki-heading-l {
+    font-family: var(--font-oczki-display);
+    font-feature-settings:
+      'lnum' 1,
+      'pnum' 1;
+    font-size: 2.25rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.04;
+  }
+
+  .oczki-heading-l em {
+    font-feature-settings:
+      'dlig' 1,
+      'lnum' 1,
+      'pnum' 1;
+    letter-spacing: -0.01em;
+  }
+
+  .oczki-handwritten-s {
+    font-family: var(--font-oczki-handwritten), cursive;
+    font-feature-settings:
+      'lnum' 1,
+      'pnum' 1;
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 0.98;
+  }
+
   .container {
     width: 100%;
     margin-inline: auto;
@@ -147,11 +177,15 @@
   --success: oklch(78% 0.08 200deg);
   --warning: oklch(89% 0.1 75deg);
   --error: oklch(75% 0.15 25deg);
+  --oczki-primary-100: #f6f5f2;
+  --oczki-primary-200: #f1eee8;
+  --oczki-primary-300: #e7ded4;
   --oczki-primary-400: #d8b68f;
   --oczki-primary-500: #cba783;
   --oczki-primary-700: #6b5947;
   --oczki-primary-800: #4f3a26;
   --oczki-primary-900: #392818;
+  --oczki-secondary-600: #6b7a5e;
   --oczki-pink: #dfa0a3;
   --font-oczki-display: var(--font-oczki-display-loaded), Georgia, serif;
   --font-oczki-body: var(--font-instrument-sans), 'Instrument Sans', var(--font-geist-sans),
