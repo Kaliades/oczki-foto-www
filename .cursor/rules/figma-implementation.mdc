@@ -1,0 +1,28 @@
+---
+description: Workflow for implementing Figma designs via the Figma MCP
+globs: src/components/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Figma → Code Workflow
+
+Before writing any markup for a new section, always:
+
+1. **Fetch context**, never improvise from a screenshot alone:
+   - `get_design_context(fileKey, nodeId)` for desktop, tablet AND mobile node IDs
+   - `get_screenshot(fileKey, nodeId, maxDimension: 1600+)` for visual verification
+   - If response is truncated, `get_metadata` first, then fetch children
+2. **Store node IDs** for every responsive variant in the section's `constants.ts`:
+   ```ts
+   export const HOME_OFFER_FIGMA_NODES = {
+     desktopMainContainer: '6781:17283',
+     tabletMainContainer: '7105:11410',
+     mobileMainContainer: '7105:13705',
+   } as const
+   ```
+3. **Annotate** the rendered root element with `data-figma-node="<nodeId>"` so the design source is traceable.
+4. **Download assets** from `https://www.figma.com/api/mcp/asset/...` URLs to `public/figma/` with descriptive kebab-case names. URLs expire in 7 days — do not reference them at runtime.
+5. **Translate, don't paste**: the Figma MCP returns React+Tailwind reference code. Treat it as a spec for sizes/spacing/typography, not as final code. Replace ad-hoc `font-['...']` and raw hex with project tokens (`oczki-body-l`, `var(--oczki-primary-700)`, …).
+6. **Be honest about fidelity**: the display font (`The Seasons`) has no licensed file; we use Cormorant Garamond as fallback. Never claim 1:1 without noting that.
+
+Do not skip step 1. Implementations done from the screenshot alone consistently miss padding, line-heights, and OpenType features.

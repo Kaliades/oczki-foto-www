@@ -1,0 +1,40 @@
+---
+description: Build every section so it can be wired to a Payload block with minimal change
+globs: src/components/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# CMS Readiness
+
+Every new section will eventually be driven by a Payload block. Build it so that wiring is a 1–2 hour task, not a rewrite.
+
+## Required pattern
+
+1. **Components accept props, never read constants directly inside JSX.**
+
+   ```tsx
+   // ❌ BAD
+   export function OfferSectionHeader() {
+     return <h2>{homeOfferCopy.headingStart} …</h2>
+   }
+
+   // ✅ GOOD
+   type Props = { headingStart: string; headingEmphasis: string; headingEnd: string; subtitle: string }
+   export function OfferSectionHeader(props: Props) { … }
+   ```
+
+2. **A `constants.ts` exposes a typed default** that mirrors the Payload block shape. It is the source for `homeStatic` seed and for the implementation phase before the block exists.
+
+3. **Hrefs are not hardcoded** to a hard path. Use a `Link` type aligned with the Payload `linkGroup` field (`{ type: 'reference' | 'custom', url, label, newTab }`). Until the block exists, the constants provide the same shape, not raw strings.
+
+4. **Images are URL-string + alt at the component boundary.** Loaders, sizes, crop are handled inside the component. This way swapping `/figma/offer-session-kobieca.png` for `/api/media/file/<filename>` is a no-op.
+
+5. **No conditional `isHome` branches in `[slug]/page.tsx`.** Anything that is rendered only on the home page is a Payload block on the home Page document. The `Frame1000006620` shortcut in `[slug]/page.tsx` is a known debt to be removed when blocks land.
+
+6. **Names align with eventual blocks.** When you'd name a section `HomeIntro`, also create the block `IntroQuoteBlock` later. Pick component names that survive the migration (`OfferShowcase`, not `Frame1000006620`).
+
+## Anti-patterns we already created and must clean up
+
+- `src/components/HomeHero/Frame1000006620.tsx` (Figma frame ID as filename)
+- `src/app/(frontend)/[slug]/page.tsx` rendering home sections inline outside of `RenderBlocks`
+- Section copy hardcoded inside JSX rather than passed as props

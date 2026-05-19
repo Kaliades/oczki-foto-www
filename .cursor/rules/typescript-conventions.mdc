@@ -1,0 +1,37 @@
+---
+description: TypeScript conventions for this codebase
+globs: src/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# TypeScript Conventions
+
+## Types
+
+- Prefer `type` aliases for object shapes; reserve `interface` for declaration merging or class implementations.
+- Use `as const` on static option arrays and copy maps.
+- Use generated types from `@/payload-types` for everything CMS-related. Never duplicate a Payload row shape.
+- Use `type`-only imports when only types are needed: `import type { Page } from '@/payload-types'`.
+
+## Imports
+
+- Absolute imports via `@/` alias for everything inside `src/`.
+- Group order: node/builtins → third-party → `@/` aliases → relative → styles. Tooling will not enforce this; do it manually.
+- Avoid default exports for components; use named exports matching the filename.
+
+## Strictness
+
+- No `any`. If you must escape, use `unknown` and narrow.
+- No `@ts-expect-error` without a comment explaining the exact mismatch and a TODO referencing where to remove it. The existing one in `RenderBlocks.tsx` is a known debt.
+- Never widen function signatures to swallow Payload typing errors — if the type fails, regenerate types first.
+
+## Examples
+
+```ts
+// ✅ Type-only import, no default export, generated Payload type
+import type { Page } from '@/payload-types'
+
+type OfferShowcaseProps = Extract<Page['layout'][number], { blockType: 'offerShowcase' }>
+
+export function OfferShowcaseBlock(props: OfferShowcaseProps) { … }
+```

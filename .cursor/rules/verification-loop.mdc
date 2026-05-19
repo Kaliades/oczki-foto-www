@@ -1,0 +1,17 @@
+---
+description: Mandatory verification steps after edits
+alwaysApply: true
+---
+
+# Verification Loop
+
+After any non-trivial edit, before declaring "done":
+
+1. Run `ReadLints` on touched paths.
+2. Run `pnpm exec tsc --noEmit` from repo root.
+3. If `tsconfig.tsbuildinfo` was created by the run, delete it (do not commit build artefacts).
+4. If you touched Payload schema (collections, blocks, globals, fields), run `pnpm payload generate:types` and ensure `src/payload-types.ts` is regenerated.
+
+Never claim "1:1 with Figma" unless you actually compared values against `get_design_context` output for the relevant node IDs. State known deviations explicitly (e.g. The Seasons display font fallback).
+
+`pnpm lint` is currently broken (ESLint circular structure error in this repo's config); the project-level lint gate is `tsc --noEmit` + `ReadLints`. Do not run `pnpm lint` and treat its failure as a real issue.

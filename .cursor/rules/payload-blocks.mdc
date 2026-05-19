@@ -1,0 +1,44 @@
+---
+description: Conventions for Payload collections, blocks, and field factories
+globs: src/{collections,blocks,heros,fields,globals}/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Payload Blocks & Collections
+
+Reference the Payload skill at `.claude/skills/payload/SKILL.md` for the canonical patterns. This rule pins project-specific conventions on top.
+
+## Block file structure
+
+For each block:
+
+```
+src/blocks/<BlockName>/
+├── config.ts        ← Payload Block config, default export NOT used
+└── Component.tsx    ← React renderer accepting block props from Page['layout'][N]
+```
+
+- The block `slug` is camelCase (`'offerShowcase'`); `interfaceName` is PascalCase (`'OfferShowcaseBlock'`).
+- Register the block in `src/collections/Pages/index.ts` under `layout.blocks`, then add the component to `blockComponents` in `src/blocks/RenderBlocks.tsx`.
+- Run `pnpm payload generate:types` after schema changes; commit the updated `src/payload-types.ts`.
+
+## Field conventions
+
+- Use `slugField()` from Payload for unique URL slugs (do not handroll).
+- For links, always use the project's `linkGroup` factory in `src/fields/linkGroup.ts`; never re-implement Link UI per block.
+- Media uploads use `relationTo: 'media'`, never raw URL strings.
+- Rich text uses the standard `lexicalEditor` config matching `Content` / `CallToAction` blocks — keep the same toolbar features unless the design demands less.
+
+## Type safety
+
+- Always import row types from `@/payload-types`, never re-declare them.
+- Cast block component props to the generated `OfferShowcaseBlock` etc., not `any` or `unknown`.
+
+## Access control & hooks
+
+- New collections default-restrict mutations to `authenticated`, reads to `authenticatedOrPublished`.
+- For any collection rendered in `RenderBlocks`, add a `revalidate<Slug>` afterChange/afterDelete hook mirroring `revalidatePage`.
+
+## Globals candidates
+
+Site-wide content (CTA emails, social links, default "Pogadajmy" copy) belongs in a `SiteSettings` global, not duplicated across blocks.

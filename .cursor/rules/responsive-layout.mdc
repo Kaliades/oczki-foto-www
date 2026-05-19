@@ -1,0 +1,33 @@
+---
+description: Responsive layout rules — no hardcoded section widths, support edge bleed
+globs: src/components/**/*.{tsx,ts}
+alwaysApply: false
+---
+
+# Responsive Layout
+
+The site is designed at three Figma breakpoints (1366 / 768 / 360). Code must scale **between** them, not just snap.
+
+## Rules
+
+1. **Never** hardcode a viewport-sized container like `w-[1366px]` or `w-[calc(100vw-16px)]`. The section background and rails must follow `w-full` / `inset-0`, and any inner clamp derives from the design.
+2. Card-like reusable elements (`OfferCard`) keep a fixed mobile width, but on `md+` use `clamp(min, vw-based, max)` so they breathe with viewport size:
+   ```tsx
+   <article className="w-[293px] md:w-[clamp(328px,24vw,360px)] …" />
+   ```
+3. For sections where a rail must visually bleed into the right edge of the viewport (e.g. offer cards), use a shared CSS variable rather than `100vw`:
+   ```tsx
+   // Section sets it
+   <div className="px-[var(--offer-section-padding)] [--offer-section-padding:1rem] md:[--offer-section-padding:clamp(2rem,5.86vw,5rem)]" />
+   // Rail reclaims the right padding
+   <div className="w-[calc(100%+var(--offer-section-padding))]" />
+   ```
+4. Heights of text blocks inside cards should be fixed (`h-[164px] md:h-[clamp(158px,11.6vw,176px)]`) with `overflow-hidden`, so different copy lengths do not push images out of alignment.
+5. Background textures/images that span the section: use `absolute inset-0 size-full object-cover`, never `w-[1366px]` with a centered transform.
+6. Compute carousel scroll steps from the **real** rendered card width + computed gap; do not hardcode `326` or `301`.
+
+## Smell tests
+
+- Find a section that breaks at 1100px? You probably hardcoded `1366`.
+- Card visually shorter than its neighbours? You used `min-h-…` instead of a fixed `h-…` with `overflow-hidden`.
+- Last card never reaches the viewport edge? You forgot the negative padding via CSS variable.

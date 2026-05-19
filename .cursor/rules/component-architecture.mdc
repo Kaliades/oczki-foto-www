@@ -1,0 +1,41 @@
+---
+description: How to structure page sections and reusable components
+globs: src/components/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Component Architecture
+
+## Section module layout
+
+Every page section is its own folder under `src/components/<SectionName>/` containing:
+
+```
+HomeOfferShowcase/
+├── HomeOfferShowcase.tsx   ← composing root, named export
+├── OfferSectionHeader.tsx  ← sub-pieces
+├── OfferCard.tsx
+├── OfferCardsRail.tsx
+├── OfferCarouselNav.tsx
+├── OfferInquiry.tsx
+├── OfferFooterNotch.tsx
+└── constants.ts            ← copy, items, Figma node IDs
+```
+
+Rules:
+
+- One default-free named export per file matching the filename.
+- Root component is data-driven; all copy/imagery comes from a typed `Props` object. `constants.ts` provides the static fallback used by `homeStatic` seed today and the Payload block tomorrow.
+- Sub-components must be reusable: e.g. `OfferCard` knows nothing about "home" — it accepts `title`, `description`, `imageSrc`, `cropClassName`.
+- Client state (refs, scroll, listeners) lives in the smallest possible leaf with `'use client'`. The composing root should remain a Server Component whenever possible.
+
+## Props
+
+- `Props` types named `<Component>Props`, defined just above the component.
+- Use `readonly` arrays / `as const` for static option lists.
+- Booleans are positive (`isActive`, not `notActive`).
+- Avoid optional chained renders deep inside JSX; precompute in variables for readability.
+
+## Reuse boundary
+
+Generic primitives (`OczkiButton`, layout grids) live in `src/components/<Primitive>/`. Section-specific compositions live inside the section folder. Do not move section-specific files into shared folders.

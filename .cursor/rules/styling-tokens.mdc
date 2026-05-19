@@ -1,0 +1,46 @@
+---
+description: Use design tokens, typography utilities and Tailwind 4 conventions
+globs: src/**/*.{tsx,ts,css}
+alwaysApply: false
+---
+
+# Styling Tokens
+
+## Colors
+
+Always use the Oczki CSS variables defined in `src/app/(frontend)/globals.css`:
+
+- `var(--oczki-primary-100..900)` — neutral creams to deep brown
+- `var(--oczki-secondary-600)` — sage
+- `var(--oczki-tertiary-300|700)` — dusty pink stack
+- `var(--oczki-pink)` — accent
+
+```tsx
+// ❌ BAD: raw hex from Figma
+<p className="text-[#4f3a26]">…</p>
+
+// ✅ GOOD
+<p className="text-[var(--oczki-primary-800)]">…</p>
+```
+
+If a Figma color is missing, add a new `--oczki-*` token in `:root` of `globals.css` — never reference raw hex from components.
+
+## Typography
+
+Use the utility classes from `globals.css`:
+`oczki-heading-l`, `oczki-body-l`, `oczki-body-xl`, `oczki-body-m`, `oczki-body-m-medium`, `oczki-handwritten-s`. They bake in `font-feature-settings` (`ss01`, `ss02`, `lnum`, `pnum`, …) and `font-variation-settings: 'wdth' 100`.
+
+```tsx
+// ❌ BAD: bypasses OpenType setup, picks Geist
+<h2 className="text-[36px] font-serif">…</h2>
+
+// ✅ GOOD
+<h2 className="oczki-heading-l text-[var(--oczki-primary-800)]">…</h2>
+```
+
+For font-family in inline ad-hoc spots prefer `[font-family:var(--font-oczki-body)]` — never `font-[var(--…)]` (Tailwind misinterprets it).
+
+## Spacing & Layout
+
+- Use Tailwind utilities (`gap-7 md:gap-9`) — only fall back to `[clamp(...)]` when Figma demands fluid scaling between breakpoints.
+- Prefer `ring-1 ring-inset` over `border` when a CSS border would shrink the inner content box and break Figma widths (we discovered this on `OfferCard`).

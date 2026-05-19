@@ -1,0 +1,33 @@
+---
+description: High-level context about the Oczki Fotografia project, stack and conventions
+alwaysApply: true
+---
+
+# Project Context
+
+This is the **Oczki Fotografia** marketing site built on:
+
+- **Next.js 16** (Turbopack) with App Router under `src/app/(frontend)`
+- **Payload CMS 3.x** under `src/app/(payload)` with collections in `src/collections`
+- **Tailwind CSS 4** with `@theme` and CSS custom properties for design tokens
+- **TypeScript** strict, `pnpm` as the package manager
+- Designs come from Figma (`fileKey: uukPuuZgLMm4kTbXUJFdLI`) via the Figma MCP
+
+## Repo Layout
+
+- `src/app/(frontend)` — public site, layouts, fonts, globals.css
+- `src/app/(payload)` — Payload admin UI mount
+- `src/collections` — Payload collections (Pages, Posts, Media, Users, Categories)
+- `src/blocks` — Payload blocks rendered by `RenderBlocks`
+- `src/heros` — Hero variants rendered by `RenderHero`
+- `src/components` — UI components; reusable primitives + page-specific sections (e.g. `HomeHero`, `HomeIntro`, `HomeOfferShowcase`)
+- `src/fields` — reusable field factories (`link`, `linkGroup`)
+- `public/figma` — assets downloaded from Figma (images + SVG)
+
+## Working Style
+
+- Senior-level code: small, composable components, no needless abstraction
+- Polish copy in content, English in code, types, comments, commit messages
+- Verify with `pnpm exec tsc --noEmit` + `ReadLints` after every meaningful edit
+- Use TodoWrite for any task with 3+ distinct steps
+- Never invent APIs; consult Payload skill at `.claude/skills/payload/SKILL.md`

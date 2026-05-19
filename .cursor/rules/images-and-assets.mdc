@@ -1,0 +1,28 @@
+---
+description: Image, SVG and asset handling
+globs: src/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Images & Assets
+
+## next/image
+
+- Always use `next/image`. Never `<img>` except inside inline SVG `<svg>` content.
+- `src` must come from either:
+  - `public/figma/*` (allowed via `images.localPatterns` `/figma/**` in `next.config.ts`)
+  - Payload Media via `/api/media/file/**`
+- Provide `alt`. Decorative imagery uses `alt=""` + `aria-hidden="true"`.
+- Provide an honest `sizes` prop on `fill` images, not `310px` everywhere. Example: `(min-width: 1536px) 348px, (min-width: 768px) 316px, 281px`.
+- For SVG icons rendered as `<Image src="/figma/foo.svg" />` use explicit `width` / `height`; for inline color-controllable icons inline the SVG and use `currentColor`.
+
+## Figma Assets
+
+- Download from `https://www.figma.com/api/mcp/asset/...` URLs to `public/figma/`. These URLs expire in 7 days; the file on disk is the source of truth.
+- Name files in kebab-case with a section prefix: `offer-session-kobieca.png`, `intro-quote-mark.svg`, `home-hero-bg.png`.
+- Verify the actual MIME after download (`file public/figma/<name>`). Figma sometimes returns PNG bytes for a `.jpg` URL; rename to match real format.
+- Delete unused assets when removing a section; do not leave orphaned PNG/SVGs in `public/figma/`.
+
+## When CMS-driven
+
+Once a section is migrated to a Payload block, the `imageSrc` must come from a Media relation. The `public/figma/*` versions then become **fallbacks** for the static seed only (see `cms-readiness.mdc`).
