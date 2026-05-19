@@ -9,6 +9,7 @@ import { homeStatic } from '@/endpoints/seed/home-static'
 
 import { Frame1000006620 } from '@/components/HomeHero/Frame1000006620'
 import { HomeIntroSection } from '@/components/HomeIntro/HomeIntroSection'
+import { HomeOfferShowcase } from '@/components/HomeOfferShowcase/HomeOfferShowcase'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
@@ -81,6 +82,7 @@ export default async function Page({ params: paramsPromise }: Args) {
         <>
           <Frame1000006620 />
           <HomeIntroSection />
+          <HomeOfferShowcase />
         </>
       ) : (
         <RenderHero {...hero} />

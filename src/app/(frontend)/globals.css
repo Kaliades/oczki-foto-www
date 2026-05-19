@@ -56,6 +56,14 @@
     line-height: 1.48;
   }
 
+  .oczki-body-xl {
+    font-family: var(--font-oczki-body);
+    font-size: 1.25rem;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 1.48;
+  }
+
   .oczki-body-m {
     font-family: var(--font-oczki-body);
     font-size: 0.875rem;
@@ -186,6 +194,8 @@
   --oczki-primary-800: #4f3a26;
   --oczki-primary-900: #392818;
   --oczki-secondary-600: #6b7a5e;
+  --oczki-tertiary-300: #ead3d3;
+  --oczki-tertiary-700: #dba0a0;
   --oczki-pink: #dfa0a3;
   --font-oczki-display: var(--font-oczki-display-loaded), Georgia, serif;
   --font-oczki-body: var(--font-instrument-sans), 'Instrument Sans', var(--font-geist-sans),
