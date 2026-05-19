@@ -1,13 +1,20 @@
 import Image from 'next/image'
 
 import { cn } from '@/utilities/ui'
-import { homeIntroCopy } from './constants'
 
 type IntroImageCollageProps = {
+  imageSrc: string
+  imageAlt: string
+  handwrittenQuote: string
   className?: string
 }
 
-export function IntroImageCollage({ className }: IntroImageCollageProps) {
+export function IntroImageCollage({
+  imageSrc,
+  imageAlt,
+  handwrittenQuote,
+  className,
+}: IntroImageCollageProps) {
   return (
     <div
       className={cn(
@@ -21,10 +28,10 @@ export function IntroImageCollage({ className }: IntroImageCollageProps) {
             <div className="mb-[-109.849px] flex h-[249px] w-[204px] shrink-0 items-center border-[var(--oczki-primary-300)] bg-[var(--oczki-primary-200)] p-[4.926px] [border-width:0.493px] md:mb-[-146.465px] md:h-[332px] md:w-[271px] md:p-[6.568px] md:[border-width:0.657px]">
               <div className="relative h-[239px] w-[194px] shrink-0 overflow-hidden md:h-[319px] md:w-[258px]">
                 <Image
-                  alt="Para podczas sesji fotograficznej w plenerze"
+                  alt={imageAlt}
                   className="absolute left-0 top-[-5.6%] h-[121.3%] w-full max-w-none object-cover"
                   height={1920}
-                  src="/figma/intro-couple.png"
+                  src={imageSrc}
                   width={1280}
                 />
               </div>
@@ -53,7 +60,7 @@ export function IntroImageCollage({ className }: IntroImageCollageProps) {
             width={212}
           />
           <blockquote className="oczki-handwritten-s absolute left-[13px] top-5 w-[134px] text-center text-[var(--oczki-secondary-600)] md:left-4 md:top-[45px] md:w-[179px]">
-            {homeIntroCopy.handwrittenQuote}
+            {handwrittenQuote}
           </blockquote>
         </div>
       </figure>

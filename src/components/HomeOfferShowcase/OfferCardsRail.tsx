@@ -4,9 +4,13 @@ import { useRef } from 'react'
 
 import { OfferCard } from './OfferCard'
 import { OfferCarouselNav } from './OfferCarouselNav'
-import { homeOfferItems } from './constants'
+import type { HomeOfferItem } from './constants'
 
-export function OfferCardsRail() {
+type OfferCardsRailProps = {
+  items: readonly HomeOfferItem[]
+}
+
+export function OfferCardsRail({ items }: OfferCardsRailProps) {
   const railRef = useRef<HTMLDivElement>(null)
 
   const scrollByCard = (direction: 1 | -1) => {
@@ -35,7 +39,7 @@ export function OfferCardsRail() {
         ref={railRef}
       >
         <div className="relative flex w-max gap-2 md:gap-[clamp(1rem,1.17vw,1.5rem)]">
-          {homeOfferItems.map((item) => (
+          {items.map((item) => (
             <OfferCard key={item.title} {...item} />
           ))}
         </div>

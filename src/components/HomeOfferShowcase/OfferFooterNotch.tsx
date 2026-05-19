@@ -1,6 +1,10 @@
 import Image from 'next/image'
 
-export function OfferFooterNotch() {
+type OfferFooterNotchProps = {
+  textureSrc?: string
+}
+
+export function OfferFooterNotch({ textureSrc = '/figma/offer-texture.jpg' }: OfferFooterNotchProps) {
   return (
     <div className="relative h-[22px] w-full bg-white md:h-12 lg:h-[85px]" data-figma-node="6781:17288">
       <Image
@@ -16,7 +20,7 @@ export function OfferFooterNotch() {
         aria-hidden="true"
         className="absolute inset-0 size-full object-cover opacity-30 mix-blend-color-burn"
         height={2731}
-        src="/figma/offer-texture.jpg"
+        src={textureSrc}
         width={4096}
       />
     </div>
