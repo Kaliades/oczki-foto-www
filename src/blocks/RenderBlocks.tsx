@@ -6,46 +6,60 @@ import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
+import { HomeHeroBlock } from '@/blocks/HomeHero/Component'
+import { IntroQuoteBlock } from '@/blocks/IntroQuote/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { OfferShowcaseBlock } from '@/blocks/OfferShowcase/Component'
 
-const blockComponents = {
-  archive: ArchiveBlock,
-  content: ContentBlock,
-  cta: CallToActionBlock,
-  formBlock: FormBlock,
-  mediaBlock: MediaBlock,
+type LayoutBlock = Page['layout'][number]
+type LayoutBlockType = LayoutBlock['blockType']
+
+/**
+ * Some legacy block components (ArchiveBlock, FormBlock) declare their `id`
+ * prop as `id?: string` while the Payload-generated types use
+ * `id?: string | null`. The mismatch is a template inheritance issue, not
+ * a bug in our blocks. We type the map loosely and rely on the strongly-typed
+ * `block` value during iteration for prop safety.
+ */
+const blockComponents: Record<LayoutBlockType, React.ComponentType<never>> = {
+  archive: ArchiveBlock as React.ComponentType<never>,
+  content: ContentBlock as React.ComponentType<never>,
+  cta: CallToActionBlock as React.ComponentType<never>,
+  formBlock: FormBlock as React.ComponentType<never>,
+  homeHero: HomeHeroBlock as React.ComponentType<never>,
+  introQuote: IntroQuoteBlock as React.ComponentType<never>,
+  mediaBlock: MediaBlock as React.ComponentType<never>,
+  offerShowcase: OfferShowcaseBlock as React.ComponentType<never>,
 }
+
+/**
+ * Blocks that render their own full-bleed section chrome should NOT be
+ * wrapped in `my-16` margins — that would punch a stripe of base
+ * background between sections.
+ */
+const fullBleedBlocks = new Set<LayoutBlockType>(['homeHero', 'introQuote', 'offerShowcase'])
 
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]
-}> = (props) => {
-  const { blocks } = props
+}> = ({ blocks }) => {
+  if (!blocks || !Array.isArray(blocks) || blocks.length === 0) return null
 
-  const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
+  return (
+    <Fragment>
+      {blocks.map((block, index) => {
+        const { blockType } = block
 
-  if (hasBlocks) {
-    return (
-      <Fragment>
-        {blocks.map((block, index) => {
-          const { blockType } = block
+        if (!(blockType in blockComponents)) return null
 
-          if (blockType && blockType in blockComponents) {
-            const Block = blockComponents[blockType]
+        const Block = blockComponents[blockType] as React.ComponentType<typeof block>
+        const isFullBleed = fullBleedBlocks.has(blockType)
 
-            if (Block) {
-              return (
-                <div className="my-16" key={index}>
-                  {/* @ts-expect-error there may be some mismatch between the expected types here */}
-                  <Block {...block} disableInnerContainer />
-                </div>
-              )
-            }
-          }
-          return null
-        })}
-      </Fragment>
-    )
-  }
-
-  return null
+        return (
+          <div className={isFullBleed ? undefined : 'my-16'} key={index}>
+            <Block {...block} />
+          </div>
+        )
+      })}
+    </Fragment>
+  )
 }

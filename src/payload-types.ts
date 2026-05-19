@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     pages: Page;
     posts: Post;
+    offerItems: OfferItem;
     media: Media;
     categories: Category;
     users: User;
@@ -91,6 +92,7 @@ export interface Config {
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    offerItems: OfferItemsSelect<false> | OfferItemsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -201,7 +203,16 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | HomeHeroBlock
+    | IntroQuoteBlock
+    | OfferShowcaseBlock
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -438,6 +449,167 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeHeroBlock".
+ */
+export interface HomeHeroBlock {
+  /**
+   * Cztery linie tytułu hero. Linie 2 (italik) i 3 są wyróżnione kursywą serif.
+   */
+  title: {
+    lineOne: string;
+    lineTwoItalic: string;
+    lineTwoRest: string;
+    lineThree: string;
+  };
+  description: string;
+  /**
+   * Pełnoekranowe zdjęcie tła (poziome, min. 1920×1080).
+   */
+  background: number | Media;
+  showScallop?: boolean | null;
+  /**
+   * Pierwszy przycisk renderowany jest jako pełny (primary). Drugi jako tekstowy ze strzałką (secondary).
+   */
+  ctas?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homeHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IntroQuoteBlock".
+ */
+export interface IntroQuoteBlock {
+  heading: {
+    start: string;
+    emphasis: string;
+  };
+  introLeadIn: string;
+  /**
+   * Wyróżniony cytat w ramce z dekoracyjnym znacznikiem cudzysłowu.
+   */
+  quoteText: string;
+  body: string;
+  collageImage: number | Media;
+  collageImageAlt: string;
+  /**
+   * Wyświetlany jako odręczny napis na karteczce. Krótkie zdanie.
+   */
+  handwrittenQuote: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'introQuote';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OfferShowcaseBlock".
+ */
+export interface OfferShowcaseBlock {
+  heading: {
+    start: string;
+    emphasis: string;
+    end: string;
+  };
+  subtitle: string;
+  /**
+   * Wybierz oferty wyświetlane w karuzeli. Kolejność ma znaczenie.
+   */
+  items: (number | OfferItem)[];
+  inquiry: {
+    title: string;
+    text: string;
+    cta?:
+      | {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'posts';
+                  value: number | Post;
+                } | null);
+            url?: string | null;
+            label: string;
+          };
+          id?: string | null;
+        }[]
+      | null;
+  };
+  showFooterNotch?: boolean | null;
+  /**
+   * Jeśli pusta, użyta zostanie domyślna tekstura projektu.
+   */
+  backgroundTexture?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'offerShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "offerItems".
+ */
+export interface OfferItem {
+  id: number;
+  title: string;
+  /**
+   * Treść wyświetlana na karcie w sekcji oferty na stronie głównej (2–4 zdania).
+   */
+  shortDescription: string;
+  /**
+   * Zdjęcie karty (rekomendowany format pionowy 4:5 lub 2:3).
+   */
+  image: number | Media;
+  /**
+   * Opis alternatywny obrazu (dostępność, SEO). Najlepiej krótkie, opisowe zdanie.
+   */
+  imageAlt: string;
+  /**
+   * Opcjonalne klasy Tailwind do kadrowania obrazu na karcie (np. "h-[150%] top-[-16.62%] w-full"). Zostaw puste, by użyć domyślnego dopasowania cover.
+   */
+  imageCropClassName?: string | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -980,6 +1152,10 @@ export interface PayloadLockedDocument {
         value: number | Post;
       } | null)
     | ({
+        relationTo: 'offerItems';
+        value: number | OfferItem;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -1084,6 +1260,9 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
+        homeHero?: T | HomeHeroBlockSelect<T>;
+        introQuote?: T | IntroQuoteBlockSelect<T>;
+        offerShowcase?: T | OfferShowcaseBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -1103,6 +1282,98 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeHeroBlock_select".
+ */
+export interface HomeHeroBlockSelect<T extends boolean = true> {
+  title?:
+    | T
+    | {
+        lineOne?: T;
+        lineTwoItalic?: T;
+        lineTwoRest?: T;
+        lineThree?: T;
+      };
+  description?: T;
+  background?: T;
+  showScallop?: T;
+  ctas?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IntroQuoteBlock_select".
+ */
+export interface IntroQuoteBlockSelect<T extends boolean = true> {
+  heading?:
+    | T
+    | {
+        start?: T;
+        emphasis?: T;
+      };
+  introLeadIn?: T;
+  quoteText?: T;
+  body?: T;
+  collageImage?: T;
+  collageImageAlt?: T;
+  handwrittenQuote?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OfferShowcaseBlock_select".
+ */
+export interface OfferShowcaseBlockSelect<T extends boolean = true> {
+  heading?:
+    | T
+    | {
+        start?: T;
+        emphasis?: T;
+        end?: T;
+      };
+  subtitle?: T;
+  items?: T;
+  inquiry?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        cta?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
+      };
+  showFooterNotch?: T;
+  backgroundTexture?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1213,6 +1484,30 @@ export interface PostsSelect<T extends boolean = true> {
         id?: T;
         name?: T;
       };
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "offerItems_select".
+ */
+export interface OfferItemsSelect<T extends boolean = true> {
+  title?: T;
+  shortDescription?: T;
+  image?: T;
+  imageAlt?: T;
+  imageCropClassName?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
   generateSlug?: T;
   slug?: T;
   updatedAt?: T;
@@ -1761,6 +2056,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'offerItems';
+          value: number | OfferItem;
         } | null);
     global?: string | null;
     user?: (number | null) | User;
