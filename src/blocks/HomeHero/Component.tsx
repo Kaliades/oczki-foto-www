@@ -1,6 +1,6 @@
 import type { HomeHeroBlock as HomeHeroBlockProps } from '@/payload-types'
 
-import { Frame1000006620 } from '@/components/HomeHero/Frame1000006620'
+import { HomeHero } from '@/components/HomeHero/HomeHero'
 import { homeHeroDefaults, type HomeHeroData } from '@/components/HomeHero/constants'
 import type { SectionLink } from '@/utilities/resolveLinkHref'
 
@@ -55,5 +55,5 @@ export const HomeHeroBlock: React.FC<HomeHeroBlockProps> = (props) => {
     secondaryCta: pickCta(props.ctas, 1, homeHeroDefaults.secondaryCta),
   }
 
-  return <Frame1000006620 data={data} />
+  return <HomeHero data={data} />
 }

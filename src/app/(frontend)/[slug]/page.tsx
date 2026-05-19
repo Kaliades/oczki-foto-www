@@ -7,12 +7,6 @@ import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 import { homeStatic } from '@/endpoints/seed/home-static'
 
-import { Frame1000006620 } from '@/components/HomeHero/Frame1000006620'
-import { homeHeroDefaults } from '@/components/HomeHero/constants'
-import { HomeIntroSection } from '@/components/HomeIntro/HomeIntroSection'
-import { homeIntroDefaults } from '@/components/HomeIntro/constants'
-import { HomeOfferShowcase } from '@/components/HomeOfferShowcase/HomeOfferShowcase'
-import { homeOfferDefaults } from '@/components/HomeOfferShowcase/constants'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
@@ -61,7 +55,7 @@ export default async function Page({ params: paramsPromise }: Args) {
     slug: decodedSlug,
   })
 
-  // Remove this code once your website is seeded
+  // Static fallback so the homepage renders before the database is seeded.
   if (!page && slug === 'home') {
     page = homeStatic
   }
@@ -81,15 +75,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
       {draft && <LivePreviewListener />}
 
-      {isHome ? (
-        <>
-          <Frame1000006620 data={homeHeroDefaults} />
-          <HomeIntroSection data={homeIntroDefaults} />
-          <HomeOfferShowcase data={homeOfferDefaults} />
-        </>
-      ) : (
-        <RenderHero {...hero} />
-      )}
+      <RenderHero {...hero} />
       <RenderBlocks blocks={layout} />
     </article>
   )

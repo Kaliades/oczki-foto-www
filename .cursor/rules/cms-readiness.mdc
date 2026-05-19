@@ -33,8 +33,8 @@ Every new section will eventually be driven by a Payload block. Build it so that
 
 6. **Names align with eventual blocks.** When you'd name a section `HomeIntro`, also create the block `IntroQuoteBlock` later. Pick component names that survive the migration (`OfferShowcase`, not `Frame1000006620`).
 
-## Anti-patterns we already created and must clean up
+## Anti-patterns to avoid
 
-- `src/components/HomeHero/Frame1000006620.tsx` (Figma frame ID as filename)
-- `src/app/(frontend)/[slug]/page.tsx` rendering home sections inline outside of `RenderBlocks`
-- Section copy hardcoded inside JSX rather than passed as props
+- Filenames mirroring Figma frame IDs (e.g. `Frame1000006620.tsx`) — name components by intent, not by the design source. We removed this debt in the CMS Phase 2 commit.
+- Conditional `isHome` branching in `[slug]/page.tsx` that renders home sections outside `RenderBlocks`. The homepage must render through the same block pipeline as any other page.
+- Section copy hardcoded inside JSX instead of being passed as props from a parent that maps Payload data.

@@ -7,14 +7,7 @@ type HomeHeroProps = {
   data: HomeHeroData
 }
 
-/**
- * Home hero section.
- *
- * NOTE: Filename `Frame1000006620.tsx` is a Figma frame ID and is scheduled
- * for removal in Phase 2 of the CMS migration, when this becomes a Payload
- * `homeHero` block.
- */
-export function Frame1000006620({ data }: HomeHeroProps) {
+export function HomeHero({ data }: HomeHeroProps) {
   const { title, description, primaryCta, secondaryCta, background, showScallop = true } = data
 
   return (

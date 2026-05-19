@@ -1,88 +1,94 @@
 import type { RequiredDataFromCollectionSlug } from 'payload'
 
-// Used for pre-seeded content so that the homepage is not empty
+import { homeHeroDefaults } from '@/components/HomeHero/constants'
+import { homeIntroDefaults } from '@/components/HomeIntro/constants'
+import { homeOfferDefaults } from '@/components/HomeOfferShowcase/constants'
+
+/**
+ * Static fallback for the homepage rendered when no `pages` document with
+ * slug `home` exists yet (fresh DB / before seeding).
+ *
+ * The layout uses the same Payload blocks an editor would build in the
+ * admin. Block components gracefully fall back to the per-section
+ * `*Defaults` constants when relational fields (media, offer items) are
+ * not populated, so this static doc still renders the full design.
+ *
+ * Placeholder relational IDs (`PLACEHOLDER_MEDIA_ID` etc.) are returned
+ * as plain numbers — the corresponding block component checks for an
+ * actual Media object and falls back to the static `/figma/*` asset
+ * paths shipped in `public/figma/`.
+ */
+const PLACEHOLDER_MEDIA_ID = 0
+
 export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
   slug: 'home',
   _status: 'published',
-  hero: {
-    type: 'lowImpact',
-    richText: {
-      root: {
-        type: 'root',
-        children: [
-          {
-            type: 'heading',
-            children: [
-              {
-                type: 'text',
-                detail: 0,
-                format: 0,
-                mode: 'normal',
-                style: '',
-                text: 'Payload Website Template',
-                version: 1,
-              },
-            ],
-            direction: 'ltr',
-            format: '',
-            indent: 0,
-            tag: 'h1',
-            version: 1,
+  title: 'Strona główna',
+  hero: { type: 'none' },
+  layout: [
+    {
+      blockType: 'homeHero',
+      blockName: 'Hero — strona główna',
+      title: homeHeroDefaults.title,
+      description: homeHeroDefaults.description,
+      background: PLACEHOLDER_MEDIA_ID,
+      showScallop: homeHeroDefaults.showScallop ?? true,
+      ctas: [
+        {
+          link: {
+            type: homeHeroDefaults.primaryCta.type ?? 'custom',
+            url: homeHeroDefaults.primaryCta.url ?? '/',
+            label: homeHeroDefaults.primaryCta.label ?? '',
+            newTab: homeHeroDefaults.primaryCta.newTab ?? false,
           },
+        },
+        {
+          link: {
+            type: homeHeroDefaults.secondaryCta.type ?? 'custom',
+            url: homeHeroDefaults.secondaryCta.url ?? '/',
+            label: homeHeroDefaults.secondaryCta.label ?? '',
+            newTab: homeHeroDefaults.secondaryCta.newTab ?? false,
+          },
+        },
+      ],
+    },
+    {
+      blockType: 'introQuote',
+      blockName: 'Intro — niefotogeniczność',
+      heading: homeIntroDefaults.heading,
+      introLeadIn: homeIntroDefaults.introLeadIn,
+      quoteText: homeIntroDefaults.quoteText,
+      body: homeIntroDefaults.body,
+      collageImage: PLACEHOLDER_MEDIA_ID,
+      collageImageAlt: homeIntroDefaults.collageImage.alt,
+      handwrittenQuote: homeIntroDefaults.handwrittenQuote,
+    },
+    {
+      blockType: 'offerShowcase',
+      blockName: 'Oferta',
+      heading: homeOfferDefaults.heading,
+      subtitle: homeOfferDefaults.subtitle,
+      items: [],
+      inquiry: {
+        title: homeOfferDefaults.inquiry.title,
+        text: homeOfferDefaults.inquiry.text,
+        cta: [
           {
-            type: 'paragraph',
-            children: [
-              {
-                type: 'link',
-                children: [
-                  {
-                    type: 'text',
-                    detail: 0,
-                    format: 0,
-                    mode: 'normal',
-                    style: '',
-                    text: 'Visit the admin dashboard',
-                    version: 1,
-                  },
-                ],
-                direction: 'ltr',
-                fields: {
-                  linkType: 'custom',
-                  newTab: false,
-                  url: '/admin',
-                },
-                format: '',
-                indent: 0,
-                version: 2,
-              },
-              {
-                type: 'text',
-                detail: 0,
-                format: 0,
-                mode: 'normal',
-                style: '',
-                text: ' to make your account and seed content for your website.',
-                version: 1,
-              },
-            ],
-            direction: 'ltr',
-            format: '',
-            indent: 0,
-            textFormat: 0,
-            version: 1,
+            link: {
+              type: homeOfferDefaults.inquiry.cta.type ?? 'custom',
+              url: homeOfferDefaults.inquiry.cta.url ?? '/',
+              label: homeOfferDefaults.inquiry.cta.label ?? '',
+              newTab: homeOfferDefaults.inquiry.cta.newTab ?? false,
+            },
           },
         ],
-        direction: 'ltr',
-        format: '',
-        indent: 0,
-        version: 1,
       },
+      showFooterNotch: homeOfferDefaults.showFooterNotch ?? true,
     },
-  },
+  ],
   meta: {
-    description: 'An open-source website built with Payload and Next.js.',
-    title: 'Payload Website Template',
+    description:
+      'Naturalna fotografia kobieca i ślubna w Krakowie, Przemyślu i okolicach.',
+    title: 'Oczki Fotografia — Strona główna',
   },
-  title: 'Home',
-  layout: [],
 }
