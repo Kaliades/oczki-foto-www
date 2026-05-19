@@ -70,6 +70,7 @@ export interface Config {
     pages: Page;
     posts: Post;
     offerItems: OfferItem;
+    galleries: Gallery;
     media: Media;
     categories: Category;
     users: User;
@@ -93,6 +94,7 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     offerItems: OfferItemsSelect<false> | OfferItemsSelect<true>;
+    galleries: GalleriesSelect<false> | GalleriesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -110,16 +112,18 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | 'pl' | 'pl'[];
   globals: {
     header: Header;
     footer: Footer;
+    siteSettings: SiteSetting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    siteSettings: SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
-  locale: null;
+  locale: 'pl';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -955,6 +959,48 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "galleries".
+ */
+export interface Gallery {
+  id: number;
+  title: string;
+  /**
+   * Krótkie wprowadzenie do galerii (1–3 zdania).
+   */
+  intro?: string | null;
+  coverImage: number | Media;
+  /**
+   * Galeria może być powiązana z konkretną usługą (np. sesja kobieca). Wyświetlana na podstronie oferty.
+   */
+  relatedOfferItem?: (number | null) | OfferItem;
+  /**
+   * Kolejność wpływa na układ w galerii. Każde zdjęcie wymaga osobnego opisu alt.
+   */
+  photos: {
+    image: number | Media;
+    caption?: string | null;
+    id?: string | null;
+  }[];
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1154,6 +1200,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'offerItems';
         value: number | OfferItem;
+      } | null)
+    | ({
+        relationTo: 'galleries';
+        value: number | Gallery;
       } | null)
     | ({
         relationTo: 'media';
@@ -1500,6 +1550,36 @@ export interface OfferItemsSelect<T extends boolean = true> {
   image?: T;
   imageAlt?: T;
   imageCropClassName?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "galleries_select".
+ */
+export interface GalleriesSelect<T extends boolean = true> {
+  title?: T;
+  intro?: T;
+  coverImage?: T;
+  relatedOfferItem?: T;
+  photos?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
   meta?:
     | T
     | {
@@ -1985,6 +2065,42 @@ export interface Footer {
   createdAt?: string | null;
 }
 /**
+ * Centralne dane brandowe: kontakt, lokalizacje, social media oraz domyślny CTA. Używane w stopce i jako fallback w blokach contentowych.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "siteSettings".
+ */
+export interface SiteSetting {
+  id: number;
+  email?: string | null;
+  phone?: string | null;
+  /**
+   * Krótki tekst typu "Kraków · Przemyśl i okolice" wyświetlany w stopce i przy CTA.
+   */
+  locationsLabel?: string | null;
+  socials?:
+    | {
+        platform: 'instagram' | 'facebook' | 'tiktok' | 'pinterest' | 'youtube' | 'other';
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Wartości używane jako fallback w blokach (np. OfferShowcase) gdy redaktor pominie własny CTA.
+   */
+  inquiryDefaults?: {
+    label?: string | null;
+    url?: string | null;
+  };
+  /**
+   * Bieżący rok zostanie wstawiony w miejsce literału `{year}`, np. "© {year} Oczki Fotografia".
+   */
+  copyright?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -2032,6 +2148,33 @@ export interface FooterSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "siteSettings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  email?: T;
+  phone?: T;
+  locationsLabel?: T;
+  socials?:
+    | T
+    | {
+        platform?: T;
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  inquiryDefaults?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  copyright?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -2060,6 +2203,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'offerItems';
           value: number | OfferItem;
+        } | null)
+      | ({
+          relationTo: 'galleries';
+          value: number | Gallery;
         } | null);
     global?: string | null;
     user?: (number | null) | User;

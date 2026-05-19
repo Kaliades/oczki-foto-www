@@ -5,6 +5,7 @@ import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
+import { Galleries } from './collections/Galleries'
 import { Media } from './collections/Media'
 import { OfferItems } from './collections/OfferItems'
 import { Pages } from './collections/Pages'
@@ -12,6 +13,7 @@ import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
+import { SiteSettings } from './SiteSettings/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -63,9 +65,20 @@ export default buildConfig({
       url: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, OfferItems, Media, Categories, Users],
+  collections: [Pages, Posts, OfferItems, Galleries, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  localization: {
+    /**
+     * Single locale today. Adding a future locale (e.g. 'en') is a
+     * one-line change. Fields default to non-localized; opt in per
+     * field with `localized: true` only on the strings that should
+     * differ per locale.
+     */
+    locales: ['pl'],
+    defaultLocale: 'pl',
+    fallback: true,
+  },
+  globals: [Header, Footer, SiteSettings],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

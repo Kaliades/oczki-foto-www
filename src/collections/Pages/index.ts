@@ -44,14 +44,15 @@ export const Pages: CollectionConfig<'pages'> = {
     livePreview: {
       url: ({ data, req }) =>
         generatePreviewPath({
-          slug: data?.slug,
+          // Home page lives at `/` in production, not `/home`.
+          slug: data?.slug === 'home' ? '' : data?.slug,
           collection: 'pages',
           req,
         }),
     },
     preview: (data, { req }) =>
       generatePreviewPath({
-        slug: data?.slug as string,
+        slug: (data?.slug === 'home' ? '' : (data?.slug as string)) as string,
         collection: 'pages',
         req,
       }),
