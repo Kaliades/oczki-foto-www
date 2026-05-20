@@ -211,6 +211,7 @@ export interface Page {
     | HomeHeroBlock
     | IntroQuoteBlock
     | OfferShowcaseBlock
+    | ProcessStepsBlock
     | CallToActionBlock
     | ContentBlock
     | MediaBlock
@@ -614,6 +615,40 @@ export interface OfferItem {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessStepsBlock".
+ */
+export interface ProcessStepsBlock {
+  /**
+   * Naprzemienne fragmenty „italic — tekst” składają się na pełen tytuł sekcji.
+   */
+  heading: {
+    italicOne: string;
+    plainOne: string;
+    italicTwo: string;
+    plainTwo: string;
+  };
+  intro: {
+    paragraphOne: string;
+    paragraphTwo: string;
+  };
+  /**
+   * Dekoracje (ornament botaniczny, kąt obrotu kart) przypisywane są automatycznie na podstawie kolejności kroku.
+   */
+  items?:
+    | {
+        title: string;
+        paragraphOne: string;
+        paragraphTwo: string;
+        id?: string | null;
+      }[]
+    | null;
+  showWaxStamp?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'processSteps';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1313,6 +1348,7 @@ export interface PagesSelect<T extends boolean = true> {
         homeHero?: T | HomeHeroBlockSelect<T>;
         introQuote?: T | IntroQuoteBlockSelect<T>;
         offerShowcase?: T | OfferShowcaseBlockSelect<T>;
+        processSteps?: T | ProcessStepsBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -1422,6 +1458,37 @@ export interface OfferShowcaseBlockSelect<T extends boolean = true> {
       };
   showFooterNotch?: T;
   backgroundTexture?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessStepsBlock_select".
+ */
+export interface ProcessStepsBlockSelect<T extends boolean = true> {
+  heading?:
+    | T
+    | {
+        italicOne?: T;
+        plainOne?: T;
+        italicTwo?: T;
+        plainTwo?: T;
+      };
+  intro?:
+    | T
+    | {
+        paragraphOne?: T;
+        paragraphTwo?: T;
+      };
+  items?:
+    | T
+    | {
+        title?: T;
+        paragraphOne?: T;
+        paragraphTwo?: T;
+        id?: T;
+      };
+  showWaxStamp?: T;
   id?: T;
   blockName?: T;
 }

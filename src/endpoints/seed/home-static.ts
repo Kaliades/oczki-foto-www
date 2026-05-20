@@ -3,6 +3,7 @@ import type { RequiredDataFromCollectionSlug } from 'payload'
 import { homeHeroDefaults } from '@/components/HomeHero/constants'
 import { homeIntroDefaults } from '@/components/HomeIntro/constants'
 import { homeOfferDefaults } from '@/components/HomeOfferShowcase/constants'
+import { homeProcessStepsDefaults } from '@/components/HomeProcessSteps/constants'
 
 /**
  * Static fallback for the homepage rendered when no `pages` document with
@@ -84,6 +85,18 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
         ],
       },
       showFooterNotch: homeOfferDefaults.showFooterNotch ?? true,
+    },
+    {
+      blockType: 'processSteps',
+      blockName: 'Kroki — proces sesji',
+      heading: homeProcessStepsDefaults.heading,
+      intro: homeProcessStepsDefaults.intro,
+      items: homeProcessStepsDefaults.items.map((item) => ({
+        title: item.title,
+        paragraphOne: item.paragraphs[0],
+        paragraphTwo: item.paragraphs[1],
+      })),
+      showWaxStamp: homeProcessStepsDefaults.showWaxStamp ?? true,
     },
   ],
   meta: {

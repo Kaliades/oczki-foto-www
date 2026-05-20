@@ -10,6 +10,7 @@ import { HomeHeroBlock } from '@/blocks/HomeHero/Component'
 import { IntroQuoteBlock } from '@/blocks/IntroQuote/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { OfferShowcaseBlock } from '@/blocks/OfferShowcase/Component'
+import { ProcessStepsBlock } from '@/blocks/ProcessSteps/Component'
 
 type LayoutBlock = Page['layout'][number]
 type LayoutBlockType = LayoutBlock['blockType']
@@ -30,6 +31,7 @@ const blockComponents: Record<LayoutBlockType, React.ComponentType<never>> = {
   introQuote: IntroQuoteBlock as React.ComponentType<never>,
   mediaBlock: MediaBlock as React.ComponentType<never>,
   offerShowcase: OfferShowcaseBlock as React.ComponentType<never>,
+  processSteps: ProcessStepsBlock as React.ComponentType<never>,
 }
 
 /**
@@ -37,7 +39,12 @@ const blockComponents: Record<LayoutBlockType, React.ComponentType<never>> = {
  * wrapped in `my-16` margins — that would punch a stripe of base
  * background between sections.
  */
-const fullBleedBlocks = new Set<LayoutBlockType>(['homeHero', 'introQuote', 'offerShowcase'])
+const fullBleedBlocks = new Set<LayoutBlockType>([
+  'homeHero',
+  'introQuote',
+  'offerShowcase',
+  'processSteps',
+])
 
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]
