@@ -23,6 +23,17 @@ Before writing any markup for a new section, always:
 3. **Annotate** the rendered root element with `data-figma-node="<nodeId>"` so the design source is traceable.
 4. **Download assets** from `https://www.figma.com/api/mcp/asset/...` URLs to `public/figma/` with descriptive kebab-case names. URLs expire in 7 days — do not reference them at runtime.
 5. **Translate, don't paste**: the Figma MCP returns React+Tailwind reference code. Treat it as a spec for sizes/spacing/typography, not as final code. Replace ad-hoc `font-['...']` and raw hex with project tokens (`oczki-body-l`, `var(--oczki-primary-700)`, …).
-6. **Be honest about fidelity**: the display font (`The Seasons`) has no licensed file; we use Cormorant Garamond as fallback. Never claim 1:1 without noting that.
+6. **Be honest about fidelity**: when a font / asset / behaviour cannot be reproduced exactly (e.g. licensed display font missing, MCP returns an empty PNG), state the deviation explicitly and explain the workaround in the commit message and code comments. Never claim "1:1 with Figma" unless every audited value matches.
+7. **Run the pixel-perfect audit** described in `pixel-perfect-audit.mdc` against the Figma node IDs of all three breakpoints **before** declaring the section finished. The audit table covers box dimensions, padding, gap, position, rotation, border-radius, background, shadow, typography, color, alignment, and ornament details.
+8. **Apply the section shell pattern** described in `responsive-layout.mdc`: outer `<section>` carries `w-full` + background only, inner `<div>` carries `mx-auto max-w-[1366px]` + the layout. Decorative absolute elements live inside the inner so their offsets stay relative to the cap, not the viewport.
 
 Do not skip step 1. Implementations done from the screenshot alone consistently miss padding, line-heights, and OpenType features.
+
+## Source-of-truth ranking
+
+When two Figma sources disagree, trust them in this order:
+
+1. **`get_metadata`** — bbox numbers (x, y, width, height) are the canonical positions
+2. **`get_variable_defs`** — the canonical token names (typography/header/l, primary/100, …)
+3. **`get_design_context`** — handy reference Tailwind, but its absolute positions can be approximations (e.g. it may render `left-1/2 -translate-x-1/2` even when metadata says `x=458` — trust metadata)
+4. **`get_screenshot`** — visual sanity check only, never source of truth for numbers

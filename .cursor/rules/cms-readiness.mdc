@@ -33,6 +33,10 @@ Every new section will eventually be driven by a Payload block. Build it so that
 
 6. **Names align with eventual blocks.** When you'd name a section `HomeIntro`, also create the block `IntroQuoteBlock` later. Pick component names that survive the migration (`OfferShowcase`, not `Frame1000006620`).
 
+7. **Section shell pattern (mandatory).** Every page-level section root has two layers — the outer `<section>` carries `w-full` and the background, the inner `<div>` carries `mx-auto max-w-[1366px]` plus the layout. The Payload block component renders the **same** shell so static seed and CMS-driven content look identical. See `responsive-layout.mdc` for the full pattern. The shell must already exist in Phase 0 (props-driven refactor) so the Phase 1 block migration is purely a data-source swap.
+
+8. **Decorative ornaments are pure UI**, not CMS fields. Wax stamp visibility, ornament rotation, scallop curves, notch shapes — those are chosen by the index of the array item, hardcoded in the React layer. The CMS exposes only **content** (heading, paragraphs, links, media) — never visual decisions a designer hardcoded into the layout. Use `getStepDecoration(index)`-style helpers when the per-item visuals must vary deterministically.
+
 ## Anti-patterns to avoid
 
 - Filenames mirroring Figma frame IDs (e.g. `Frame1000006620.tsx`) — name components by intent, not by the design source. We removed this debt in the CMS Phase 2 commit.

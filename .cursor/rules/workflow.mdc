@@ -1,0 +1,78 @@
+---
+description: Day-to-day working flow on this project — how the agent operates
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Working Flow
+
+This file captures **how we work**, not just what to write. It is the result of dozens of iterations on this codebase. Follow it on every task — adherence is mandatory, not advisory.
+
+## Operating principles
+
+1. **Senior-level quality, always.** Every change is small, reviewable, named for intent, typed, tested via `tsc --noEmit`, and consistent with the project's design tokens. There is no "quick prototype" mode.
+2. **Figma is the contract.** When the user mentions a Figma URL, treat the metadata returned by `get_design_context` / `get_metadata` as the source of truth, not the screenshot. See `figma-implementation.mdc` and `pixel-perfect-audit.mdc`.
+3. **Polish copy, English code.** Strings displayed to users are in Polish; all code, types, comments, commit messages, file/variable names, and PR descriptions are in English.
+4. **CMS-readiness from the start.** Every section is built so that wiring to a Payload block is a 1–2 hour task, not a rewrite. See `cms-readiness.mdc`.
+
+## Task management
+
+- For any task with **3 or more distinct steps**, create a `TodoWrite` list before the first edit. Mark exactly one item `in_progress` at a time. Update statuses as work progresses.
+- For tasks with 1–2 steps, skip the todos.
+- The first todo should always be the smallest, fastest, most informative step (often "fetch Figma context for node X / read file Y / list directory Z").
+- Never end your turn with `in_progress` items still open. If you must stop, mark them `pending` with a clear note.
+
+## Information gathering
+
+- Before editing any non-trivial file: **read it**. Never edit blind.
+- Before implementing a new section: **fetch Figma context for desktop, tablet AND mobile** in parallel. Three breakpoints, always.
+- Before adding a third-party dependency: check if it already exists in `package.json` and, if so, use the version installed.
+- Before introducing a new design token, color, or font: search `globals.css` first. Tokens may already exist under a different name.
+
+## Editing rules
+
+- **No comments narrating obvious code.** No `// import the module`, `// loop over items`. Comments only explain *why* (intent, tradeoff, quirk, source of magic value).
+- **No emojis** in code, comments, or commit messages. None in chat unless the user explicitly uses them first.
+- **Tokens over hex / Tailwind defaults.** Use `var(--oczki-primary-700)` not `#4f3a26`. Use `oczki-body-l` not `text-[16px] tracking-[…] leading-[…]`. See `styling-tokens.mdc`.
+- **Prefer editing existing files** over creating new ones. Only create new files when there is no logical existing place.
+- **Name components by intent**, not by Figma frame ID. `HomeHero` not `Frame1000006620`.
+
+## Validation loop (mandatory after every meaningful edit)
+
+1. `ReadLints` on touched paths — fix anything you introduced
+2. `pnpm exec tsc --noEmit` from repo root — must pass
+3. If `tsconfig.tsbuildinfo` was created — delete it (do not commit build artefacts)
+4. If you touched Payload schema (collections, blocks, globals, fields) — run `pnpm payload generate:types` and ensure `src/payload-types.ts` is regenerated
+5. **Multi-viewport visual check** at 360 / 768 / 1024 / 1366 / 1920 (and 2560 if you touched section shells / max-w caps)
+6. **Never** run `pnpm lint` — it is broken in this repo (circular structure error in the ESLint config). The lint gate is `tsc --noEmit` + `ReadLints`.
+
+See `verification-loop.mdc` for the full checklist.
+
+## Commit hygiene
+
+- Commit **only when the user asks** ("scommituj", "commit this", "make a commit"). Never proactively.
+- One commit per logical change. Refactors and feature commits do not mix.
+- Commit message format:
+  ```
+  type(scope): short summary in present tense
+
+  Optional longer body explaining the WHY and the trade-offs. Reference
+  Figma node IDs when implementing or fixing a design.
+  ```
+  - `type` ∈ {`feat`, `fix`, `refactor`, `chore`, `docs`, `test`, `perf`, `style`}
+  - `scope` ∈ section/folder names (e.g. `home/process-steps`, `payload/blocks`, `rules`)
+- Never amend after a push. Never force-push to main. Never `--no-verify`.
+- Do **not** stage `oczki-foto.db`, `tsconfig.tsbuildinfo`, or anything inside `public/fonts/` unless explicitly asked — they are local artifacts.
+
+## When in doubt
+
+- Implementation choice with two valid options → ask the user once, briefly, with the trade-offs. Do not pick silently.
+- Figma value that disagrees with another Figma value (e.g. design context vs metadata) → trust **metadata** (it has bbox numbers), and note the discrepancy in the audit.
+- A token / utility you'd like to add that doesn't exist yet → add it to `globals.css` (`--oczki-*`) before using, and mention it in the commit message.
+- Found a bug that wasn't part of the request → flag it in chat, fix only if it blocks the requested work; otherwise leave a TODO comment with reference.
+
+## Honesty
+
+- **Never claim "1:1 with Figma"** unless you actually compared values via `get_design_context` / `get_metadata`. State known deviations explicitly (e.g. "the display font Cormorant Garamond replaces The Seasons because the licensed file is not available").
+- **Never claim "validated"** unless `tsc --noEmit` actually passed locally in this turn. Stale "looks ok" is not validation.
+- If you skipped any step in the flow above, say so in the response. Do not paper over.

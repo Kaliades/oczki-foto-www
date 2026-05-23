@@ -39,3 +39,23 @@ Rules:
 ## Reuse boundary
 
 Generic primitives (`OczkiButton`, layout grids) live in `src/components/<Primitive>/`. Section-specific compositions live inside the section folder. Do not move section-specific files into shared folders.
+
+## Section shell
+
+Every section root component renders a two-layer shell. The outer `<section>` is full-bleed and carries the background, the inner `<div>` is capped at 1366 px and carries the layout. Refer to `responsive-layout.mdc` for the canonical pattern.
+
+```tsx
+export const HomeProcessSteps = ({ heading, intro, items }: HomeProcessStepsProps) => {
+  return (
+    <section className="relative isolate w-full bg-[var(--oczki-primary-100)] [font-family:var(--font-oczki-body)]">
+      <div className="relative mx-auto flex w-full max-w-[1366px] flex-col items-start gap-7 px-4 pb-12 pt-20 md:items-center md:gap-8 md:px-20 md:py-24 lg:items-start lg:px-8">
+        <WaxStampDecor />
+        <ProcessSectionHeader heading={heading} intro={intro} />
+        <ProcessStepsRail items={items} />
+      </div>
+    </section>
+  )
+}
+```
+
+This is non-negotiable for sections rendered on the home page. Sub-pages (Pages collection) follow the same pattern via the `RenderBlocks` shell.

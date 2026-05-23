@@ -31,3 +31,19 @@ This is the **Oczki Fotografia** marketing site built on:
 - Verify with `pnpm exec tsc --noEmit` + `ReadLints` after every meaningful edit
 - Use TodoWrite for any task with 3+ distinct steps
 - Never invent APIs; consult Payload skill at `.claude/skills/payload/SKILL.md`
+
+## Layout philosophy (decided)
+
+This site uses **fixed-breakpoint design with full-bleed backgrounds and capped content**:
+
+- Three reference breakpoints from Figma: **mobile 360 / tablet 768 / desktop 1366**
+- Every pixel value (padding, gap, font-size, position) is hardcoded per breakpoint, taken from Figma metadata. No `clamp()` / `vw` softening unless Figma explicitly designs fluid behaviour.
+- Above 1366 px content sits centred in a 1366 px box (`max-w-[1366px] mx-auto`); the section background bleeds full-width as a natural continuation.
+- Every section root is a **two-layer shell** — outer `<section>` for the background, inner `<div>` for the layout. See `responsive-layout.mdc` and `component-architecture.mdc`.
+
+## Where to look
+
+- **Figma**: file `uukPuuZgLMm4kTbXUJFdLI`. Always fetch metadata + design context for desktop, tablet AND mobile node IDs (stored in each section's `constants.ts`). See `figma-implementation.mdc`.
+- **Pixel-perfect audit procedure**: `.cursor/rules/pixel-perfect-audit.mdc` — mandatory before declaring any section "done".
+- **Day-to-day workflow rules** (commits, todos, validation, honesty): `.cursor/rules/workflow.mdc`.
+- **Payload skill**: `.claude/skills/payload/SKILL.md`.

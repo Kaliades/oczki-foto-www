@@ -11,7 +11,23 @@ After any non-trivial edit, before declaring "done":
 2. Run `pnpm exec tsc --noEmit` from repo root.
 3. If `tsconfig.tsbuildinfo` was created by the run, delete it (do not commit build artefacts).
 4. If you touched Payload schema (collections, blocks, globals, fields), run `pnpm payload generate:types` and ensure `src/payload-types.ts` is regenerated.
+5. **Run the pixel-perfect audit** (see `pixel-perfect-audit.mdc`) when the edit touched UI / layout / typography / colors. Fill the audit table and resolve every mismatch before commit.
+6. **Multi-viewport visual check** when the edit touched a section, layout, or any responsive value. Test in DevTools at the following widths:
+   - **360 px** (mobile reference)
+   - **768 px** (tablet reference)
+   - **1024 px** (desktop breakpoint trigger — must look correct as the layout flips)
+   - **1280 px** (mid-desktop, common laptop)
+   - **1366 px** (desktop reference — must match Figma 1:1)
+   - **1440 px** (just above the cap — content must centre, background must bleed)
+   - **1920 px** (full-HD desktop — typical user viewport, validate full-bleed bg)
+   - **2560 px** (ultra-wide / 27" monitor — validate that no empty side gutters appear)
 
-Never claim "1:1 with Figma" unless you actually compared values against `get_design_context` output for the relevant node IDs. State known deviations explicitly (e.g. The Seasons display font fallback).
+   At every viewport ≤ 1366 px the layout matches the Figma source exactly.
+   At every viewport > 1366 px the content centres in a 1366 px box and the section background extends to the viewport edges as a continuous colour / texture / image (never empty page background showing through).
+
+7. **Honesty check**:
+   - Never claim "1:1 with Figma" unless you actually compared values against `get_metadata` / `get_design_context` for all three breakpoint node IDs. State known deviations explicitly.
+   - Never claim "validated" unless every step above actually ran in this turn.
+   - If you skipped any step, say so in the response.
 
 `pnpm lint` is currently broken (ESLint circular structure error in this repo's config); the project-level lint gate is `tsc --noEmit` + `ReadLints`. Do not run `pnpm lint` and treat its failure as a real issue.

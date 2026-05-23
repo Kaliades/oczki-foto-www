@@ -1,33 +1,76 @@
 ---
-description: Responsive layout rules — no hardcoded section widths, support edge bleed
+description: Fixed-breakpoint layout — capped content with full-bleed backgrounds
 globs: src/components/**/*.{tsx,ts}
 alwaysApply: false
 ---
 
 # Responsive Layout
 
-The site is designed at three Figma breakpoints (1366 / 768 / 360). Code must scale **between** them, not just snap.
+The site is designed at three Figma breakpoints (**mobile 360 / tablet 768 / desktop 1366**) and the project owner has chosen the **fixed-breakpoint** pattern over fluid scaling: pixel values from Figma are hardcoded per breakpoint and we do not invent intermediate sizes. Above the desktop breakpoint the content sits centred in a **1366 px box** while the section background bleeds full-width.
 
-## Rules
+## The two laws
 
-1. **Never** hardcode a viewport-sized container like `w-[1366px]` or `w-[calc(100vw-16px)]`. The section background and rails must follow `w-full` / `inset-0`, and any inner clamp derives from the design.
-2. Card-like reusable elements (`OfferCard`) keep a fixed mobile width, but on `md+` use `clamp(min, vw-based, max)` so they breathe with viewport size:
+1. **Pixel values from Figma are sacred.** Inside a breakpoint, every padding, gap, font-size, position, width and height comes from the corresponding Figma node. Do **not** wrap them in `clamp()` or `vw` to "soften the edges". The only exception is when the Figma design explicitly shows fluid behaviour (e.g. an offer rail that bleeds to the right edge of the viewport) — and then it is documented in the section's `constants.ts`.
+
+2. **Section shell is always two layers.** Every section root looks like:
+
    ```tsx
-   <article className="w-[293px] md:w-[clamp(328px,24vw,360px)] …" />
+   <section className="w-full bg-[var(--oczki-primary-100)] relative isolate">
+     <div className="relative mx-auto w-full max-w-[1366px] flex flex-col items-start gap-7 px-4 pb-12 pt-20 md:items-center md:gap-8 md:px-20 md:py-24 lg:items-start lg:px-8">
+       {/* layout, content, absolute decorations */}
+     </div>
+   </section>
    ```
-3. For sections where a rail must visually bleed into the right edge of the viewport (e.g. offer cards), use a shared CSS variable rather than `100vw`:
+
+   - **Outer `<section>`** holds `w-full`, the background (`bg-...` / `background-image: ... cover`), and nothing else that depends on content width
+   - **Inner `<div>`** holds layout, padding, gap, alignment, **`max-w-[1366px]` and `mx-auto`**
+   - **All absolute decorations** (wax stamp, notches, scallop frames, badges) live inside the inner so their positions stay relative to the 1366 box, not the viewport
+
+## Why this pattern
+
+- Above 1366 px the content stops growing and the section background extends naturally — no empty side gutters, just a continuous colour / texture / photograph that frames the cap
+- Below 1366 px the layout is identical to the Figma source, with the same exact pixel values
+- No "in-between" guessing — the team only QAs three states, not a continuum
+- Easy to debug: every value has a Figma node it came from
+
+## Concrete rules
+
+1. **Cap is `1366 px`**, applied via `max-w-[1366px] mx-auto` on the inner div. Do not invent custom caps (1440, 1920, etc.) per section.
+
+2. **Hero hero-photographs** keep `background-size: cover` on the outer `<section>` (or a positioned `<Image fill>` first child), so on ultra-wide displays the photo grows with the viewport. Other section types (cream, sage, textured) extend the background colour via the outer `<section>` `bg-...`.
+
+3. **Tailwind breakpoints used**: `md` (768) for tablet, `lg` (1024) for desktop. Mobile is the unprefixed default. Do not introduce custom breakpoints unless absolutely necessary; the value `1366` only ever appears as `max-w-[1366px]` on inners.
+
+4. **Absolute decorations are positioned with raw pixel offsets** taken from Figma:
+
    ```tsx
-   // Section sets it
-   <div className="px-[var(--offer-section-padding)] [--offer-section-padding:1rem] md:[--offer-section-padding:clamp(2rem,5.86vw,5rem)]" />
-   // Rail reclaims the right padding
-   <div className="w-[calc(100%+var(--offer-section-padding))]" />
+   // ✅ wax stamp 1:1 from Figma node 6781:17291 / 7105:11469 / 7105:13764
+   <div className="absolute right-[12px] -top-[57px] h-[112px] w-[112px] md:right-[162px] md:-top-[75px] md:h-[148px] md:w-[148px] lg:right-[404px] lg:-top-[91px] lg:h-[180px] lg:w-[180px]" />
    ```
-4. Heights of text blocks inside cards should be fixed (`h-[164px] md:h-[clamp(158px,11.6vw,176px)]`) with `overflow-hidden`, so different copy lengths do not push images out of alignment.
-5. Background textures/images that span the section: use `absolute inset-0 size-full object-cover`, never `w-[1366px]` with a centered transform.
-6. Compute carousel scroll steps from the **real** rendered card width + computed gap; do not hardcode `326` or `301`.
+
+   Do **not** percentage-position them ("looks similar") unless Figma uses percentages.
+
+5. **Cards keep fixed width per breakpoint**, centred with `mx-auto` inside the rail. The width is the value from the matching Figma node (e.g. mobile card 328, tablet card 480, desktop card fills its grid column).
+
+6. **Background textures** that need to span beyond the cap (e.g. paper grain) live on the outer `<section>` with `bg-[url(/figma/...)] bg-repeat` or a `radial-gradient`.
+
+7. **Never** use `100vw`, `calc(100vw - …)` or viewport-based widths to make a rail extend to the screen edge. If a rail needs to bleed to the right of the cap, use a CSS variable holding the inner padding and reclaim it with negative margin **inside the inner** — that bleed terminates at the cap edge, not the viewport edge:
+
+   ```tsx
+   // inside the inner <div>
+   <div className="px-[var(--offer-section-padding)] [--offer-section-padding:1rem] md:[--offer-section-padding:5rem]">
+     <div className="w-[calc(100%+var(--offer-section-padding))]">{/* rail */}</div>
+   </div>
+   ```
 
 ## Smell tests
 
-- Find a section that breaks at 1100px? You probably hardcoded `1366`.
-- Card visually shorter than its neighbours? You used `min-h-…` instead of a fixed `h-…` with `overflow-hidden`.
-- Last card never reaches the viewport edge? You forgot the negative padding via CSS variable.
+- Section background stops at 1366 px and shows the page body colour beyond it? → background is on the inner instead of the outer.
+- Wax stamp / notch / scallop drifts away from the content on ultra-wide? → the decoration is in the outer instead of the inner.
+- Card width changes between 1024 and 1366? → you used `clamp` instead of breakpoint-discrete `w-[…]`.
+- Layout looks "ok-ish" at 1100 px but cramped? → you put a fluid `clamp` on something Figma defines as a discrete breakpoint value.
+
+## Existing references
+
+- `HomeProcessSteps` — wax stamp at `lg:right-[404px]`, raw px per breakpoint, no clamp
+- `OfferCardsRail` — fluid bleed via CSS variable, scoped to the inner, terminates at cap

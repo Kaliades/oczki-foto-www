@@ -42,5 +42,11 @@ For font-family in inline ad-hoc spots prefer `[font-family:var(--font-oczki-bod
 
 ## Spacing & Layout
 
-- Use Tailwind utilities (`gap-7 md:gap-9`) — only fall back to `[clamp(...)]` when Figma demands fluid scaling between breakpoints.
+- **Hardcode pixel values from Figma per breakpoint.** This project uses fixed-breakpoint design (see `responsive-layout.mdc`). Use `gap-[6px] md:gap-2`, not `gap-[clamp(6px,…,8px)]`.
+- **Only use `clamp()` / `vw` when Figma explicitly designs fluid behaviour** (e.g. an offer rail that bleeds to the right edge of the viewport). When you do, document the source Figma node and the reason in the section's `constants.ts`.
 - Prefer `ring-1 ring-inset` over `border` when a CSS border would shrink the inner content box and break Figma widths (we discovered this on `OfferCard`).
+- Asymmetric padding from Figma must be reproduced asymmetrically. If Figma shows `pt: 12, pb: 16, px: 16`, use `pt-3 pb-4 px-4` — not `p-4` "because it averages out".
+
+## Typography sizes
+
+Font sizes from Figma are constant across breakpoints in this project (Heading L = 36 px everywhere, Body L = 16 px everywhere, Body XL = 20 px, Body M = 14 px). Differences in rendered height between breakpoints come from text wrapping due to available width, not from a different font size. Do **not** introduce per-breakpoint font sizes unless the Figma design genuinely changes them.
