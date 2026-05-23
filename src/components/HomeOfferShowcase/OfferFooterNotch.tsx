@@ -6,7 +6,10 @@ type OfferFooterNotchProps = {
 
 export function OfferFooterNotch({ textureSrc = '/figma/offer-texture.jpg' }: OfferFooterNotchProps) {
   return (
-    <div className="relative h-[22px] w-full bg-white md:h-12 lg:h-[85px]" data-figma-node="6781:17288">
+    <div
+      className="relative h-[22px] w-full bg-[var(--oczki-primary-100)] md:h-12 lg:h-[85px]"
+      data-figma-node="6781:17288"
+    >
       <Image
         alt=""
         aria-hidden="true"

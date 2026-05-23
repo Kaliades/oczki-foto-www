@@ -1,42 +1,68 @@
+import type { CSSProperties } from 'react'
+
 type WaxStampDecorProps = {
   className?: string
 }
 
 /**
- * Decorative pink wax stamp with a layered floral overlay (mix-blend-lighten
- * gives the white flower silhouette on the rose-coloured wax).
+ * Decorative pink wax stamp with a layered floral overlay.
  *
  * Layout reproduces Figma node 6781:17291 1:1 — the 180 px frame is the unit,
  * everything inside is positioned in percentages so the same composition
  * scales down for tablet (148 px) and mobile (112 px).
  *
  *   stamp PNG                fill of wrapper
- *   floral overlay  →        24.79% / 26.41% offset, 44.97% × 46.85% size
- *     (mix-blend-lighten)
+ *   floral overlay           24.79% / 26.41% offset, 44.97% × 46.85% size
  *     └─ rotate(-41.31°) inner box (39.98 × 77.143 portrait)
- *         └─ two stacked vector SVGs (one main, one as the highlight)
+ *         └─ CSS mask flower (cream-coloured div masked by the flower SVG)
  *
- * The wrapper itself is rotated 90° per the Figma source and sized per
- * breakpoint. Pure decoration → `aria-hidden`.
+ * Why CSS mask instead of `<img>`:
+ *   The original Figma asset uses inline SVG `mix-blend-mode: lighten` to
+ *   paint the flower in cream against the rose stamp. Browsers do NOT
+ *   honour those inline styles when the SVG is loaded through an `<img>`
+ *   (or `next/image`), so the flower disappeared. Painting the flower as
+ *   a plain `background-color` div masked by the SVG always renders, no
+ *   matter how the asset is fetched.
  *
- * Native `<img>` is intentional: `next/image` with `fill` strips inline SVG
- * styles (the floral artwork loses its `mix-blend-mode:lighten` and
- * `var(--fill-0)` colour, leaving the stamp visually incomplete).
+ * Desktop horizontal anchor reproduces the Figma source exactly:
+ *   stamp x=782 (centre 872), section width 1366
+ *   → right edge of stamp at 962 / 1366 ≈ 29.57 % from right.
+ *
+ * Pure decoration → `aria-hidden`.
  */
 export const WaxStampDecor = ({ className }: WaxStampDecorProps) => {
   // Position + size of the floral overlay inside the stamp, expressed as
   // percentages of the 180 px Figma frame so the layout stays 1:1 across
   // all three breakpoints.
-  const FLORAL_LEFT_PCT = (44.63 / 180) * 100 // 24.794%
-  const FLORAL_TOP_PCT = (47.54 / 180) * 100 // 26.411%
-  const FLORAL_WIDTH_PCT = (80.953 / 180) * 100 // 44.974%
-  const FLORAL_HEIGHT_PCT = (84.339 / 180) * 100 // 46.855%
+  const FLORAL_LEFT_PCT = (44.63 / 180) * 100
+  const FLORAL_TOP_PCT = (47.54 / 180) * 100
+  const FLORAL_WIDTH_PCT = (80.953 / 180) * 100
+  const FLORAL_HEIGHT_PCT = (84.339 / 180) * 100
+
+  // Inner rotated portrait box: 39.98 × 77.143 inside an 80.953 × 84.339 outer.
+  const FLOWER_WIDTH_PCT = (39.98 / 80.953) * 100 // 49.39%
+  const FLOWER_HEIGHT_PCT = (77.143 / 84.339) * 100 // 91.47%
+
+  const flowerStyle: CSSProperties = {
+    width: `${FLOWER_WIDTH_PCT}%`,
+    height: `${FLOWER_HEIGHT_PCT}%`,
+    transform: 'rotate(-41.31deg)',
+    backgroundColor: 'var(--oczki-tertiary-100)',
+    maskImage: 'url(/figma/process-wax-stamp-flower-2.svg)',
+    maskSize: 'contain',
+    maskPosition: 'center',
+    maskRepeat: 'no-repeat',
+    WebkitMaskImage: 'url(/figma/process-wax-stamp-flower-2.svg)',
+    WebkitMaskSize: 'contain',
+    WebkitMaskPosition: 'center',
+    WebkitMaskRepeat: 'no-repeat',
+  }
 
   return (
     <div
       aria-hidden="true"
       className={[
-        'pointer-events-none absolute left-1/2 -translate-x-1/2 -top-[57px] z-10 h-28 w-28 md:-top-[75px] md:h-[148px] md:w-[148px] lg:left-auto lg:right-[14%] lg:-top-[91px] lg:h-[180px] lg:w-[180px] lg:translate-x-0',
+        'pointer-events-none absolute left-1/2 -translate-x-1/2 -top-[57px] z-10 h-28 w-28 md:-top-[75px] md:h-[148px] md:w-[148px] lg:left-auto lg:right-[29.57%] lg:-top-[91px] lg:h-[180px] lg:w-[180px] lg:translate-x-0',
         className,
       ]
         .filter(Boolean)
@@ -60,23 +86,9 @@ export const WaxStampDecor = ({ className }: WaxStampDecorProps) => {
             top: `${FLORAL_TOP_PCT}%`,
             width: `${FLORAL_WIDTH_PCT}%`,
             height: `${FLORAL_HEIGHT_PCT}%`,
-            mixBlendMode: 'lighten',
           }}
         >
-          <div className="relative h-[91.5%] w-[49.4%] -rotate-[41.31deg]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/figma/process-wax-stamp-flower-1.svg"
-              alt=""
-              className="absolute h-[102.6%] w-[105%] -inset-x-[2.5%] -inset-y-[1.3%] max-w-none"
-            />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/figma/process-wax-stamp-flower-2.svg"
-              alt=""
-              className="absolute inset-0 h-full w-full max-w-none"
-            />
-          </div>
+          <div style={flowerStyle} />
         </div>
       </div>
     </div>
