@@ -1,3 +1,9 @@
+import type { ComponentPropsWithoutRef } from 'react'
+
+import { cn } from '@/utilities/ui'
+
+import { TESTIMONIAL_SLIDE_BODY_MIN_HEIGHT_CLASS } from './constants'
+
 type TestimonialQuoteBlockProps = {
   /** First, regular-weight fragment of the heading. */
   headingStart: string
@@ -8,6 +14,8 @@ type TestimonialQuoteBlockProps = {
   /** Display name of the testimonial author. */
   author: string
   headingId?: string
+  /** Wraps only the quote + author (carousel region). */
+  slideRegionProps?: ComponentPropsWithoutRef<'div'>
 }
 
 /**
@@ -39,11 +47,15 @@ export const TestimonialQuoteBlock = ({
   quote,
   author,
   headingId = 'home-testimonial-heading',
+  slideRegionProps,
 }: TestimonialQuoteBlockProps) => {
+  const { className: slideRegionClassName, ...slideRegionRest } =
+    slideRegionProps ?? {}
+
   return (
     <div className="relative z-[2] flex w-full flex-col items-start gap-4 text-left md:items-center md:gap-8 md:text-center lg:gap-12">
       <h2
-        className="w-full text-[28px] font-normal leading-[1.04] tracking-[-0.02em] text-[var(--oczki-primary-100)] [font-family:var(--font-oczki-display)] [font-feature-settings:'lnum'_1,'pnum'_1] md:mx-auto md:max-w-[min(520px,calc(100%-17rem))] md:text-[32px] lg:max-w-[min(566px,calc(100%-26rem))] lg:text-[36px]"
+        className="w-full shrink-0 text-[28px] font-normal leading-[1.04] tracking-[-0.02em] text-[var(--oczki-primary-100)] [font-family:var(--font-oczki-display)] [font-feature-settings:'lnum'_1,'pnum'_1] md:mx-auto md:max-w-[min(520px,calc(100%-17rem))] md:text-[32px] lg:max-w-[min(566px,calc(100%-26rem))] lg:text-[36px]"
         id={headingId}
       >
         {headingStart}{' '}
@@ -52,12 +64,19 @@ export const TestimonialQuoteBlock = ({
         </em>
       </h2>
 
-      <div className="flex w-full flex-col items-start gap-4 md:mx-auto md:max-w-[min(480px,calc(100%-17rem))] md:items-center md:gap-8 lg:max-w-[min(566px,calc(100%-26rem))]">
+      <div
+        {...slideRegionRest}
+        className={cn(
+          'flex w-full flex-col items-start gap-4 md:mx-auto md:max-w-[min(480px,calc(100%-17rem))] md:items-center md:gap-8 lg:max-w-[min(566px,calc(100%-26rem))]',
+          TESTIMONIAL_SLIDE_BODY_MIN_HEIGHT_CLASS,
+          slideRegionClassName,
+        )}
+      >
         <p className="oczki-body-l w-full text-left text-[var(--oczki-primary-100)] md:text-center">
           {quote}
         </p>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 md:justify-center">
           {/* 24 × 1 px tinted dash from Figma node `7102:13793`. */}
           <span
             aria-hidden="true"
