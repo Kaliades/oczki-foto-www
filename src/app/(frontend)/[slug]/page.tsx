@@ -12,6 +12,8 @@ import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { HomeOfferProcessSteps } from '@/components/HomeOfferProcessSteps/HomeOfferProcessSteps'
+import { homeOfferProcessStepsDefaults } from '@/components/HomeOfferProcessSteps/constants'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -77,6 +79,11 @@ export default async function Page({ params: paramsPromise }: Args) {
 
       <RenderHero {...hero} />
       <RenderBlocks blocks={layout} />
+      {/* Section #6 — "Krok po kroku do pięknych zdjęć". Built in
+          isolation (same pattern as `HomeGallery`); the Payload block
+          wrapper is intentionally deferred. Rendered here only on the
+          home route until the block is wired up. */}
+      {isHome ? <HomeOfferProcessSteps data={homeOfferProcessStepsDefaults} /> : null}
     </article>
   )
 }
