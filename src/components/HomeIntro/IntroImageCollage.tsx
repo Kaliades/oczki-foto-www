@@ -59,7 +59,10 @@ export function IntroImageCollage({
             src="/figma/intro-stamp-note.svg"
             width={212}
           />
-          <blockquote className="oczki-handwritten-s absolute left-[13px] top-5 w-[134px] text-center text-[var(--oczki-secondary-600)] md:left-4 md:top-[45px] md:w-[179px]">
+          {/* Handwritten quote size matches Figma `header/s`: mobile 20 /
+              tablet 24 / desktop 24. Earlier the code used `oczki-handwritten-s`
+              (fixed 24) across all breakpoints. */}
+          <blockquote className="absolute left-[13px] top-5 w-[134px] text-center text-[20px] font-normal leading-[0.98] tracking-[0] text-[var(--oczki-secondary-600)] [font-family:var(--font-oczki-handwritten)] [font-feature-settings:'lnum'_1,'pnum'_1] md:left-4 md:top-[45px] md:w-[179px] md:text-[24px]">
             {handwrittenQuote}
           </blockquote>
         </div>

@@ -16,10 +16,17 @@ export function HomeOfferShowcase({ data }: HomeOfferShowcaseProps) {
   return (
     <section
       aria-labelledby="home-offer-heading"
-      className="overflow-hidden [font-family:var(--font-oczki-body)]"
+      className="relative w-full overflow-hidden bg-[var(--oczki-tertiary-300)] [font-family:var(--font-oczki-body)]"
       data-figma-node={HOME_OFFER_FIGMA_NODES.desktopMainContainer}
     >
-      <div className="relative flex flex-col items-center gap-7 bg-[var(--oczki-tertiary-300)] px-[var(--offer-section-padding)] pb-12 pt-9 [--offer-section-padding:1rem] md:gap-16 md:pb-12 md:pt-16 md:[--offer-section-padding:clamp(2rem,5.86vw,5rem)] lg:pb-8 lg:[--offer-section-padding:clamp(2rem,2.34vw,4rem)]">
+      {/* Section is full-bleed: tertiary bg + texture span the whole viewport
+          at every width. Above 1366 px the rail keeps extending to viewport
+          edges (more cards visible without scroll) while the header and
+          inquiry stay centered via their own max-widths.
+          Vertical gap between Wyróżniki content (header+rail) and the
+          Inquiry block is bumped above Figma's 28 / 64 to 40 / 80 — Figma's
+          values read visually tight in the real render (owner feedback). */}
+      <div className="relative flex flex-col items-center gap-10 px-[var(--offer-section-padding)] pb-12 pt-9 [--offer-section-padding:1rem] md:gap-20 md:pt-16 md:[--offer-section-padding:5rem] lg:pb-8 lg:[--offer-section-padding:2rem]">
         {textureSrc ? (
           <Image
             alt=""

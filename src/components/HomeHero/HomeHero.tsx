@@ -13,20 +13,22 @@ export function HomeHero({ data }: HomeHeroProps) {
   return (
     <section
       aria-labelledby="home-hero-heading"
-      className="relative isolate flex min-h-[579px] overflow-hidden bg-[#e7e3df] text-[var(--oczki-primary-700)] [font-family:var(--font-oczki-body)] md:min-h-[647px] lg:min-h-[640px]"
+      className="relative isolate w-full min-h-[579px] overflow-hidden bg-[#e7e3df] text-[var(--oczki-primary-700)] [font-family:var(--font-oczki-body)] md:min-h-[647px] lg:min-h-[640px]"
       data-figma-node={HOME_HERO_FIGMA_NODES.desktopFrame}
     >
       <HeroBackground src={background.src} alt={background.alt} />
-      <HeroCopy
-        titleLineOne={title.lineOne}
-        titleLineTwoItalic={title.lineTwoItalic}
-        titleLineTwoRest={title.lineTwoRest}
-        titleLineThree={title.lineThree}
-        description={description}
-        primaryCta={primaryCta}
-        secondaryCta={secondaryCta}
-      />
-      {showScallop ? <HeroScallopFrame /> : null}
+      <div className="relative mx-auto w-full max-w-[1366px]">
+        <HeroCopy
+          titleLineOne={title.lineOne}
+          titleLineTwoItalic={title.lineTwoItalic}
+          titleLineTwoRest={title.lineTwoRest}
+          titleLineThree={title.lineThree}
+          description={description}
+          primaryCta={primaryCta}
+          secondaryCta={secondaryCta}
+        />
+        {showScallop ? <HeroScallopFrame /> : null}
+      </div>
     </section>
   )
 }

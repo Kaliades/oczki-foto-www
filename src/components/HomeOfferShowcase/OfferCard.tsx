@@ -19,7 +19,7 @@ export function OfferCard({
 }: OfferCardProps) {
   return (
     <article
-      className="w-[293px] shrink-0 rounded-t-[999px] p-1.5 ring-1 ring-inset ring-[var(--oczki-tertiary-700)] md:w-[clamp(328px,24vw,360px)]"
+      className="w-[310px] shrink-0 rounded-t-[999px] p-1.5 ring-1 ring-inset ring-[var(--oczki-tertiary-700)] md:w-[320px]"
       data-offer-card
     >
       <div className="flex flex-col rounded-t-[999px] bg-[var(--oczki-primary-100)] ring-1 ring-inset ring-[var(--oczki-tertiary-700)]">
@@ -37,14 +37,22 @@ export function OfferCard({
               alt={imageAlt}
               className="object-cover"
               fill
-              sizes="(min-width: 1536px) 348px, (min-width: 768px) 316px, 281px"
+              sizes="(min-width: 768px) 308px, 298px"
               src={imageSrc}
             />
           )}
         </div>
 
-        <div className="flex h-[164px] shrink-0 flex-col gap-1 overflow-hidden px-3 pb-4 pt-3 md:h-[clamp(158px,11.6vw,176px)] md:gap-2 md:px-5 md:pb-5 md:pt-4">
-          <h3 className="oczki-body-xl text-[var(--oczki-primary-800)]">{title}</h3>
+        {/* Uniform card height locked to Figma's MAX values per breakpoint so
+            every description (incl. the 5-line ones — "Sesja wizerunkowa",
+            "Sesja miłosna") renders in full. Short descriptions get a small
+            bottom buffer; no truncation. */}
+        <div className="flex h-[164px] shrink-0 flex-col gap-1 px-3 pb-4 pt-3 md:h-[158px] md:gap-2 md:px-5 md:pb-5 md:pt-4">
+          {/* Card title: typography/body/xl is 18 on mobile, 20 on tablet+ in
+              Figma. Inlined override of `oczki-body-xl` (which is fixed 20). */}
+          <h3 className="text-[18px] font-normal leading-[1.48] tracking-[-0.015em] text-[var(--oczki-primary-800)] md:text-[20px]">
+            {title}
+          </h3>
           <p className="oczki-body-m text-[var(--oczki-primary-700)]">{description}</p>
         </div>
       </div>

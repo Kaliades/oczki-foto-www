@@ -38,7 +38,10 @@ export function OfferCardsRail({ items }: OfferCardsRailProps) {
         className="overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         ref={railRef}
       >
-        <div className="relative flex w-max gap-2 md:gap-[clamp(1rem,1.17vw,1.5rem)]">
+        {/* `mx-auto` centers the track when its content fits (ultrawide
+            viewports where all cards are visible) and is a no-op when the
+            track overflows (cards scroll from the left edge as usual). */}
+        <div className="relative mx-auto flex w-max gap-2 md:gap-4">
           {items.map((item) => (
             <OfferCard key={item.title} {...item} />
           ))}

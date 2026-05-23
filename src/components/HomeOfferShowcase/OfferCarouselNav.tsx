@@ -7,7 +7,7 @@ type OfferCarouselNavProps = {
 
 export function OfferCarouselNav({ onNext, onPrevious }: OfferCarouselNavProps) {
   return (
-    <div className="absolute left-[min(567px,calc(100%-96px))] top-[29px] z-10 hidden size-16 items-center justify-center gap-2 rounded-full bg-[rgba(219,160,160,0.48)] md:flex">
+    <div className="absolute top-[29px] z-10 hidden size-16 items-center justify-center gap-2 rounded-full bg-[rgba(219,160,160,0.48)] md:left-[567px] md:flex">
       <button
         aria-label="Poprzednia oferta"
         className="flex size-4 items-center justify-center transition-opacity hover:opacity-70"
