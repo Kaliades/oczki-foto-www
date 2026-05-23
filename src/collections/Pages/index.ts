@@ -12,6 +12,7 @@ import { IntroQuote } from '../../blocks/IntroQuote/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { OfferShowcase } from '../../blocks/OfferShowcase/config'
 import { ProcessSteps } from '../../blocks/ProcessSteps/config'
+import { Testimonial } from '../../blocks/Testimonial/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -84,6 +85,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 OfferShowcase,
                 ProcessSteps,
                 HomeGallery,
+                Testimonial,
                 CallToAction,
                 Content,
                 MediaBlock,

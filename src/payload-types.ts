@@ -213,6 +213,7 @@ export interface Page {
     | OfferShowcaseBlock
     | ProcessStepsBlock
     | HomeGalleryBlock
+    | TestimonialBlock
     | CallToActionBlock
     | ContentBlock
     | MediaBlock
@@ -699,6 +700,41 @@ export interface HomeGalleryBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'homeGallery';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialBlock".
+ */
+export interface TestimonialBlock {
+  /**
+   * Nagłówek dzieli się na fragment regularny i wyróżniony italikiem ("Wasze słowa to moje" + "paliwo do działania").
+   */
+  heading: {
+    start: string;
+    emphasis: string;
+  };
+  /**
+   * Karuzela cykluje po wszystkich opiniach w kolejności listy.
+   */
+  items?:
+    | {
+        /**
+         * Polskie cudzysłowy („...") wpisywane ręcznie — komponent renderuje treść 1:1.
+         */
+        quote: string;
+        author: string;
+        /**
+         * Wyświetlane w dekoracyjnym polaroidzie po prawej stronie sekcji.
+         */
+        photo?: (number | null) | Media;
+        photoAlt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  showPolaroid?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonial';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1400,6 +1436,7 @@ export interface PagesSelect<T extends boolean = true> {
         offerShowcase?: T | OfferShowcaseBlockSelect<T>;
         processSteps?: T | ProcessStepsBlockSelect<T>;
         homeGallery?: T | HomeGalleryBlockSelect<T>;
+        testimonial?: T | TestimonialBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -1577,6 +1614,30 @@ export interface HomeGalleryBlockSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialBlock_select".
+ */
+export interface TestimonialBlockSelect<T extends boolean = true> {
+  heading?:
+    | T
+    | {
+        start?: T;
+        emphasis?: T;
+      };
+  items?:
+    | T
+    | {
+        quote?: T;
+        author?: T;
+        photo?: T;
+        photoAlt?: T;
+        id?: T;
+      };
+  showPolaroid?: T;
   id?: T;
   blockName?: T;
 }

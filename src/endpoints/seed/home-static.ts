@@ -5,6 +5,7 @@ import { homeHeroDefaults } from '@/components/HomeHero/constants'
 import { homeIntroDefaults } from '@/components/HomeIntro/constants'
 import { homeOfferDefaults } from '@/components/HomeOfferShowcase/constants'
 import { homeProcessStepsDefaults } from '@/components/HomeProcessSteps/constants'
+import { homeTestimonialDefaults } from '@/components/HomeTestimonial/constants'
 
 /**
  * Static fallback for the homepage rendered when no `pages` document with
@@ -117,6 +118,18 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
           ? { title: item.caption.title, subtitle: item.caption.subtitle }
           : undefined,
       })),
+    },
+    {
+      blockType: 'testimonial',
+      blockName: 'Opinie',
+      heading: homeTestimonialDefaults.heading,
+      items: homeTestimonialDefaults.items.map((item) => ({
+        quote: item.quote,
+        author: item.author,
+        photo: PLACEHOLDER_MEDIA_ID,
+        photoAlt: item.photoAlt,
+      })),
+      showPolaroid: homeTestimonialDefaults.showPolaroid ?? true,
     },
   ],
   meta: {
