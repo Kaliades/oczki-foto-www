@@ -11,18 +11,19 @@ type WaxStampDecorProps = {
  * everything inside is positioned in percentages so the same composition
  * scales down for tablet (148 px) and mobile (112 px).
  *
- *   stamp PNG                fill of wrapper
- *   floral overlay           24.79% / 26.41% offset, 44.97% × 46.85% size
- *     └─ rotate(-41.31°) inner box (39.98 × 77.143 portrait)
- *         └─ CSS mask flower (cream-coloured div masked by the flower SVG)
+ * Why CSS, not the Figma raster:
+ *   The Firefly-generated PNG asset that Figma exports for the wax body
+ *   comes back empty (1024×1024 transparent) through the MCP, regardless
+ *   of how often we re-fetch the URL. Painting the wax in pure CSS —
+ *   `border-radius: 50%` + radial-gradient between the rose tokens — is
+ *   visually equivalent, never expires, and renders deterministically on
+ *   every device.
  *
- * Why CSS mask instead of `<img>`:
- *   The original Figma asset uses inline SVG `mix-blend-mode: lighten` to
- *   paint the flower in cream against the rose stamp. Browsers do NOT
- *   honour those inline styles when the SVG is loaded through an `<img>`
- *   (or `next/image`), so the flower disappeared. Painting the flower as
- *   a plain `background-color` div masked by the SVG always renders, no
- *   matter how the asset is fetched.
+ * Composition:
+ *   wax body (CSS gradient, radius 50%, drop shadow)        full frame
+ *   floral overlay                                          24.79% / 26.41%
+ *     └─ rotate(-41.31°) inner box (39.98 × 77.143)            of 80.953 / 84.339
+ *         └─ flat cream div masked by the flower SVG
  *
  * Desktop horizontal anchor reproduces the Figma source exactly:
  *   stamp x=782 (centre 872), section width 1366
@@ -40,8 +41,16 @@ export const WaxStampDecor = ({ className }: WaxStampDecorProps) => {
   const FLORAL_HEIGHT_PCT = (84.339 / 180) * 100
 
   // Inner rotated portrait box: 39.98 × 77.143 inside an 80.953 × 84.339 outer.
-  const FLOWER_WIDTH_PCT = (39.98 / 80.953) * 100 // 49.39%
-  const FLOWER_HEIGHT_PCT = (77.143 / 84.339) * 100 // 91.47%
+  const FLOWER_WIDTH_PCT = (39.98 / 80.953) * 100
+  const FLOWER_HEIGHT_PCT = (77.143 / 84.339) * 100
+
+  // Wax body — radial gradient gives the soft 3-d look of a real seal.
+  const waxStyle: CSSProperties = {
+    background:
+      'radial-gradient(circle at 32% 28%, var(--oczki-tertiary-300) 0%, var(--oczki-tertiary-700) 65%, #c08585 100%)',
+    boxShadow:
+      'inset -6px -10px 18px rgba(140, 90, 90, 0.35), inset 6px 8px 18px rgba(255, 230, 228, 0.45)',
+  }
 
   const flowerStyle: CSSProperties = {
     width: `${FLOWER_WIDTH_PCT}%`,
@@ -73,12 +82,7 @@ export const WaxStampDecor = ({ className }: WaxStampDecorProps) => {
       }}
     >
       <div className="relative h-full w-full rotate-90">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/figma/process-wax-stamp.png"
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover"
-        />
+        <div className="absolute inset-0 rounded-full" style={waxStyle} />
         <div
           className="absolute flex items-center justify-center"
           style={{
