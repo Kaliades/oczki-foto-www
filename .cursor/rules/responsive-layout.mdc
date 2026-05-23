@@ -41,14 +41,16 @@ The site is designed at three Figma breakpoints (**mobile 360 / tablet 768 / des
 
 3. **Tailwind breakpoints used**: `md` (768) for tablet, `lg` (1024) for desktop. Mobile is the unprefixed default. Do not introduce custom breakpoints unless absolutely necessary; the value `1366` only ever appears as `max-w-[1366px]` on inners.
 
-4. **Absolute decorations are positioned with raw pixel offsets** taken from Figma:
+4. **Absolute decorations are positioned with raw pixel offsets** taken from Figma. When Figma uses a constraint such as "centred horizontally", reproduce it directly with `left-1/2 -translate-x-1/2` so the decoration tracks the **inner 1366 cap**, not the viewport:
 
    ```tsx
    // ✅ wax stamp 1:1 from Figma node 6781:17291 / 7105:11469 / 7105:13764
-   <div className="absolute right-[12px] -top-[57px] h-[112px] w-[112px] md:right-[162px] md:-top-[75px] md:h-[148px] md:w-[148px] lg:right-[404px] lg:-top-[91px] lg:h-[180px] lg:w-[180px]" />
+   // Centred horizontally on every breakpoint, only the size + vertical
+   // offset change between breakpoints.
+   <div className="absolute left-1/2 -top-[57px] h-[112px] w-[112px] -translate-x-1/2 md:-top-[75px] md:h-[148px] md:w-[148px] lg:-top-[91px] lg:h-[180px] lg:w-[180px]" />
    ```
 
-   Do **not** percentage-position them ("looks similar") unless Figma uses percentages.
+   Do **not** percentage-position decorations ("looks similar") unless Figma uses percentages, and do **not** anchor to viewport edges (`right-[…]` on the outer `<section>`) when Figma anchors to the content cap.
 
 5. **Cards keep fixed width per breakpoint**, centred with `mx-auto` inside the rail. The width is the value from the matching Figma node (e.g. mobile card 328, tablet card 480, desktop card fills its grid column).
 
@@ -72,5 +74,5 @@ The site is designed at three Figma breakpoints (**mobile 360 / tablet 768 / des
 
 ## Existing references
 
-- `HomeProcessSteps` — wax stamp at `lg:right-[404px]`, raw px per breakpoint, no clamp
+- `HomeProcessSteps` — wax stamp centred via `left-1/2 -translate-x-1/2` on every breakpoint, sizes from Figma (112 / 148 / 180), absolute decoration lives inside the inner 1366 box
 - `OfferCardsRail` — fluid bleed via CSS variable, scoped to the inner, terminates at cap

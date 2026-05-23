@@ -35,7 +35,7 @@ export const StepForegroundCard = ({
 
   return (
     <article
-      className="relative flex w-full flex-col items-end justify-center gap-[14px] rounded-[4px] bg-[var(--oczki-primary-200)] px-4 pb-4 pt-3 shadow-[1px_4px_2.9px_rgba(53,39,25,0.16),6px_11px_6.65px_rgba(53,39,25,0.08)] md:p-5"
+      className="relative flex w-full flex-col items-end justify-center gap-[14px] bg-[var(--oczki-primary-200)] px-4 pb-4 pt-3 shadow-[1px_4px_2.9px_rgba(53,39,25,0.16),6px_11px_6.65px_rgba(53,39,25,0.08)] md:p-5"
       style={style}
     >
       <div className="flex w-full flex-col gap-[6px] leading-[1.48] md:gap-2">

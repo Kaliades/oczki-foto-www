@@ -14,8 +14,9 @@ type StepBacksplashProps = {
  * with a single `repeating-linear-gradient` instead of 32 DOM nodes — same look,
  * dramatically less markup.
  *
- * Sized to match the foreground card (`inset-0`); the visible "peek" comes from
- * the rotation difference between the two layers, not from a size offset.
+ * Shorter than the cream card on purpose (~88 % of its height, centred) so the
+ * green peek reads as a mat behind the text block, not a full-height panel.
+ * The visible offset also comes from the rotation difference between layers.
  */
 export const StepBacksplash = ({ rotation, className }: StepBacksplashProps) => {
   const style: CSSProperties = {
@@ -33,7 +34,7 @@ export const StepBacksplash = ({ rotation, className }: StepBacksplashProps) => 
     <div
       aria-hidden="true"
       className={[
-        'absolute inset-0 origin-center overflow-hidden rounded-[4px]',
+        'absolute inset-x-0 top-1/2 h-[88%] -translate-y-1/2 origin-center overflow-hidden',
         className,
       ]
         .filter(Boolean)

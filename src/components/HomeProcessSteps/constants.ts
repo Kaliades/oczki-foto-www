@@ -28,16 +28,20 @@ export const PROCESS_STEP_DECORATIONS = [
     ornamentSrc: '/figma/process-ornament-1.svg',
     backsplashRotation: 7.99,
     foregroundRotation: -2.3,
+    /** Figma item bbox (6790:18283 / 7105:11474 / 7105:13769) — mobile / tablet. */
+    slotMinHeightClass: 'min-h-[278px] md:min-h-[292px]',
   },
   {
     ornamentSrc: '/figma/process-ornament-2.svg',
     backsplashRotation: -2.32,
     foregroundRotation: 4.39,
+    slotMinHeightClass: 'min-h-[281px] md:min-h-[283px]',
   },
   {
     ornamentSrc: '/figma/process-ornament-3.svg',
     backsplashRotation: 3.66,
     foregroundRotation: -5.56,
+    slotMinHeightClass: 'min-h-[274px] md:min-h-[277px]',
   },
 ] as const
 
