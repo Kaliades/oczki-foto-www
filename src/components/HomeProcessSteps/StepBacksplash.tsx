@@ -13,6 +13,9 @@ type StepBacksplashProps = {
  * The vertical stripes from Figma (32 alternating 43 px columns) are recreated
  * with a single `repeating-linear-gradient` instead of 32 DOM nodes — same look,
  * dramatically less markup.
+ *
+ * Sized to match the foreground card (`inset-0`); the visible "peek" comes from
+ * the rotation difference between the two layers, not from a size offset.
  */
 export const StepBacksplash = ({ rotation, className }: StepBacksplashProps) => {
   const style: CSSProperties = {
@@ -30,7 +33,7 @@ export const StepBacksplash = ({ rotation, className }: StepBacksplashProps) => 
     <div
       aria-hidden="true"
       className={[
-        'absolute inset-x-3 inset-y-2 origin-center overflow-hidden rounded-[4px] bg-[var(--oczki-secondary-400)]',
+        'absolute inset-0 origin-center overflow-hidden rounded-[4px]',
         className,
       ]
         .filter(Boolean)

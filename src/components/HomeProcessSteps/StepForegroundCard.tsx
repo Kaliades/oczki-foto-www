@@ -14,6 +14,11 @@ type StepForegroundCardProps = {
  * tucked into the bottom-right corner. Used as the front layer in
  * `ProcessStepCard`.
  *
+ * Sizing & spacing reproduce the Figma source per breakpoint:
+ *   - mobile  (h=240, w=328): pt-12, px-16, pb-16, gap-14, title→body gap-6
+ *   - tablet  (h=215, w=480): p-20, gap-14, title→body gap-8
+ *   - desktop (h=auto, w=full grid column ≈ 426): p-20, gap-14, title→body gap-8
+ *
  * The botanical ornament SVG is natively portrait (35.26 × 64 in Figma) and
  * sits inside a landscape 64 × 36 slot rotated by -89.89° — that's how the
  * source composes it so it visually reads as a horizontal sprig.
@@ -30,10 +35,10 @@ export const StepForegroundCard = ({
 
   return (
     <article
-      className="relative flex flex-col items-end justify-center gap-[14px] rounded-[4px] bg-[var(--oczki-primary-200)] p-5 shadow-[1px_4px_2.9px_rgba(53,39,25,0.16),6px_11px_6.65px_rgba(53,39,25,0.08)]"
+      className="relative flex w-full flex-col items-end justify-center gap-[14px] rounded-[4px] bg-[var(--oczki-primary-200)] px-4 pb-4 pt-3 shadow-[1px_4px_2.9px_rgba(53,39,25,0.16),6px_11px_6.65px_rgba(53,39,25,0.08)] md:p-5"
       style={style}
     >
-      <div className="flex w-full flex-col gap-2 leading-[1.48]">
+      <div className="flex w-full flex-col gap-[6px] leading-[1.48] md:gap-2">
         <h3 className="oczki-body-xl tracking-[-0.3px] text-[var(--oczki-primary-800)]">
           {title}
         </h3>

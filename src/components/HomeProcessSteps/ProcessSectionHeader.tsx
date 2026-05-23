@@ -21,7 +21,7 @@ type ProcessSectionHeaderProps = {
 export const ProcessSectionHeader = ({ heading, intro }: ProcessSectionHeaderProps) => {
   return (
     <header className="flex w-full flex-col gap-[10px] text-left md:max-w-[535px] md:gap-4 md:text-center lg:items-start lg:text-left">
-      <h2 className="oczki-heading-l text-[clamp(28px,5.4vw,36px)] text-[var(--oczki-primary-800)]">
+      <h2 className="oczki-heading-l text-[36px] leading-[1.04] text-[var(--oczki-primary-800)]">
         <em className="italic">{heading.italicOne}</em>
         {heading.plainOne}
         <em className="italic">{heading.italicTwo}</em>

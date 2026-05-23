@@ -26,7 +26,7 @@ export const HomeProcessSteps = ({ data }: HomeProcessStepsProps) => {
   return (
     <section
       data-figma-node={HOME_PROCESS_STEPS_FIGMA_NODES.desktopFrame}
-      className="relative isolate flex w-full flex-col items-center gap-7 bg-[var(--oczki-primary-100)] px-4 pb-12 pt-20 [font-family:var(--font-oczki-body)] md:items-center md:px-20 md:pb-24 md:pt-24 lg:items-start lg:gap-8 lg:px-8 lg:pb-24 lg:pt-24"
+      className="relative isolate flex w-full flex-col items-start gap-7 bg-[var(--oczki-primary-100)] px-4 pb-12 pt-20 [font-family:var(--font-oczki-body)] md:items-center md:gap-8 md:px-20 md:pb-24 md:pt-24 lg:items-start lg:px-8"
     >
       {showWaxStamp ? <WaxStampDecor /> : null}
       <ProcessSectionHeader heading={heading} intro={intro} />

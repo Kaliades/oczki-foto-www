@@ -25,9 +25,15 @@ type WaxStampDecorProps = {
  *     └─ rotate(-41.31°) inner box (39.98 × 77.143)            of 80.953 / 84.339
  *         └─ flat cream div masked by the flower SVG
  *
- * Desktop horizontal anchor reproduces the Figma source exactly:
- *   stamp x=782 (centre 872), section width 1366
- *   → right edge of stamp at 962 / 1366 ≈ 29.57 % from right.
+ * Horizontal anchor — Figma values reproduced 1:1 (the stamp is right-aligned
+ * on every breakpoint, NOT centred):
+ *   - mobile  (360 px frame): stamp x=236, w=112 → right offset 12 px
+ *   - tablet  (768 px frame): stamp x=458, w=148 → right offset 162 px
+ *   - desktop (1366 px frame): stamp x=782, w=180 → right offset 404 px
+ *
+ * We use raw px so the stamp keeps its exact distance from the right edge of
+ * the section regardless of viewport width inside each breakpoint, which is
+ * how it is laid out in the source design.
  *
  * Pure decoration → `aria-hidden`.
  */
@@ -71,7 +77,7 @@ export const WaxStampDecor = ({ className }: WaxStampDecorProps) => {
     <div
       aria-hidden="true"
       className={[
-        'pointer-events-none absolute left-1/2 -translate-x-1/2 -top-[57px] z-10 h-28 w-28 md:-top-[75px] md:h-[148px] md:w-[148px] lg:left-auto lg:right-[29.57%] lg:-top-[91px] lg:h-[180px] lg:w-[180px] lg:translate-x-0',
+        'pointer-events-none absolute right-[12px] -top-[57px] z-10 h-[112px] w-[112px] md:right-[162px] md:-top-[75px] md:h-[148px] md:w-[148px] lg:right-[404px] lg:-top-[91px] lg:h-[180px] lg:w-[180px]',
         className,
       ]
         .filter(Boolean)
