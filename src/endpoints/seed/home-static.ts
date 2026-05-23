@@ -1,5 +1,6 @@
 import type { RequiredDataFromCollectionSlug } from 'payload'
 
+import { homeGalleryDefaults } from '@/components/HomeGallery/constants'
 import { homeHeroDefaults } from '@/components/HomeHero/constants'
 import { homeIntroDefaults } from '@/components/HomeIntro/constants'
 import { homeOfferDefaults } from '@/components/HomeOfferShowcase/constants'
@@ -97,6 +98,25 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
         paragraphTwo: item.paragraphs[1],
       })),
       showWaxStamp: homeProcessStepsDefaults.showWaxStamp ?? true,
+    },
+    {
+      blockType: 'homeGallery',
+      blockName: 'Galeria — chwile zatrzymane w kadrze',
+      heading: homeGalleryDefaults.heading,
+      description: homeGalleryDefaults.description,
+      cta: {
+        type: homeGalleryDefaults.cta.type ?? 'custom',
+        url: homeGalleryDefaults.cta.url ?? '/galeria',
+        label: homeGalleryDefaults.cta.label ?? 'Zobacz wszystkie zdjęcia',
+        newTab: homeGalleryDefaults.cta.newTab ?? false,
+      },
+      items: homeGalleryDefaults.items.map((item) => ({
+        image: PLACEHOLDER_MEDIA_ID,
+        imageAlt: item.imageAlt,
+        caption: item.caption
+          ? { title: item.caption.title, subtitle: item.caption.subtitle }
+          : undefined,
+      })),
     },
   ],
   meta: {

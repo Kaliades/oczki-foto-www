@@ -6,11 +6,13 @@ import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
+import { HomeGalleryBlock } from '@/blocks/HomeGallery/Component'
 import { HomeHeroBlock } from '@/blocks/HomeHero/Component'
 import { IntroQuoteBlock } from '@/blocks/IntroQuote/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { OfferShowcaseBlock } from '@/blocks/OfferShowcase/Component'
 import { ProcessStepsBlock } from '@/blocks/ProcessSteps/Component'
+import { TestimonialBlock } from '@/blocks/Testimonial/Component'
 
 type LayoutBlock = Page['layout'][number]
 type LayoutBlockType = LayoutBlock['blockType']
@@ -27,11 +29,13 @@ const blockComponents: Record<LayoutBlockType, React.ComponentType<never>> = {
   content: ContentBlock as React.ComponentType<never>,
   cta: CallToActionBlock as React.ComponentType<never>,
   formBlock: FormBlock as React.ComponentType<never>,
+  homeGallery: HomeGalleryBlock as React.ComponentType<never>,
   homeHero: HomeHeroBlock as React.ComponentType<never>,
   introQuote: IntroQuoteBlock as React.ComponentType<never>,
   mediaBlock: MediaBlock as React.ComponentType<never>,
   offerShowcase: OfferShowcaseBlock as React.ComponentType<never>,
   processSteps: ProcessStepsBlock as React.ComponentType<never>,
+  testimonial: TestimonialBlock as React.ComponentType<never>,
 }
 
 /**
@@ -40,10 +44,12 @@ const blockComponents: Record<LayoutBlockType, React.ComponentType<never>> = {
  * background between sections.
  */
 const fullBleedBlocks = new Set<LayoutBlockType>([
+  'homeGallery',
   'homeHero',
   'introQuote',
   'offerShowcase',
   'processSteps',
+  'testimonial',
 ])
 
 export const RenderBlocks: React.FC<{

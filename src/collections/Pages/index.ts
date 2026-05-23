@@ -6,6 +6,7 @@ import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
+import { HomeGallery } from '../../blocks/HomeGallery/config'
 import { HomeHero } from '../../blocks/HomeHero/config'
 import { IntroQuote } from '../../blocks/IntroQuote/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
@@ -82,6 +83,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 IntroQuote,
                 OfferShowcase,
                 ProcessSteps,
+                HomeGallery,
                 CallToAction,
                 Content,
                 MediaBlock,

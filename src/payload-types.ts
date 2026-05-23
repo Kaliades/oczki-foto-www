@@ -212,6 +212,7 @@ export interface Page {
     | IntroQuoteBlock
     | OfferShowcaseBlock
     | ProcessStepsBlock
+    | HomeGalleryBlock
     | CallToActionBlock
     | ContentBlock
     | MediaBlock
@@ -649,6 +650,55 @@ export interface ProcessStepsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'processSteps';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeGalleryBlock".
+ */
+export interface HomeGalleryBlock {
+  heading: {
+    start: string;
+    emphasis: string;
+  };
+  description: string;
+  /**
+   * Wyświetlany jako "→" link w sekcji nagłówka.
+   */
+  cta: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+  };
+  /**
+   * Środkowy slot zawsze jest renderowany jako duże zdjęcie z podpisem. Pozostałe są małymi miniaturami.
+   */
+  items?:
+    | {
+        image: number | Media;
+        imageAlt: string;
+        /**
+         * Te pola są widoczne tylko gdy ten slot jest renderowany jako duży (środkowy). Dla pozostałych są ignorowane.
+         */
+        caption?: {
+          title?: string | null;
+          subtitle?: string | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homeGallery';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1349,6 +1399,7 @@ export interface PagesSelect<T extends boolean = true> {
         introQuote?: T | IntroQuoteBlockSelect<T>;
         offerShowcase?: T | OfferShowcaseBlockSelect<T>;
         processSteps?: T | ProcessStepsBlockSelect<T>;
+        homeGallery?: T | HomeGalleryBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -1489,6 +1540,43 @@ export interface ProcessStepsBlockSelect<T extends boolean = true> {
         id?: T;
       };
   showWaxStamp?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeGalleryBlock_select".
+ */
+export interface HomeGalleryBlockSelect<T extends boolean = true> {
+  heading?:
+    | T
+    | {
+        start?: T;
+        emphasis?: T;
+      };
+  description?: T;
+  cta?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+      };
+  items?:
+    | T
+    | {
+        image?: T;
+        imageAlt?: T;
+        caption?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+            };
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
