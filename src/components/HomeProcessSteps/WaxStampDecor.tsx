@@ -1,25 +1,42 @@
-import Image from 'next/image'
-
 type WaxStampDecorProps = {
   className?: string
 }
 
 /**
- * Decorative pink wax stamp with two layered floral vector overlays.
+ * Decorative pink wax stamp with a layered floral overlay (mix-blend-lighten
+ * gives the white flower silhouette on the rose-coloured wax).
  *
- * In Figma the whole composition is rotated 90°. Sizes per breakpoint:
- * - Desktop ≥ lg: 180 px, anchored top-right.
- * - Tablet md..lg: 148 px, centered above the section.
- * - Mobile < md: 112 px, centered above the section.
+ * Layout reproduces Figma node 6781:17291 1:1 — the 180 px frame is the unit,
+ * everything inside is positioned in percentages so the same composition
+ * scales down for tablet (148 px) and mobile (112 px).
  *
- * Pure visual decoration, so it carries `aria-hidden`.
+ *   stamp PNG                fill of wrapper
+ *   floral overlay  →        24.79% / 26.41% offset, 44.97% × 46.85% size
+ *     (mix-blend-lighten)
+ *     └─ rotate(-41.31°) inner box (39.98 × 77.143 portrait)
+ *         └─ two stacked vector SVGs (one main, one as the highlight)
+ *
+ * The wrapper itself is rotated 90° per the Figma source and sized per
+ * breakpoint. Pure decoration → `aria-hidden`.
+ *
+ * Native `<img>` is intentional: `next/image` with `fill` strips inline SVG
+ * styles (the floral artwork loses its `mix-blend-mode:lighten` and
+ * `var(--fill-0)` colour, leaving the stamp visually incomplete).
  */
 export const WaxStampDecor = ({ className }: WaxStampDecorProps) => {
+  // Position + size of the floral overlay inside the stamp, expressed as
+  // percentages of the 180 px Figma frame so the layout stays 1:1 across
+  // all three breakpoints.
+  const FLORAL_LEFT_PCT = (44.63 / 180) * 100 // 24.794%
+  const FLORAL_TOP_PCT = (47.54 / 180) * 100 // 26.411%
+  const FLORAL_WIDTH_PCT = (80.953 / 180) * 100 // 44.974%
+  const FLORAL_HEIGHT_PCT = (84.339 / 180) * 100 // 46.855%
+
   return (
     <div
       aria-hidden="true"
       className={[
-        'pointer-events-none absolute left-1/2 -translate-x-1/2 -top-[57px] flex h-28 w-28 items-center justify-center md:-top-[75px] md:h-[148px] md:w-[148px] lg:left-auto lg:right-[14%] lg:-top-[91px] lg:h-[180px] lg:w-[180px] lg:translate-x-0',
+        'pointer-events-none absolute left-1/2 -translate-x-1/2 -top-[57px] z-10 h-28 w-28 md:-top-[75px] md:h-[148px] md:w-[148px] lg:left-auto lg:right-[14%] lg:-top-[91px] lg:h-[180px] lg:w-[180px] lg:translate-x-0',
         className,
       ]
         .filter(Boolean)
@@ -30,32 +47,34 @@ export const WaxStampDecor = ({ className }: WaxStampDecorProps) => {
       }}
     >
       <div className="relative h-full w-full rotate-90">
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src="/figma/process-wax-stamp.png"
           alt=""
-          fill
-          sizes="(min-width: 1024px) 180px, (min-width: 768px) 148px, 112px"
-          className="object-cover"
-          priority={false}
+          className="absolute inset-0 h-full w-full object-cover"
         />
         <div
-          className="absolute left-1/2 top-1/2 h-[47%] w-[45%] -translate-x-1/2 -translate-y-1/2"
-          style={{ mixBlendMode: 'lighten' }}
+          className="absolute flex items-center justify-center"
+          style={{
+            left: `${FLORAL_LEFT_PCT}%`,
+            top: `${FLORAL_TOP_PCT}%`,
+            width: `${FLORAL_WIDTH_PCT}%`,
+            height: `${FLORAL_HEIGHT_PCT}%`,
+            mixBlendMode: 'lighten',
+          }}
         >
-          <div className="relative h-full w-full -rotate-[41.31deg]">
-            <Image
-              src="/figma/process-wax-stamp-flower-2.svg"
-              alt=""
-              fill
-              sizes="80px"
-              className="object-contain"
-            />
-            <Image
+          <div className="relative h-[91.5%] w-[49.4%] -rotate-[41.31deg]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/figma/process-wax-stamp-flower-1.svg"
               alt=""
-              fill
-              sizes="80px"
-              className="object-contain"
+              className="absolute h-[102.6%] w-[105%] -inset-x-[2.5%] -inset-y-[1.3%] max-w-none"
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/figma/process-wax-stamp-flower-2.svg"
+              alt=""
+              className="absolute inset-0 h-full w-full max-w-none"
             />
           </div>
         </div>

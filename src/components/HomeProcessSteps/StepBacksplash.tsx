@@ -30,7 +30,7 @@ export const StepBacksplash = ({ rotation, className }: StepBacksplashProps) => 
     <div
       aria-hidden="true"
       className={[
-        'absolute inset-x-3 inset-y-2 origin-center overflow-hidden bg-[var(--oczki-secondary-400)]',
+        'absolute inset-x-3 inset-y-2 origin-center overflow-hidden rounded-[4px] bg-[var(--oczki-secondary-400)]',
         className,
       ]
         .filter(Boolean)
