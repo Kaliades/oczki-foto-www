@@ -1,0 +1,37 @@
+import Image from 'next/image'
+
+import type { FooterGalleryImage } from './constants'
+
+type FooterGalleryGridProps = {
+  images: readonly FooterGalleryImage[]
+}
+
+/**
+ * Six-up preview grid at the bottom of the footer (Figma `7091:3713`).
+ *
+ * Desktop: single row, fixed tile widths (211 / 212 px) with 10 px gap.
+ * Tablet: three columns × two rows.
+ * Mobile: two columns × three rows.
+ */
+export function FooterGalleryGrid({ images }: FooterGalleryGridProps) {
+  return (
+    <div className="w-full">
+      <ul className="grid grid-cols-2 gap-2.5 md:grid-cols-3 lg:flex lg:gap-2.5">
+        {images.map((image, index) => (
+          <li
+            className="relative h-[140px] w-full overflow-hidden md:h-[180px] lg:h-[262px] lg:w-[211px] lg:shrink-0 [&:nth-child(5)]:lg:w-[212px]"
+            key={`${image.src}-${index}`}
+          >
+            <Image
+              alt={image.alt}
+              className="object-cover"
+              fill
+              sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 211px"
+              src={image.src}
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}

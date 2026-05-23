@@ -6,11 +6,13 @@ import localFont from 'next/font/local'
 import { GeistMono } from 'geist/font/mono'
 import React from 'react'
 
+import { ConditionalSiteFooter } from '@/components/ConditionalSiteFooter'
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
+import { defaultTheme } from '@/providers/Theme/shared'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 
@@ -94,15 +96,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         dancingScript.variable,
         GeistMono.variable,
       )}
+      data-theme={defaultTheme}
       lang="pl"
       suppressHydrationWarning
     >
       <head>
-        <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
       <body>
+        <InitTheme />
         <Providers>
           <AdminBar
             adminBarProps={{
@@ -112,7 +115,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
           <Header />
           {children}
-          <Footer />
+          <ConditionalSiteFooter>
+            <Footer />
+          </ConditionalSiteFooter>
         </Providers>
       </body>
     </html>

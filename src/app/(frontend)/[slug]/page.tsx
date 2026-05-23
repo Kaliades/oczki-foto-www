@@ -12,8 +12,14 @@ import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
-import { HomeOfferProcessSteps } from '@/components/HomeOfferProcessSteps/HomeOfferProcessSteps'
-import { homeOfferProcessStepsDefaults } from '@/components/HomeOfferProcessSteps/constants'
+import { HomeFooterNewsletter } from '@/components/HomeFooterNewsletter/HomeFooterNewsletter'
+import { homeFooterNewsletterDefaults } from '@/components/HomeFooterNewsletter/constants'
+import { HomeInstagram } from '@/components/HomeInstagram/HomeInstagram'
+import { homeInstagramDefaults } from '@/components/HomeInstagram/constants'
+import { HomeAbout } from '@/components/HomeAbout/HomeAbout'
+import { homeAboutDefaults } from '@/components/HomeAbout/constants'
+import { HomeCta } from '@/components/HomeCta/HomeCta'
+import { homeCtaDefaults } from '@/components/HomeCta/constants'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -70,7 +76,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   const isHome = decodedSlug === 'home'
 
   return (
-    <article className={isHome ? 'pb-24' : 'pt-16 pb-24'}>
+    <article className={isHome ? '' : 'pt-16 pb-24'}>
       <PageClient />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
@@ -79,11 +85,18 @@ export default async function Page({ params: paramsPromise }: Args) {
 
       <RenderHero {...hero} />
       <RenderBlocks blocks={layout} />
-      {/* Section #6 — "Krok po kroku do pięknych zdjęć". Built in
-          isolation (same pattern as `HomeGallery`); the Payload block
-          wrapper is intentionally deferred. Rendered here only on the
-          home route until the block is wired up. */}
-      {isHome ? <HomeOfferProcessSteps data={homeOfferProcessStepsDefaults} /> : null}
+      {/* Section #10 — final booking CTA. Built in isolation; Payload block
+          wrapper deferred. Rendered here only on the home route. */}
+      {isHome ? <HomeCta data={homeCtaDefaults} /> : null}
+      {/* Section #9 — Instagram feed preview. Built in isolation until the
+          Payload block wrapper lands (same pattern as OfferProcessSteps). */}
+      {isHome ? <HomeInstagram data={homeInstagramDefaults} /> : null}
+      {/* Section #8 — "Hej, jestem Asia" bio block. Built in isolation
+          (same pattern as `HomeGallery`); Payload block deferred. */}
+      {isHome ? <HomeAbout data={homeAboutDefaults} /> : null}
+      {/* Section #11 — Newsletter + footer. Built in isolation until the
+          Payload block wrapper lands (same pattern as HomeInstagram). */}
+      {isHome ? <HomeFooterNewsletter data={homeFooterNewsletterDefaults} /> : null}
     </article>
   )
 }
