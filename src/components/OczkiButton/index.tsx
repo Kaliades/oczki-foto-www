@@ -55,16 +55,36 @@ export function OczkiButton({
     return (
       <Link
         className={cn(
-          'oczki-body-m group inline-flex h-11 items-center justify-center gap-1 text-[var(--oczki-primary-900)] transition-colors hover:text-[var(--oczki-primary-700)]',
+          'group inline-flex h-11 items-start justify-center pb-[10px] pt-[11px] text-[var(--oczki-primary-900)] transition-colors hover:text-[var(--oczki-primary-700)]',
           className,
         )}
         href={href}
       >
-        <span className="border-b border-transparent pb-1 transition-colors group-hover:border-current">
-          {children}
-        </span>
-        <span aria-hidden="true" className="pb-1">
-          {'->'}
+        <span className="flex flex-col items-start">
+          <span className="flex items-start gap-1 pb-1">
+            <span className="oczki-body-m whitespace-nowrap">{children}</span>
+            <span className="flex w-[14px] shrink-0 flex-col items-start pt-[5px]">
+              <span className="flex flex-col items-start px-[2px] py-[3px]">
+                <svg
+                  aria-hidden="true"
+                  className="block h-[7.719px] w-[10.111px]"
+                  fill="none"
+                  viewBox="0 0 10.3522 7.71875"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0 3.88889H10.1111M6.22222 7.71875C6.22222 6 10.1111 3.88889 10.1111 3.88889C10.1111 3.88889 6.22222 1.75 6.22222 0"
+                    stroke="currentColor"
+                    strokeLinejoin="bevel"
+                  />
+                </svg>
+              </span>
+            </span>
+          </span>
+          <span
+            aria-hidden="true"
+            className="block h-px w-full origin-left scale-x-0 bg-current transition-transform duration-300 group-hover:scale-x-100"
+          />
         </span>
       </Link>
     )
