@@ -73,13 +73,13 @@ export function OczkiButton({
   return (
     <Link
       className={cn(
-        'group inline-flex h-11 items-stretch justify-center text-[var(--oczki-primary-900)]',
+        'group inline-flex h-11 items-stretch justify-center gap-0 text-[var(--oczki-primary-900)]',
         className,
       )}
       href={href}
     >
       <ButtonSide side="left" />
-      <span className="oczki-body-m-medium flex min-w-0 flex-1 items-center justify-center bg-[var(--oczki-primary-500)] px-1 transition-colors group-hover:bg-[var(--oczki-primary-400)]">
+      <span className="oczki-body-m-medium relative z-[1] -mx-px flex min-w-0 flex-1 items-center justify-center bg-[var(--oczki-primary-500)] px-1 transition-colors group-hover:bg-[var(--oczki-primary-400)]">
         {children}
       </span>
       <ButtonSide side="right" />

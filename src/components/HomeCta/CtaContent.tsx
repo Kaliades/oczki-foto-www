@@ -7,15 +7,14 @@ type CtaContentProps = {
   body: string
   cta: SectionLink
   headingId?: string
+  variant: 'desktop' | 'tablet' | 'mobile'
 }
 
 /**
- * Centred copy + button inside the ornate CTA frame.
+ * Copy + CTA — Figma 7105:8641 / 8604 / 8567.
  *
- * Figma text container (7105:8642 / 7105:8605 / 7105:8568):
- *   - desktop: px-336 py-64 inside 1270×370 container
- *   - tablet:  p-64 inside 608×362 container
- *   - mobile:  px-16 pt-24 inside 328×345 container (offset within 593 frame shell)
+ * Tablet (8605): text 480 px, heading/body gap 16 px, stack→button gap 36 px,
+ * heading 36 px (oczki-heading-l), body 16 px (oczki-body-l).
  */
 export const CtaContent = ({
   headingPlain,
@@ -23,12 +22,25 @@ export const CtaContent = ({
   body,
   cta,
   headingId = 'home-cta-heading',
+  variant,
 }: CtaContentProps) => {
   const href = resolveLinkHref(cta)
 
+  const textClusterClassName =
+    variant === 'mobile'
+      ? 'flex w-full max-w-[296px] flex-col items-start gap-[10px]'
+      : variant === 'tablet'
+        ? 'flex w-full max-w-[480px] flex-col items-center gap-4'
+        : 'flex w-full max-w-[598px] flex-col items-start gap-4'
+
+  const bodyClassName =
+    variant === 'desktop'
+      ? 'oczki-body-l w-[490px] max-w-full text-center text-[var(--oczki-primary-700)]'
+      : 'oczki-body-l w-full text-center text-[var(--oczki-primary-700)]'
+
   return (
-    <div className="relative z-10 flex w-full flex-col items-center gap-9 px-4 pb-6 pt-[163px] md:px-16 md:py-16 md:pt-16 lg:gap-9 lg:px-[336px] lg:py-16">
-      <div className="flex w-full max-w-[296px] flex-col items-center gap-[10px] md:max-w-[480px] md:gap-4 lg:max-w-[598px]">
+    <>
+      <div className={textClusterClassName}>
         <h2
           className="oczki-heading-l w-full text-center text-[var(--oczki-primary-800)]"
           id={headingId}
@@ -36,16 +48,23 @@ export const CtaContent = ({
           {headingPlain}
           <em className="italic">{headingEmphasis}</em>?
         </h2>
-        <p className="oczki-body-l w-full text-center text-[var(--oczki-primary-700)] lg:max-w-[490px]">
-          {body}
-        </p>
+        <div className="flex w-full flex-col items-center">
+          <p className={bodyClassName}>{body}</p>
+        </div>
       </div>
 
       {href && cta.label ? (
-        <OczkiButton className="w-full md:w-auto" href={href}>
+        <OczkiButton
+          className={
+            variant === 'mobile'
+              ? 'w-[296px] max-w-full shrink-0'
+              : 'shrink-0 self-center'
+          }
+          href={href}
+        >
           {cta.label}
         </OczkiButton>
       ) : null}
-    </div>
+    </>
   )
 }

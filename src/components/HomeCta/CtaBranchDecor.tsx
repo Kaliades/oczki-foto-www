@@ -1,44 +1,198 @@
 import Image from 'next/image'
 
+import {
+  CTA_TABLET_DECOR_LEFT_IN_CONTENT,
+  CTA_TABLET_DECOR_RIGHT_IN_CONTENT,
+} from './constants'
+
 type CtaBranchDecorProps = {
-  /** Mirror the branch horizontally (right-hand side on desktop). */
-  mirrored?: boolean
-  /** Flip the whole stack vertically (bottom ornament on mobile). */
-  flipped?: boolean
-  className?: string
+  variant:
+    | 'desktop-left'
+    | 'desktop-right'
+    | 'tablet-left'
+    | 'tablet-right'
+    | 'mobile-top'
+    | 'mobile-bottom'
+}
+
+/** Figma 7105:8573 / 8581 clip bbox — 116.8×63.913 px in the top/bottom scallop. */
+const MOBILE_DECOR_CLIP_CLASS = 'h-[63.913px] w-[116.8px]'
+
+const HeartIcon = () => (
+  <div className="flex size-3 shrink-0 items-center justify-center">
+    <div className="-rotate-90">
+      <Image
+        alt=""
+        className="size-3 max-w-none"
+        height={12}
+        src="/figma/cta-heart.svg"
+        width={12}
+      />
+    </div>
+  </div>
+)
+
+const DesktopBranch = () => (
+  <div className="flex h-9 w-20 shrink-0 items-center justify-center">
+    <div className="-scale-y-100 rotate-90">
+      <Image
+        alt=""
+        className="h-20 w-9 max-w-none"
+        height={80}
+        src="/figma/cta-branch.svg"
+        width={36}
+      />
+    </div>
+  </div>
+)
+
+const TabletBranch = () => (
+  <div className="flex h-[29px] w-[64.357px] shrink-0 items-center justify-center">
+    <div className="-scale-y-100 rotate-90">
+      <Image
+        alt=""
+        className="h-[64.357px] w-[29px] max-w-none"
+        height={64}
+        src="/figma/cta-branch.svg"
+        width={29}
+      />
+    </div>
+  </div>
+)
+
+/** Figma 7105:8610 / 8618 — asymmetric vertical rhythm inside 64×117 bbox. */
+const TabletStack = ({ mirrored }: { mirrored?: boolean }) => {
+  const stack = (
+    <div className="flex h-[117px] w-[64.357px] flex-col items-center pt-3">
+      <HeartIcon />
+      <div className="mt-5">
+        <TabletBranch />
+      </div>
+      <div className="mt-8">
+        <HeartIcon />
+      </div>
+    </div>
+  )
+
+  if (mirrored) {
+    return <div className="-scale-y-100 rotate-180">{stack}</div>
+  }
+
+  return stack
+}
+
+/** Figma 8577 — vertical branch 28.8×63.913 flanked by hearts, gap 32 px (116.8 px row). */
+const MobileDecorRow = () => (
+  <div className="flex h-[63.913px] w-[116.8px] items-center justify-center gap-8">
+    <HeartIcon />
+    <div className="flex h-[63.913px] w-[28.8px] shrink-0 items-center justify-center">
+      <Image
+        alt=""
+        className="h-[63.913px] w-[28.8px] max-w-none"
+        height={64}
+        src="/figma/cta-branch.svg"
+        width={29}
+      />
+    </div>
+    <HeartIcon />
+  </div>
+)
+
+const DesktopStack = ({ mirrored }: { mirrored?: boolean }) => {
+  const stack = (
+    <div className="flex flex-col items-center gap-8">
+      <HeartIcon />
+      <DesktopBranch />
+      <HeartIcon />
+    </div>
+  )
+
+  if (mirrored) {
+    return <div className="-scale-y-100 rotate-180">{stack}</div>
+  }
+
+  return stack
 }
 
 /**
- * Heart–branch–heart ornament sitting inside the ornate CTA frame.
- *
- * Figma stack (7105:8655 / 7105:8647 / 7105:8573): vertical auto-layout with
- * 32 px between the 12 px hearts and the branch vector. Desktop branch slot
- * is 80 × 36 (vector native 36 × 80, rotated 90°).
+ * Heart–branch–heart ornaments — Figma 7105:8655 / 8647 / 8610 / 8618 / 8573 / 8581.
  */
-export const CtaBranchDecor = ({ mirrored = false, flipped = false, className }: CtaBranchDecorProps) => {
+export const CtaBranchDecor = ({ variant }: CtaBranchDecorProps) => {
+  if (variant === 'desktop-left') {
+    return (
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-[116px] top-[122.6px]"
+      >
+        <DesktopStack />
+      </div>
+    )
+  }
+
+  if (variant === 'desktop-right') {
+    return (
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-[1076px] top-1/2 flex -translate-y-1/2 items-center justify-center"
+      >
+        <div className="-scale-y-100 rotate-180">
+          <DesktopStack />
+        </div>
+      </div>
+    )
+  }
+
+  if (variant === 'tablet-left') {
+    return (
+      <div
+        aria-hidden
+        className="pointer-events-none absolute z-[5]"
+        style={{
+          left: CTA_TABLET_DECOR_LEFT_IN_CONTENT.left,
+          top: CTA_TABLET_DECOR_LEFT_IN_CONTENT.top,
+        }}
+      >
+        <TabletStack />
+      </div>
+    )
+  }
+
+  if (variant === 'tablet-right') {
+    return (
+      <div
+        aria-hidden
+        className="pointer-events-none absolute z-[5]"
+        style={{
+          left: CTA_TABLET_DECOR_RIGHT_IN_CONTENT.left,
+          top: CTA_TABLET_DECOR_RIGHT_IN_CONTENT.top,
+        }}
+      >
+        <div className="-scale-y-100 rotate-180">
+          <TabletStack mirrored />
+        </div>
+      </div>
+    )
+  }
+
+  if (variant === 'mobile-top') {
+    return (
+      <div
+        aria-hidden
+        className={`pointer-events-none absolute left-1/2 top-[50.4px] -translate-x-1/2 overflow-hidden ${MOBILE_DECOR_CLIP_CLASS}`}
+      >
+        <MobileDecorRow />
+      </div>
+    )
+  }
+
   return (
     <div
-      aria-hidden="true"
-      className={[
-        'pointer-events-none flex flex-col items-center gap-8',
-        mirrored ? '-scale-x-100' : '',
-        flipped ? '-scale-y-100' : '',
-        className,
-      ]
-        .filter(Boolean)
-        .join(' ')}
+      aria-hidden
+      className={`pointer-events-none absolute bottom-[13.7px] left-1/2 -translate-x-1/2 overflow-hidden ${MOBILE_DECOR_CLIP_CLASS}`}
     >
-      <Image alt="" className="size-3 shrink-0" height={12} src="/figma/cta-heart.svg" width={12} />
-      <div className="flex h-9 w-20 items-center justify-center">
-        <Image
-          alt=""
-          className="h-20 w-9 max-w-none rotate-90"
-          height={80}
-          src="/figma/cta-branch.svg"
-          width={36}
-        />
+      <div className="-scale-y-100">
+        <MobileDecorRow />
       </div>
-      <Image alt="" className="size-3 shrink-0" height={12} src="/figma/cta-heart.svg" width={12} />
     </div>
   )
 }

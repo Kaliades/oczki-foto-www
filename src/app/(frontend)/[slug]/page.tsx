@@ -85,15 +85,15 @@ export default async function Page({ params: paramsPromise }: Args) {
 
       <RenderHero {...hero} />
       <RenderBlocks blocks={layout} />
-      {/* Section #10 — final booking CTA. Built in isolation; Payload block
-          wrapper deferred. Rendered here only on the home route. */}
-      {isHome ? <HomeCta data={homeCtaDefaults} /> : null}
-      {/* Section #9 — Instagram feed preview. Built in isolation until the
-          Payload block wrapper lands (same pattern as OfferProcessSteps). */}
-      {isHome ? <HomeInstagram data={homeInstagramDefaults} /> : null}
       {/* Section #8 — "Hej, jestem Asia" bio block. Built in isolation
           (same pattern as `HomeGallery`); Payload block deferred. */}
       {isHome ? <HomeAbout data={homeAboutDefaults} /> : null}
+      {/* Section #9 — Instagram feed preview. Built in isolation until the
+          Payload block wrapper lands (same pattern as OfferProcessSteps). */}
+      {isHome ? <HomeInstagram data={homeInstagramDefaults} /> : null}
+      {/* Section #10 — final booking CTA. Built in isolation; Payload block
+          wrapper deferred. Rendered here only on the home route. */}
+      {isHome ? <HomeCta data={homeCtaDefaults} /> : null}
       {/* Section #11 — Newsletter + footer. Built in isolation until the
           Payload block wrapper lands (same pattern as HomeInstagram). */}
       {isHome ? <HomeFooterNewsletter data={homeFooterNewsletterDefaults} /> : null}

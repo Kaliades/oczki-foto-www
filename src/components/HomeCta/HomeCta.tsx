@@ -1,4 +1,9 @@
-import { HOME_CTA_FIGMA_NODES, type HomeCtaData } from './constants'
+import {
+  CTA_TABLET_CONTENT_IN_FRAME,
+  CTA_TABLET_FRAME_CLUSTER,
+  HOME_CTA_FIGMA_NODES,
+  type HomeCtaData,
+} from './constants'
 import { CtaBranchDecor } from './CtaBranchDecor'
 import { CtaContent } from './CtaContent'
 import { CtaOrnateFrame } from './CtaOrnateFrame'
@@ -7,16 +12,101 @@ type HomeCtaProps = {
   data: HomeCtaData
 }
 
+type CtaContentBlockProps = {
+  body: string
+  cta: HomeCtaData['cta']
+  headingEmphasis: string
+  headingPlain: string
+}
+
+const CTA_DESKTOP_SHELL_CLASS =
+  'relative mx-auto hidden h-[594px] w-full max-w-[1366px] min-w-[1366px] flex-col overflow-x-clip px-12 pb-32 pt-24 min-[1366px]:flex'
+
+const CTA_TABLET_SHELL_CLASS =
+  'relative mx-auto hidden h-[554px] w-full max-w-[768px] flex-col overflow-visible px-12 pt-24 md:max-[1365px]:flex'
+
 /**
- * Final homepage CTA — "Czy to jest ten moment, w którym robimy coś pięknego?"
- *
- * Figma references (always desktop / tablet / mobile in parallel):
- *   - Desktop: {@link HOME_CTA_FIGMA_NODES.desktopFrame}
- *   - Tablet:  {@link HOME_CTA_FIGMA_NODES.tabletFrame}
- *   - Mobile:  {@link HOME_CTA_FIGMA_NODES.mobileFrame}
+ * Desktop artboard — Figma 7105:8981.
+ */
+const CtaDesktopShell = ({
+  body,
+  cta,
+  headingEmphasis,
+  headingPlain,
+}: CtaContentBlockProps) => (
+  <>
+    <CtaOrnateFrame variant="desktop" />
+    <div className="relative flex min-h-0 flex-1 flex-col items-center gap-9 px-[336px] py-16">
+      <CtaBranchDecor variant="desktop-left" />
+      <CtaBranchDecor variant="desktop-right" />
+      <CtaContent
+        body={body}
+        cta={cta}
+        headingEmphasis={headingEmphasis}
+        headingPlain={headingPlain}
+        variant="desktop"
+      />
+    </div>
+  </>
+)
+
+/**
+ * Tablet — graphic frame is the root; copy + ornaments live inside 8604 relative to it.
+ */
+const CtaTabletShell = ({
+  body,
+  cta,
+  headingEmphasis,
+  headingPlain,
+}: CtaContentBlockProps) => (
+  <div
+    className="absolute overflow-visible"
+    style={{
+      height: CTA_TABLET_FRAME_CLUSTER.height,
+      left: CTA_TABLET_FRAME_CLUSTER.left,
+      top: CTA_TABLET_FRAME_CLUSTER.top,
+      width: CTA_TABLET_FRAME_CLUSTER.width,
+    }}
+  >
+    <div className="relative size-full">
+      <CtaOrnateFrame variant="tablet" />
+      <div
+        className="absolute overflow-visible"
+        style={{
+          height: CTA_TABLET_CONTENT_IN_FRAME.height,
+          left: CTA_TABLET_CONTENT_IN_FRAME.left,
+          top: CTA_TABLET_CONTENT_IN_FRAME.top,
+          width: CTA_TABLET_CONTENT_IN_FRAME.width,
+        }}
+      >
+        <CtaBranchDecor variant="tablet-left" />
+        <CtaBranchDecor variant="tablet-right" />
+        <div className="relative z-10 flex flex-col items-center gap-9 px-16 pt-16">
+          <CtaContent
+            body={body}
+            cta={cta}
+            headingEmphasis={headingEmphasis}
+            headingPlain={headingPlain}
+            variant="tablet"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+)
+
+/**
+ * Final homepage CTA — Figma 7105:8981 / 7118:9246 / 7105:14226.
  */
 export const HomeCta = ({ data }: HomeCtaProps) => {
   const { heading, body, cta } = data
+
+  const contentProps = {
+    body,
+    cta,
+    headingEmphasis: heading.emphasis,
+    headingPlain: heading.plain,
+  }
 
   return (
     <section
@@ -24,35 +114,27 @@ export const HomeCta = ({ data }: HomeCtaProps) => {
       className="w-full bg-[var(--oczki-primary-100)] [font-family:var(--font-oczki-body)]"
       data-figma-node={HOME_CTA_FIGMA_NODES.desktopFrame}
     >
-      <div className="relative mx-auto w-full max-w-[1366px] px-4 pb-[25px] pt-[25px] md:px-20 md:pb-24 md:pt-24 lg:px-12 lg:pb-32 lg:pt-24">
-        {/* Card shell — Figma container 7105:8641 / 7105:8604 / 7105:8567 */}
-        <div className="relative mx-auto min-h-[593px] w-full max-w-[328px] md:h-[362px] md:min-h-0 md:max-w-[608px] lg:mx-0 lg:h-[370px] lg:max-w-none">
-          <CtaOrnateFrame />
-
-          {/* Mobile — top / bottom ornaments centred in frame ears */}
-          <CtaBranchDecor className="absolute left-1/2 top-[75px] -translate-x-1/2 md:hidden" />
-          <CtaBranchDecor
-            className="absolute bottom-[75px] left-1/2 -translate-x-1/2 md:hidden"
-            flipped
-          />
-
-          {/* Tablet — left bracket only (7105:8610 at x = −29) */}
-          <CtaBranchDecor className="absolute -left-[29px] top-1/2 hidden -translate-y-1/2 md:flex lg:hidden" />
-
-          {/* Desktop — left + right ornaments (7105:8655 / 7105:8647) */}
-          <CtaBranchDecor className="absolute left-[116px] top-[122px] hidden lg:flex" />
-          <CtaBranchDecor
-            className="absolute right-[34px] top-1/2 hidden -translate-y-1/2 lg:flex"
-            mirrored
-          />
-
-          <CtaContent
-            body={body}
-            cta={cta}
-            headingEmphasis={heading.emphasis}
-            headingPlain={heading.plain}
-          />
+      {/* Mobile — 360×673 (7105:14226) */}
+      <div className="relative mx-auto h-[673px] w-full max-w-[360px] overflow-x-clip md:hidden">
+        <div className="pointer-events-none absolute left-4 top-[25px] z-0 h-[593px] w-[328px] overflow-hidden">
+          <CtaOrnateFrame variant="mobile" />
+          <CtaBranchDecor variant="mobile-top" />
+          <CtaBranchDecor variant="mobile-bottom" />
         </div>
+
+        <div className="absolute left-4 top-[164px] z-10 flex h-[345px] w-[328px] flex-col items-center gap-9 px-4 pt-6">
+          <CtaContent {...contentProps} variant="mobile" />
+        </div>
+      </div>
+
+      {/* Tablet — 7118:9246 */}
+      <div className={CTA_TABLET_SHELL_CLASS} data-figma-node={HOME_CTA_FIGMA_NODES.tabletFrame}>
+        <CtaTabletShell {...contentProps} />
+      </div>
+
+      {/* Desktop — 1366×594 (7105:8981) */}
+      <div className={CTA_DESKTOP_SHELL_CLASS}>
+        <CtaDesktopShell {...contentProps} />
       </div>
     </section>
   )
