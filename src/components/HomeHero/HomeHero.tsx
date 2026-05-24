@@ -27,8 +27,8 @@ export function HomeHero({ data }: HomeHeroProps) {
           primaryCta={primaryCta}
           secondaryCta={secondaryCta}
         />
-        {showScallop ? <HeroScallopFrame /> : null}
       </div>
+      {showScallop ? <HeroScallopFrame /> : null}
     </section>
   )
 }
