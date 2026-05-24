@@ -39,7 +39,7 @@ export const homeAboutDefaults: HomeAboutData = {
     'Fotografuję od lat, ale najważniejsze jest dla mnie nie to jak, tylko kogo mam przed obiektywem. Dlatego moje sesje są spokojne, naturalne i prowadzone tak, żebyś nie musiała nic udawać ani „umieć”. Jeśli szukasz naturalnych zdjęć, w których widać prawdziwe emocje — jesteś w dobrym miejscu.',
   ],
   portrait: {
-    src: '/figma/about-portrait.png',
+    src: '/figma/about-portrait-source.png',
     alt: 'Asia — fotografka Oczki Fotografia z aparatem w dłoni',
   },
   cta: {

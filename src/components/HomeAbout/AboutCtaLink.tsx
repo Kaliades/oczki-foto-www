@@ -15,7 +15,7 @@ export const AboutCtaLink = ({ cta }: AboutCtaLinkProps) => {
 
   return (
     <Link
-      className="group relative z-[2] inline-flex h-11 w-full shrink-0 items-start justify-center pb-[10px] pt-[11px] md:mx-auto md:w-auto lg:mx-auto"
+      className="group relative inline-flex h-11 w-full shrink-0 items-start justify-center pb-[10px] pt-[11px] md:mx-auto md:w-auto lg:mx-auto"
       href={href}
       rel={cta.newTab ? 'noopener noreferrer' : undefined}
       target={cta.newTab ? '_blank' : undefined}
