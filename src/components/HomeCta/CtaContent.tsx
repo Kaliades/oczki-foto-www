@@ -30,7 +30,7 @@ export const CtaContent = ({
     variant === 'mobile'
       ? 'flex w-full max-w-[296px] flex-col items-start gap-[10px]'
       : variant === 'tablet'
-        ? 'flex w-full max-w-[480px] flex-col items-center gap-4'
+        ? 'flex w-full max-w-[416px] flex-col items-center gap-4'
         : 'flex w-full max-w-[598px] flex-col items-start gap-4'
 
   const bodyClassName =

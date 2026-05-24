@@ -1,4 +1,9 @@
-import { HOME_INSTAGRAM_FIGMA_NODES, type HomeInstagramData } from './constants'
+import {
+  HOME_INSTAGRAM_FIGMA_NODES,
+  INSTAGRAM_SHELL_PADDING_BOTTOM,
+  INSTAGRAM_SHELL_PADDING_TOP,
+  type HomeInstagramData,
+} from './constants'
 import { InstagramFeedGrid } from './InstagramFeedGrid'
 import { InstagramSectionHeader } from './InstagramSectionHeader'
 import { resolveLinkHref } from '@/utilities/resolveLinkHref'
@@ -19,8 +24,8 @@ type HomeInstagramProps = {
  * Shell pattern (see `responsive-layout.mdc`):
  *   - Outer `<section>` carries the full-bleed cream background.
  *   - Inner `<div>` carries the 1366 px cap, `mx-auto` centring, and the
- *     Figma paddings (`px-8 py-12`) plus the vertical `gap-6` (24 px)
- *     between the header row and the feed grid.
+ *     Figma paddings (`px-8`, `pt-12`) plus extra bottom band before HomeCta.
+ *     Vertical `gap-6` (24 px) between the header row and the feed grid.
  *
  * Mobile stacks the header and uses a 3-column post grid (3 + 2 tiles).
  * From `md` upward the header is a single row and all five posts sit in
@@ -36,7 +41,10 @@ export function HomeInstagram({ data }: HomeInstagramProps) {
       className="w-full bg-[var(--oczki-primary-100)] [font-family:var(--font-oczki-body)]"
       data-figma-node={HOME_INSTAGRAM_FIGMA_NODES.desktopFrame}
     >
-      <div className="relative mx-auto flex w-full max-w-[1366px] flex-col items-start gap-6 px-8 py-12">
+      <div
+        className="relative mx-auto flex w-full max-w-[1366px] flex-col items-start gap-6 px-8 pt-12"
+        style={{ paddingBottom: INSTAGRAM_SHELL_PADDING_BOTTOM }}
+      >
         <InstagramSectionHeader
           avatarAlt={profile.avatarAlt}
           avatarSrc={profile.avatarSrc}

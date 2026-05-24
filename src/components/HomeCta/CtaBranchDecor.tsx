@@ -1,8 +1,12 @@
 import Image from 'next/image'
 
 import {
-  CTA_TABLET_DECOR_LEFT_IN_CONTENT,
-  CTA_TABLET_DECOR_RIGHT_IN_CONTENT,
+  CTA_DESKTOP_DECOR_LEFT_IN_FRAME,
+  CTA_DESKTOP_DECOR_RIGHT_IN_FRAME,
+  CTA_MOBILE_BOTTOM_DECOR_INSET,
+  CTA_MOBILE_TOP_DECOR_INSET,
+  CTA_TABLET_DECOR_LEFT_IN_FRAME,
+  CTA_TABLET_DECOR_RIGHT_IN_FRAME,
 } from './constants'
 
 type CtaBranchDecorProps = {
@@ -60,7 +64,6 @@ const TabletBranch = () => (
   </div>
 )
 
-/** Figma 7105:8610 / 8618 — asymmetric vertical rhythm inside 64×117 bbox. */
 const TabletStack = ({ mirrored }: { mirrored?: boolean }) => {
   const stack = (
     <div className="flex h-[117px] w-[64.357px] flex-col items-center pt-3">
@@ -81,7 +84,6 @@ const TabletStack = ({ mirrored }: { mirrored?: boolean }) => {
   return stack
 }
 
-/** Figma 8577 — vertical branch 28.8×63.913 flanked by hearts, gap 32 px (116.8 px row). */
 const MobileDecorRow = () => (
   <div className="flex h-[63.913px] w-[116.8px] items-center justify-center gap-8">
     <HeartIcon />
@@ -114,15 +116,17 @@ const DesktopStack = ({ mirrored }: { mirrored?: boolean }) => {
   return stack
 }
 
-/**
- * Heart–branch–heart ornaments — Figma 7105:8655 / 8647 / 8610 / 8618 / 8573 / 8581.
- */
+/** Side ornaments — positioned relative to outer frame 8627. */
 export const CtaBranchDecor = ({ variant }: CtaBranchDecorProps) => {
   if (variant === 'desktop-left') {
     return (
       <div
         aria-hidden
-        className="pointer-events-none absolute left-[116px] top-[122.6px]"
+        className="pointer-events-none absolute z-[5]"
+        style={{
+          left: CTA_DESKTOP_DECOR_LEFT_IN_FRAME.left,
+          top: CTA_DESKTOP_DECOR_LEFT_IN_FRAME.top,
+        }}
       >
         <DesktopStack />
       </div>
@@ -133,10 +137,14 @@ export const CtaBranchDecor = ({ variant }: CtaBranchDecorProps) => {
     return (
       <div
         aria-hidden
-        className="pointer-events-none absolute left-[1076px] top-1/2 flex -translate-y-1/2 items-center justify-center"
+        className="pointer-events-none absolute z-[5]"
+        style={{
+          left: CTA_DESKTOP_DECOR_RIGHT_IN_FRAME.left,
+          top: CTA_DESKTOP_DECOR_RIGHT_IN_FRAME.top,
+        }}
       >
         <div className="-scale-y-100 rotate-180">
-          <DesktopStack />
+          <DesktopStack mirrored />
         </div>
       </div>
     )
@@ -148,8 +156,8 @@ export const CtaBranchDecor = ({ variant }: CtaBranchDecorProps) => {
         aria-hidden
         className="pointer-events-none absolute z-[5]"
         style={{
-          left: CTA_TABLET_DECOR_LEFT_IN_CONTENT.left,
-          top: CTA_TABLET_DECOR_LEFT_IN_CONTENT.top,
+          left: CTA_TABLET_DECOR_LEFT_IN_FRAME.left,
+          top: CTA_TABLET_DECOR_LEFT_IN_FRAME.top,
         }}
       >
         <TabletStack />
@@ -163,8 +171,8 @@ export const CtaBranchDecor = ({ variant }: CtaBranchDecorProps) => {
         aria-hidden
         className="pointer-events-none absolute z-[5]"
         style={{
-          left: CTA_TABLET_DECOR_RIGHT_IN_CONTENT.left,
-          top: CTA_TABLET_DECOR_RIGHT_IN_CONTENT.top,
+          left: CTA_TABLET_DECOR_RIGHT_IN_FRAME.left,
+          top: CTA_TABLET_DECOR_RIGHT_IN_FRAME.top,
         }}
       >
         <div className="-scale-y-100 rotate-180">
@@ -178,7 +186,8 @@ export const CtaBranchDecor = ({ variant }: CtaBranchDecorProps) => {
     return (
       <div
         aria-hidden
-        className={`pointer-events-none absolute left-1/2 top-[50.4px] -translate-x-1/2 overflow-hidden ${MOBILE_DECOR_CLIP_CLASS}`}
+        className={`pointer-events-none absolute left-1/2 -translate-x-1/2 overflow-hidden ${MOBILE_DECOR_CLIP_CLASS}`}
+        style={{ top: CTA_MOBILE_TOP_DECOR_INSET }}
       >
         <MobileDecorRow />
       </div>
@@ -188,7 +197,8 @@ export const CtaBranchDecor = ({ variant }: CtaBranchDecorProps) => {
   return (
     <div
       aria-hidden
-      className={`pointer-events-none absolute bottom-[13.7px] left-1/2 -translate-x-1/2 overflow-hidden ${MOBILE_DECOR_CLIP_CLASS}`}
+      className={`pointer-events-none absolute left-1/2 -translate-x-1/2 overflow-hidden ${MOBILE_DECOR_CLIP_CLASS}`}
+      style={{ bottom: CTA_MOBILE_BOTTOM_DECOR_INSET }}
     >
       <div className="-scale-y-100">
         <MobileDecorRow />
