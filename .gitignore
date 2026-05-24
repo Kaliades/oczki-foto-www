@@ -20,3 +20,17 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Local SQLite (dev only; Vercel uses Postgres)
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+
+# TypeScript incremental build info
+tsconfig.tsbuildinfo
+
+# Claude Code / agent scratch output (local only)
+.claude/scheduled_tasks.lock
+.subagents/
+analiza-projektu.html
