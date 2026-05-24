@@ -18,17 +18,17 @@ type HomeFooterNewsletterProps = {
  *   - Mobile:  {@link HOME_FOOTER_NEWSLETTER_FIGMA_NODES.mobileFrame}
  *
  * Shell pattern (see `responsive-layout.mdc`):
- *   - Newsletter outer `<section>` — sage background + left photo bleed.
- *   - Footer outer `<section>` — cream (`primary-300`) full-bleed bg.
- *   - Both inners carry `max-w-[1366px] mx-auto`; scallop row and all
- *     layout live inside the footer inner so decorations track the cap.
+ *   - Newsletter — sage full-bleed shell, capped photo + form (no photo bleed).
+ *   - Stopka — cream full-bleed; scallop row alone spans the viewport width.
+ *   - Scallop row is absolute (`z-10`, −40 px into newsletter); stopka uses
+ *     `pt-[88px]` so links never sit under the tiles (Figma 40 + 48).
  */
 export function HomeFooterNewsletter({ data }: HomeFooterNewsletterProps) {
   const { newsletter, footer } = data
 
   return (
     <div
-      className="w-full [font-family:var(--font-oczki-body)]"
+      className="relative w-full [font-family:var(--font-oczki-body)]"
       data-figma-node={HOME_FOOTER_NEWSLETTER_FIGMA_NODES.desktopFrame}
     >
       <NewsletterSection
@@ -40,17 +40,22 @@ export function HomeFooterNewsletter({ data }: HomeFooterNewsletterProps) {
         submitLabel={newsletter.submitLabel}
       />
 
-      <section aria-label="Stopka" className="w-full bg-[var(--oczki-primary-300)]">
-        <div className="relative mx-auto flex w-full max-w-[1366px] flex-col items-center overflow-hidden px-6 pb-4 pt-12 md:px-6 lg:px-6">
-          <FooterScallopRow />
+      <section
+        aria-label="Stopka"
+        className="relative w-full overflow-x-clip bg-[var(--oczki-primary-300)]"
+      >
+        <FooterScallopRow />
 
-          <div className="relative z-[1] flex w-full flex-col items-start gap-20 pt-12">
-            <FooterNav
-              pageLinks={footer.pageLinks}
-              serviceLinks={footer.serviceLinks}
-              socialLinks={footer.socialLinks}
-            />
-            <FooterGalleryGrid images={footer.galleryImages} />
+        <div className="relative pt-[88px]">
+          <div className="relative mx-auto flex w-full max-w-[1366px] flex-col items-center">
+            <div className="flex w-full flex-col items-start gap-20 px-6 pb-4 md:px-6 lg:px-6">
+              <FooterNav
+                pageLinks={footer.pageLinks}
+                serviceLinks={footer.serviceLinks}
+                socialLinks={footer.socialLinks}
+              />
+              <FooterGalleryGrid images={footer.galleryImages} />
+            </div>
           </div>
         </div>
       </section>
