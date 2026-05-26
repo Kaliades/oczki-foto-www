@@ -1,3 +1,4 @@
+import { GalleryHero, galleryHeroDefaults } from '@/components/GalleryHero'
 import {
   OczkiBreadcrumbContainer,
   OczkiBreadcrumbs,
@@ -16,6 +17,7 @@ export default function GaleriaPage() {
       <OczkiBreadcrumbContainer>
         <OczkiBreadcrumbs items={GALLERY_PAGE_BREADCRUMBS} />
       </OczkiBreadcrumbContainer>
+      <GalleryHero data={galleryHeroDefaults} />
     </main>
   )
 }
