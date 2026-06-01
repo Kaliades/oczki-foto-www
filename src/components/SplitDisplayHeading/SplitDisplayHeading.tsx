@@ -3,6 +3,8 @@ import { cn } from '@/utilities/ui'
 type SplitDisplayHeadingProps = {
   start: string
   emphasis: string
+  /** Optional trailing regular run after the emphasis span (e.g. gallery CTA heading). */
+  end?: string
   id?: string
   className?: string
   /** Figma `header/m` at 32 px on this section; override when another scale is needed. */
@@ -18,6 +20,7 @@ type SplitDisplayHeadingProps = {
 export function SplitDisplayHeading({
   start,
   emphasis,
+  end,
   id,
   className,
   sizeClassName = 'text-[32px]',
@@ -43,11 +46,13 @@ export function SplitDisplayHeading({
         <>
           {emphasisEl}
           {start}
+          {end}
         </>
       ) : (
         <>
           {start}
           {emphasisEl}
+          {end}
         </>
       )}
     </h2>

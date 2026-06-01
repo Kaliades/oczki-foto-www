@@ -2,6 +2,8 @@ import { GalleryHero, galleryHeroDefaults } from '@/components/GalleryHero'
 import { GalleryPortfolio, galleryPortfolioDefaults } from '@/components/GalleryPortfolio'
 import { HomeEase } from '@/components/HomeEase/HomeEase'
 import { homeEaseDefaults } from '@/components/HomeEase/constants'
+import { GalleryCta } from '@/components/GalleryCta/GalleryCta'
+import { galleryCtaDefaults } from '@/components/GalleryCta/constants'
 import { HomeFaq } from '@/components/HomeFaq/HomeFaq'
 import { homeFaqDefaults } from '@/components/HomeFaq/constants'
 import {
@@ -28,6 +30,8 @@ export default function GaleriaPage() {
       <HomeEase data={homeEaseDefaults} />
       {/* TODO(galeria/faq): Drive HomeFaq from Payload when gallery FAQ block is wired. */}
       <HomeFaq data={homeFaqDefaults} />
+      {/* TODO(galeria/cta): Drive GalleryCta from Payload when gallery CTA block is wired. */}
+      <GalleryCta data={galleryCtaDefaults} />
     </main>
   )
 }
