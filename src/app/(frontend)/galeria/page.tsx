@@ -1,5 +1,7 @@
 import { GalleryHero, galleryHeroDefaults } from '@/components/GalleryHero'
 import { GalleryPortfolio, galleryPortfolioDefaults } from '@/components/GalleryPortfolio'
+import { HomeEase } from '@/components/HomeEase/HomeEase'
+import { homeEaseDefaults } from '@/components/HomeEase/constants'
 import {
   OczkiBreadcrumbContainer,
   OczkiBreadcrumbs,
@@ -20,6 +22,8 @@ export default function GaleriaPage() {
       </OczkiBreadcrumbContainer>
       <GalleryHero data={galleryHeroDefaults} />
       <GalleryPortfolio data={galleryPortfolioDefaults} />
+      {/* TODO(galeria/ease): Drive HomeEase from Payload when gallery ease block is wired. */}
+      <HomeEase data={homeEaseDefaults} />
     </main>
   )
 }

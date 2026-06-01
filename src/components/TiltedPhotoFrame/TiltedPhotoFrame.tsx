@@ -1,0 +1,62 @@
+import Image from 'next/image'
+
+import { cn } from '@/utilities/ui'
+
+import type { TiltedPhotoFrameVariant } from './constants'
+import { TILTED_PHOTO_FRAME_LAYOUT } from './constants'
+
+type TiltedPhotoFrameProps = {
+  variant: TiltedPhotoFrameVariant
+  imageSrc: string
+  imageAlt: string
+  className?: string
+}
+
+/**
+ * Tilted cream mat with drop shadow and cover photo (Figma `6952:19918`).
+ */
+export function TiltedPhotoFrame({
+  variant,
+  imageSrc,
+  imageAlt,
+  className,
+}: TiltedPhotoFrameProps) {
+  const layout = TILTED_PHOTO_FRAME_LAYOUT[variant]
+
+  return (
+    <div
+      className={cn('pointer-events-none absolute flex items-center justify-center', className)}
+      data-figma-node={layout.figmaNode}
+      style={{
+        height: layout.shellHeight,
+        left: layout.left,
+        top: layout.top,
+        width: layout.shellWidth,
+      }}
+    >
+      <div
+        className="flex-none"
+        style={{ transform: `rotate(${layout.rotateDeg}deg)` }}
+      >
+        <div
+          className="flex flex-col items-start bg-[var(--oczki-primary-200)] shadow-[1px_4px_2.9px_rgba(53,39,25,0.2),6px_11px_6.65px_rgba(53,39,25,0.12)]"
+          style={{
+            height: layout.frameHeight,
+            padding: layout.padding,
+            width: layout.frameWidth,
+          }}
+        >
+          <div className="relative w-full shrink-0" style={{ height: layout.imageHeight }}>
+            <Image
+              alt={imageAlt}
+              className="object-cover"
+              fill
+              sizes={`${layout.frameWidth}px`}
+              src={imageSrc}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
