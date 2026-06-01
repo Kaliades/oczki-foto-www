@@ -7,6 +7,8 @@ type SplitDisplayHeadingProps = {
   className?: string
   /** Figma `header/m` at 32 px on this section; override when another scale is needed. */
   sizeClassName?: string
+  /** Whether the italic emphasis run leads or trails the regular run. */
+  emphasisPosition?: 'start' | 'end'
 }
 
 /**
@@ -19,7 +21,14 @@ export function SplitDisplayHeading({
   id,
   className,
   sizeClassName = 'text-[32px]',
+  emphasisPosition = 'end',
 }: SplitDisplayHeadingProps) {
+  const emphasisEl = (
+    <em className="italic tracking-[-0.01em] [font-feature-settings:'dlig'_1,'lnum'_1,'pnum'_1]">
+      {emphasis}
+    </em>
+  )
+
   return (
     <h2
       className={cn(
@@ -30,10 +39,17 @@ export function SplitDisplayHeading({
       )}
       id={id}
     >
-      {start}
-      <em className="italic tracking-[-0.01em] [font-feature-settings:'dlig'_1,'lnum'_1,'pnum'_1]">
-        {emphasis}
-      </em>
+      {emphasisPosition === 'start' ? (
+        <>
+          {emphasisEl}
+          {start}
+        </>
+      ) : (
+        <>
+          {start}
+          {emphasisEl}
+        </>
+      )}
     </h2>
   )
 }
