@@ -1,18 +1,36 @@
 import type { SectionLink } from '@/utilities/resolveLinkHref'
 
 /**
- * Figma source nodes for the combined "Footer+Newsletter" section at the
- * bottom of the homepage.
+ * Figma source nodes for the combined "Footer+Newsletter" section.
+ * Same component instance on homepage and gallery — artboard placement differs.
  *
+ * Homepage:
  *   - desktop 1366: 7102:11553
  *   - tablet  768:  7105:11932
  *   - mobile  360:  7105:14227
+ *
+ * Gallery (`/galeria`):
+ *   - desktop 1366: 7102:11417
+ *   - tablet  768:  7104:18257
+ *   - mobile  360:  7104:19458
  */
 export const HOME_FOOTER_NEWSLETTER_FIGMA_NODES = {
   desktopFrame: '7102:11553',
   tabletFrame: '7105:11932',
   mobileFrame: '7105:14227',
 } as const
+
+export const GALLERY_FOOTER_NEWSLETTER_FIGMA_NODES = {
+  desktopFrame: '7102:11417',
+  tabletFrame: '7104:18257',
+  mobileFrame: '7104:19458',
+} as const
+
+export type FooterNewsletterFigmaNodes = {
+  readonly desktopFrame: string
+  readonly tabletFrame: string
+  readonly mobileFrame: string
+}
 
 export type FooterNavLink = {
   label: string

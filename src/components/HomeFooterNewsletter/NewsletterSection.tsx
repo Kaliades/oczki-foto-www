@@ -1,15 +1,18 @@
 import Image from 'next/image'
 
 import type { SectionLink } from '@/utilities/resolveLinkHref'
+import type { FooterNewsletterFigmaNodes } from './constants'
 import { NewsletterForm } from './NewsletterForm'
 import { NewsletterHeading } from './NewsletterHeading'
 
 type NewsletterSectionProps = {
+  figmaNodes?: FooterNewsletterFigmaNodes
   heading: {
     plain: string
     emphasis: string
     plainEnd: string
   }
+  headingId?: string
   intro: string
   submitLabel: string
   privacyLink: SectionLink
@@ -28,7 +31,9 @@ type NewsletterSectionProps = {
  *   - `mb-[-32px]` lets the footer scallop row overlap this block.
  */
 export function NewsletterSection({
+  figmaNodes,
   heading,
+  headingId = 'footer-newsletter-heading',
   intro,
   submitLabel,
   privacyLink,
@@ -37,8 +42,9 @@ export function NewsletterSection({
 }: NewsletterSectionProps) {
   return (
     <section
-      aria-labelledby="home-footer-newsletter-heading"
+      aria-labelledby={headingId}
       className="relative z-0 w-full overflow-x-clip bg-[var(--oczki-secondary-600)]"
+      data-figma-node={figmaNodes?.desktopFrame}
     >
       <div className="relative mx-auto mb-[-32px] flex w-full max-w-[1366px] flex-col lg:flex-row">
         <div className="relative order-2 aspect-square w-full shrink-0 overflow-hidden lg:order-1 lg:w-[660px]">
@@ -71,6 +77,7 @@ export function NewsletterSection({
             <div className="flex w-full flex-col items-start gap-4">
               <NewsletterHeading
                 emphasis={heading.emphasis}
+                headingId={headingId}
                 plain={heading.plain}
                 plainEnd={heading.plainEnd}
               />

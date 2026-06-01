@@ -4,6 +4,8 @@ import { HomeEase } from '@/components/HomeEase/HomeEase'
 import { homeEaseDefaults } from '@/components/HomeEase/constants'
 import { GalleryCta } from '@/components/GalleryCta/GalleryCta'
 import { galleryCtaDefaults } from '@/components/GalleryCta/constants'
+import { HomeFooterNewsletter } from '@/components/HomeFooterNewsletter/HomeFooterNewsletter'
+import { homeFooterNewsletterDefaults } from '@/components/HomeFooterNewsletter/constants'
 import { HomeFaq } from '@/components/HomeFaq/HomeFaq'
 import { homeFaqDefaults } from '@/components/HomeFaq/constants'
 import {
@@ -12,7 +14,10 @@ import {
 } from '@/components/OczkiBreadcrumbs'
 import type { Metadata } from 'next'
 
-import { GALLERY_PAGE_BREADCRUMBS } from './constants'
+import {
+  GALLERY_FOOTER_NEWSLETTER_FIGMA_NODES,
+  GALLERY_PAGE_BREADCRUMBS,
+} from './constants'
 
 export const metadata: Metadata = {
   title: 'Galeria | Oczki fotografia',
@@ -32,6 +37,11 @@ export default function GaleriaPage() {
       <HomeFaq data={homeFaqDefaults} />
       {/* TODO(galeria/cta): Drive GalleryCta from Payload when gallery CTA block is wired. */}
       <GalleryCta data={galleryCtaDefaults} />
+      {/* TODO(galeria/footer): Drive HomeFooterNewsletter from Payload when gallery footer block is wired. */}
+      <HomeFooterNewsletter
+        data={homeFooterNewsletterDefaults}
+        figmaNodes={GALLERY_FOOTER_NEWSLETTER_FIGMA_NODES}
+      />
     </main>
   )
 }

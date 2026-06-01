@@ -15,7 +15,7 @@ export function NewsletterHeading({
   plain,
   emphasis,
   plainEnd,
-  headingId = 'home-footer-newsletter-heading',
+  headingId = 'footer-newsletter-heading',
 }: NewsletterHeadingProps) {
   return (
     <h2

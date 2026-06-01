@@ -1,4 +1,8 @@
-import { HOME_FOOTER_NEWSLETTER_FIGMA_NODES, type HomeFooterNewsletterData } from './constants'
+import {
+  HOME_FOOTER_NEWSLETTER_FIGMA_NODES,
+  type FooterNewsletterFigmaNodes,
+  type HomeFooterNewsletterData,
+} from './constants'
 import { FooterGalleryGrid } from './FooterGalleryGrid'
 import { FooterNav } from './FooterNav'
 import { FooterScallopRow } from './FooterScallopRow'
@@ -6,11 +10,14 @@ import { NewsletterSection } from './NewsletterSection'
 
 type HomeFooterNewsletterProps = {
   data: HomeFooterNewsletterData
+  /** Defaults to homepage nodes; pass gallery nodes on `/galeria`. */
+  figmaNodes?: FooterNewsletterFigmaNodes
+  headingId?: string
 }
 
 /**
- * Combined newsletter signup + site footer — the closing section of the
- * homepage (Figma "Footer+Newsletter").
+ * Combined newsletter signup + site footer (Figma "Footer+Newsletter").
+ * Reused on homepage and gallery — same hierarchy, CMS-ready `data` prop.
  *
  * Figma references (always desktop / tablet / mobile in parallel):
  *   - Desktop: {@link HOME_FOOTER_NEWSLETTER_FIGMA_NODES.desktopFrame}
@@ -23,16 +30,22 @@ type HomeFooterNewsletterProps = {
  *   - Scallop row is absolute (`z-10`, −40 px into newsletter); stopka uses
  *     `pt-[88px]` so links never sit under the tiles (Figma 40 + 48).
  */
-export function HomeFooterNewsletter({ data }: HomeFooterNewsletterProps) {
+export function HomeFooterNewsletter({
+  data,
+  figmaNodes = HOME_FOOTER_NEWSLETTER_FIGMA_NODES,
+  headingId = 'footer-newsletter-heading',
+}: HomeFooterNewsletterProps) {
   const { newsletter, footer } = data
 
   return (
     <div
       className="relative w-full [font-family:var(--font-oczki-body)]"
-      data-figma-node={HOME_FOOTER_NEWSLETTER_FIGMA_NODES.desktopFrame}
+      data-figma-node={figmaNodes.desktopFrame}
     >
       <NewsletterSection
+        figmaNodes={figmaNodes}
         heading={newsletter.heading}
+        headingId={headingId}
         intro={newsletter.intro}
         photoAlt={newsletter.photoAlt}
         photoSrc={newsletter.photoSrc}
