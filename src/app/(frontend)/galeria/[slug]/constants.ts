@@ -1,3 +1,4 @@
+import type { CaseStudyDetailsData } from '@/components/CaseStudyDetails'
 import type { CaseStudyHeroData } from '@/components/CaseStudyHero'
 
 export const CASE_STUDY_SLUGS = ['slub-justyny-i-krzysia'] as const
@@ -5,6 +6,7 @@ export const CASE_STUDY_SLUGS = ['slub-justyny-i-krzysia'] as const
 export type CaseStudySlug = (typeof CASE_STUDY_SLUGS)[number]
 
 export type CaseStudyPageData = {
+  details: CaseStudyDetailsData
   hero: CaseStudyHeroData
   slug: CaseStudySlug
 }
@@ -31,6 +33,35 @@ export const CASE_STUDY_CASES: Record<CaseStudySlug, CaseStudyPageData> = {
       },
       description:
         'To był jeden z tych czerwcowych dni, kiedy słońce nie brało jeńców, a termometry uparcie pokazywały ponad 30 stopni. Jednak u Justyny i Krzysia upał był tylko tłem dla emocji, które biły od nich od samego rana. Zapraszam Was do obejrzenia historii, która udowadnia, że najlepszy przepis na ślub to spokój i otaczanie się ludźmi, przy których można być w pełni sobą.',
+    },
+    details: {
+      heading: {
+        start: 'Ślub Justyny i Krzysia – detale, które stworzyły ',
+        emphasis: 'klimat',
+      },
+      items: [
+        {
+          title: 'Miejsce ceremonii',
+          description:
+            'Klimatyczny, chłodny kościół w Wieprzu (idealne schronienie w czerwcowy upał!)',
+          figmaNodes: { desktop: '6972:18978' },
+        },
+        {
+          title: 'Sala weselna',
+          description: 'Eleganckie wnętrza Parkhotel Łysoń w Inwałdzie',
+          figmaNodes: { desktop: '6972:19001' },
+        },
+        {
+          title: 'Kolor przewodni',
+          description: 'Klasyczna biel połączona z soczystą zielenią czerwcowych liści',
+          figmaNodes: { desktop: '6972:19025' },
+        },
+        {
+          title: 'Atmosfera',
+          description: 'Totalny luz, dużo śmiechu i parkiet, który nie stygł ani na minutę',
+          figmaNodes: { desktop: '6972:19073' },
+        },
+      ],
     },
   },
 }
