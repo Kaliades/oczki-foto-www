@@ -5,6 +5,11 @@ import { CaseStudyHero } from '@/components/CaseStudyHero'
 import { CaseStudyMemorableMoment } from '@/components/CaseStudyMemorableMoment'
 import { CaseStudyPhotoGallery } from '@/components/CaseStudyPhotoGallery'
 import { CaseStudyRelatedStories } from '@/components/CaseStudyRelatedStories'
+import { HomeFooterNewsletter } from '@/components/HomeFooterNewsletter/HomeFooterNewsletter'
+import {
+  CASE_STUDY_FOOTER_NEWSLETTER_FIGMA_NODES,
+  homeFooterNewsletterDefaults,
+} from '@/components/HomeFooterNewsletter/constants'
 import { CaseStudyTestimonial } from '@/components/CaseStudyTestimonial'
 import { CaseStudyVenueStory } from '@/components/CaseStudyVenueStory'
 import { notFound } from 'next/navigation'
@@ -54,6 +59,10 @@ export default async function CaseStudyPage({ params }: Args) {
       <CaseStudyMemorableMoment data={caseStudy.memorableMoment} />
       <CaseStudyClosingCta data={caseStudy.closingCta} />
       <CaseStudyRelatedStories data={caseStudy.relatedStories} />
+      <HomeFooterNewsletter
+        data={homeFooterNewsletterDefaults}
+        figmaNodes={CASE_STUDY_FOOTER_NEWSLETTER_FIGMA_NODES}
+      />
     </main>
   )
 }

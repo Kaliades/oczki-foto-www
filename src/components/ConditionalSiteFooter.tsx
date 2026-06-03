@@ -7,7 +7,9 @@ type ConditionalSiteFooterProps = {
   children: ReactNode
 }
 
-const ROUTES_WITH_DESIGNED_FOOTER = new Set(['/', '/home', '/galeria'])
+function routeHasDesignedFooter(pathname: string): boolean {
+  return pathname === '/' || pathname === '/home' || pathname.startsWith('/galeria')
+}
 
 /**
  * Hides the generic Payload footer on routes that ship their own designed
@@ -16,7 +18,7 @@ const ROUTES_WITH_DESIGNED_FOOTER = new Set(['/', '/home', '/galeria'])
 export function ConditionalSiteFooter({ children }: ConditionalSiteFooterProps) {
   const pathname = usePathname()
 
-  if (pathname && ROUTES_WITH_DESIGNED_FOOTER.has(pathname)) {
+  if (pathname && routeHasDesignedFooter(pathname)) {
     return null
   }
 

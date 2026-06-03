@@ -9,10 +9,15 @@ import type { SectionLink } from '@/utilities/resolveLinkHref'
  *   - tablet  768:  7105:11932
  *   - mobile  360:  7105:14227
  *
- * Gallery (`/galeria`):
+ * Gallery listing (`/galeria`):
  *   - desktop 1366: 7102:11417
  *   - tablet  768:  7104:18257
  *   - mobile  360:  7104:19458
+ *
+ * Case study (`/galeria/[slug]`):
+ *   - desktop 1366: 7102:11281
+ *   - tablet  768:  7102:13177
+ *   - mobile  360:  7102:17058
  */
 export const HOME_FOOTER_NEWSLETTER_FIGMA_NODES = {
   desktopFrame: '7102:11553',
@@ -24,6 +29,12 @@ export const GALLERY_FOOTER_NEWSLETTER_FIGMA_NODES = {
   desktopFrame: '7102:11417',
   tabletFrame: '7104:18257',
   mobileFrame: '7104:19458',
+} as const
+
+export const CASE_STUDY_FOOTER_NEWSLETTER_FIGMA_NODES = {
+  desktopFrame: '7102:11281',
+  tabletFrame: '7102:13177',
+  mobileFrame: '7102:17058',
 } as const
 
 export type FooterNewsletterFigmaNodes = {
