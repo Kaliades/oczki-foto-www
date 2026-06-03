@@ -1,4 +1,5 @@
 import { CaseStudyDetails } from '@/components/CaseStudyDetails'
+import { CaseStudyDuoPerspective } from '@/components/CaseStudyDuoPerspective'
 import { CaseStudyHero } from '@/components/CaseStudyHero'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
@@ -40,6 +41,7 @@ export default async function CaseStudyPage({ params }: Args) {
     <main className="min-h-screen bg-[var(--oczki-primary-100)] [font-family:var(--font-oczki-body)]">
       <CaseStudyHero data={caseStudy.hero} />
       <CaseStudyDetails data={caseStudy.details} />
+      <CaseStudyDuoPerspective data={caseStudy.duoPerspective} />
     </main>
   )
 }
