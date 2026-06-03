@@ -2,13 +2,15 @@ import type { CaseStudyClosingCtaData } from '@/components/CaseStudyClosingCta'
 import { caseStudyClosingCtaDefaults } from '@/components/CaseStudyClosingCta'
 import type { CaseStudyMemorableMomentData } from '@/components/CaseStudyMemorableMoment'
 import { caseStudyMemorableMomentDefaults } from '@/components/CaseStudyMemorableMoment'
-import type { CaseStudyTestimonialData } from '@/components/CaseStudyTestimonial/constants'
+import type { CaseStudyRelatedStoriesData } from '@/components/CaseStudyRelatedStories'
+import { caseStudyRelatedStoriesDefaults } from '@/components/CaseStudyRelatedStories'
 import type { CaseStudyDetailsData } from '@/components/CaseStudyDetails'
 import type { CaseStudyDuoPerspectiveData } from '@/components/CaseStudyDuoPerspective'
 import type { CaseStudyHeroData } from '@/components/CaseStudyHero'
 import type { CaseStudyPhotoGalleryData } from '@/components/CaseStudyPhotoGallery/constants'
 import { caseStudyPhotoGalleryDefaults } from '@/components/CaseStudyPhotoGallery/constants'
 import type { CaseStudyVenueStoryData } from '@/components/CaseStudyVenueStory'
+import type { CaseStudyTestimonialData } from '@/components/CaseStudyTestimonial/constants'
 import { caseStudyTestimonialDefaults } from '@/components/CaseStudyTestimonial/constants'
 
 export const CASE_STUDY_SLUGS = ['slub-justyny-i-krzysia'] as const
@@ -21,6 +23,7 @@ export type CaseStudyPageData = {
   duoPerspective: CaseStudyDuoPerspectiveData
   hero: CaseStudyHeroData
   photoGallery: CaseStudyPhotoGalleryData
+  relatedStories: CaseStudyRelatedStoriesData
   memorableMoment: CaseStudyMemorableMomentData
   slug: CaseStudySlug
   testimonial: CaseStudyTestimonialData
@@ -117,6 +120,7 @@ export const CASE_STUDY_CASES: Record<CaseStudySlug, CaseStudyPageData> = {
     photoGallery: caseStudyPhotoGalleryDefaults,
     memorableMoment: caseStudyMemorableMomentDefaults,
     closingCta: caseStudyClosingCtaDefaults,
+    relatedStories: caseStudyRelatedStoriesDefaults,
     testimonial: caseStudyTestimonialDefaults,
     venueStory: {
       heading: {

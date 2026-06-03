@@ -1,9 +1,10 @@
+import { CaseStudyClosingCta } from '@/components/CaseStudyClosingCta'
 import { CaseStudyDetails } from '@/components/CaseStudyDetails'
 import { CaseStudyDuoPerspective } from '@/components/CaseStudyDuoPerspective'
 import { CaseStudyHero } from '@/components/CaseStudyHero'
-import { CaseStudyClosingCta } from '@/components/CaseStudyClosingCta'
 import { CaseStudyMemorableMoment } from '@/components/CaseStudyMemorableMoment'
 import { CaseStudyPhotoGallery } from '@/components/CaseStudyPhotoGallery'
+import { CaseStudyRelatedStories } from '@/components/CaseStudyRelatedStories'
 import { CaseStudyTestimonial } from '@/components/CaseStudyTestimonial'
 import { CaseStudyVenueStory } from '@/components/CaseStudyVenueStory'
 import { notFound } from 'next/navigation'
@@ -52,6 +53,7 @@ export default async function CaseStudyPage({ params }: Args) {
       <CaseStudyTestimonial data={caseStudy.testimonial} />
       <CaseStudyMemorableMoment data={caseStudy.memorableMoment} />
       <CaseStudyClosingCta data={caseStudy.closingCta} />
+      <CaseStudyRelatedStories data={caseStudy.relatedStories} />
     </main>
   )
 }
