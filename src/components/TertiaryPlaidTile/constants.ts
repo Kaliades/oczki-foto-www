@@ -1,0 +1,41 @@
+/** Figma `Thumbnails Container` — clipped plaid of tertiary stripes + rose cross-bars. */
+export const TERTIARY_PLAID_TILE = {
+  desktop: {
+    barGap: 24,
+    barHeightLarge: 32,
+    barHeightSmall: 4,
+    barOpacity: 0.36,
+    barRowHeight: 60,
+    clipSize: 152,
+    crossBarLeft: -21,
+    crossBarTop: 10,
+    crossBarWidth: 668,
+    rowGap: 48,
+    rowHeight: 749,
+    rowTop: -5,
+    rowWidth: 668,
+    stripeCount: 32,
+    stripeWidth: 43,
+    verticalPadding: 3,
+  },
+  mobile: {
+    barGap: 24,
+    barHeightLarge: 32,
+    barHeightSmall: 4,
+    barOpacity: 0.36,
+    barRowHeight: 60,
+    clipSize: 98,
+    crossBarLeft: -21,
+    crossBarTop: 10,
+    crossBarWidth: 668,
+    rowGap: 48,
+    rowHeight: 749,
+    rowTop: -5,
+    rowWidth: 668,
+    stripeCount: 32,
+    stripeWidth: 43,
+    verticalPadding: 3,
+  },
+} as const
+
+export type TertiaryPlaidTileSize = keyof typeof TERTIARY_PLAID_TILE

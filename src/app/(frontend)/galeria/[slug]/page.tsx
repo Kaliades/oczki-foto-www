@@ -1,6 +1,7 @@
 import { CaseStudyDetails } from '@/components/CaseStudyDetails'
 import { CaseStudyDuoPerspective } from '@/components/CaseStudyDuoPerspective'
 import { CaseStudyHero } from '@/components/CaseStudyHero'
+import { CaseStudyMemorableMoment } from '@/components/CaseStudyMemorableMoment'
 import { CaseStudyPhotoGallery } from '@/components/CaseStudyPhotoGallery'
 import { CaseStudyTestimonial } from '@/components/CaseStudyTestimonial'
 import { CaseStudyVenueStory } from '@/components/CaseStudyVenueStory'
@@ -48,6 +49,7 @@ export default async function CaseStudyPage({ params }: Args) {
       <CaseStudyVenueStory data={caseStudy.venueStory} />
       <CaseStudyPhotoGallery data={caseStudy.photoGallery} />
       <CaseStudyTestimonial data={caseStudy.testimonial} />
+      <CaseStudyMemorableMoment data={caseStudy.memorableMoment} />
     </main>
   )
 }

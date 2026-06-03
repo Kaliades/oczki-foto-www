@@ -1,3 +1,5 @@
+import type { CaseStudyMemorableMomentData } from '@/components/CaseStudyMemorableMoment'
+import { caseStudyMemorableMomentDefaults } from '@/components/CaseStudyMemorableMoment'
 import type { CaseStudyTestimonialData } from '@/components/CaseStudyTestimonial/constants'
 import type { CaseStudyDetailsData } from '@/components/CaseStudyDetails'
 import type { CaseStudyDuoPerspectiveData } from '@/components/CaseStudyDuoPerspective'
@@ -16,6 +18,7 @@ export type CaseStudyPageData = {
   duoPerspective: CaseStudyDuoPerspectiveData
   hero: CaseStudyHeroData
   photoGallery: CaseStudyPhotoGalleryData
+  memorableMoment: CaseStudyMemorableMomentData
   slug: CaseStudySlug
   testimonial: CaseStudyTestimonialData
   venueStory: CaseStudyVenueStoryData
@@ -109,6 +112,7 @@ export const CASE_STUDY_CASES: Record<CaseStudySlug, CaseStudyPageData> = {
       ],
     },
     photoGallery: caseStudyPhotoGalleryDefaults,
+    memorableMoment: caseStudyMemorableMomentDefaults,
     testimonial: caseStudyTestimonialDefaults,
     venueStory: {
       heading: {

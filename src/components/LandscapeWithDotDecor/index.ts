@@ -1,0 +1,1 @@
+export { LandscapeWithDotDecor } from './LandscapeWithDotDecor'

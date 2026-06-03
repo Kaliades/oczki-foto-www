@@ -1,0 +1,1 @@
+export { PortraitWithPlaidMat } from './PortraitWithPlaidMat'
