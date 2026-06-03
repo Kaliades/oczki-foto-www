@@ -1,28 +1,35 @@
 import { Fragment } from 'react'
 
-import { OCZKI_BREADCRUMBS_COMPONENT_FIGMA_NODE, type OczkiBreadcrumbItemData } from './constants'
+import {
+  OCZKI_BREADCRUMBS_COMPONENT_FIGMA_NODE,
+  OCZKI_BREADCRUMBS_ON_PHOTO_FIGMA_NODE,
+  type OczkiBreadcrumbItemData,
+  type OczkiBreadcrumbsVariant,
+} from './constants'
 import { OczkiBreadcrumbItem } from './OczkiBreadcrumbItem'
 import { OczkiBreadcrumbSeparator } from './OczkiBreadcrumbSeparator'
 
 type OczkiBreadcrumbsProps = {
   items: readonly OczkiBreadcrumbItemData[]
+  variant?: OczkiBreadcrumbsVariant
 }
 
 /**
- * Breadcrumb trail — Figma `Breadcrumbs` symbol `7064:15094`.
+ * Breadcrumb trail — Figma `Breadcrumbs`.
  *
- * Root: flex h-44 items-center gap-4px
- * ├── Element-01 (h-44) → ancestor link
- * ├── Icons (no fixed height) → chevron 12×12
- * └── Icons (h-44) → current label
+ * `onPhoto` (`6972:18555`): ancestor links bold 12 px / primary-800,
+ * current page regular 12 px / primary-700, leading 1.7.
  */
-export function OczkiBreadcrumbs({ items }: OczkiBreadcrumbsProps) {
+export function OczkiBreadcrumbs({ items, variant = 'default' }: OczkiBreadcrumbsProps) {
   if (items.length === 0) {
     return null
   }
 
+  const figmaNode =
+    variant === 'onPhoto' ? OCZKI_BREADCRUMBS_ON_PHOTO_FIGMA_NODE : OCZKI_BREADCRUMBS_COMPONENT_FIGMA_NODE
+
   return (
-    <nav aria-label="Nawigacja okruszkowa" data-figma-node={OCZKI_BREADCRUMBS_COMPONENT_FIGMA_NODE}>
+    <nav aria-label="Nawigacja okruszkowa" data-figma-node={figmaNode}>
       <ol className="flex h-11 items-center gap-[4px]">
         {items.map((item, index) => {
           const isLast = index === items.length - 1
@@ -36,7 +43,12 @@ export function OczkiBreadcrumbs({ items }: OczkiBreadcrumbsProps) {
                 </li>
               ) : null}
               <li className="flex h-11 items-center">
-                <OczkiBreadcrumbItem href={item.href} isCurrent={isCurrent} label={item.label} />
+                <OczkiBreadcrumbItem
+                  href={item.href}
+                  isCurrent={isCurrent}
+                  label={item.label}
+                  variant={variant}
+                />
               </li>
             </Fragment>
           )
