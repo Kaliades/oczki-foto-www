@@ -1,5 +1,7 @@
+import { TestimonialSectionClient } from '@/components/TestimonialSection'
+
 import type { HomeTestimonialData } from './constants'
-import { HomeTestimonialClient } from './HomeTestimonialClient'
+import { HOME_TESTIMONIAL_FIGMA_NODES, homeTestimonialDefaults } from './constants'
 
 type HomeTestimonialProps = {
   data: HomeTestimonialData
@@ -8,8 +10,15 @@ type HomeTestimonialProps = {
 /**
  * "Opinie" — testimonials section (server entry → client carousel).
  *
- * @see HomeTestimonialClient for layout notes and Figma node references.
+ * @see TestimonialSectionClient for layout notes and Figma node references.
  */
 export const HomeTestimonial = ({ data }: HomeTestimonialProps) => {
-  return <HomeTestimonialClient data={data} />
+  return (
+    <TestimonialSectionClient
+      data={data}
+      fallbackItems={homeTestimonialDefaults.items}
+      figmaNodes={HOME_TESTIMONIAL_FIGMA_NODES}
+      headingId="home-testimonial-heading"
+    />
+  )
 }

@@ -2,7 +2,7 @@ import type { ComponentPropsWithoutRef } from 'react'
 
 import { cn } from '@/utilities/ui'
 
-import { TESTIMONIAL_SLIDE_BODY_MIN_HEIGHT_CLASS } from './constants'
+import { TESTIMONIAL_SLIDE_BODY_MIN_HEIGHT_CLASS } from '@/components/TestimonialSection'
 
 type TestimonialQuoteBlockProps = {
   /** First, regular-weight fragment of the heading. */

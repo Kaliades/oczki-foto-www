@@ -1,9 +1,11 @@
+import type { CaseStudyTestimonialData } from '@/components/CaseStudyTestimonial/constants'
 import type { CaseStudyDetailsData } from '@/components/CaseStudyDetails'
 import type { CaseStudyDuoPerspectiveData } from '@/components/CaseStudyDuoPerspective'
 import type { CaseStudyHeroData } from '@/components/CaseStudyHero'
-import type { CaseStudyPhotoGalleryData } from '@/components/CaseStudyPhotoGallery'
+import type { CaseStudyPhotoGalleryData } from '@/components/CaseStudyPhotoGallery/constants'
+import { caseStudyPhotoGalleryDefaults } from '@/components/CaseStudyPhotoGallery/constants'
 import type { CaseStudyVenueStoryData } from '@/components/CaseStudyVenueStory'
-import { caseStudyPhotoGalleryDefaults } from '@/components/CaseStudyPhotoGallery'
+import { caseStudyTestimonialDefaults } from '@/components/CaseStudyTestimonial/constants'
 
 export const CASE_STUDY_SLUGS = ['slub-justyny-i-krzysia'] as const
 
@@ -15,6 +17,7 @@ export type CaseStudyPageData = {
   hero: CaseStudyHeroData
   photoGallery: CaseStudyPhotoGalleryData
   slug: CaseStudySlug
+  testimonial: CaseStudyTestimonialData
   venueStory: CaseStudyVenueStoryData
 }
 
@@ -106,6 +109,7 @@ export const CASE_STUDY_CASES: Record<CaseStudySlug, CaseStudyPageData> = {
       ],
     },
     photoGallery: caseStudyPhotoGalleryDefaults,
+    testimonial: caseStudyTestimonialDefaults,
     venueStory: {
       heading: {
         emphasis: 'Ślub',

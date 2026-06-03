@@ -2,6 +2,7 @@ import { CaseStudyDetails } from '@/components/CaseStudyDetails'
 import { CaseStudyDuoPerspective } from '@/components/CaseStudyDuoPerspective'
 import { CaseStudyHero } from '@/components/CaseStudyHero'
 import { CaseStudyPhotoGallery } from '@/components/CaseStudyPhotoGallery'
+import { CaseStudyTestimonial } from '@/components/CaseStudyTestimonial'
 import { CaseStudyVenueStory } from '@/components/CaseStudyVenueStory'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
@@ -46,6 +47,7 @@ export default async function CaseStudyPage({ params }: Args) {
       <CaseStudyDuoPerspective data={caseStudy.duoPerspective} />
       <CaseStudyVenueStory data={caseStudy.venueStory} />
       <CaseStudyPhotoGallery data={caseStudy.photoGallery} />
+      <CaseStudyTestimonial data={caseStudy.testimonial} />
     </main>
   )
 }
