@@ -1,6 +1,7 @@
 import type { CaseStudyDetailsData } from '@/components/CaseStudyDetails'
 import type { CaseStudyDuoPerspectiveData } from '@/components/CaseStudyDuoPerspective'
 import type { CaseStudyHeroData } from '@/components/CaseStudyHero'
+import type { CaseStudyVenueStoryData } from '@/components/CaseStudyVenueStory'
 
 export const CASE_STUDY_SLUGS = ['slub-justyny-i-krzysia'] as const
 
@@ -11,6 +12,7 @@ export type CaseStudyPageData = {
   duoPerspective: CaseStudyDuoPerspectiveData
   hero: CaseStudyHeroData
   slug: CaseStudySlug
+  venueStory: CaseStudyVenueStoryData
 }
 
 export const CASE_STUDY_CASES: Record<CaseStudySlug, CaseStudyPageData> = {
@@ -99,6 +101,57 @@ export const CASE_STUDY_CASES: Record<CaseStudySlug, CaseStudyPageData> = {
           },
         },
       ],
+    },
+    venueStory: {
+      heading: {
+        emphasis: 'Ślub',
+        start: ' w Wieprzu i przyjęcie w Inwałdzie',
+      },
+      body: 'Jako fotografowie ślubni z Krakowa, często zaglądamy w te okolice, ale ten konkretny reportaż w Inwałdzie zapamiętamy na długo. Parkhotel Łysoń to miejsce, które świetnie łączy nowoczesność z profesjonalnym podejściem – dla fotografa to czysta przyjemność pracować w przestrzeniach, które tak dobrze współpracują ze światłem.',
+      photos: {
+        desktop: {
+          back: {
+            alt: 'Para młoda przy stole weselnym',
+            src: '/figma/case-study-venue-back-desktop.png',
+          },
+          front: {
+            alt: 'Panna młoda z bliską osobą podczas przyjęcia',
+            src: '/figma/case-study-venue-front-desktop.png',
+          },
+          scallop: {
+            alt: 'Goście tańczący na parkiecie weselnym',
+            src: '/figma/case-study-venue-scallop-desktop.png',
+          },
+        },
+        tablet: {
+          back: {
+            alt: 'Para młoda przy stole weselnym',
+            src: '/figma/case-study-venue-back-tablet.png',
+          },
+          front: {
+            alt: 'Panna młoda z bliską osobą podczas przyjęcia',
+            src: '/figma/case-study-venue-front-tablet.png',
+          },
+          scallop: {
+            alt: 'Goście tańczący na parkiecie weselnym',
+            src: '/figma/case-study-venue-scallop-tablet.png',
+          },
+        },
+        mobile: {
+          back: {
+            alt: 'Para młoda przy stole weselnym',
+            src: '/figma/case-study-venue-back-mobile.png',
+          },
+          front: {
+            alt: 'Panna młoda z bliską osobą podczas przyjęcia',
+            src: '/figma/case-study-venue-front-mobile.png',
+          },
+          scallop: {
+            alt: 'Goście tańczący na parkiecie weselnym',
+            src: '/figma/case-study-venue-scallop-mobile.png',
+          },
+        },
+      },
     },
   },
 }
