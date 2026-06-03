@@ -7,7 +7,7 @@ type SplitDisplayHeadingProps = {
   end?: string
   id?: string
   className?: string
-  /** Figma `header/m` at 32 px on this section; override when another scale is needed. */
+  /** Figma `header/m` scale — pass `""` when size comes from `className` (e.g. `oczki-heading-l`). */
   sizeClassName?: string
   /** Whether the italic emphasis run leads or trails the regular run. */
   emphasisPosition?: 'start' | 'end'
@@ -23,7 +23,7 @@ export function SplitDisplayHeading({
   end,
   id,
   className,
-  sizeClassName = 'text-[32px]',
+  sizeClassName,
   emphasisPosition = 'end',
 }: SplitDisplayHeadingProps) {
   const emphasisEl = (
@@ -35,9 +35,9 @@ export function SplitDisplayHeading({
   return (
     <h2
       className={cn(
-        'w-full font-normal leading-[1.04] tracking-[-0.02em] text-[var(--oczki-primary-800)]',
+        'w-full font-normal leading-[1.04] text-[var(--oczki-primary-800)]',
         '[font-family:var(--font-oczki-display)] [font-feature-settings:"lnum"_1,"pnum"_1]',
-        sizeClassName,
+        sizeClassName === undefined ? 'text-[32px] tracking-[-0.32px]' : sizeClassName,
         className,
       )}
       id={id}

@@ -1,3 +1,5 @@
+import type { CaseStudyClosingCtaData } from '@/components/CaseStudyClosingCta'
+import { caseStudyClosingCtaDefaults } from '@/components/CaseStudyClosingCta'
 import type { CaseStudyMemorableMomentData } from '@/components/CaseStudyMemorableMoment'
 import { caseStudyMemorableMomentDefaults } from '@/components/CaseStudyMemorableMoment'
 import type { CaseStudyTestimonialData } from '@/components/CaseStudyTestimonial/constants'
@@ -14,6 +16,7 @@ export const CASE_STUDY_SLUGS = ['slub-justyny-i-krzysia'] as const
 export type CaseStudySlug = (typeof CASE_STUDY_SLUGS)[number]
 
 export type CaseStudyPageData = {
+  closingCta: CaseStudyClosingCtaData
   details: CaseStudyDetailsData
   duoPerspective: CaseStudyDuoPerspectiveData
   hero: CaseStudyHeroData
@@ -113,6 +116,7 @@ export const CASE_STUDY_CASES: Record<CaseStudySlug, CaseStudyPageData> = {
     },
     photoGallery: caseStudyPhotoGalleryDefaults,
     memorableMoment: caseStudyMemorableMomentDefaults,
+    closingCta: caseStudyClosingCtaDefaults,
     testimonial: caseStudyTestimonialDefaults,
     venueStory: {
       heading: {
