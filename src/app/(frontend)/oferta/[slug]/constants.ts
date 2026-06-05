@@ -27,6 +27,10 @@ import {
   type OfferServicePackagesData,
 } from '@/components/OfferServicePackages'
 import {
+  offerServiceClosingCtaSesjeKobieceDefaults,
+  type OfferServiceClosingCtaData,
+} from '@/components/OfferServiceClosingCta'
+import {
   offerServiceGallerySesjeKobieceDefaults,
   type OfferServiceGalleryData,
 } from '@/components/OfferServiceGallery'
@@ -38,6 +42,7 @@ export type OfferServicePageData = {
   slug: OfferServiceSlug
   approach: OfferServiceApproachData
   care: OfferServiceCareData
+  closingCta: OfferServiceClosingCtaData
   gallery: OfferServiceGalleryData
   hero: OfferServiceHeroData
   inclusions: OfferServiceInclusionsData
@@ -51,6 +56,7 @@ const OFFER_SERVICE_PAGES: Record<OfferServiceSlug, OfferServicePageData> = {
     slug: 'sesje-kobiece',
     approach: offerServiceApproachSesjeKobieceDefaults,
     care: offerServiceCareSesjeKobieceDefaults,
+    closingCta: offerServiceClosingCtaSesjeKobieceDefaults,
     gallery: offerServiceGallerySesjeKobieceDefaults,
     processSteps: offerServiceProcessStepsSesjeKobieceDefaults,
     testimonial: offerServiceTestimonialSesjeKobieceDefaults,
