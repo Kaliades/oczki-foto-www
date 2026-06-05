@@ -8,7 +8,12 @@ type ConditionalSiteFooterProps = {
 }
 
 function routeHasDesignedFooter(pathname: string): boolean {
-  return pathname === '/' || pathname === '/home' || pathname.startsWith('/galeria')
+  return (
+    pathname === '/' ||
+    pathname === '/home' ||
+    pathname.startsWith('/galeria') ||
+    pathname.startsWith('/oferta')
+  )
 }
 
 /**
