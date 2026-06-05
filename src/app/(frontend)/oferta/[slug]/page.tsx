@@ -1,5 +1,6 @@
 import { OfferServiceApproach } from '@/components/OfferServiceApproach'
 import { OfferServiceHero } from '@/components/OfferServiceHero'
+import { OfferServiceInclusions } from '@/components/OfferServiceInclusions'
 import { OfferServicePackages } from '@/components/OfferServicePackages'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
@@ -42,6 +43,7 @@ export default async function OfferServicePage({ params }: Args) {
       <OfferServiceHero data={offerService.hero} />
       <OfferServiceApproach data={offerService.approach} />
       <OfferServicePackages data={offerService.packages} />
+      <OfferServiceInclusions data={offerService.inclusions} />
     </main>
   )
 }
