@@ -2,11 +2,16 @@ type OczkiNavbarMenuButtonProps = {
   onClick?: () => void
 }
 
+/**
+ * Mobile menu trigger — Figma `7093:5558` (360×60 shell, 44px touch target).
+ * Three 1px lines in a 20×12px icon box, centred inside `size-11`.
+ */
 export function OczkiNavbarMenuButton({ onClick }: OczkiNavbarMenuButtonProps) {
   return (
     <button
       aria-label="Otwórz menu"
-      className="flex size-11 items-center justify-center text-[var(--oczki-primary-900)] md:hidden"
+      className="flex size-11 shrink-0 items-center justify-center text-[var(--oczki-primary-900)] md:hidden"
+      data-name="Menu button"
       onClick={onClick}
       type="button"
     >

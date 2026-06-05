@@ -21,13 +21,17 @@ type OczkiNavbarProps = {
 }
 
 /**
- * Site navbar — Figma component `Navbar` (nodes in `OCZKI_NAVBAR_FIGMA_NODES`).
+ * Site navbar — Figma `Navbar` (nodes in `OCZKI_NAVBAR_FIGMA_NODES`).
  *
- * Hierarchy:
- * - `<header>` — positioning + theme hook surface
- * - outer shell — full-bleed background (`solid`) or transparent (`overlay`)
- * - inner cap — `max-w-[1366px]` + `OCZKI_NAVBAR_CAP_PADDING_CLASS`
- * - `Navbar container` row — Logo | Navbar link | Action button container | menu (mobile)
+ * Hierarchy (outer → inner):
+ * - `<header>` — z-index, overlay `absolute` vs solid `relative`, `data-figma-node`
+ * - shell `<div>` — full-bleed bg + `OCZKI_NAVBAR_SHELL_PADDING_Y_CLASS` (py-2 / md:py-3)
+ * - cap `<div>` — `max-w-[1366px]` + `OCZKI_NAVBAR_CAP_PADDING_CLASS` (px-9 / md:px-20 / lg:px-9)
+ * - `Navbar container` — flex row, `justify-between`
+ *     - `Logo` (`Link` → `Logo`)
+ *     - `Navbar link` (`OczkiNavbarNav` → `ul` → `OczkiNavbarLink`, hidden `<md`)
+ *     - `Action button container` (`OczkiNavbarCta` → `OczkiButton`, hidden `<md`)
+ *     - `Menu button` (`OczkiNavbarMenuButton`, `md:hidden`)
  */
 export function OczkiNavbar({ theme = null, variant = 'solid' }: OczkiNavbarProps) {
   const pathname = usePathname()

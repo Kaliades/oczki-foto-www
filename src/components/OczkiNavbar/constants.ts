@@ -1,7 +1,11 @@
+/**
+ * Solid navbar on the O mnie page — active link `7092:4184` visible on desktop only.
+ * Overlay home variant uses component instances `7100:7759` / `7100:7809` / `7102:9480`.
+ */
 export const OCZKI_NAVBAR_FIGMA_NODES = {
-  desktop: '7100:7759',
-  tablet: '7100:7809',
-  mobile: '7102:9480',
+  desktop: '7091:5157',
+  tablet: '7092:4197',
+  mobile: '7093:5558',
 } as const
 
 /**

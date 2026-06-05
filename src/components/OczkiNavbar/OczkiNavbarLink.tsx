@@ -29,6 +29,7 @@ export function OczkiNavbarLink({
           ? 'oczki-body-m-medium text-[var(--oczki-primary-800)]'
           : 'oczki-body-m text-[var(--oczki-primary-700)] hover:text-[var(--oczki-primary-800)]'
       }`}
+      data-name={withDropdownIcon ? 'Navbar link with icon' : 'Navbar link'}
       href={href}
     >
       {isActive && showActiveIndicator ? <OczkiNavbarActiveIndicator /> : null}

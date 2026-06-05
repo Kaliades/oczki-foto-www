@@ -11,6 +11,8 @@ type SplitDisplayHeadingProps = {
   sizeClassName?: string
   /** Whether the italic emphasis run leads or trails the regular run. */
   emphasisPosition?: 'start' | 'end'
+  /** Semantic level — page heroes use `h1`. */
+  as?: 'h1' | 'h2'
 }
 
 /**
@@ -25,6 +27,7 @@ export function SplitDisplayHeading({
   className,
   sizeClassName,
   emphasisPosition = 'end',
+  as: HeadingTag = 'h2',
 }: SplitDisplayHeadingProps) {
   const emphasisEl = (
     <em className="italic tracking-[-0.01em] [font-feature-settings:'dlig'_1,'lnum'_1,'pnum'_1]">
@@ -33,7 +36,7 @@ export function SplitDisplayHeading({
   )
 
   return (
-    <h2
+    <HeadingTag
       className={cn(
         'w-full font-normal leading-[1.04] text-[var(--oczki-primary-800)]',
         '[font-family:var(--font-oczki-display)] [font-feature-settings:"lnum"_1,"pnum"_1]',
@@ -55,6 +58,6 @@ export function SplitDisplayHeading({
           {end}
         </>
       )}
-    </h2>
+    </HeadingTag>
   )
 }

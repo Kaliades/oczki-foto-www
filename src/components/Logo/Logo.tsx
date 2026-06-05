@@ -15,10 +15,10 @@ export const Logo = (props: Props) => {
   const priority = priorityFromProps || 'low'
 
   return (
-    <span className={clsx('flex h-[22px] w-[91px] items-center gap-[3px]', className)}>
+    <span className={clsx('flex h-5 shrink-0 items-center gap-[3px]', className)}>
       <Image
         alt=""
-        className="h-[22px] w-[15px]"
+        className="h-[21.954px] w-[15.231px]"
         height={22}
         loading={loading}
         src="/figma/oczki-sygnet.svg"
@@ -26,7 +26,7 @@ export const Logo = (props: Props) => {
       />
       <Image
         alt="Oczki fotografia"
-        className="h-[21px] w-[72px]"
+        className="h-[21.154px] w-[71.89px]"
         fetchPriority={priority}
         height={21}
         loading={loading}

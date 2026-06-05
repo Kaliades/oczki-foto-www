@@ -99,7 +99,7 @@ export function OczkiButton({
       href={href}
     >
       <ButtonSide side="left" />
-      <span className="oczki-body-m-medium relative z-[1] -mx-px flex min-w-0 flex-1 items-center justify-center bg-[var(--oczki-primary-500)] px-1 transition-colors group-hover:bg-[var(--oczki-primary-400)]">
+      <span className="oczki-body-m-medium relative z-[1] -mx-px flex min-w-0 flex-1 items-start justify-center bg-[var(--oczki-primary-500)] px-1 pb-[10px] pt-[11px] transition-colors group-hover:bg-[var(--oczki-primary-400)]">
         {children}
       </span>
       <ButtonSide side="right" />

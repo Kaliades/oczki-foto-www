@@ -1,5 +1,6 @@
 /**
- * Active-page marker before a nav label (desktop only in Figma `7104:17640`).
+ * Active-page marker before a nav label — Figma `7092:4184`, desktop only (`7091:5157`).
+ * Hidden below `lg`; tablet active state (`7092:4197`) uses medium weight without marker.
  * Parent link uses `gap-1` (4px) between indicator and label.
  */
 export function OczkiNavbarActiveIndicator() {
