@@ -1,5 +1,6 @@
 import { OfferServiceApproach } from '@/components/OfferServiceApproach'
 import { OfferServiceCare } from '@/components/OfferServiceCare'
+import { OfferServiceTestimonial } from '@/components/OfferServiceTestimonial'
 import { OfferServiceHero } from '@/components/OfferServiceHero'
 import { OfferServiceInclusions } from '@/components/OfferServiceInclusions'
 import { OfferServicePackages } from '@/components/OfferServicePackages'
@@ -46,6 +47,7 @@ export default async function OfferServicePage({ params }: Args) {
       <OfferServicePackages data={offerService.packages} />
       <OfferServiceInclusions data={offerService.inclusions} />
       <OfferServiceCare data={offerService.care} />
+      <OfferServiceTestimonial data={offerService.testimonial} />
     </main>
   )
 }

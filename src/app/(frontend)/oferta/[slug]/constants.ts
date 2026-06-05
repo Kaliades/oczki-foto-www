@@ -11,6 +11,10 @@ import {
   type OfferServiceCareData,
 } from '@/components/OfferServiceCare'
 import {
+  offerServiceTestimonialSesjeKobieceDefaults,
+  type OfferServiceTestimonialData,
+} from '@/components/OfferServiceTestimonial'
+import {
   offerServiceInclusionsSesjeKobieceDefaults,
   type OfferServiceInclusionsData,
 } from '@/components/OfferServiceInclusions'
@@ -29,6 +33,7 @@ export type OfferServicePageData = {
   hero: OfferServiceHeroData
   inclusions: OfferServiceInclusionsData
   packages: OfferServicePackagesData
+  testimonial: OfferServiceTestimonialData
 }
 
 const OFFER_SERVICE_PAGES: Record<OfferServiceSlug, OfferServicePageData> = {
@@ -36,6 +41,7 @@ const OFFER_SERVICE_PAGES: Record<OfferServiceSlug, OfferServicePageData> = {
     slug: 'sesje-kobiece',
     approach: offerServiceApproachSesjeKobieceDefaults,
     care: offerServiceCareSesjeKobieceDefaults,
+    testimonial: offerServiceTestimonialSesjeKobieceDefaults,
     hero: offerServiceHeroSesjeKobieceDefaults,
     inclusions: offerServiceInclusionsSesjeKobieceDefaults,
     packages: offerServicePackagesSesjeKobieceDefaults,
