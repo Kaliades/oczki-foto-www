@@ -13,7 +13,8 @@ type OfferServiceGalleryProps = {
  * Offer service "Galeria" — reuses {@link GallerySection} with
  * sesje-kobiece heading copy and offer-page Figma instance nodes.
  *
- * Page order (Figma y-coords): after `OfferServiceProcessSteps`, before footer.
+ * Page order (Figma y-coords): after `OfferServiceProcessSteps`, before
+ * `OfferServiceClosingCta`.
  */
 export function OfferServiceGallery({ data }: OfferServiceGalleryProps) {
   return (

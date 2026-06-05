@@ -7,7 +7,7 @@ import { cn } from '@/utilities/ui'
 import { AccordionItem, type AccordionItemData } from './AccordionItem'
 
 type AccordionProps = {
-  items: AccordionItemData[]
+  items: readonly AccordionItemData[]
   /** Index of the initially expanded item; `-1` for all collapsed. */
   defaultOpenIndex?: number
   className?: string

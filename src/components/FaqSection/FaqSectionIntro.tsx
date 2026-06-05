@@ -1,11 +1,11 @@
 import { SplitDisplayHeading } from '@/components/SplitDisplayHeading/SplitDisplayHeading'
 
-import type { HomeFaqData } from './constants'
+import type { FaqSectionHeading } from './constants'
 
 type FaqSectionIntroProps = {
-  heading: HomeFaqData['heading']
+  heading: FaqSectionHeading
   intro: string
-  headingId?: string
+  headingId: string
   className?: string
 }
 
@@ -16,14 +16,11 @@ type FaqSectionIntroProps = {
 export function FaqSectionIntro({
   heading,
   intro,
-  headingId = 'home-faq-heading',
+  headingId,
   className,
 }: FaqSectionIntroProps) {
   return (
-    <header
-      className={className}
-      data-figma-node="7100:6960"
-    >
+    <header className={className} data-figma-node="7100:6960" data-name="Header container">
       <div className="flex w-full flex-col items-start gap-4">
         <SplitDisplayHeading
           emphasis={heading.emphasis}
@@ -31,7 +28,9 @@ export function FaqSectionIntro({
           id={headingId}
           start={heading.start}
         />
-        <p className="oczki-body-l w-full text-[var(--oczki-primary-700)]">{intro}</p>
+        <p className="oczki-body-l w-full tracking-[-0.24px] text-[var(--oczki-primary-700)]">
+          {intro}
+        </p>
       </div>
     </header>
   )
