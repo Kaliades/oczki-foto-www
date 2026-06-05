@@ -1,7 +1,28 @@
 export const OCZKI_NAVBAR_FIGMA_NODES = {
-  desktop: '7104:17640',
-  tablet: '7104:17971',
-  mobile: '7104:19172',
+  desktop: '7100:7759',
+  tablet: '7100:7809',
+  mobile: '7102:9480',
+} as const
+
+/**
+ * Horizontal padding on the 1366 cap — shared rhythm for sections that align
+ * ornaments or content with the logo / CTA columns (e.g. GalleryHero decor).
+ */
+export const OCZKI_NAVBAR_CAP_PADDING_CLASS = 'px-9 md:px-20 lg:px-9' as const
+
+export const OCZKI_NAVBAR_GUTTER_START_CLASS = 'left-9 md:left-20 lg:left-9' as const
+export const OCZKI_NAVBAR_GUTTER_END_CLASS = 'right-9 md:right-20 lg:right-9' as const
+
+/** Figma metadata: mobile 8+44+8=60, tablet/desktop 12+44+12=68. */
+export const OCZKI_NAVBAR_SHELL_PADDING_Y_CLASS = 'py-2 md:py-3' as const
+
+/** Figma `Navbar link` cluster gap: 16 px tablet, 32 px desktop. */
+export const OCZKI_NAVBAR_NAV_GAP_CLASS = 'gap-4 lg:gap-8' as const
+
+export const OCZKI_NAVBAR_HORIZONTAL_INSET = {
+  mobile: 36,
+  tablet: 80,
+  desktop: 36,
 } as const
 
 export type OczkiNavItem = {

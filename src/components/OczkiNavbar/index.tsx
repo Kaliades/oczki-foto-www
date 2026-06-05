@@ -1,11 +1,15 @@
 'use client'
 
-import { OczkiButton } from '@/components/OczkiButton'
 import { Logo } from '@/components/Logo/Logo'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import { OCZKI_NAVBAR_CTA, OCZKI_NAVBAR_FIGMA_NODES } from './constants'
+import {
+  OCZKI_NAVBAR_CAP_PADDING_CLASS,
+  OCZKI_NAVBAR_FIGMA_NODES,
+  OCZKI_NAVBAR_SHELL_PADDING_Y_CLASS,
+} from './constants'
+import { OczkiNavbarCta } from './OczkiNavbarCta'
 import { OczkiNavbarMenuButton } from './OczkiNavbarMenuButton'
 import { OczkiNavbarNav } from './OczkiNavbarNav'
 
@@ -22,8 +26,8 @@ type OczkiNavbarProps = {
  * Hierarchy:
  * - `<header>` — positioning + theme hook surface
  * - outer shell — full-bleed background (`solid`) or transparent (`overlay`)
- * - inner cap — `max-w-[1366px]` + horizontal padding per breakpoint
- * - row — logo | nav | CTA / menu button
+ * - inner cap — `max-w-[1366px]` + `OCZKI_NAVBAR_CAP_PADDING_CLASS`
+ * - `Navbar container` row — Logo | Navbar link | Action button container | menu (mobile)
  */
 export function OczkiNavbar({ theme = null, variant = 'solid' }: OczkiNavbarProps) {
   const pathname = usePathname()
@@ -38,21 +42,27 @@ export function OczkiNavbar({ theme = null, variant = 'solid' }: OczkiNavbarProp
       {...(theme ? { 'data-theme': theme } : {})}
     >
       <div
-        className={`w-full py-2 md:py-3 ${
+        className={`w-full ${OCZKI_NAVBAR_SHELL_PADDING_Y_CLASS} ${
           isOverlay ? 'bg-transparent' : 'bg-[var(--oczki-primary-100)]'
         }`}
       >
-        <div className="mx-auto w-full max-w-[1366px] px-9 md:px-20 lg:px-9">
-          <div className="flex items-center justify-between">
-            <Link aria-label="Oczki fotografia - strona główna" href="/">
+        <div className={`mx-auto w-full max-w-[1366px] ${OCZKI_NAVBAR_CAP_PADDING_CLASS}`}>
+          <div
+            className="flex min-w-0 flex-1 items-center justify-between"
+            data-name="Navbar container"
+          >
+            <Link
+              aria-label="Oczki fotografia - strona główna"
+              className="shrink-0"
+              data-name="Logo"
+              href="/"
+            >
               <Logo loading="eager" priority="high" />
             </Link>
 
             <OczkiNavbarNav pathname={pathname} />
 
-            <OczkiButton className="hidden md:inline-flex" href={OCZKI_NAVBAR_CTA.href}>
-              {OCZKI_NAVBAR_CTA.label}
-            </OczkiButton>
+            <OczkiNavbarCta />
 
             <OczkiNavbarMenuButton />
           </div>
@@ -62,4 +72,11 @@ export function OczkiNavbar({ theme = null, variant = 'solid' }: OczkiNavbarProp
   )
 }
 
-export { OCZKI_NAV_ITEMS, OCZKI_NAVBAR_FIGMA_NODES } from './constants'
+export {
+  OCZKI_NAV_ITEMS,
+  OCZKI_NAVBAR_CAP_PADDING_CLASS,
+  OCZKI_NAVBAR_FIGMA_NODES,
+  OCZKI_NAVBAR_GUTTER_END_CLASS,
+  OCZKI_NAVBAR_GUTTER_START_CLASS,
+  OCZKI_NAVBAR_HORIZONTAL_INSET,
+} from './constants'

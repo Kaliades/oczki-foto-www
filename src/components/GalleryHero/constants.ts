@@ -1,3 +1,9 @@
+import {
+  OCZKI_NAVBAR_GUTTER_END_CLASS,
+  OCZKI_NAVBAR_GUTTER_START_CLASS,
+  OCZKI_NAVBAR_HORIZONTAL_INSET,
+} from '@/components/OczkiNavbar/constants'
+
 export const GALLERY_HERO_FIGMA_NODES = {
   desktop: '6912:13147',
   tablet: '7104:17981',
@@ -82,19 +88,49 @@ export const GALLERY_HERO_DECOR_FRAMES = {
   left: {
     intrinsicWidth: 253,
     intrinsicHeight: 309,
-    mobile: { insetInlineStart: 36, top: 216, width: 187, height: 228 },
-    tablet: { insetInlineStart: 80, top: 159, width: 253, height: 309 },
-    desktop: { insetInlineStart: 36, top: 73, width: 323, height: 394 },
+    mobile: {
+      insetInlineStart: OCZKI_NAVBAR_HORIZONTAL_INSET.mobile,
+      top: 216,
+      width: 187,
+      height: 228,
+    },
+    tablet: {
+      insetInlineStart: OCZKI_NAVBAR_HORIZONTAL_INSET.tablet,
+      top: 159,
+      width: 253,
+      height: 309,
+    },
+    desktop: {
+      insetInlineStart: OCZKI_NAVBAR_HORIZONTAL_INSET.desktop,
+      top: 73,
+      width: 323,
+      height: 394,
+    },
   },
   right: {
     intrinsicWidth: 200,
     intrinsicHeight: 284,
-    mobile: { insetInlineEnd: 36, top: -67, width: 147, height: 185 },
-    tablet: { insetInlineEnd: 80, top: -45, width: 200, height: 284 },
-    desktop: { insetInlineEnd: 36, top: -37, width: 255, height: 347 },
+    mobile: {
+      insetInlineEnd: OCZKI_NAVBAR_HORIZONTAL_INSET.mobile,
+      top: -67,
+      width: 147,
+      height: 185,
+    },
+    tablet: {
+      insetInlineEnd: OCZKI_NAVBAR_HORIZONTAL_INSET.tablet,
+      top: -45,
+      width: 200,
+      height: 284,
+    },
+    desktop: {
+      insetInlineEnd: OCZKI_NAVBAR_HORIZONTAL_INSET.desktop,
+      top: -37,
+      width: 255,
+      height: 347,
+    },
   },
 } as const
 
-/** Same horizontal rhythm as `OczkiNavbar` inner (`px-9` / `md:px-20` / `lg:px-9`). */
-export const GALLERY_HERO_NAVBAR_GUTTER_CLASS = 'left-9 md:left-20 lg:left-9' as const
-export const GALLERY_HERO_NAVBAR_GUTTER_END_CLASS = 'right-9 md:right-20 lg:right-9' as const
+/** Re-exported from `OczkiNavbar` — decor ornaments align with logo / CTA columns. */
+export const GALLERY_HERO_NAVBAR_GUTTER_CLASS = OCZKI_NAVBAR_GUTTER_START_CLASS
+export const GALLERY_HERO_NAVBAR_GUTTER_END_CLASS = OCZKI_NAVBAR_GUTTER_END_CLASS
