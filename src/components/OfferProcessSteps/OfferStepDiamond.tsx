@@ -7,7 +7,7 @@ type OfferStepDiamondProps = {
 
 /**
  * Numbered diamond used as the step indicator in
- * "Krok po kroku do pięknych zdjęć" (Figma 7105:7519 / 7105:7528).
+ * "Kroki do realizacji oferty" (Figma 7105:7519 / 7105:7528).
  *
  * The shape is two stacked rotated squares: a 38×38 outline and a 30×30
  * fill, both rotated 45° inside a 54×54 box. The number text is centred

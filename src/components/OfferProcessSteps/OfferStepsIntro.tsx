@@ -10,8 +10,8 @@ type OfferStepsIntroProps = {
 }
 
 /**
- * Left column of "Krok po kroku do pięknych zdjęć" on desktop — and
- * the top stacked block on tablet / mobile.
+ * Left column of "Kroki do realizacji oferty" on desktop — and the top
+ * stacked block on tablet / mobile.
  *
  * Figma references:
  * - Desktop column 7105:7510 — fixed `w-[535px]`, vertical auto-layout
@@ -32,7 +32,7 @@ export const OfferStepsIntro = ({
   headingEmphasis,
   intro,
   cta,
-  headingId = 'home-offer-process-steps-heading',
+  headingId,
 }: OfferStepsIntroProps) => {
   const ctaHref = resolveLinkHref(cta)
 

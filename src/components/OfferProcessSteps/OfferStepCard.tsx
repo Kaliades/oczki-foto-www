@@ -8,8 +8,8 @@ type OfferStepCardProps = {
 }
 
 /**
- * Single row in the "Krok po kroku do pięknych zdjęć" list — a diamond
- * step indicator on the left and a title + body block on the right.
+ * Single row in the process-steps list — a diamond step indicator on the
+ * left and a title + body block on the right.
  *
  * Figma references (per breakpoint, all share the same row geometry):
  * - Desktop / tablet / mobile: 7105:7518 (Step Container) — diamond

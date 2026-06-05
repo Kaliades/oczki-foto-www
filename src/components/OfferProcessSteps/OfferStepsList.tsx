@@ -6,8 +6,8 @@ type OfferStepsListProps = {
 }
 
 /**
- * Right column of "Krok po kroku do pięknych zdjęć" on desktop — and
- * the second stacked block on tablet / mobile.
+ * Right column of "Kroki do realizacji oferty" on desktop — and the
+ * second stacked block on tablet / mobile.
  *
  * Figma container: 7105:7517. Auto-layout vertical with `gap-[32px]`
  * between step rows. Each row itself is laid out by `OfferStepCard`.
