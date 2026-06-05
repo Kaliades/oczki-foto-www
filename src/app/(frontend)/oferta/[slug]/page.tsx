@@ -1,5 +1,6 @@
-import { OfferServiceHero } from '@/components/OfferServiceHero'
 import { OfferServiceApproach } from '@/components/OfferServiceApproach'
+import { OfferServiceHero } from '@/components/OfferServiceHero'
+import { OfferServicePackages } from '@/components/OfferServicePackages'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 
@@ -40,6 +41,7 @@ export default async function OfferServicePage({ params }: Args) {
     <main className="min-h-screen bg-[var(--oczki-primary-100)] [font-family:var(--font-oczki-body)]">
       <OfferServiceHero data={offerService.hero} />
       <OfferServiceApproach data={offerService.approach} />
+      <OfferServicePackages data={offerService.packages} />
     </main>
   )
 }

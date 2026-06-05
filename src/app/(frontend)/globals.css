@@ -135,6 +135,17 @@
     letter-spacing: -0.01em;
   }
 
+  .oczki-heading-s {
+    font-family: var(--font-oczki-display);
+    font-feature-settings:
+      'lnum' 1,
+      'pnum' 1;
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.04;
+  }
+
   .oczki-handwritten-s {
     font-family: var(--font-oczki-handwritten), cursive;
     font-feature-settings:

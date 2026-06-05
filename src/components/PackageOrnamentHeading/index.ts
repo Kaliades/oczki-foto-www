@@ -1,0 +1,1 @@
+export { PackageOrnamentHeading } from './PackageOrnamentHeading'
