@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 import { cn } from '@/utilities/ui'
 
-import type { HomeGalleryItem } from './constants'
+import type { GallerySectionItem } from './constants'
 
 const FALLBACK_CAPTION = {
   title: 'Para w kadrze',
@@ -16,7 +16,7 @@ const SIZE_TRANSITION =
   'motion-safe:transition-[width,height] motion-safe:duration-500'
 
 type GalleryItemProps = {
-  item: HomeGalleryItem
+  item: GallerySectionItem
   isFocused: boolean
   isFocusedNeighbour?: boolean
   onFocus: () => void

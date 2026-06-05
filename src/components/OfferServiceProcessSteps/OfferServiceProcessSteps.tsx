@@ -13,7 +13,8 @@ type OfferServiceProcessStepsProps = {
  * Offer service "Kroki do realizacji oferty" — reuses
  * {@link OfferProcessStepsSection} with offer-page Figma instance nodes.
  *
- * Page order (Figma y-coords): after `OfferServiceTestimonial`, before footer.
+ * Page order (Figma y-coords): after `OfferServiceTestimonial`, before
+ * `OfferServiceGallery`.
  */
 export function OfferServiceProcessSteps({ data }: OfferServiceProcessStepsProps) {
   return (

@@ -14,7 +14,8 @@ type OfferServiceTestimonialProps = {
  * Offer service “Opinie” — reuses {@link TestimonialSectionClient} with
  * sesje-kobiece heading copy and offer-page Figma instance nodes.
  *
- * Page order (Figma y-coords): after `OfferServiceCare`, before footer.
+ * Page order (Figma y-coords): after `OfferServiceCare`, before
+ * `OfferServiceProcessSteps`.
  */
 export function OfferServiceTestimonial({ data }: OfferServiceTestimonialProps) {
   return (

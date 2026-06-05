@@ -12,13 +12,13 @@ type GalleryHeaderProps = {
 }
 
 /**
- * "Text container" row from Figma:
- *   - Desktop 7105:8499 → horizontal flex, heading-left + cta-right,
+ * "Text container" row from Figma (`7105:8212`):
+ *   - Desktop → horizontal flex, heading-left + cta-right,
  *     items-end (cta bottom-aligned with the description baseline).
- *   - Tablet 7105:11600 + Mobile 7105:13895 → vertical stack with the cta
- *     below the heading + description.
+ *   - Tablet + mobile → vertical stack with the cta below the heading +
+ *     description.
  *
- * The heading itself stays at Figma's 531 px on tablet+ (matches the bbox
+ * The heading block stays at Figma's 531 px on tablet+ (matches the bbox
  * even though the actual text overflows that frame slightly in Figma — the
  * source heading text node is 554 wide because the design lets the heading
  * spill past its parent's reported width without wrapping).
@@ -28,10 +28,11 @@ export function GalleryHeader({
   headingEmphasis,
   description,
   cta,
-  headingId = 'home-gallery-heading',
+  headingId = 'gallery-section-heading',
 }: GalleryHeaderProps) {
   const href = resolveLinkHref(cta)
   const label = cta.label ?? ''
+  const hasEmphasis = Boolean(headingEmphasis?.trim())
 
   return (
     <div className="flex w-full flex-col items-start gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
@@ -40,10 +41,15 @@ export function GalleryHeader({
           className="w-full text-[28px] font-normal leading-[1.04] tracking-[-0.02em] text-[var(--oczki-primary-800)] [font-family:var(--font-oczki-display)] [font-feature-settings:'lnum'_1,'pnum'_1] md:text-[32px] lg:text-[36px]"
           id={headingId}
         >
-          {headingStart}{' '}
-          <em className="italic tracking-[-0.01em] [font-feature-settings:'dlig'_1,'lnum'_1,'pnum'_1]">
-            {headingEmphasis}
-          </em>
+          {headingStart}
+          {hasEmphasis ? (
+            <>
+              {' '}
+              <em className="italic tracking-[-0.01em] [font-feature-settings:'dlig'_1,'lnum'_1,'pnum'_1]">
+                {headingEmphasis}
+              </em>
+            </>
+          ) : null}
         </h2>
         <p className="w-full text-[16px] font-normal leading-[1.7] tracking-[0] text-[var(--oczki-primary-700)] [font-family:var(--font-instrument-sans),'Inter',sans-serif]">
           {description}

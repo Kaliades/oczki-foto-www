@@ -8,11 +8,11 @@ import { GalleryProgressDivider } from './GalleryProgressDivider'
 import {
   getDefaultFocusedIndex,
   isFocusedNeighbour,
-  type HomeGalleryItem,
+  type GallerySectionItem,
 } from './constants'
 
 type GalleryRailProps = {
-  items: readonly HomeGalleryItem[]
+  items: readonly GallerySectionItem[]
 }
 
 const centerFocusedItem = (
@@ -42,6 +42,14 @@ const centerFocusedItem = (
  * Horizontally-scrollable rail — one focused (large) slot at a time.
  * Focus changes animate every slot in parallel; the stage keeps a fixed
  * min-height so the progress bar below does not shift.
+ *
+ * Hierarchy (Figma `7105:8217`):
+ *   Gallery container
+ *   ├── Gallery row (`7105:8218`) — flex row, 16 px gap
+ *   │   ├── Small image container × N — pt 108 px, 211×262 image
+ *   │   ├── Large image container — 393×486 image + caption (`7105:8225`)
+ *   │   └── Carousel controls container (`7105:8232`) — absolute, desktop
+ *   └── Divider container (`7105:8237`) — 4 px track + fill
  */
 export function GalleryRail({ items }: GalleryRailProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
