@@ -40,11 +40,11 @@ export function FramedCtaCopy({
         data-name="Text container"
       >
         <SplitDisplayHeading
-          className="oczki-heading-l text-center text-[var(--oczki-primary-800)]"
+          className="text-center text-[var(--oczki-primary-800)]"
           emphasis={heading.emphasis}
           end={heading.end}
           id={headingId}
-          sizeClassName=""
+          sizeClassName="oczki-heading-l"
           start={heading.start}
         />
         <div

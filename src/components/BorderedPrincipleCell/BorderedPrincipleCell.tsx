@@ -1,8 +1,14 @@
 import { cn } from '@/utilities/ui'
 
+import { BORDERED_PRINCIPLE_COPY_TYPOGRAPHY } from './constants'
+
 type BorderedPrincipleCellProps = {
   description: string
-  figmaNode?: string
+  figmaNodes?: {
+    desktop?: string
+    mobile?: string
+    tablet?: string
+  }
   isLast: boolean
   title: string
   widthClassName?: string
@@ -21,7 +27,7 @@ type BorderedPrincipleCellProps = {
  */
 export function BorderedPrincipleCell({
   description,
-  figmaNode,
+  figmaNodes,
   isLast,
   title,
   widthClassName,
@@ -29,15 +35,30 @@ export function BorderedPrincipleCell({
   return (
     <div
       className={cn(
-        'flex w-full shrink-0 flex-col items-start gap-2 py-4 md:gap-2.5 md:px-16 md:py-4 lg:p-4',
-        !isLast && 'border-b border-[var(--oczki-primary-300)] lg:border-b-0 lg:border-r',
+        'flex w-full shrink-0 flex-col items-start gap-2 py-4 md:gap-2.5 md:px-16 md:py-4 min-[1366px]:gap-2.5 min-[1366px]:p-4',
+        !isLast &&
+          'border-b border-[var(--oczki-primary-300)] min-[1366px]:border-b-0 min-[1366px]:border-r',
         widthClassName,
       )}
-      data-figma-node={figmaNode}
+      data-figma-node={figmaNodes?.desktop}
+      data-figma-node-mobile={figmaNodes?.mobile}
+      data-figma-node-tablet={figmaNodes?.tablet}
       data-name="Container"
     >
-      <p className="oczki-body-l w-full shrink-0 tracking-[-0.24px] text-[var(--oczki-primary-800)]">{title}</p>
-      <p className="oczki-body-m w-full shrink-0 tracking-[-0.14px] text-[var(--oczki-primary-700)]">
+      <p
+        className={cn(
+          BORDERED_PRINCIPLE_COPY_TYPOGRAPHY.title,
+          'w-full shrink-0 tracking-[-0.24px] text-[var(--oczki-primary-800)]',
+        )}
+      >
+        {title}
+      </p>
+      <p
+        className={cn(
+          BORDERED_PRINCIPLE_COPY_TYPOGRAPHY.description,
+          'w-full shrink-0 tracking-[-0.14px] text-[var(--oczki-primary-700)]',
+        )}
+      >
         {description}
       </p>
     </div>

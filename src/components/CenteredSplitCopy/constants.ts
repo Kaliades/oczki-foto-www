@@ -1,4 +1,23 @@
 /** Responsive centred heading + body — Figma `Heading` pattern (header/m + body/l). */
+export const CENTERED_SPLIT_COPY_LAYOUT = {
+  mobile: {
+    bodyInsetX: 0,
+    gap: 8,
+  },
+  tablet: {
+    bodyInsetX: 36,
+    bodyMaxWidth: 442,
+    gap: 16,
+    width: 514,
+  },
+  desktop: {
+    bodyInsetX: 36,
+    bodyMaxWidth: 442,
+    gap: 16,
+    width: 514,
+  },
+} as const
+
 export const CENTERED_SPLIT_COPY_FIGMA_NODES = {
   heading: {
     desktop: '7001:2444',

@@ -1,4 +1,5 @@
 import { AboutHero, aboutHeroDefaults } from '@/components/AboutHero'
+import { aboutPhilosophyDefaults, PhilosophyPrinciplesSection } from '@/components/PhilosophyPrinciplesSection'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -9,6 +10,7 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen bg-[var(--oczki-primary-100)] [font-family:var(--font-oczki-body)]">
       <AboutHero data={aboutHeroDefaults} />
+      <PhilosophyPrinciplesSection data={aboutPhilosophyDefaults} headingId="about-philosophy-heading" />
     </main>
   )
 }
