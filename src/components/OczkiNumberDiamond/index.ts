@@ -1,0 +1,1 @@
+export { OczkiNumberDiamond } from './OczkiNumberDiamond'
