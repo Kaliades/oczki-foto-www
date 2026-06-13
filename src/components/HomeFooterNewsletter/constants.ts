@@ -23,6 +23,11 @@ import type { SectionLink } from '@/utilities/resolveLinkHref'
  *   - desktop 1366: 7100:6792
  *   - tablet  768:  7100:8624
  *   - mobile  360:  7102:10290
+ *
+ * About (`/o-mnie`):
+ *   - desktop 1366: 7091:5203
+ *   - tablet  768:  7092:4749
+ *   - mobile  360:  7093:6134
  */
 export const HOME_FOOTER_NEWSLETTER_FIGMA_NODES = {
   desktopFrame: '7102:11553',
@@ -46,6 +51,12 @@ export const OFFER_SERVICE_FOOTER_NEWSLETTER_FIGMA_NODES = {
   desktopFrame: '7100:6792',
   tabletFrame: '7100:8624',
   mobileFrame: '7102:10290',
+} as const
+
+export const ABOUT_FOOTER_NEWSLETTER_FIGMA_NODES = {
+  desktopFrame: '7091:5203',
+  tabletFrame: '7092:4749',
+  mobileFrame: '7093:6134',
 } as const
 
 export type FooterNewsletterFigmaNodes = {

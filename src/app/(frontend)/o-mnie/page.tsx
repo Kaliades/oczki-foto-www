@@ -9,6 +9,7 @@ import {
   AboutInstagramSection,
 } from '@/components/AboutInstagramSection'
 import { aboutCtaDefaults, AboutCta } from '@/components/AboutCta'
+import { AboutFooterNewsletter } from '@/components/AboutFooterNewsletter'
 import {
   collaborationPillarsDefaults,
   CollaborationPillarsSection,
@@ -49,6 +50,7 @@ export default function AboutPage() {
         headingId="about-instagram-heading"
       />
       <AboutCta data={aboutCtaDefaults} />
+      <AboutFooterNewsletter />
     </main>
   )
 }

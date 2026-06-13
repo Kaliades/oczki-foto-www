@@ -1,0 +1,1 @@
+export { ScallopedButton } from './ScallopedButton'

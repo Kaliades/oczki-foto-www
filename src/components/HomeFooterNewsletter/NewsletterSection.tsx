@@ -1,9 +1,7 @@
-import Image from 'next/image'
-
 import type { SectionLink } from '@/utilities/resolveLinkHref'
 import type { FooterNewsletterFigmaNodes } from './constants'
-import { NewsletterForm } from './NewsletterForm'
-import { NewsletterHeading } from './NewsletterHeading'
+import { NewsletterFormColumn } from './NewsletterFormColumn'
+import { NewsletterPhoto } from './NewsletterPhoto'
 
 type NewsletterSectionProps = {
   figmaNodes?: FooterNewsletterFigmaNodes
@@ -21,14 +19,14 @@ type NewsletterSectionProps = {
 }
 
 /**
- * Top half of Footer+Newsletter — split photo / form layout on desktop,
+ * Top half of Footer+Newsletter — split photo / form on desktop,
  * stacked form-then-photo on mobile and tablet (Figma `7091:3620`).
  *
- * Shell notes:
- *   - Outer shell: full-bleed sage (ultra-wide gutters match the form column).
- *   - Layout in the 1366 cap; photo does not bleed past the cap.
- *   - Text column keeps sage for Figma `7091:3622` (texture + form sit on sage).
- *   - `mb-[-32px]` lets the footer scallop row overlap this block.
+ * Shell pattern (see `responsive-layout.mdc`):
+ *   <section> — secondary/600 full bleed
+ *     └── discrete 360 / 768 / 1366 layout caps with `mb-[-32px]` overlap
+ *         ├── Text Column `7091:3622` — pt 80, pb 128; px 24 / 80 / 128
+ *         └── Image `7091:3621` — square, 660 px wide on desktop
  */
 export function NewsletterSection({
   figmaNodes,
@@ -40,52 +38,65 @@ export function NewsletterSection({
   photoSrc,
   photoAlt,
 }: NewsletterSectionProps) {
+  const columnProps = {
+    heading,
+    headingId,
+    intro,
+    privacyLink,
+    submitLabel,
+  }
+
   return (
     <section
       aria-labelledby={headingId}
       className="relative z-0 w-full overflow-x-clip bg-[var(--oczki-secondary-600)]"
       data-figma-node={figmaNodes?.desktopFrame}
+      data-figma-node-mobile={figmaNodes?.mobileFrame}
+      data-figma-node-tablet={figmaNodes?.tabletFrame}
     >
-      <div className="relative mx-auto mb-[-32px] flex w-full max-w-[1366px] flex-col lg:flex-row">
-        <div className="relative order-2 aspect-square w-full shrink-0 overflow-hidden lg:order-1 lg:w-[660px]">
-          <Image
-            alt={photoAlt}
-            className="object-cover"
-            fill
-            priority={false}
-            sizes="(max-width: 1024px) 100vw, 660px"
-            src={photoSrc}
-          />
-        </div>
+      {/* Mobile — 360, Figma `7093:6134` */}
+      <div
+        className="relative mx-auto mb-[-32px] flex w-full max-w-[360px] flex-col md:hidden"
+        data-figma-node={figmaNodes?.mobileFrame}
+        data-name="Content Section"
+      >
+        <NewsletterFormColumn
+          {...columnProps}
+          fieldIdPrefix="newsletter-mobile"
+          shellClassName="px-6 pb-32 pt-20"
+          submitFullWidth
+        />
+        <NewsletterPhoto alt={photoAlt} sizes="360px" src={photoSrc} />
+      </div>
 
-        <div className="relative order-1 flex w-full shrink-0 flex-col items-start gap-8 overflow-hidden bg-[var(--oczki-secondary-600)] px-8 pb-20 pt-20 md:px-20 lg:order-2 lg:w-[706px] lg:gap-8 lg:px-32 lg:pb-32 lg:pt-20">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute left-1/2 h-[772px] w-[1031px] mix-blend-darken"
-            style={{ top: 'calc(50% + 48.2px)', transform: 'translate(-50%, -50%)' }}
-          >
-            <Image
-              alt=""
-              className="object-cover opacity-50"
-              fill
-              sizes="1031px"
-              src="/figma/newsletter-cement-texture.png"
-            />
-          </div>
+      {/* Tablet — 768, Figma `7092:4749` */}
+      <div
+        className="relative mx-auto mb-[-32px] hidden w-full max-w-[768px] flex-col md:flex lg:hidden"
+        data-figma-node={figmaNodes?.tabletFrame}
+        data-name="Content Section"
+      >
+        <NewsletterFormColumn
+          {...columnProps}
+          fieldIdPrefix="newsletter-tablet"
+          shellClassName="px-20 pb-32 pt-20"
+        />
+        <NewsletterPhoto alt={photoAlt} sizes="768px" src={photoSrc} />
+      </div>
 
-          <div className="relative z-[1] flex w-full max-w-[450px] flex-col items-start gap-8">
-            <div className="flex w-full flex-col items-start gap-4">
-              <NewsletterHeading
-                emphasis={heading.emphasis}
-                headingId={headingId}
-                plain={heading.plain}
-                plainEnd={heading.plainEnd}
-              />
-              <p className="oczki-body-l w-full text-[var(--oczki-primary-100)]">{intro}</p>
-            </div>
-            <NewsletterForm privacyLink={privacyLink} submitLabel={submitLabel} />
-          </div>
+      {/* Desktop — 1366, Figma `7091:5203` */}
+      <div
+        className="relative mx-auto mb-[-32px] hidden w-full max-w-[1366px] flex-row lg:flex"
+        data-figma-node={figmaNodes?.desktopFrame}
+        data-name="Content Section"
+      >
+        <div className="w-[660px] shrink-0">
+          <NewsletterPhoto alt={photoAlt} sizes="660px" src={photoSrc} />
         </div>
+        <NewsletterFormColumn
+          {...columnProps}
+          fieldIdPrefix="newsletter-desktop"
+          shellClassName="w-[706px] px-32 pb-32 pt-20"
+        />
       </div>
     </section>
   )
