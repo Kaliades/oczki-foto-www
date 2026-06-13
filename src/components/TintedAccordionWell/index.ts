@@ -1,0 +1,1 @@
+export { TintedAccordionWell } from './TintedAccordionWell'
