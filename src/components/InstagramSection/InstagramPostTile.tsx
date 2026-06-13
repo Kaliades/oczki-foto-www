@@ -5,6 +5,7 @@ import { cn } from '@/utilities/ui'
 import type { InstagramPost } from './constants'
 
 type InstagramPostTileProps = {
+  figmaNode?: string
   post: InstagramPost
   href: string
 }
@@ -15,10 +16,12 @@ type InstagramPostTileProps = {
  * desktop / tablet / mobile frames — tiles shrink proportionally below
  * 1366 px while staying square.
  */
-export function InstagramPostTile({ post, href }: InstagramPostTileProps) {
+export function InstagramPostTile({ figmaNode, href, post }: InstagramPostTileProps) {
   return (
     <a
       className="relative block aspect-square w-full min-w-0 border border-solid border-[var(--oczki-primary-200)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--oczki-primary-800)]"
+      data-figma-node={figmaNode}
+      data-name="Image"
       href={href}
       rel="noopener noreferrer"
       target="_blank"

@@ -5,6 +5,10 @@ import {
   BeyondPhotographySection,
 } from '@/components/BeyondPhotographySection'
 import {
+  aboutInstagramDefaults,
+  AboutInstagramSection,
+} from '@/components/AboutInstagramSection'
+import {
   collaborationPillarsDefaults,
   CollaborationPillarsSection,
 } from '@/components/CollaborationPillarsSection'
@@ -38,6 +42,10 @@ export default function AboutPage() {
       <CollaborationPillarsSection
         data={collaborationPillarsDefaults}
         headingId="about-collaboration-pillars-heading"
+      />
+      <AboutInstagramSection
+        data={aboutInstagramDefaults}
+        headingId="about-instagram-heading"
       />
     </main>
   )
