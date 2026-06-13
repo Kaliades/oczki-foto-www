@@ -1,5 +1,9 @@
 import { AboutHero, aboutHeroDefaults } from '@/components/AboutHero'
 import { aboutPhilosophyDefaults, PhilosophyPrinciplesSection } from '@/components/PhilosophyPrinciplesSection'
+import {
+  beyondPhotographyDefaults,
+  BeyondPhotographySection,
+} from '@/components/BeyondPhotographySection'
 import { expertiseDefaults, ExpertiseSection } from '@/components/ExpertiseSection'
 import { sessionFeelDefaults, SessionFeelSection } from '@/components/SessionFeelSection'
 import type { Metadata } from 'next'
@@ -15,6 +19,10 @@ export default function AboutPage() {
       <PhilosophyPrinciplesSection data={aboutPhilosophyDefaults} headingId="about-philosophy-heading" />
       <SessionFeelSection data={sessionFeelDefaults} headingId="about-session-feel-heading" />
       <ExpertiseSection data={expertiseDefaults} headingId="about-expertise-heading" />
+      <BeyondPhotographySection
+        data={beyondPhotographyDefaults}
+        headingId="about-beyond-photography-heading"
+      />
     </main>
   )
 }

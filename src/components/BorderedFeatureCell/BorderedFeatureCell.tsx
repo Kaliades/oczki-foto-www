@@ -1,22 +1,40 @@
+import { cn } from '@/utilities/ui'
+
+import { BORDERED_FEATURE_CELL_LAYOUT } from './constants'
+
 type BorderedFeatureCellProps = {
+  density?: keyof typeof BORDERED_FEATURE_CELL_LAYOUT.density
   description: string
   figmaNode?: string
+  showDivider?: boolean
   title: string
 }
 
 /**
  * Title + body copy cell with a bottom divider edge.
  *
- * Figma `Section` (`6998:26822`):
- *   <div Section> — border-b primary-300; p 20 px (desktop/tablet) / py 16 px (mobile)
+ * Figma `Section` (`6998:26800` / `7092:4636` / `7093:6021`):
+ *   <div Section> — border-b primary-300; p 20 px (desktop/tablet) / py 12 px (mobile compact)
  *     └── <div Section Container> — gap 6 px
  *         ├── title — body/l, primary-800
  *         └── description — body/m, primary-700
  */
-export function BorderedFeatureCell({ description, figmaNode, title }: BorderedFeatureCellProps) {
+export function BorderedFeatureCell({
+  density = 'default',
+  description,
+  figmaNode,
+  showDivider = true,
+  title,
+}: BorderedFeatureCellProps) {
+  const paddingClassName = BORDERED_FEATURE_CELL_LAYOUT.density[density]
+
   return (
     <div
-      className="flex w-full flex-col items-start gap-1.5 border-b border-[var(--oczki-primary-300)] py-4 md:p-5"
+      className={cn(
+        'flex w-full flex-col items-start',
+        showDivider ? 'border-b border-[var(--oczki-primary-300)]' : undefined,
+        paddingClassName,
+      )}
       data-figma-node={figmaNode}
       data-name="Section"
     >
