@@ -28,7 +28,7 @@ export function FaqSectionIntro({
           id={headingId}
           start={heading.start}
         />
-        <p className="oczki-body-l w-full tracking-[-0.24px] text-[var(--oczki-primary-700)]">
+        <p className="oczki-body-l w-full break-words tracking-[-0.24px] text-[var(--oczki-primary-700)]">
           {intro}
         </p>
       </div>

@@ -55,7 +55,7 @@ export function AccordionItem({
               onClick={onToggle}
               type="button"
             >
-              <span className="oczki-body-xl min-w-0 flex-1 break-words text-[var(--oczki-primary-800)]">
+              <span className="oczki-body-xl min-w-0 flex-1 break-words tracking-[-0.3px] text-[var(--oczki-primary-800)]">
                 {question}
               </span>
               <AccordionChevron open />
@@ -72,7 +72,7 @@ export function AccordionItem({
             <div className="flex w-full items-center justify-center pr-12" data-figma-node="7064:15123">
               <p
                 aria-labelledby={triggerId}
-                className="oczki-body-l min-w-0 flex-1 break-words text-[var(--oczki-primary-700)]"
+                className="oczki-body-l min-w-0 flex-1 break-words tracking-[-0.24px] text-[var(--oczki-primary-700)]"
                 id={panelId}
                 role="region"
               >
@@ -100,7 +100,7 @@ export function AccordionItem({
           onClick={onToggle}
           type="button"
         >
-          <span className="oczki-body-xl min-w-0 flex-1 break-words text-[var(--oczki-primary-700)]">
+          <span className="oczki-body-xl min-w-0 flex-1 break-words tracking-[-0.3px] text-[var(--oczki-primary-700)]">
             {question}
           </span>
           <AccordionChevron open={false} />

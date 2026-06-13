@@ -1,4 +1,5 @@
 import { ContactHeroSection, contactHeroDefaults } from '@/components/ContactHero'
+import { ContactFaq, contactFaqDefaults } from '@/components/ContactFaq'
 import { ServiceAreaSection, serviceAreaSectionDefaults } from '@/components/ServiceAreaSection'
 import type { Metadata } from 'next'
 
@@ -11,6 +12,7 @@ export default function ContactPage() {
     <main className="min-h-screen bg-[var(--oczki-primary-100)] [font-family:var(--font-oczki-body)]">
       <ContactHeroSection data={contactHeroDefaults} />
       <ServiceAreaSection data={serviceAreaSectionDefaults} />
+      <ContactFaq data={contactFaqDefaults} />
     </main>
   )
 }
