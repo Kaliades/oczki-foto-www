@@ -4,6 +4,10 @@ import {
   beyondPhotographyDefaults,
   BeyondPhotographySection,
 } from '@/components/BeyondPhotographySection'
+import {
+  dualPerspectiveDefaults,
+  DualPerspectiveSection,
+} from '@/components/DualPerspectiveSection'
 import { expertiseDefaults, ExpertiseSection } from '@/components/ExpertiseSection'
 import { sessionFeelDefaults, SessionFeelSection } from '@/components/SessionFeelSection'
 import type { Metadata } from 'next'
@@ -22,6 +26,10 @@ export default function AboutPage() {
       <BeyondPhotographySection
         data={beyondPhotographyDefaults}
         headingId="about-beyond-photography-heading"
+      />
+      <DualPerspectiveSection
+        data={dualPerspectiveDefaults}
+        headingId="about-dual-perspective-heading"
       />
     </main>
   )
