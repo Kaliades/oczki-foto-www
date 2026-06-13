@@ -1,11 +1,12 @@
 import { OczkiButton } from '@/components/OczkiButton'
-import { resolveLinkHref, type SectionLink } from '@/utilities/resolveLinkHref'
+import { resolveLinkHref } from '@/utilities/resolveLinkHref'
 
-type CtaContentProps = {
-  headingPlain: string
-  headingEmphasis: string
+import type { OrnateCtaData } from './types'
+
+type OrnateCtaCopyProps = {
   body: string
-  cta: SectionLink
+  cta: OrnateCtaData['cta']
+  heading: OrnateCtaData['heading']
   headingId?: string
   variant: 'desktop' | 'tablet' | 'mobile'
 }
@@ -13,17 +14,16 @@ type CtaContentProps = {
 /**
  * Copy + CTA — Figma 7105:8641 / 8604 / 8567.
  *
- * Tablet (8605): text 480 px, heading/body gap 16 px, stack→button gap 36 px,
- * heading 36 px (oczki-heading-l), body 16 px (oczki-body-l).
+ * Text cluster gap 16 px; stack→button gap 36 px (panel wrapper).
+ * Heading `oczki-heading-l` (36 px); body `oczki-body-l` (16 px).
  */
-export const CtaContent = ({
-  headingPlain,
-  headingEmphasis,
+export function OrnateCtaCopy({
   body,
   cta,
-  headingId = 'home-cta-heading',
+  heading,
+  headingId = 'ornate-cta-heading',
   variant,
-}: CtaContentProps) => {
+}: OrnateCtaCopyProps) {
   const href = resolveLinkHref(cta)
 
   const textClusterClassName =
@@ -40,15 +40,21 @@ export const CtaContent = ({
 
   return (
     <>
-      <div className={textClusterClassName}>
+      <div className={textClusterClassName} data-name="Text container">
         <h2
           className="oczki-heading-l w-full text-center text-[var(--oczki-primary-800)]"
           id={headingId}
         >
-          {headingPlain}
-          <em className="italic">{headingEmphasis}</em>?
+          {heading.type === 'single' ? (
+            heading.text
+          ) : (
+            <>
+              {heading.plain}
+              <em className="italic">{heading.emphasis}</em>?
+            </>
+          )}
         </h2>
-        <div className="flex w-full flex-col items-center">
+        <div className="flex w-full flex-col items-center" data-name="Secondary text container">
           <p className={bodyClassName}>{body}</p>
         </div>
       </div>

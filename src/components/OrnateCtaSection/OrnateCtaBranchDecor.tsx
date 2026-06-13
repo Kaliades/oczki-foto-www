@@ -1,15 +1,15 @@
 import Image from 'next/image'
 
 import {
-  CTA_DESKTOP_DECOR_LEFT_IN_FRAME,
-  CTA_DESKTOP_DECOR_RIGHT_IN_FRAME,
-  CTA_MOBILE_BOTTOM_DECOR_INSET,
-  CTA_MOBILE_TOP_DECOR_INSET,
-  CTA_TABLET_DECOR_LEFT_IN_FRAME,
-  CTA_TABLET_DECOR_RIGHT_IN_FRAME,
-} from './constants'
+  ORNATE_CTA_DESKTOP_DECOR_LEFT_IN_FRAME,
+  ORNATE_CTA_DESKTOP_DECOR_RIGHT_IN_FRAME,
+  ORNATE_CTA_MOBILE_BOTTOM_DECOR_INSET,
+  ORNATE_CTA_MOBILE_TOP_DECOR_INSET,
+  type OrnateCtaLayoutMetrics,
+} from './geometry'
 
-type CtaBranchDecorProps = {
+type OrnateCtaBranchDecorProps = {
+  metrics: OrnateCtaLayoutMetrics
   variant:
     | 'desktop-left'
     | 'desktop-right'
@@ -19,7 +19,6 @@ type CtaBranchDecorProps = {
     | 'mobile-bottom'
 }
 
-/** Figma 7105:8573 / 8581 clip bbox — 116.8×63.913 px in the top/bottom scallop. */
 const MOBILE_DECOR_CLIP_CLASS = 'h-[63.913px] w-[116.8px]'
 
 const HeartIcon = () => (
@@ -117,15 +116,17 @@ const DesktopStack = ({ mirrored }: { mirrored?: boolean }) => {
 }
 
 /** Side ornaments — positioned relative to outer frame 8627. */
-export const CtaBranchDecor = ({ variant }: CtaBranchDecorProps) => {
+export function OrnateCtaBranchDecor({ metrics, variant }: OrnateCtaBranchDecorProps) {
+  const { tabletDecorLeftInFrame, tabletDecorRightInFrame } = metrics
+
   if (variant === 'desktop-left') {
     return (
       <div
         aria-hidden
         className="pointer-events-none absolute z-[5]"
         style={{
-          left: CTA_DESKTOP_DECOR_LEFT_IN_FRAME.left,
-          top: CTA_DESKTOP_DECOR_LEFT_IN_FRAME.top,
+          left: ORNATE_CTA_DESKTOP_DECOR_LEFT_IN_FRAME.left,
+          top: ORNATE_CTA_DESKTOP_DECOR_LEFT_IN_FRAME.top,
         }}
       >
         <DesktopStack />
@@ -139,8 +140,8 @@ export const CtaBranchDecor = ({ variant }: CtaBranchDecorProps) => {
         aria-hidden
         className="pointer-events-none absolute z-[5]"
         style={{
-          left: CTA_DESKTOP_DECOR_RIGHT_IN_FRAME.left,
-          top: CTA_DESKTOP_DECOR_RIGHT_IN_FRAME.top,
+          left: ORNATE_CTA_DESKTOP_DECOR_RIGHT_IN_FRAME.left,
+          top: ORNATE_CTA_DESKTOP_DECOR_RIGHT_IN_FRAME.top,
         }}
       >
         <div className="-scale-y-100 rotate-180">
@@ -156,8 +157,8 @@ export const CtaBranchDecor = ({ variant }: CtaBranchDecorProps) => {
         aria-hidden
         className="pointer-events-none absolute z-[5]"
         style={{
-          left: CTA_TABLET_DECOR_LEFT_IN_FRAME.left,
-          top: CTA_TABLET_DECOR_LEFT_IN_FRAME.top,
+          left: tabletDecorLeftInFrame.left,
+          top: tabletDecorLeftInFrame.top,
         }}
       >
         <TabletStack />
@@ -171,8 +172,8 @@ export const CtaBranchDecor = ({ variant }: CtaBranchDecorProps) => {
         aria-hidden
         className="pointer-events-none absolute z-[5]"
         style={{
-          left: CTA_TABLET_DECOR_RIGHT_IN_FRAME.left,
-          top: CTA_TABLET_DECOR_RIGHT_IN_FRAME.top,
+          left: tabletDecorRightInFrame.left,
+          top: tabletDecorRightInFrame.top,
         }}
       >
         <div className="-scale-y-100 rotate-180">
@@ -187,7 +188,7 @@ export const CtaBranchDecor = ({ variant }: CtaBranchDecorProps) => {
       <div
         aria-hidden
         className={`pointer-events-none absolute left-1/2 -translate-x-1/2 overflow-hidden ${MOBILE_DECOR_CLIP_CLASS}`}
-        style={{ top: CTA_MOBILE_TOP_DECOR_INSET }}
+        style={{ top: ORNATE_CTA_MOBILE_TOP_DECOR_INSET }}
       >
         <MobileDecorRow />
       </div>
@@ -198,7 +199,7 @@ export const CtaBranchDecor = ({ variant }: CtaBranchDecorProps) => {
     <div
       aria-hidden
       className={`pointer-events-none absolute left-1/2 -translate-x-1/2 overflow-hidden ${MOBILE_DECOR_CLIP_CLASS}`}
-      style={{ bottom: CTA_MOBILE_BOTTOM_DECOR_INSET }}
+      style={{ bottom: ORNATE_CTA_MOBILE_BOTTOM_DECOR_INSET }}
     >
       <div className="-scale-y-100">
         <MobileDecorRow />
