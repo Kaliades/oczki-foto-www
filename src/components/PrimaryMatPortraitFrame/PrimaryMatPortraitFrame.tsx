@@ -19,7 +19,8 @@ type PrimaryMatPortraitFrameProps = {
  *   └── <div Image> — cover photo
  *
  * Mobile outer aspect 360/470, inner 232/342.
- * Tablet outer aspect 768/1003, inner h 875.
+ * Tablet: auto outer height (p 64 + image h 875) — no aspect ratio; scaling 768/1003
+ *   with viewport width left dead mat space below the fixed-height image.
  * Desktop: half-width column, image flex-1 fill.
  */
 export function PrimaryMatPortraitFrame({
@@ -30,7 +31,7 @@ export function PrimaryMatPortraitFrame({
 }: PrimaryMatPortraitFrameProps) {
   return (
     <div
-      className="flex w-full shrink-0 flex-col items-start bg-[var(--oczki-primary-200)] p-16 aspect-[360/470] md:aspect-[768/1003] min-[1366px]:aspect-auto min-[1366px]:w-1/2 min-[1366px]:self-stretch"
+      className="flex w-full shrink-0 flex-col items-start bg-[var(--oczki-primary-200)] p-16 aspect-[360/470] md:aspect-auto min-[1366px]:aspect-auto min-[1366px]:w-1/2 min-[1366px]:self-stretch"
       data-figma-node={figmaNode ?? PRIMARY_MAT_PORTRAIT_FRAME_FIGMA_NODES.desktop}
       data-figma-node-mobile={PRIMARY_MAT_PORTRAIT_FRAME_FIGMA_NODES.mobile}
       data-figma-node-tablet={PRIMARY_MAT_PORTRAIT_FRAME_FIGMA_NODES.tablet}
