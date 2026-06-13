@@ -5,6 +5,10 @@ import {
   BeyondPhotographySection,
 } from '@/components/BeyondPhotographySection'
 import {
+  collaborationPillarsDefaults,
+  CollaborationPillarsSection,
+} from '@/components/CollaborationPillarsSection'
+import {
   dualPerspectiveDefaults,
   DualPerspectiveSection,
 } from '@/components/DualPerspectiveSection'
@@ -30,6 +34,10 @@ export default function AboutPage() {
       <DualPerspectiveSection
         data={dualPerspectiveDefaults}
         headingId="about-dual-perspective-heading"
+      />
+      <CollaborationPillarsSection
+        data={collaborationPillarsDefaults}
+        headingId="about-collaboration-pillars-heading"
       />
     </main>
   )
