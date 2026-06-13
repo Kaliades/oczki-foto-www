@@ -1,4 +1,5 @@
 import type { SectionLink } from '@/utilities/resolveLinkHref'
+
 import type { FooterNewsletterFigmaNodes } from './constants'
 import { NewsletterFormColumn } from './NewsletterFormColumn'
 import { NewsletterPhoto } from './NewsletterPhoto'
@@ -24,8 +25,8 @@ type NewsletterSectionProps = {
  *
  * Shell pattern (see `responsive-layout.mdc`):
  *   <section> — secondary/600 full bleed
- *     └── discrete 360 / 768 / 1366 layout caps with `mb-[-32px]` overlap
- *         ├── Text Column `7091:3622` — pt 80, pb 128; px 24 / 80 / 128
+ *     └── discrete 360 / 768 / 1366 layout caps with negative overlap
+ *         ├── Text Column `7091:3622` — pt/pb/px from {@link FOOTER_NEWSLETTER_SHELL}
  *         └── Image `7091:3621` — square, 660 px wide on desktop
  */
 export function NewsletterSection({
@@ -54,7 +55,7 @@ export function NewsletterSection({
       data-figma-node-mobile={figmaNodes?.mobileFrame}
       data-figma-node-tablet={figmaNodes?.tabletFrame}
     >
-      {/* Mobile — 360, Figma `7093:6134` */}
+      {/* Mobile — 360 */}
       <div
         className="relative mx-auto mb-[-32px] flex w-full max-w-[360px] flex-col md:hidden"
         data-figma-node={figmaNodes?.mobileFrame}
@@ -69,7 +70,7 @@ export function NewsletterSection({
         <NewsletterPhoto alt={photoAlt} sizes="360px" src={photoSrc} />
       </div>
 
-      {/* Tablet — 768, Figma `7092:4749` */}
+      {/* Tablet — 768 */}
       <div
         className="relative mx-auto mb-[-32px] hidden w-full max-w-[768px] flex-col md:flex lg:hidden"
         data-figma-node={figmaNodes?.tabletFrame}
@@ -83,7 +84,7 @@ export function NewsletterSection({
         <NewsletterPhoto alt={photoAlt} sizes="768px" src={photoSrc} />
       </div>
 
-      {/* Desktop — 1366, Figma `7091:5203` */}
+      {/* Desktop — 1366 */}
       <div
         className="relative mx-auto mb-[-32px] hidden w-full max-w-[1366px] flex-row lg:flex"
         data-figma-node={figmaNodes?.desktopFrame}

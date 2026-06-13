@@ -1,5 +1,6 @@
 import { ContactHeroSection, contactHeroDefaults } from '@/components/ContactHero'
 import { ContactFaq, contactFaqDefaults } from '@/components/ContactFaq'
+import { ContactFooterNewsletter } from '@/components/ContactFooterNewsletter'
 import { ServiceAreaSection, serviceAreaSectionDefaults } from '@/components/ServiceAreaSection'
 import type { Metadata } from 'next'
 
@@ -13,6 +14,7 @@ export default function ContactPage() {
       <ContactHeroSection data={contactHeroDefaults} />
       <ServiceAreaSection data={serviceAreaSectionDefaults} />
       <ContactFaq data={contactFaqDefaults} />
+      <ContactFooterNewsletter />
     </main>
   )
 }

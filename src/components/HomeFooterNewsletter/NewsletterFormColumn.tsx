@@ -1,6 +1,8 @@
 import Image from 'next/image'
 
 import type { SectionLink } from '@/utilities/resolveLinkHref'
+
+import { FOOTER_NEWSLETTER_SHELL } from './constants'
 import { NewsletterForm } from './NewsletterForm'
 import { NewsletterHeading } from './NewsletterHeading'
 
@@ -33,10 +35,13 @@ export function NewsletterFormColumn({
   submitLabel,
   fieldIdPrefix,
 }: NewsletterFormColumnProps) {
+  const { formColumnGap, formContentMaxWidth, headerGap } = FOOTER_NEWSLETTER_SHELL.newsletter
+
   return (
     <div
-      className={`relative flex w-full shrink-0 flex-col items-start gap-8 overflow-hidden bg-[var(--oczki-secondary-600)] ${shellClassName}`}
+      className={`relative flex w-full shrink-0 flex-col items-start overflow-hidden bg-[var(--oczki-secondary-600)] ${shellClassName}`}
       data-name="Text Column"
+      style={{ gap: formColumnGap }}
     >
       <div
         aria-hidden="true"
@@ -53,8 +58,15 @@ export function NewsletterFormColumn({
         />
       </div>
 
-      <div className="relative z-[1] flex w-full max-w-[450px] flex-col items-start gap-8">
-        <div className="flex w-full flex-col items-start gap-4" data-name="Header Text">
+      <div
+        className="relative z-[1] flex w-full flex-col items-start"
+        style={{ gap: formColumnGap, maxWidth: formContentMaxWidth }}
+      >
+        <div
+          className="flex w-full flex-col items-start"
+          data-name="Header Text"
+          style={{ gap: headerGap }}
+        >
           <NewsletterHeading
             emphasis={heading.emphasis}
             headingId={headingId}

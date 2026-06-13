@@ -1,11 +1,11 @@
 'use client'
 
-import Image from 'next/image'
-import Link from 'next/link'
-
 import { BorderLabelField } from '@/components/BorderLabelField'
+import { OczkiConsentCheckbox } from '@/components/OczkiConsentCheckbox'
 import { ScallopedButton } from '@/components/ScallopedButton'
-import { resolveLinkHref, type SectionLink } from '@/utilities/resolveLinkHref'
+import type { SectionLink } from '@/utilities/resolveLinkHref'
+
+import { FOOTER_NEWSLETTER_SHELL } from './constants'
 
 type NewsletterFormProps = {
   submitLabel: string
@@ -23,7 +23,7 @@ export function NewsletterForm({
   submitFullWidth = false,
   fieldIdPrefix = 'newsletter',
 }: NewsletterFormProps) {
-  const privacyHref = resolveLinkHref(privacyLink)
+  const { formGap, inputGroupGap } = FOOTER_NEWSLETTER_SHELL.newsletter
   const nameId = `${fieldIdPrefix}-name`
   const emailId = `${fieldIdPrefix}-email`
   const consentId = `${fieldIdPrefix}-consent`
@@ -31,11 +31,17 @@ export function NewsletterForm({
   return (
     <form
       action="#"
-      className="flex w-full flex-col items-start gap-8"
+      className="flex w-full flex-col items-start"
+      data-name="Form"
       method="post"
       onSubmit={(event) => event.preventDefault()}
+      style={{ gap: formGap }}
     >
-      <div className="flex w-full flex-col items-start gap-3">
+      <div
+        className="flex w-full flex-col items-start"
+        data-name="Input Group"
+        style={{ gap: inputGroupGap }}
+      >
         <BorderLabelField
           autoComplete="given-name"
           id={nameId}
@@ -54,39 +60,7 @@ export function NewsletterForm({
           type="email"
         />
 
-        <div className="flex h-11 items-center">
-          <div className="flex size-11 shrink-0 items-center justify-center">
-            <input
-              className="size-[26px] shrink-0 appearance-none border border-[var(--oczki-secondary-200)] bg-transparent checked:border-[var(--oczki-primary-300)] checked:bg-[var(--oczki-primary-300)]"
-              id={consentId}
-              name="consent"
-              required
-              type="checkbox"
-            />
-          </div>
-          <div className="flex flex-wrap items-center gap-1">
-            <label className="oczki-body-m text-[var(--oczki-primary-100)]" htmlFor={consentId}>
-              Wyrażam zgodę na{' '}
-            </label>
-            {privacyHref ? (
-              <Link
-                className="oczki-body-m-medium inline-flex items-center gap-1 text-[var(--oczki-primary-300)] underline"
-                href={privacyHref}
-                target={privacyLink.newTab ? '_blank' : undefined}
-              >
-                {privacyLink.label}
-                <Image
-                  alt=""
-                  aria-hidden="true"
-                  className="size-4"
-                  height={16}
-                  src="/figma/newsletter-external-link.svg"
-                  width={16}
-                />
-              </Link>
-            ) : null}
-          </div>
-        </div>
+        <OczkiConsentCheckbox id={consentId} privacyLink={privacyLink} variant="onSage" />
       </div>
 
       <ScallopedButton fullWidth={submitFullWidth} type="submit">

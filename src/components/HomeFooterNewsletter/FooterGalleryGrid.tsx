@@ -10,16 +10,17 @@ type FooterGalleryGridProps = {
  * Six-up preview grid at the bottom of the footer (Figma `7091:3713`).
  *
  * Desktop: single row, fixed tile widths (211 / 212 px) with 10 px gap.
- * Tablet: three columns × two rows.
- * Mobile: two columns × three rows.
+ * Tablet: three columns × two rows, tile height 180 px.
+ * Mobile: two columns × three rows, tile height 140 px.
  */
 export function FooterGalleryGrid({ images }: FooterGalleryGridProps) {
   return (
-    <div className="w-full">
-      <ul className="grid grid-cols-2 gap-2.5 md:grid-cols-3 lg:flex lg:gap-2.5">
+    <div className="w-full" data-name="Footer Links">
+      <ul className="grid grid-cols-2 gap-2.5 md:grid-cols-3 lg:flex lg:gap-2.5" data-name="Image Row">
         {images.map((image, index) => (
           <li
             className="relative h-[140px] w-full overflow-hidden md:h-[180px] lg:h-[262px] lg:w-[211px] lg:shrink-0 [&:nth-child(5)]:lg:w-[212px]"
+            data-name="Gallery Image"
             key={`${image.src}-${index}`}
           >
             <Image

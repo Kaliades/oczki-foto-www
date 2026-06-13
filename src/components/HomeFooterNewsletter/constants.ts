@@ -28,6 +28,11 @@ import type { SectionLink } from '@/utilities/resolveLinkHref'
  *   - desktop 1366: 7091:5203
  *   - tablet  768:  7092:4749
  *   - mobile  360:  7093:6134
+ *
+ * Contact (`/kontakt`):
+ *   - desktop 1366: 7091:4030
+ *   - tablet  768:  7091:4166
+ *   - mobile  360:  7091:4302
  */
 export const HOME_FOOTER_NEWSLETTER_FIGMA_NODES = {
   desktopFrame: '7102:11553',
@@ -57,6 +62,45 @@ export const ABOUT_FOOTER_NEWSLETTER_FIGMA_NODES = {
   desktopFrame: '7091:5203',
   tabletFrame: '7092:4749',
   mobileFrame: '7093:6134',
+} as const
+
+export const CONTACT_FOOTER_NEWSLETTER_FIGMA_NODES = {
+  desktopFrame: '7091:4030',
+  tabletFrame: '7091:4166',
+  mobileFrame: '7091:4302',
+} as const
+
+/** Section shell metrics from Figma `get_metadata` (7091:3620 / 3649 / 3634). */
+export const FOOTER_NEWSLETTER_SHELL = {
+  contentOverlapBottom: 32,
+  newsletter: {
+    photoWidthDesktop: 660,
+    formColumnWidthDesktop: 706,
+    formContentMaxWidth: 450,
+    formColumnPaddingTop: 80,
+    formColumnPaddingBottom: 128,
+    formColumnPaddingX: { mobile: 24, tablet: 80, desktop: 128 },
+    formColumnGap: 32,
+    headerGap: 16,
+    formGap: 32,
+    inputGroupGap: 12,
+  },
+  footer: {
+    stopkaPaddingX: 24,
+    stopkaPaddingTop: 48,
+    stopkaPaddingBottom: 16,
+    stopkaSectionGap: 80,
+    scallopOverlapUp: 40,
+    stopkaContentPaddingTop: 88,
+    navLinkMinHeight: 44,
+    logoBlockWidth: 395,
+    logoBlockGap: 32,
+    logoMarkGap: 10,
+    linkColumnWidth: 286,
+    galleryGap: 10,
+    galleryTileHeight: { mobile: 140, tablet: 180, desktop: 262 },
+    galleryTileWidth: { default: 211, fifth: 212 },
+  },
 } as const
 
 export type FooterNewsletterFigmaNodes = {

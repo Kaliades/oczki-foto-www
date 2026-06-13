@@ -1,26 +1,30 @@
 import Image from 'next/image'
 
+import { FOOTER_NEWSLETTER_SHELL } from './constants'
+
 /** 112 px diameter, −12 px overlap → 100 px step; 96 tiles cover ~9.6 k px. */
 const SCALLOP_COUNT = 96
 const scallopItems = Array.from({ length: SCALLOP_COUNT }, (_, index) => index)
 
-/** Figma stopka: 40 px tiles into newsletter (112 − 72), copy at 88 px (40 + 48). */
-export const FOOTER_SCALLOP_OVERLAP_UP_PX = 40
-export const FOOTER_STOPKA_PADDING_TOP_PX = 88
+const { scallopOverlapUp, stopkaContentPaddingTop } = FOOTER_NEWSLETTER_SHELL.footer
+
+export { scallopOverlapUp as FOOTER_SCALLOP_OVERLAP_UP_PX }
+export { stopkaContentPaddingTop as FOOTER_STOPKA_PADDING_TOP_PX }
 
 /**
  * Overlapping cream circles between newsletter and footer (Figma `7091:3634`).
  *
  * Absolutely positioned on the footer shell so tiles sit above the newsletter
- * (`z-10`) without covering stopka links — copy clears the row via `pt-[88px]`
- * on the cream block below.
+ * (`z-10`) without covering stopka links — copy clears the row via
+ * {@link FOOTER_NEWSLETTER_SHELL.footer.stopkaContentPaddingTop} on the cream block below.
  */
 export function FooterScallopRow() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-x-0 top-0 z-10 h-28 -translate-y-[40px] overflow-hidden"
+      className="pointer-events-none absolute inset-x-0 top-0 z-10 h-28 overflow-hidden"
       data-figma-node="7091:3634"
+      style={{ transform: `translateY(-${scallopOverlapUp}px)` }}
     >
       <div className="absolute left-1/2 flex h-28 w-max -translate-x-1/2 items-center">
         {scallopItems.map((item) => (

@@ -11,6 +11,7 @@ function routeHasDesignedFooter(pathname: string): boolean {
   return (
     pathname === '/' ||
     pathname === '/home' ||
+    pathname === '/kontakt' ||
     pathname === '/o-mnie' ||
     pathname.startsWith('/galeria') ||
     pathname.startsWith('/oferta')

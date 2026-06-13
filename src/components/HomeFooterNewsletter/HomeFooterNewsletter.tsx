@@ -1,4 +1,5 @@
 import {
+  FOOTER_NEWSLETTER_SHELL,
   HOME_FOOTER_NEWSLETTER_FIGMA_NODES,
   type FooterNewsletterFigmaNodes,
   type HomeFooterNewsletterData,
@@ -59,9 +60,15 @@ export function HomeFooterNewsletter({
       >
         <FooterScallopRow />
 
-        <div className="relative pt-[88px]">
+        <div
+          className="relative"
+          style={{ paddingTop: FOOTER_NEWSLETTER_SHELL.footer.stopkaContentPaddingTop }}
+        >
           <div className="relative mx-auto flex w-full max-w-[1366px] flex-col items-center">
-            <div className="flex w-full flex-col items-start gap-20 px-6 pb-4 md:px-6 lg:px-6">
+            <div
+              className="flex w-full flex-col items-start px-6 pb-4"
+              style={{ gap: FOOTER_NEWSLETTER_SHELL.footer.stopkaSectionGap }}
+            >
               <FooterNav
                 pageLinks={footer.pageLinks}
                 serviceLinks={footer.serviceLinks}
