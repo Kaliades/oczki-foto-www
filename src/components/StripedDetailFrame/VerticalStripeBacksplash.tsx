@@ -1,53 +1,47 @@
 import {
+  STRIPED_DETAIL_FRAME_CASE_STUDY_BACKSPLASH,
+  STRIPED_DETAIL_FRAME_EXPERTISE_BACKSPLASH_DESKTOP,
+  STRIPED_DETAIL_FRAME_EXPERTISE_BACKSPLASH_MOBILE_TABLET,
   STRIPED_DETAIL_FRAME_FIGMA_NODES,
-  STRIPED_DETAIL_FRAME_LAYOUT,
+  type StripedDetailFrameVariant,
 } from './constants'
-
-const STRIPE_BAR_INDICES = Array.from(
-  { length: STRIPED_DETAIL_FRAME_LAYOUT.stripeBarCount },
-  (_, index) => index,
-)
+import { StripeBacksplashLayer } from './StripeBacksplashLayer'
 
 type VerticalStripeBacksplashProps = {
   className?: string
+  variant?: StripedDetailFrameVariant
 }
 
 /**
- * Figma `Section Header` (`7102:14770`) — 32 × 4 px bars in `primary/200`,
- * `gap` 24 px so the mat (`secondary/200`) shows through, whole group at 36 % opacity.
+ * Vertical stripe mat behind a framed detail card.
  *
- * A single gradient with `opacity` on the layer was wrong: transparent “gaps”
- * blended differently than flex gaps over the sage mat.
+ * Case study: single 872×187 field (`7102:14770`).
+ * Expertise: 620×236 on mobile/tablet, 480×238 on desktop (`7001:2296` / `7093:5896`).
  */
-export function VerticalStripeBacksplash({ className }: VerticalStripeBacksplashProps) {
-  const { backsplashHeightPx, backsplashOpacity, backsplashWidthPx, stripeGapPx, stripeWidthPx } =
-    STRIPED_DETAIL_FRAME_LAYOUT
+export function VerticalStripeBacksplash({
+  className,
+  variant = 'caseStudy',
+}: VerticalStripeBacksplashProps) {
+  if (variant === 'caseStudy') {
+    return (
+      <StripeBacksplashLayer
+        className={className}
+        figmaNode={STRIPED_DETAIL_FRAME_FIGMA_NODES.sectionHeader}
+        spec={STRIPED_DETAIL_FRAME_CASE_STUDY_BACKSPLASH}
+      />
+    )
+  }
 
   return (
-    <div
-      aria-hidden="true"
-      className={[
-        'pointer-events-none absolute left-1/2 top-0 flex -translate-x-1/2 items-stretch',
-        className,
-      ]
-        .filter(Boolean)
-        .join(' ')}
-      data-figma-node={STRIPED_DETAIL_FRAME_FIGMA_NODES.sectionHeader}
-      data-name="Section Header"
-      style={{
-        width: backsplashWidthPx,
-        height: backsplashHeightPx,
-        gap: stripeGapPx,
-        opacity: backsplashOpacity,
-      }}
-    >
-      {STRIPE_BAR_INDICES.map((index) => (
-        <div
-          className="h-full shrink-0 bg-[var(--oczki-primary-200)]"
-          key={index}
-          style={{ width: stripeWidthPx }}
-        />
-      ))}
-    </div>
+    <>
+      <StripeBacksplashLayer
+        className={['min-[1366px]:hidden', className].filter(Boolean).join(' ')}
+        spec={STRIPED_DETAIL_FRAME_EXPERTISE_BACKSPLASH_MOBILE_TABLET}
+      />
+      <StripeBacksplashLayer
+        className={['hidden min-[1366px]:flex', className].filter(Boolean).join(' ')}
+        spec={STRIPED_DETAIL_FRAME_EXPERTISE_BACKSPLASH_DESKTOP}
+      />
+    </>
   )
 }

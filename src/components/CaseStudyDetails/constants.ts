@@ -33,11 +33,3 @@ export type CaseStudyDetailsData = {
   heading: CaseStudyDetailsHeading
   items: readonly CaseStudyDetailItem[]
 }
-
-/** Desktop column widths from Figma metadata (`Section` frames). */
-export const CASE_STUDY_DETAILS_DESKTOP_CARD_WIDTHS = [
-  'lg:w-[320px]',
-  'lg:w-[319px]',
-  'lg:w-[320px]',
-  'lg:min-w-[319px] lg:flex-1',
-] as const
