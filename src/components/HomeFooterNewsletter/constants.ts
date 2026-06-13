@@ -33,6 +33,11 @@ import type { SectionLink } from '@/utilities/resolveLinkHref'
  *   - desktop 1366: 7091:4030
  *   - tablet  768:  7091:4166
  *   - mobile  360:  7091:4302
+ *
+ * Privacy policy (`/polityka-prywatnosci`):
+ *   - desktop 1366: 7107:15728
+ *   - tablet  768:  7108:16313
+ *   - mobile  360:  7108:16949
  */
 export const HOME_FOOTER_NEWSLETTER_FIGMA_NODES = {
   desktopFrame: '7102:11553',
@@ -68,6 +73,12 @@ export const CONTACT_FOOTER_NEWSLETTER_FIGMA_NODES = {
   desktopFrame: '7091:4030',
   tabletFrame: '7091:4166',
   mobileFrame: '7091:4302',
+} as const
+
+export const PRIVACY_POLICY_FOOTER_NEWSLETTER_FIGMA_NODES = {
+  desktopFrame: '7107:15728',
+  tabletFrame: '7108:16313',
+  mobileFrame: '7108:16949',
 } as const
 
 /** Section shell metrics from Figma `get_metadata` (7091:3620 / 3649 / 3634). */

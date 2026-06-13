@@ -3,6 +3,7 @@ import {
   PrivacyPolicySection,
   privacyPolicyDefaults,
 } from '@/components/PrivacyPolicySection'
+import { PrivacyPolicyFooterNewsletter } from '@/components/PrivacyPolicyFooterNewsletter'
 import type { Metadata } from 'next'
 
 import { PRIVACY_POLICY_PAGE_BREADCRUMBS } from './constants'
@@ -18,6 +19,7 @@ export default function PrivacyPolicyPage() {
         <OczkiBreadcrumbs items={PRIVACY_POLICY_PAGE_BREADCRUMBS} />
       </OczkiBreadcrumbContainer>
       <PrivacyPolicySection data={privacyPolicyDefaults} />
+      <PrivacyPolicyFooterNewsletter />
     </main>
   )
 }

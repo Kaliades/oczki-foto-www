@@ -12,7 +12,7 @@ type FooterLinkColumnProps = {
 /** Vertical nav list — Figma `7091:3652` / `7091:3705`. */
 export function FooterLinkColumn({ align = 'left', links }: FooterLinkColumnProps) {
   return (
-    <ul className="flex w-full flex-col items-start lg:w-[286px]">
+    <ul className="flex w-full flex-col items-start min-[1366px]:w-[286px]">
       {links.map((item) => {
         const href = resolveLinkHref(item.link)
         if (!href) return null

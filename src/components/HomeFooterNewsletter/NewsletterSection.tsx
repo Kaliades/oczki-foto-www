@@ -70,9 +70,9 @@ export function NewsletterSection({
         <NewsletterPhoto alt={photoAlt} sizes="360px" src={photoSrc} />
       </div>
 
-      {/* Tablet — 768 */}
+      {/* Tablet — 768 through 1365 */}
       <div
-        className="relative mx-auto mb-[-32px] hidden w-full max-w-[768px] flex-col md:flex lg:hidden"
+        className="relative mx-auto mb-[-32px] hidden w-full max-w-[768px] flex-col md:max-[1365px]:flex"
         data-figma-node={figmaNodes?.tabletFrame}
         data-name="Content Section"
       >
@@ -86,7 +86,7 @@ export function NewsletterSection({
 
       {/* Desktop — 1366 */}
       <div
-        className="relative mx-auto mb-[-32px] hidden w-full max-w-[1366px] flex-row lg:flex"
+        className="relative mx-auto mb-[-32px] hidden w-full max-w-[1366px] flex-row min-[1366px]:flex"
         data-figma-node={figmaNodes?.desktopFrame}
         data-name="Content Section"
       >

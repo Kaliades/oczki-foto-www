@@ -42,6 +42,8 @@ export function HomeFooterNewsletter({
     <div
       className="relative w-full [font-family:var(--font-oczki-body)]"
       data-figma-node={figmaNodes.desktopFrame}
+      data-figma-node-mobile={figmaNodes.mobileFrame}
+      data-figma-node-tablet={figmaNodes.tabletFrame}
     >
       <NewsletterSection
         figmaNodes={figmaNodes}

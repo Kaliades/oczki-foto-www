@@ -16,10 +16,10 @@ type FooterGalleryGridProps = {
 export function FooterGalleryGrid({ images }: FooterGalleryGridProps) {
   return (
     <div className="w-full" data-name="Footer Links">
-      <ul className="grid grid-cols-2 gap-2.5 md:grid-cols-3 lg:flex lg:gap-2.5" data-name="Image Row">
+      <ul className="grid grid-cols-2 gap-2.5 md:grid-cols-3 min-[1366px]:flex min-[1366px]:gap-2.5" data-name="Image Row">
         {images.map((image, index) => (
           <li
-            className="relative h-[140px] w-full overflow-hidden md:h-[180px] lg:h-[262px] lg:w-[211px] lg:shrink-0 [&:nth-child(5)]:lg:w-[212px]"
+            className="relative h-[140px] w-full overflow-hidden md:h-[180px] min-[1366px]:h-[262px] min-[1366px]:w-[211px] min-[1366px]:shrink-0 [&:nth-child(5)]:min-[1366px]:w-[212px]"
             data-name="Gallery Image"
             key={`${image.src}-${index}`}
           >

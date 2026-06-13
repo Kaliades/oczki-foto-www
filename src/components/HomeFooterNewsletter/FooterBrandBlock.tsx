@@ -14,7 +14,7 @@ type FooterBrandBlockProps = {
 export function FooterBrandBlock({ socialLinks }: FooterBrandBlockProps) {
   return (
     <div
-      className="flex w-full flex-col items-center gap-8 lg:w-[395px] lg:shrink-0"
+      className="flex w-full flex-col items-center gap-8 min-[1366px]:w-[395px] min-[1366px]:shrink-0"
       data-name="Logo Block"
     >
       <div className="flex w-[132px] flex-col items-center gap-2.5" data-name="Logo">

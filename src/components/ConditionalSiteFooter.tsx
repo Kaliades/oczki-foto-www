@@ -13,6 +13,7 @@ function routeHasDesignedFooter(pathname: string): boolean {
     pathname === '/home' ||
     pathname === '/kontakt' ||
     pathname === '/o-mnie' ||
+    pathname === '/polityka-prywatnosci' ||
     pathname.startsWith('/galeria') ||
     pathname.startsWith('/oferta')
   )
