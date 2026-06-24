@@ -583,6 +583,9 @@ export interface OfferShowcaseBlock {
  */
 export interface OfferItem {
   id: number;
+  /**
+   * Np. „Sesja kobieca”. Używana w tytule karty, podstrony i SEO.
+   */
   title: string;
   /**
    * Treść wyświetlana na karcie w sekcji oferty na stronie głównej (2–4 zdania).
@@ -600,6 +603,251 @@ export interface OfferItem {
    * Opcjonalne klasy Tailwind do kadrowania obrazu na karcie (np. "h-[150%] top-[-16.62%] w-full"). Zostaw puste, by użyć domyślnego dopasowania cover.
    */
   imageCropClassName?: string | null;
+  hero?: {
+    /**
+     * Jedno zdanie podzielone na części. „Wyróżnienie” jest renderowane innym krojem/kolorem — razem tworzą całość.
+     */
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+    };
+    description?: string | null;
+    cta?: {
+      label?: string | null;
+      url?: string | null;
+    };
+    image?: (number | null) | Media;
+    /**
+     * Opis dla dostępności i SEO (krótkie, opisowe zdanie).
+     */
+    imageAlt?: string | null;
+  };
+  approach?: {
+    /**
+     * Jedno zdanie podzielone na części. „Wyróżnienie” jest renderowane innym krojem/kolorem — razem tworzą całość.
+     */
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+      end?: string | null;
+    };
+    introParagraph1?: string | null;
+    introParagraph2?: string | null;
+    /**
+     * Dokładnie 3 bloki. Układ graficzny każdego bloku jest stały.
+     */
+    blocks?:
+      | {
+          title: string;
+          description: string;
+          id?: string | null;
+        }[]
+      | null;
+    portraitImage?: (number | null) | Media;
+    /**
+     * Opis dla dostępności i SEO (krótkie, opisowe zdanie).
+     */
+    portraitAlt?: string | null;
+  };
+  packages?: {
+    catalogDownload?: {
+      label?: string | null;
+      url?: string | null;
+    };
+    /**
+     * Dokładnie 3 pakiety. Kolorystyka (sage/cream/rose) i kadrowanie są przypisane wg kolejności.
+     */
+    items?:
+      | {
+          image?: (number | null) | Media;
+          /**
+           * Opis dla dostępności i SEO (krótkie, opisowe zdanie).
+           */
+          imageAlt?: string | null;
+          title: string;
+          /**
+           * Tekst wyświetlany wprost, np. „750 zł”.
+           */
+          price: string;
+          /**
+           * Np. „Najczęściej wybierany”.
+           */
+          badgeLabel?: string | null;
+          features?:
+            | {
+                text: string;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  inclusions?: {
+    /**
+     * Jedno zdanie podzielone na części. „Wyróżnienie” jest renderowane innym krojem/kolorem — razem tworzą całość.
+     */
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+      end?: string | null;
+    };
+    intro?: string | null;
+    /**
+     * Maksymalnie 6 pozycji (przekrzywienia i ozdoby są przypisane wg kolejności).
+     */
+    checklist?:
+      | {
+          title: string;
+          description: string;
+          id?: string | null;
+        }[]
+      | null;
+    accordionHeading?: string | null;
+    accordion?:
+      | {
+          title: string;
+          body: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Same zdjęcia kolażu są elementem layoutu (w kodzie) — tu podajesz tylko opis alternatywny.
+     */
+    mainImageAlt?: string | null;
+    scallopImageAlt?: string | null;
+  };
+  care?: {
+    /**
+     * Jedno zdanie podzielone na części. „Wyróżnienie” jest renderowane innym krojem/kolorem — razem tworzą całość.
+     */
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+      end?: string | null;
+    };
+    intro?: string | null;
+    features?:
+      | {
+          title: string;
+          description: string;
+          id?: string | null;
+        }[]
+      | null;
+    image?: (number | null) | Media;
+    /**
+     * Opis dla dostępności i SEO (krótkie, opisowe zdanie).
+     */
+    imageAlt?: string | null;
+    cta?: {
+      label?: string | null;
+      url?: string | null;
+    };
+  };
+  testimonial?: {
+    /**
+     * Jedno zdanie podzielone na części. „Wyróżnienie” jest renderowane innym krojem/kolorem — razem tworzą całość.
+     */
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+    };
+    items?:
+      | {
+          quote: string;
+          author: string;
+          photo?: (number | null) | Media;
+          /**
+           * Opis dla dostępności i SEO (krótkie, opisowe zdanie).
+           */
+          photoAlt?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  processSteps?: {
+    heading?: {
+      plain?: string | null;
+      emphasis?: string | null;
+    };
+    intro?: string | null;
+    cta?: {
+      label?: string | null;
+      url?: string | null;
+    };
+    /**
+     * Numery kroków są nadawane automatycznie wg kolejności.
+     */
+    items?:
+      | {
+          title: string;
+          paragraphs?:
+            | {
+                text: string;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  gallery?: {
+    /**
+     * Jedno zdanie podzielone na części. „Wyróżnienie” jest renderowane innym krojem/kolorem — razem tworzą całość.
+     */
+    heading?: {
+      start?: string | null;
+      /**
+       * Opcjonalne — zostaw puste, jeśli nagłówek nie ma wyróżnionego fragmentu.
+       */
+      emphasis?: string | null;
+    };
+    description?: string | null;
+    cta?: {
+      label?: string | null;
+      url?: string | null;
+    };
+    /**
+     * Maksymalnie 5 zdjęć (układ kafelków jest stały).
+     */
+    items?:
+      | {
+          image?: (number | null) | Media;
+          /**
+           * Opis dla dostępności i SEO (krótkie, opisowe zdanie).
+           */
+          imageAlt?: string | null;
+          captionTitle?: string | null;
+          captionSubtitle?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  closingCta?: {
+    heading?: string | null;
+    body?: string | null;
+    cta?: {
+      label?: string | null;
+      url?: string | null;
+    };
+  };
+  faq?: {
+    /**
+     * Jedno zdanie podzielone na części. „Wyróżnienie” jest renderowane innym krojem/kolorem — razem tworzą całość.
+     */
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+    };
+    intro?: string | null;
+    items?:
+      | {
+          question: string;
+          answer: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
   meta?: {
     title?: string | null;
     /**
@@ -1766,6 +2014,233 @@ export interface OfferItemsSelect<T extends boolean = true> {
   image?: T;
   imageAlt?: T;
   imageCropClassName?: T;
+  hero?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+            };
+        description?: T;
+        cta?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+        image?: T;
+        imageAlt?: T;
+      };
+  approach?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+              end?: T;
+            };
+        introParagraph1?: T;
+        introParagraph2?: T;
+        blocks?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+        portraitImage?: T;
+        portraitAlt?: T;
+      };
+  packages?:
+    | T
+    | {
+        catalogDownload?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+        items?:
+          | T
+          | {
+              image?: T;
+              imageAlt?: T;
+              title?: T;
+              price?: T;
+              badgeLabel?: T;
+              features?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+      };
+  inclusions?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+              end?: T;
+            };
+        intro?: T;
+        checklist?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+        accordionHeading?: T;
+        accordion?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              id?: T;
+            };
+        mainImageAlt?: T;
+        scallopImageAlt?: T;
+      };
+  care?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+              end?: T;
+            };
+        intro?: T;
+        features?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+        image?: T;
+        imageAlt?: T;
+        cta?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+      };
+  testimonial?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+            };
+        items?:
+          | T
+          | {
+              quote?: T;
+              author?: T;
+              photo?: T;
+              photoAlt?: T;
+              id?: T;
+            };
+      };
+  processSteps?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              plain?: T;
+              emphasis?: T;
+            };
+        intro?: T;
+        cta?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+        items?:
+          | T
+          | {
+              title?: T;
+              paragraphs?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+      };
+  gallery?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+            };
+        description?: T;
+        cta?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+        items?:
+          | T
+          | {
+              image?: T;
+              imageAlt?: T;
+              captionTitle?: T;
+              captionSubtitle?: T;
+              id?: T;
+            };
+      };
+  closingCta?:
+    | T
+    | {
+        heading?: T;
+        body?: T;
+        cta?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+      };
+  faq?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+            };
+        intro?: T;
+        items?:
+          | T
+          | {
+              question?: T;
+              answer?: T;
+              id?: T;
+            };
+      };
   meta?:
     | T
     | {
