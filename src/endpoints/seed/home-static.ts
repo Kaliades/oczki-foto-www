@@ -1,7 +1,10 @@
 import type { RequiredDataFromCollectionSlug } from 'payload'
 
+import { homeAboutDefaults } from '@/components/HomeAbout/constants'
+import { homeCtaDefaults } from '@/components/HomeCta/constants'
 import { homeGalleryDefaults } from '@/components/HomeGallery/constants'
 import { homeHeroDefaults } from '@/components/HomeHero/constants'
+import { homeInstagramDefaults } from '@/components/HomeInstagram/constants'
 import { homeIntroDefaults } from '@/components/HomeIntro/constants'
 import { homeOfferDefaults } from '@/components/HomeOfferShowcase/constants'
 import { homeProcessStepsDefaults } from '@/components/HomeProcessSteps/constants'
@@ -130,6 +133,60 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
         photoAlt: item.photoAlt,
       })),
       showPolaroid: homeTestimonialDefaults.showPolaroid ?? true,
+    },
+    {
+      blockType: 'homeAbout',
+      blockName: 'O mnie — Hej, jestem Asia',
+      heading: {
+        start: homeAboutDefaults.heading.start,
+        emphasis: homeAboutDefaults.heading.emphasis,
+        end: homeAboutDefaults.heading.end,
+      },
+      paragraphOne: homeAboutDefaults.paragraphs[0],
+      paragraphTwo: homeAboutDefaults.paragraphs[1],
+      portrait: PLACEHOLDER_MEDIA_ID,
+      portraitAlt: homeAboutDefaults.portrait.alt,
+      cta: {
+        type: homeAboutDefaults.cta.type ?? 'custom',
+        url: homeAboutDefaults.cta.url ?? '/o-mnie',
+        label: homeAboutDefaults.cta.label ?? '',
+        newTab: homeAboutDefaults.cta.newTab ?? false,
+      },
+    },
+    {
+      blockType: 'homeInstagram',
+      blockName: 'Instagram',
+      heading: {
+        plain: homeInstagramDefaults.heading.plain,
+        emphasis: homeInstagramDefaults.heading.emphasis,
+      },
+      profile: {
+        avatar: PLACEHOLDER_MEDIA_ID,
+        avatarAlt: homeInstagramDefaults.profile.avatarAlt,
+        profileLink: {
+          type: homeInstagramDefaults.profile.link.type ?? 'custom',
+          url: homeInstagramDefaults.profile.link.url ?? '/',
+          label: homeInstagramDefaults.profile.link.label ?? '',
+          newTab: homeInstagramDefaults.profile.link.newTab ?? true,
+        },
+      },
+      // Empty array → block component falls back to the figma post defaults.
+      posts: [],
+    },
+    {
+      blockType: 'homeCta',
+      blockName: 'CTA końcowy — rezerwacja sesji',
+      heading: {
+        plain: homeCtaDefaults.heading.plain,
+        emphasis: homeCtaDefaults.heading.emphasis,
+      },
+      body: homeCtaDefaults.body,
+      cta: {
+        type: homeCtaDefaults.cta.type ?? 'custom',
+        url: homeCtaDefaults.cta.url ?? '/kontakt',
+        label: homeCtaDefaults.cta.label ?? '',
+        newTab: homeCtaDefaults.cta.newTab ?? false,
+      },
     },
   ],
   meta: {

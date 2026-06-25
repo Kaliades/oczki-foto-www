@@ -220,6 +220,9 @@ export interface Page {
     | ProcessStepsBlock
     | HomeGalleryBlock
     | TestimonialBlock
+    | HomeAboutBlock
+    | HomeInstagramBlock
+    | HomeCtaBlock
     | CallToActionBlock
     | ContentBlock
     | MediaBlock
@@ -989,6 +992,127 @@ export interface TestimonialBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'testimonial';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeAboutBlock".
+ */
+export interface HomeAboutBlock {
+  heading: {
+    start: string;
+    emphasis: string;
+    end: string;
+  };
+  paragraphOne: string;
+  paragraphTwo: string;
+  portrait: number | Media;
+  portraitAlt?: string | null;
+  /**
+   * Prowadzi zwykle do /o-mnie.
+   */
+  cta: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homeAbout';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeInstagramBlock".
+ */
+export interface HomeInstagramBlock {
+  heading: {
+    plain: string;
+    emphasis: string;
+  };
+  profile: {
+    avatar?: (number | null) | Media;
+    avatarAlt?: string | null;
+    /**
+     * URL zewnętrzny do profilu Instagram.
+     */
+    profileLink: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+      label: string;
+    };
+  };
+  /**
+   * Dokładnie 5 postów. Kolejność odpowiada kolejności na stronie.
+   */
+  posts?:
+    | {
+        image: number | Media;
+        imageAlt: string;
+        /**
+         * Bezpośredni URL posta. Gdy pusty — klika do profilu.
+         */
+        href?: string | null;
+        /**
+         * Tailwind klasy precyzującego kadrowanie zdjęcia w kafelku (np. "absolute h-[134%] top-[-0.5%]…"). Zostaw puste dla cover domyślnego.
+         */
+        cropClassName?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homeInstagram';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeCtaBlock".
+ */
+export interface HomeCtaBlock {
+  heading: {
+    plain: string;
+    emphasis: string;
+  };
+  body: string;
+  /**
+   * Prowadzi zwykle do /kontakt.
+   */
+  cta: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homeCta';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1841,6 +1965,9 @@ export interface PagesSelect<T extends boolean = true> {
         processSteps?: T | ProcessStepsBlockSelect<T>;
         homeGallery?: T | HomeGalleryBlockSelect<T>;
         testimonial?: T | TestimonialBlockSelect<T>;
+        homeAbout?: T | HomeAboutBlockSelect<T>;
+        homeInstagram?: T | HomeInstagramBlockSelect<T>;
+        homeCta?: T | HomeCtaBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -2042,6 +2169,96 @@ export interface TestimonialBlockSelect<T extends boolean = true> {
         id?: T;
       };
   showPolaroid?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeAboutBlock_select".
+ */
+export interface HomeAboutBlockSelect<T extends boolean = true> {
+  heading?:
+    | T
+    | {
+        start?: T;
+        emphasis?: T;
+        end?: T;
+      };
+  paragraphOne?: T;
+  paragraphTwo?: T;
+  portrait?: T;
+  portraitAlt?: T;
+  cta?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeInstagramBlock_select".
+ */
+export interface HomeInstagramBlockSelect<T extends boolean = true> {
+  heading?:
+    | T
+    | {
+        plain?: T;
+        emphasis?: T;
+      };
+  profile?:
+    | T
+    | {
+        avatar?: T;
+        avatarAlt?: T;
+        profileLink?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+      };
+  posts?:
+    | T
+    | {
+        image?: T;
+        imageAlt?: T;
+        href?: T;
+        cropClassName?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeCtaBlock_select".
+ */
+export interface HomeCtaBlockSelect<T extends boolean = true> {
+  heading?:
+    | T
+    | {
+        plain?: T;
+        emphasis?: T;
+      };
+  body?: T;
+  cta?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -3055,7 +3272,7 @@ export interface SiteSetting {
   locationsLabel?: string | null;
   socials?:
     | {
-        platform: 'instagram' | 'facebook' | 'tiktok' | 'pinterest' | 'youtube' | 'other';
+        platform: 'instagram' | 'facebook' | 'tiktok' | 'pinterest' | 'youtube' | 'weselezklasa' | 'other';
         label: string;
         url: string;
         id?: string | null;
@@ -3068,10 +3285,95 @@ export interface SiteSetting {
     label?: string | null;
     url?: string | null;
   };
+  newsletter: {
+    heading?: {
+      plain?: string | null;
+      emphasis?: string | null;
+      plainEnd?: string | null;
+    };
+    intro?: string | null;
+    submitLabel?: string | null;
+    /**
+     * Wyświetlany jako "politykę prywatności" pod formularzem.
+     */
+    privacyLink: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+      label: string;
+    };
+    photo?: (number | null) | Media;
+    photoAlt?: string | null;
+  };
   /**
    * Bieżący rok zostanie wstawiony w miejsce literału `{year}`, np. "© {year} Oczki Fotografia".
    */
   copyright?: string | null;
+  /**
+   * Linki do podstron oferty wyświetlane w stopce.
+   */
+  serviceLinks?:
+    | {
+        label: string;
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Linki do pozostałych podstron wyświetlane w stopce.
+   */
+  pageLinks?:
+    | {
+        label: string;
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Portfolio w stopce — od 4 do 6 zdjęć, wyświetlane jako siatka.
+   */
+  galleryImages?:
+    | {
+        image: number | Media;
+        alt: string;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3385,7 +3687,66 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         label?: T;
         url?: T;
       };
+  newsletter?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              plain?: T;
+              emphasis?: T;
+              plainEnd?: T;
+            };
+        intro?: T;
+        submitLabel?: T;
+        privacyLink?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        photo?: T;
+        photoAlt?: T;
+      };
   copyright?: T;
+  serviceLinks?:
+    | T
+    | {
+        label?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+            };
+        id?: T;
+      };
+  pageLinks?:
+    | T
+    | {
+        label?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+            };
+        id?: T;
+      };
+  galleryImages?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

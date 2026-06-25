@@ -2,7 +2,7 @@ import { OczkiBreadcrumbContainer, OczkiBreadcrumbs } from '@/components/OczkiBr
 import { HomeOfferShowcase } from '@/components/HomeOfferShowcase/HomeOfferShowcase'
 import { homeOfferDefaults } from '@/components/HomeOfferShowcase/constants'
 import type { HomeOfferData } from '@/components/HomeOfferShowcase/constants'
-import { OfferServiceFooterNewsletter } from '@/components/OfferServiceFooterNewsletter'
+import { SiteFooterNewsletter } from '@/components/SiteFooterNewsletter'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import type { Metadata } from 'next'
@@ -91,7 +91,7 @@ export default async function OfertaPage() {
         <OczkiBreadcrumbs items={BREADCRUMBS} />
       </OczkiBreadcrumbContainer>
       <HomeOfferShowcase data={{ ...offerData, showFooterNotch: false }} />
-      <OfferServiceFooterNewsletter />
+      <SiteFooterNewsletter variant="offer-service" />
     </main>
   )
 }

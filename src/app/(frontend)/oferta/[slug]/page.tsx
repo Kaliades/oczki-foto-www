@@ -2,7 +2,7 @@ import { OfferServiceApproach } from '@/components/OfferServiceApproach'
 import { OfferServiceCare } from '@/components/OfferServiceCare'
 import { OfferServiceClosingCta } from '@/components/OfferServiceClosingCta'
 import { OfferServiceFaq } from '@/components/OfferServiceFaq'
-import { OfferServiceFooterNewsletter } from '@/components/OfferServiceFooterNewsletter'
+import { SiteFooterNewsletter } from '@/components/SiteFooterNewsletter'
 import { OfferServiceGallery } from '@/components/OfferServiceGallery'
 import { OfferServiceProcessSteps } from '@/components/OfferServiceProcessSteps'
 import { OfferServiceTestimonial } from '@/components/OfferServiceTestimonial'
@@ -133,7 +133,7 @@ export default async function OfferServicePage({ params }: Args) {
       <OfferServiceGallery data={offerService.gallery} />
       <OfferServiceClosingCta data={offerService.closingCta} />
       <OfferServiceFaq data={offerService.faq} />
-      <OfferServiceFooterNewsletter />
+      <SiteFooterNewsletter variant="offer-service" />
     </main>
   )
 }

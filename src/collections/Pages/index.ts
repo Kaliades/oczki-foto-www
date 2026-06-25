@@ -6,8 +6,11 @@ import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
+import { HomeAbout } from '../../blocks/HomeAbout/config'
+import { HomeCta } from '../../blocks/HomeCta/config'
 import { HomeGallery } from '../../blocks/HomeGallery/config'
 import { HomeHero } from '../../blocks/HomeHero/config'
+import { HomeInstagram } from '../../blocks/HomeInstagram/config'
 import { IntroQuote } from '../../blocks/IntroQuote/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { OfferShowcase } from '../../blocks/OfferShowcase/config'
@@ -86,6 +89,9 @@ export const Pages: CollectionConfig<'pages'> = {
                 ProcessSteps,
                 HomeGallery,
                 Testimonial,
+                HomeAbout,
+                HomeInstagram,
+                HomeCta,
                 CallToAction,
                 Content,
                 MediaBlock,

@@ -3,7 +3,7 @@ import { aboutPhilosophyDefaults, PhilosophyPrinciplesSection } from '@/componen
 import { BeyondPhotographySection, beyondPhotographyDefaults } from '@/components/BeyondPhotographySection'
 import { AboutInstagramSection, aboutInstagramDefaults } from '@/components/AboutInstagramSection'
 import { aboutCtaDefaults, AboutCta } from '@/components/AboutCta'
-import { AboutFooterNewsletter } from '@/components/AboutFooterNewsletter'
+import { SiteFooterNewsletter } from '@/components/SiteFooterNewsletter'
 import { CollaborationPillarsSection, collaborationPillarsDefaults } from '@/components/CollaborationPillarsSection'
 import { DualPerspectiveSection, dualPerspectiveDefaults } from '@/components/DualPerspectiveSection'
 import { expertiseDefaults, ExpertiseSection } from '@/components/ExpertiseSection'
@@ -75,7 +75,7 @@ export default async function AboutPage() {
       <CollaborationPillarsSection data={collaborationPillars} headingId="about-collaboration-pillars-heading" />
       <AboutInstagramSection data={instagram} headingId="about-instagram-heading" />
       <AboutCta data={cta} />
-      <AboutFooterNewsletter />
+      <SiteFooterNewsletter variant="about" />
     </main>
   )
 }

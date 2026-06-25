@@ -12,14 +12,7 @@ import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
-import { HomeFooterNewsletter } from '@/components/HomeFooterNewsletter/HomeFooterNewsletter'
-import { homeFooterNewsletterDefaults } from '@/components/HomeFooterNewsletter/constants'
-import { HomeInstagram } from '@/components/HomeInstagram/HomeInstagram'
-import { homeInstagramDefaults } from '@/components/HomeInstagram/constants'
-import { HomeAbout } from '@/components/HomeAbout/HomeAbout'
-import { homeAboutDefaults } from '@/components/HomeAbout/constants'
-import { HomeCta } from '@/components/HomeCta/HomeCta'
-import { homeCtaDefaults } from '@/components/HomeCta/constants'
+import { SiteFooterNewsletter } from '@/components/SiteFooterNewsletter'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -85,18 +78,10 @@ export default async function Page({ params: paramsPromise }: Args) {
 
       <RenderHero {...hero} />
       <RenderBlocks blocks={layout} />
-      {/* Section #8 — "Hej, jestem Asia" bio block. Built in isolation
-          (same pattern as `HomeGallery`); Payload block deferred. */}
-      {isHome ? <HomeAbout data={homeAboutDefaults} /> : null}
-      {/* Section #9 — Instagram feed preview. Built in isolation until the
-          Payload block wrapper lands (same pattern as OfferProcessSteps). */}
-      {isHome ? <HomeInstagram data={homeInstagramDefaults} /> : null}
-      {/* Section #10 — final booking CTA. Built in isolation; Payload block
-          wrapper deferred. Rendered here only on the home route. */}
-      {isHome ? <HomeCta data={homeCtaDefaults} /> : null}
-      {/* Section #11 — Newsletter + footer. Built in isolation until the
-          Payload block wrapper lands (same pattern as HomeInstagram). */}
-      {isHome ? <HomeFooterNewsletter data={homeFooterNewsletterDefaults} /> : null}
+      {/* Sections 8–10 (HomeAbout, HomeInstagram, HomeCta) are now Payload
+          blocks in the page layout — rendered above via RenderBlocks.
+          The footer/newsletter (section 11) is always the last on home. */}
+      {isHome ? <SiteFooterNewsletter variant="home" /> : null}
     </article>
   )
 }

@@ -1,6 +1,6 @@
 import { ContactHeroSection, contactHeroDefaults } from '@/components/ContactHero'
 import { ContactFaq, contactFaqDefaults } from '@/components/ContactFaq'
-import { ContactFooterNewsletter } from '@/components/ContactFooterNewsletter'
+import { SiteFooterNewsletter } from '@/components/SiteFooterNewsletter'
 import { ServiceAreaSection, serviceAreaSectionDefaults } from '@/components/ServiceAreaSection'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import configPromise from '@payload-config'
@@ -56,7 +56,7 @@ export default async function ContactPage() {
       <ContactHeroSection data={hero} />
       <ServiceAreaSection data={serviceArea} />
       <ContactFaq data={faq} />
-      <ContactFooterNewsletter />
+      <SiteFooterNewsletter variant="contact" />
     </main>
   )
 }

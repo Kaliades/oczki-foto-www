@@ -1,6 +1,6 @@
 import { OczkiBreadcrumbContainer, OczkiBreadcrumbs } from '@/components/OczkiBreadcrumbs'
 import { PrivacyPolicySection, privacyPolicyDefaults } from '@/components/PrivacyPolicySection'
-import { PrivacyPolicyFooterNewsletter } from '@/components/PrivacyPolicyFooterNewsletter'
+import { SiteFooterNewsletter } from '@/components/SiteFooterNewsletter'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -53,7 +53,7 @@ export default async function PrivacyPolicyPage() {
         <OczkiBreadcrumbs items={PRIVACY_POLICY_PAGE_BREADCRUMBS} />
       </OczkiBreadcrumbContainer>
       <PrivacyPolicySection data={data} />
-      <PrivacyPolicyFooterNewsletter />
+      <SiteFooterNewsletter variant="privacy" />
     </main>
   )
 }
