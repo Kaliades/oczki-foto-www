@@ -79,7 +79,10 @@ function mapHero(doc: OfferItem): OfferServiceHeroData {
     ],
     heading: {
       start: pick(cms?.heading?.start, d.heading.start),
-      emphasis: pick(cms?.heading?.emphasis, d.heading.emphasis),
+      // Default the emphasis to the offer's own name (not the sesje-kobiece
+      // skeleton default) so an offer seeded/created without bespoke hero copy
+      // still shows its real title in the H1.
+      emphasis: pick(cms?.heading?.emphasis, doc.title),
     },
     description: pick(cms?.description, d.description),
     cta: {
