@@ -46,6 +46,7 @@ async function run() {
   }
 
   const uploadCache = new Map<string, number>()
+  let uploadCounter = 0
 
   const uploadImage = async (src: string, alt: string): Promise<number> => {
     const cached = uploadCache.get(src)
@@ -55,11 +56,16 @@ async function run() {
     const abs = path.resolve(process.cwd(), 'public', rel)
     const buffer = await readFile(abs)
 
+    // Unique prefix avoids filename collisions when distinct source files share
+    // a basename and are uploaded concurrently (Payload enforces unique filename).
+    const base = path.basename(abs)
+    const uniqueName = `${String(++uploadCounter).padStart(3, '0')}-${base}`
+
     const doc = await payload.create({
       collection: 'media',
       data: { alt },
       file: {
-        name: path.basename(abs),
+        name: uniqueName,
         data: buffer,
         mimetype: mimeFromExt(abs),
         size: buffer.byteLength,

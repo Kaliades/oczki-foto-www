@@ -12,10 +12,18 @@ import {
 } from '@/components/HomeFooterNewsletter/constants'
 import { CaseStudyTestimonial } from '@/components/CaseStudyTestimonial'
 import { CaseStudyVenueStory } from '@/components/CaseStudyVenueStory'
+import { LivePreviewListener } from '@/components/LivePreviewListener'
+import configPromise from '@payload-config'
+import { getPayload } from 'payload'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
+import { cache } from 'react'
 import type { Metadata } from 'next'
 
+import type { Gallery } from '@/payload-types'
+
 import { CASE_STUDY_SLUGS, getCaseStudyBySlug } from './constants'
+import { mapGallery } from './mapGallery'
 
 type Args = {
   params: Promise<{
@@ -23,26 +31,80 @@ type Args = {
   }>
 }
 
-export function generateStaticParams() {
-  return CASE_STUDY_SLUGS.map((slug) => ({ slug }))
+/**
+ * Static params are the union of slugs in Payload and the code-side fallback
+ * slugs. The Payload query is wrapped defensively so a missing database at
+ * build-planning time falls back to code slugs instead of failing the build.
+ */
+export async function generateStaticParams() {
+  const slugs = new Set<string>(CASE_STUDY_SLUGS)
+
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const result = await payload.find({
+      collection: 'galleries',
+      draft: false,
+      limit: 1000,
+      overrideAccess: false,
+      pagination: false,
+      select: { slug: true },
+    })
+    for (const doc of result.docs) {
+      if (doc.slug) slugs.add(doc.slug)
+    }
+  } catch {
+    // Database unavailable — fall back to the code-side slug list.
+  }
+
+  return Array.from(slugs).map((slug) => ({ slug }))
 }
+
+const queryGalleryBySlug = cache(async ({ slug }: { slug: string }): Promise<Gallery | null> => {
+  const { isEnabled: draft } = await draftMode()
+
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const result = await payload.find({
+      collection: 'galleries',
+      draft,
+      limit: 1,
+      overrideAccess: draft,
+      pagination: false,
+      where: {
+        slug: { equals: slug },
+      },
+    })
+    return result.docs?.[0] ?? null
+  } catch {
+    return null
+  }
+})
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { slug } = await params
-  const caseStudy = getCaseStudyBySlug(decodeURIComponent(slug))
+  const decodedSlug = decodeURIComponent(slug)
+  const doc = await queryGalleryBySlug({ slug: decodedSlug })
 
-  if (!caseStudy) {
-    return { title: 'Galeria | Oczki fotografia' }
+  if (doc) {
+    return {
+      title: doc.meta?.title || `${doc.title} | Oczki fotografia`,
+      description: doc.meta?.description || undefined,
+    }
   }
 
+  const caseStudy = getCaseStudyBySlug(decodedSlug)
   return {
-    title: `${caseStudy.hero.title} | Oczki fotografia`,
+    title: caseStudy ? `${caseStudy.hero.title} | Oczki fotografia` : 'Galeria | Oczki fotografia',
   }
 }
 
 export default async function CaseStudyPage({ params }: Args) {
+  const { isEnabled: draft } = await draftMode()
   const { slug } = await params
-  const caseStudy = getCaseStudyBySlug(decodeURIComponent(slug))
+  const decodedSlug = decodeURIComponent(slug)
+
+  const doc = await queryGalleryBySlug({ slug: decodedSlug })
+  const caseStudy = doc ? mapGallery(doc) : getCaseStudyBySlug(decodedSlug)
 
   if (!caseStudy) {
     notFound()
@@ -50,6 +112,7 @@ export default async function CaseStudyPage({ params }: Args) {
 
   return (
     <main className="min-h-screen bg-[var(--oczki-primary-100)] [font-family:var(--font-oczki-body)]">
+      {draft && <LivePreviewListener />}
       <CaseStudyHero data={caseStudy.hero} />
       <CaseStudyDetails data={caseStudy.details} />
       <CaseStudyDuoPerspective data={caseStudy.duoPerspective} />

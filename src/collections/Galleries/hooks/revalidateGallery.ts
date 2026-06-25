@@ -15,12 +15,14 @@ export const revalidateGallery: CollectionAfterChangeHook<Gallery> = ({
     const path = `/galeria/${doc.slug}`
     payload.logger.info(`Revalidating gallery at path: ${path}`)
     revalidatePath(path)
+    revalidatePath('/galeria')
   }
 
   if (previousDoc?._status === 'published' && doc._status !== 'published') {
     const oldPath = `/galeria/${previousDoc.slug}`
     payload.logger.info(`Revalidating unpublished gallery at path: ${oldPath}`)
     revalidatePath(oldPath)
+    revalidatePath('/galeria')
   }
 
   return doc
@@ -30,8 +32,9 @@ export const revalidateGalleryDelete: CollectionAfterDeleteHook<Gallery> = ({
   doc,
   req: { context },
 }) => {
-  if (!context.disableRevalidate && doc?.slug) {
-    revalidatePath(`/galeria/${doc.slug}`)
+  if (!context.disableRevalidate) {
+    if (doc?.slug) revalidatePath(`/galeria/${doc.slug}`)
+    revalidatePath('/galeria')
   }
 
   return doc

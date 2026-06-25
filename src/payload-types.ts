@@ -1350,6 +1350,156 @@ export interface Gallery {
     caption?: string | null;
     id?: string | null;
   }[];
+  /**
+   * Pierwszy ekran podstrony realizacji.
+   */
+  hero?: {
+    /**
+     * Zdanie podzielone na trzy części: początek, wyróżnienie i końcówka (np. kropka).
+     */
+    heading?: {
+      lead?: string | null;
+      emphasis?: string | null;
+      end?: string | null;
+    };
+    description?: string | null;
+    backgroundImage?: (number | null) | Media;
+    /**
+     * Opis dla dostępności i SEO (krótkie, opisowe zdanie).
+     */
+    backgroundAlt?: string | null;
+  };
+  details?: {
+    /**
+     * Jedno zdanie podzielone na części. „Wyróżnienie” jest renderowane innym krojem/kolorem.
+     */
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+    };
+    items?:
+      | {
+          title?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  duoPerspective?: {
+    /**
+     * Jedno zdanie podzielone na części. „Wyróżnienie” jest renderowane innym krojem/kolorem.
+     */
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+    };
+    leadParagraph?: string | null;
+    callout?: string | null;
+    photo?: (number | null) | Media;
+    /**
+     * Opis dla dostępności i SEO (krótkie, opisowe zdanie).
+     */
+    photoAlt?: string | null;
+    highlights?:
+      | {
+          title?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Te same trzy zdjęcia są używane na wszystkich szerokościach (desktop/tablet/mobile).
+   */
+  venueStory?: {
+    /**
+     * Jedno zdanie podzielone na części. „Wyróżnienie” jest renderowane innym krojem/kolorem.
+     */
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+    };
+    body?: string | null;
+    backImage?: (number | null) | Media;
+    /**
+     * Opis dla dostępności i SEO (krótkie, opisowe zdanie).
+     */
+    backAlt?: string | null;
+    frontImage?: (number | null) | Media;
+    /**
+     * Opis dla dostępności i SEO (krótkie, opisowe zdanie).
+     */
+    frontAlt?: string | null;
+    scallopImage?: (number | null) | Media;
+    /**
+     * Opis dla dostępności i SEO (krótkie, opisowe zdanie).
+     */
+    scallopAlt?: string | null;
+  };
+  /**
+   * Same zdjęcia pochodzą z zakładki „Treść” → „Zdjęcia”. Tu ustawiasz tylko nagłówek i etykietę przycisku.
+   */
+  photoGallery?: {
+    /**
+     * Jedno zdanie podzielone na części. „Wyróżnienie” jest renderowane innym krojem/kolorem.
+     */
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+      end?: string | null;
+    };
+    loadMoreLabel?: string | null;
+  };
+  testimonial?: {
+    /**
+     * Jedno zdanie podzielone na części. „Wyróżnienie” jest renderowane innym krojem/kolorem.
+     */
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+    };
+    items?:
+      | {
+          quote?: string | null;
+          author?: string | null;
+          photo?: (number | null) | Media;
+          /**
+           * Opis dla dostępności i SEO (krótkie, opisowe zdanie).
+           */
+          photoAlt?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  memorableMoment?: {
+    title?: string | null;
+    body?: string | null;
+    portraitPhoto?: (number | null) | Media;
+    /**
+     * Opis dla dostępności i SEO (krótkie, opisowe zdanie).
+     */
+    portraitAlt?: string | null;
+    landscapePhoto?: (number | null) | Media;
+    /**
+     * Opis dla dostępności i SEO (krótkie, opisowe zdanie).
+     */
+    landscapeAlt?: string | null;
+  };
+  closingCta?: {
+    /**
+     * Jedno zdanie podzielone na części. „Wyróżnienie” jest renderowane innym krojem/kolorem.
+     */
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+      end?: string | null;
+    };
+    body?: string | null;
+    cta?: {
+      label?: string | null;
+      url?: string | null;
+    };
+  };
   meta?: {
     title?: string | null;
     /**
@@ -2270,6 +2420,134 @@ export interface GalleriesSelect<T extends boolean = true> {
         image?: T;
         caption?: T;
         id?: T;
+      };
+  hero?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              lead?: T;
+              emphasis?: T;
+              end?: T;
+            };
+        description?: T;
+        backgroundImage?: T;
+        backgroundAlt?: T;
+      };
+  details?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+            };
+        items?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  duoPerspective?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+            };
+        leadParagraph?: T;
+        callout?: T;
+        photo?: T;
+        photoAlt?: T;
+        highlights?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  venueStory?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+            };
+        body?: T;
+        backImage?: T;
+        backAlt?: T;
+        frontImage?: T;
+        frontAlt?: T;
+        scallopImage?: T;
+        scallopAlt?: T;
+      };
+  photoGallery?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+              end?: T;
+            };
+        loadMoreLabel?: T;
+      };
+  testimonial?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+            };
+        items?:
+          | T
+          | {
+              quote?: T;
+              author?: T;
+              photo?: T;
+              photoAlt?: T;
+              id?: T;
+            };
+      };
+  memorableMoment?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        portraitPhoto?: T;
+        portraitAlt?: T;
+        landscapePhoto?: T;
+        landscapeAlt?: T;
+      };
+  closingCta?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+              end?: T;
+            };
+        body?: T;
+        cta?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
       };
   meta?:
     | T
