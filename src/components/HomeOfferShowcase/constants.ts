@@ -12,6 +12,8 @@ export type HomeOfferItem = {
   imageAlt: string
   imageSrc: string
   cropClassName?: string
+  /** When set the entire card becomes a navigation link to the offer detail page. */
+  href?: string
 }
 
 export type HomeOfferData = {

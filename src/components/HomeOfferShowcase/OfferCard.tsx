@@ -1,10 +1,13 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 import { cn } from '@/utilities/ui'
 
 type OfferCardProps = {
   cropClassName?: string
   description: string
+  /** When set the entire card becomes a navigation link to the offer detail page. */
+  href?: string
   imageAlt: string
   imageSrc: string
   title: string
@@ -13,11 +16,12 @@ type OfferCardProps = {
 export function OfferCard({
   cropClassName,
   description,
+  href,
   imageAlt,
   imageSrc,
   title,
 }: OfferCardProps) {
-  return (
+  const card = (
     <article
       className="w-[310px] shrink-0 rounded-t-[999px] p-1.5 ring-1 ring-inset ring-[var(--oczki-tertiary-700)] md:w-[320px]"
       data-offer-card
@@ -58,4 +62,17 @@ export function OfferCard({
       </div>
     </article>
   )
+
+  if (href) {
+    return (
+      <Link
+        className="block transition-opacity hover:opacity-90 focus-visible:rounded-t-[999px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--oczki-primary-700)]"
+        href={href}
+      >
+        {card}
+      </Link>
+    )
+  }
+
+  return card
 }
