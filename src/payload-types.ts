@@ -117,11 +117,17 @@ export interface Config {
     header: Header;
     footer: Footer;
     siteSettings: SiteSetting;
+    aboutPage: AboutPage;
+    contactPage: ContactPage;
+    privacyPolicyPage: PrivacyPolicyPage;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     siteSettings: SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    aboutPage: AboutPageSelect<false> | AboutPageSelect<true>;
+    contactPage: ContactPageSelect<false> | ContactPageSelect<true>;
+    privacyPolicyPage: PrivacyPolicyPageSelect<false> | PrivacyPolicyPageSelect<true>;
   };
   locale: 'pl';
   widgets: {
@@ -3070,6 +3076,248 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
+ * Treść podstrony /o-mnie. Układ, ozdobniki botaniczne i piksele layoutu są zaszyte w kodzie — tu edytujesz tylko teksty i zdjęcia.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "aboutPage".
+ */
+export interface AboutPage {
+  id: number;
+  hero?: {
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+    };
+    description?: string | null;
+    cta?: {
+      label?: string | null;
+      url?: string | null;
+    };
+    portrait?: (number | null) | Media;
+    portraitAlt?: string | null;
+    secondaryPhoto?: (number | null) | Media;
+    secondaryPhotoAlt?: string | null;
+  };
+  philosophy?: {
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+    };
+    intro?: string | null;
+    principles?:
+      | {
+          title?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  sessionFeel?: {
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+    };
+    intro?: string | null;
+    /**
+     * Kolejność jest istotna — numery kroków są generowane automatycznie.
+     */
+    steps?:
+      | {
+          title?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  expertise?: {
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+    };
+    intro?: string | null;
+    cards?:
+      | {
+          title?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  beyond?: {
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+      end?: string | null;
+    };
+    intro?: string | null;
+    backdrop?: (number | null) | Media;
+    backdropAlt?: string | null;
+    features?:
+      | {
+          title?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  dual?: {
+    /**
+     * Ten nagłówek zaczyna się od wyróżnienia.
+     */
+    heading?: {
+      emphasis?: string | null;
+      end?: string | null;
+    };
+    intro?: string | null;
+    portrait?: (number | null) | Media;
+    portraitAlt?: string | null;
+    profileHeading?: string | null;
+    profileItems?:
+      | {
+          title?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  pillars?: {
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+      end?: string | null;
+    };
+    intro?: string | null;
+    items?:
+      | {
+          title?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  instagram?: {
+    heading?: {
+      plain?: string | null;
+      emphasis?: string | null;
+    };
+    profileUrl?: string | null;
+  };
+  cta?: {
+    /**
+     * Jednozdaniowy nagłówek — brak podziału na wyróżnienie w tym komponencie.
+     */
+    headingText?: string | null;
+    body?: string | null;
+    button?: {
+      label?: string | null;
+      url?: string | null;
+    };
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Treść podstrony /kontakt. Formularz, botanika i layout są zaszyte w kodzie — tu edytujesz tylko teksty.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contactPage".
+ */
+export interface ContactPage {
+  id: number;
+  hero?: {
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
+      end?: string | null;
+    };
+    description?: string | null;
+    sessionQuestion?: string | null;
+    submitLabel?: string | null;
+  };
+  serviceArea?: {
+    heading?: string | null;
+    introParagraph1?: string | null;
+    introParagraph2?: string | null;
+    accordion?:
+      | {
+          id?: string | null;
+          title?: string | null;
+          body?: string | null;
+        }[]
+      | null;
+    footer?: string | null;
+    cta?: {
+      label?: string | null;
+      url?: string | null;
+    };
+  };
+  faq?: {
+    /**
+     * Ten nagłówek zaczyna się od wyróżnienia, po którym następuje reszta tekstu.
+     */
+    heading?: {
+      emphasis?: string | null;
+      start?: string | null;
+    };
+    intro?: string | null;
+    items?:
+      | {
+          id?: string | null;
+          question?: string | null;
+          answer?: string | null;
+        }[]
+      | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Treść podstrony /polityka-prywatnosci. Układ i ozdobniki są zaszyte w kodzie — tu edytujesz przepisy prawne.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "privacyPolicyPage".
+ */
+export interface PrivacyPolicyPage {
+  id: number;
+  pageTitle?: string | null;
+  intro?: string | null;
+  /**
+   * Każda sekcja ma numer (generowany kolejnością), tytuł, opcjonalny wstęp, opcjonalną treść główną i opcjonalną listę punktowaną.
+   */
+  sections?:
+    | {
+        id?: string | null;
+        title?: string | null;
+        body?: string | null;
+        intro?: string | null;
+        bullets?:
+          | {
+              id?: string | null;
+              title?: string | null;
+              description?: string | null;
+            }[]
+          | null;
+      }[]
+    | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -3144,6 +3392,283 @@ export interface SiteSettingsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "aboutPage_select".
+ */
+export interface AboutPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+            };
+        description?: T;
+        cta?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+        portrait?: T;
+        portraitAlt?: T;
+        secondaryPhoto?: T;
+        secondaryPhotoAlt?: T;
+      };
+  philosophy?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+            };
+        intro?: T;
+        principles?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  sessionFeel?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+            };
+        intro?: T;
+        steps?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  expertise?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+            };
+        intro?: T;
+        cards?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  beyond?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+              end?: T;
+            };
+        intro?: T;
+        backdrop?: T;
+        backdropAlt?: T;
+        features?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  dual?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              emphasis?: T;
+              end?: T;
+            };
+        intro?: T;
+        portrait?: T;
+        portraitAlt?: T;
+        profileHeading?: T;
+        profileItems?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  pillars?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+              end?: T;
+            };
+        intro?: T;
+        items?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  instagram?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              plain?: T;
+              emphasis?: T;
+            };
+        profileUrl?: T;
+      };
+  cta?:
+    | T
+    | {
+        headingText?: T;
+        body?: T;
+        button?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contactPage_select".
+ */
+export interface ContactPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+              end?: T;
+            };
+        description?: T;
+        sessionQuestion?: T;
+        submitLabel?: T;
+      };
+  serviceArea?:
+    | T
+    | {
+        heading?: T;
+        introParagraph1?: T;
+        introParagraph2?: T;
+        accordion?:
+          | T
+          | {
+              id?: T;
+              title?: T;
+              body?: T;
+            };
+        footer?: T;
+        cta?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+      };
+  faq?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              emphasis?: T;
+              start?: T;
+            };
+        intro?: T;
+        items?:
+          | T
+          | {
+              id?: T;
+              question?: T;
+              answer?: T;
+            };
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "privacyPolicyPage_select".
+ */
+export interface PrivacyPolicyPageSelect<T extends boolean = true> {
+  pageTitle?: T;
+  intro?: T;
+  sections?:
+    | T
+    | {
+        id?: T;
+        title?: T;
+        body?: T;
+        intro?: T;
+        bullets?:
+          | T
+          | {
+              id?: T;
+              title?: T;
+              description?: T;
+            };
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -3177,7 +3702,7 @@ export interface TaskSchedulePublish {
           relationTo: 'galleries';
           value: number | Gallery;
         } | null);
-    global?: string | null;
+    global?: ('aboutPage' | 'contactPage' | 'privacyPolicyPage') | null;
     user?: (number | null) | User;
   };
   output?: unknown;
