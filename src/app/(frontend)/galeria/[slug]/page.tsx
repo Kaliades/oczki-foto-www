@@ -20,6 +20,9 @@ import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import type { Metadata } from 'next'
 
+import { getImageURL } from '@/utilities/generateMeta'
+import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+
 import type { Gallery } from '@/payload-types'
 
 import { CASE_STUDY_SLUGS, getCaseStudyBySlug } from './constants'
@@ -86,9 +89,18 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const doc = await queryGalleryBySlug({ slug: decodedSlug })
 
   if (doc) {
+    const title = doc.meta?.title || `${doc.title} | Oczki fotografia`
+    const description = doc.meta?.description || doc.intro || undefined
+
     return {
-      title: doc.meta?.title || `${doc.title} | Oczki fotografia`,
-      description: doc.meta?.description || undefined,
+      title,
+      description,
+      openGraph: mergeOpenGraph({
+        title,
+        description: description ?? '',
+        url: `/galeria/${decodedSlug}`,
+        images: [{ url: getImageURL(doc.coverImage) }],
+      }),
     }
   }
 

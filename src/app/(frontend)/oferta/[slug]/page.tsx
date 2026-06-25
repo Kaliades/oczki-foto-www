@@ -19,6 +19,9 @@ import type { Metadata } from 'next'
 
 import type { OfferItem } from '@/payload-types'
 
+import { getImageURL } from '@/utilities/generateMeta'
+import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+
 import { OFFER_SERVICE_SLUGS, getOfferServiceBySlug } from './constants'
 import { mapOfferItem } from './mapOfferItem'
 
@@ -84,9 +87,20 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const doc = await queryOfferBySlug({ slug: decodedSlug })
 
   if (doc) {
+    const title = doc.meta?.title || `${doc.title} | Oczki fotografia`
+    const description = doc.meta?.description || doc.shortDescription || undefined
+
     return {
-      title: doc.meta?.title || `${doc.title} | Oczki fotografia`,
-      description: doc.meta?.description || undefined,
+      title,
+      description,
+      // The card image is always populated, unlike hero.image which requires
+      // detail-page content to be fully seeded.
+      openGraph: mergeOpenGraph({
+        title,
+        description: description ?? '',
+        url: `/oferta/${decodedSlug}`,
+        images: [{ url: getImageURL(doc.image) }],
+      }),
     }
   }
 

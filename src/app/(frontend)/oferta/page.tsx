@@ -7,11 +7,19 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import type { Metadata } from 'next'
 import type { OczkiBreadcrumbItemData } from '@/components/OczkiBreadcrumbs'
+import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+
+const OFFER_META_DESCRIPTION =
+  'Sesje kobiece, reportaże ślubne, sesje wizerunkowe, rodzinne i miłosne — naturalna fotografia w Krakowie i okolicach.'
 
 export const metadata: Metadata = {
   title: 'Oferta | Oczki fotografia',
-  description:
-    'Sesje kobiece, reportaże ślubne, sesje wizerunkowe, rodzinne i miłosne — naturalna fotografia w Krakowie i okolicach.',
+  description: OFFER_META_DESCRIPTION,
+  openGraph: mergeOpenGraph({
+    title: 'Oferta | Oczki fotografia',
+    description: OFFER_META_DESCRIPTION,
+    url: '/oferta',
+  }),
 }
 
 const BREADCRUMBS: readonly OczkiBreadcrumbItemData[] = [

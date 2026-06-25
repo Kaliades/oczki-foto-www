@@ -17,7 +17,11 @@ import { cache } from 'react'
 import type { Metadata } from 'next'
 
 import type { AboutPage } from '@/payload-types'
+import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { mapAboutPage } from './mapAboutPage'
+
+const ABOUT_META_DESCRIPTION =
+  'Poznaj fotografkę Oczki Fotografia — naturalne podejście do sesji kobiecych i ślubnych w Krakowie, oparte na zaufaniu i swobodzie.'
 
 const queryAboutPage = cache(async (): Promise<AboutPage | null> => {
   const { isEnabled: draft } = await draftMode()
@@ -35,8 +39,13 @@ const queryAboutPage = cache(async (): Promise<AboutPage | null> => {
 
 export async function generateMetadata(): Promise<Metadata> {
   const doc = await queryAboutPage()
-  if (doc?.meta?.title) return { title: doc.meta.title, description: doc.meta.description ?? undefined }
-  return { title: aboutHeroDefaults.title }
+  const title = doc?.meta?.title || aboutHeroDefaults.title
+  const description = doc?.meta?.description || ABOUT_META_DESCRIPTION
+  return {
+    title,
+    description,
+    openGraph: mergeOpenGraph({ title, description, url: '/o-mnie' }),
+  }
 }
 
 export default async function AboutPage() {

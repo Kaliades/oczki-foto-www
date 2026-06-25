@@ -17,13 +17,24 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import type { Metadata } from 'next'
 
+import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+
 import {
   GALLERY_FOOTER_NEWSLETTER_FIGMA_NODES,
   GALLERY_PAGE_BREADCRUMBS,
 } from './constants'
 
+const GALLERY_META_DESCRIPTION =
+  'Portfolio ślubne i kobiece z Krakowa i okolic — naturalne kadry, autentyczne emocje. Przeglądaj reportaże ślubne, sesje kobiece i wizerunkowe.'
+
 export const metadata: Metadata = {
   title: 'Galeria | Oczki fotografia',
+  description: GALLERY_META_DESCRIPTION,
+  openGraph: mergeOpenGraph({
+    title: 'Galeria — portfolio Oczki Fotografia',
+    description: GALLERY_META_DESCRIPTION,
+    url: '/galeria',
+  }),
 }
 
 function mediaUrl(media: unknown): string | null {

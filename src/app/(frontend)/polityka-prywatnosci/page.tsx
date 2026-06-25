@@ -9,8 +9,12 @@ import { cache } from 'react'
 import type { Metadata } from 'next'
 
 import type { PrivacyPolicyPage } from '@/payload-types'
+import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { PRIVACY_POLICY_PAGE_BREADCRUMBS } from './constants'
 import { mapPrivacyPolicy } from './mapPrivacyPolicy'
+
+const PRIVACY_META_DESCRIPTION =
+  'Polityka prywatności Oczki Fotografia — zasady przetwarzania danych osobowych oraz wykorzystania plików cookies.'
 
 const queryPrivacyPolicy = cache(async (): Promise<PrivacyPolicyPage | null> => {
   const { isEnabled: draft } = await draftMode()
@@ -28,8 +32,13 @@ const queryPrivacyPolicy = cache(async (): Promise<PrivacyPolicyPage | null> => 
 
 export async function generateMetadata(): Promise<Metadata> {
   const doc = await queryPrivacyPolicy()
-  if (doc?.meta?.title) return { title: doc.meta.title, description: doc.meta.description ?? undefined }
-  return { title: privacyPolicyDefaults.pageTitle }
+  const title = doc?.meta?.title || privacyPolicyDefaults.pageTitle
+  const description = doc?.meta?.description || PRIVACY_META_DESCRIPTION
+  return {
+    title,
+    description,
+    openGraph: mergeOpenGraph({ title, description, url: '/polityka-prywatnosci' }),
+  }
 }
 
 export default async function PrivacyPolicyPage() {

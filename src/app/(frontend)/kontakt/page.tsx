@@ -10,7 +10,11 @@ import { cache } from 'react'
 import type { Metadata } from 'next'
 
 import type { ContactPage } from '@/payload-types'
+import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { mapContactPage } from './mapContactPage'
+
+const CONTACT_META_DESCRIPTION =
+  'Skontaktuj się z Oczki Fotografia — umów sesję kobiecą, reportaż ślubny lub sesję wizerunkową w Krakowie i okolicach.'
 
 const queryContactPage = cache(async (): Promise<ContactPage | null> => {
   const { isEnabled: draft } = await draftMode()
@@ -28,8 +32,13 @@ const queryContactPage = cache(async (): Promise<ContactPage | null> => {
 
 export async function generateMetadata(): Promise<Metadata> {
   const doc = await queryContactPage()
-  if (doc?.meta?.title) return { title: doc.meta.title, description: doc.meta.description ?? undefined }
-  return { title: contactHeroDefaults.title }
+  const title = doc?.meta?.title || contactHeroDefaults.title
+  const description = doc?.meta?.description || CONTACT_META_DESCRIPTION
+  return {
+    title,
+    description,
+    openGraph: mergeOpenGraph({ title, description, url: '/kontakt' }),
+  }
 }
 
 export default async function ContactPage() {
