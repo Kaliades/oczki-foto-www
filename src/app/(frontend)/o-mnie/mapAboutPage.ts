@@ -205,8 +205,9 @@ export function mapCollaborationPillars(doc: AboutPage): CollaborationPillarsSec
       ? cmsItems.map((p, i) => ({
           title: pick(p.title, d.pillars[i]?.title ?? ''),
           description: pick(p.description, d.pillars[i]?.description ?? ''),
-          // variantIndex drives CSS rotation — always from the code skeleton
-          variantIndex: d.pillars[i]?.variantIndex ?? (i as 0 | 1 | 2),
+          // variantIndex drives CSS rotation — always from the code skeleton.
+          // Falls back to modulo so a 4th+ pillar still maps to a valid variant.
+          variantIndex: d.pillars[i]?.variantIndex ?? ((i % 3) as 0 | 1 | 2),
           figmaNodes: d.pillars[i]?.figmaNodes,
         }))
       : d.pillars
