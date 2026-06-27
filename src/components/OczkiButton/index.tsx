@@ -42,6 +42,7 @@ type OczkiButtonProps = {
   children: ReactNode
   className?: string
   href: string
+  onClick?: () => void
   variant?: 'primary' | 'secondary'
 }
 
@@ -49,6 +50,7 @@ export function OczkiButton({
   children,
   className,
   href,
+  onClick,
   variant = 'primary',
 }: OczkiButtonProps) {
   if (variant === 'secondary') {
@@ -59,6 +61,7 @@ export function OczkiButton({
           className,
         )}
         href={href}
+        onClick={onClick}
       >
         <span className="flex flex-col items-start">
           <span className="flex items-start gap-1 pb-1">
@@ -97,6 +100,7 @@ export function OczkiButton({
         className,
       )}
       href={href}
+      onClick={onClick}
     >
       <ButtonSide side="left" />
       <span className="oczki-body-m-medium relative z-[1] -mx-px flex min-w-0 flex-1 items-start justify-center bg-[var(--oczki-primary-500)] px-1 pb-[10px] pt-[11px] transition-colors group-hover:bg-[var(--oczki-primary-400)]">

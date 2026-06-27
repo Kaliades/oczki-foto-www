@@ -381,3 +381,46 @@ html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
 }
+
+/* ─── Mobile navigation drawer ──────────────────────────────────────────────
+   Classic side drawer that slides in from the right. The rest of the viewport
+   is dimmed by the dialog `::backdrop`.
+   Uses @starting-style (progressive enhancement: Chrome 117+, Firefox 129+,
+   Safari 17.5+). On older browsers the drawer still opens — just without the
+   entrance animation.
+   ─────────────────────────────────────────────────────────────────────── */
+dialog.mobile-menu-dialog {
+  transform: translateX(100%);
+  transition:
+    transform 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    display 0.32s allow-discrete,
+    overlay 0.32s allow-discrete;
+}
+
+dialog.mobile-menu-dialog[open] {
+  transform: translateX(0);
+}
+
+@starting-style {
+  dialog.mobile-menu-dialog[open] {
+    transform: translateX(100%);
+  }
+}
+
+dialog.mobile-menu-dialog::backdrop {
+  background: rgba(57, 40, 24, 0); /* --oczki-primary-900 @ 0 */
+  transition:
+    background 0.32s ease,
+    display 0.32s allow-discrete,
+    overlay 0.32s allow-discrete;
+}
+
+dialog.mobile-menu-dialog[open]::backdrop {
+  background: rgba(57, 40, 24, 0.45);
+}
+
+@starting-style {
+  dialog.mobile-menu-dialog[open]::backdrop {
+    background: rgba(57, 40, 24, 0);
+  }
+}

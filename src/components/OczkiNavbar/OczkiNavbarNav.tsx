@@ -1,17 +1,16 @@
 'use client'
 
-import { OCZKI_NAV_ITEMS, OCZKI_NAVBAR_NAV_GAP_CLASS } from './constants'
+import { OCZKI_NAVBAR_NAV_GAP_CLASS } from './constants'
 import { OczkiNavbarLink, mapNavItemToLinkProps } from './OczkiNavbarLink'
+import type { NavItemProps } from './types'
 
 type OczkiNavbarNavProps = {
   pathname: string
+  navItems: readonly NavItemProps[]
 }
 
-/**
- * Centred nav cluster — hidden below `md` (mobile uses menu button instead).
- * Figma gaps: 16px tablet (`md`), 32px desktop (`lg`).
- */
-export function OczkiNavbarNav({ pathname }: OczkiNavbarNavProps) {
+/** Centred nav cluster — hidden below `md` (mobile uses menu button instead). */
+export function OczkiNavbarNav({ pathname, navItems }: OczkiNavbarNavProps) {
   return (
     <nav
       aria-label="Główna nawigacja"
@@ -19,7 +18,7 @@ export function OczkiNavbarNav({ pathname }: OczkiNavbarNavProps) {
       data-name="Navbar link"
     >
       <ul className={`flex items-center ${OCZKI_NAVBAR_NAV_GAP_CLASS}`}>
-        {OCZKI_NAV_ITEMS.map((item) => {
+        {navItems.map((item) => {
           const linkProps = mapNavItemToLinkProps(item, pathname)
 
           return (

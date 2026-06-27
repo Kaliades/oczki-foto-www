@@ -3221,9 +3221,21 @@ export interface Header {
           url?: string | null;
           label: string;
         };
+        /**
+         * Wyświetl strzałkę sugerującą podmenu (np. Oferta)
+         */
+        withDropdownIcon?: boolean | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Tekst widoczny na przycisku "Umów sesję" w navbarze
+   */
+  ctaLabel?: string | null;
+  /**
+   * Adres URL do którego prowadzi przycisk CTA (np. /kontakt)
+   */
+  ctaUrl?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3636,8 +3648,11 @@ export interface HeaderSelect<T extends boolean = true> {
               url?: T;
               label?: T;
             };
+        withDropdownIcon?: T;
         id?: T;
       };
+  ctaLabel?: T;
+  ctaUrl?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

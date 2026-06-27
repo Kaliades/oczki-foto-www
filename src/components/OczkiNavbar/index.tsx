@@ -3,21 +3,30 @@
 import { Logo } from '@/components/Logo/Logo'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useState } from 'react'
 
 import {
+  OCZKI_NAV_ITEMS,
   OCZKI_NAVBAR_CAP_PADDING_CLASS,
+  OCZKI_NAVBAR_CTA,
   OCZKI_NAVBAR_FIGMA_NODES,
   OCZKI_NAVBAR_SHELL_PADDING_Y_CLASS,
 } from './constants'
 import { OczkiNavbarCta } from './OczkiNavbarCta'
 import { OczkiNavbarMenuButton } from './OczkiNavbarMenuButton'
+import { OczkiNavbarMobileMenu } from './OczkiNavbarMobileMenu'
 import { OczkiNavbarNav } from './OczkiNavbarNav'
+import type { NavCtaProps, NavItemProps } from './types'
 
 export type OczkiNavbarVariant = 'overlay' | 'solid'
 
 type OczkiNavbarProps = {
   theme?: string | null
   variant?: OczkiNavbarVariant
+  /** Nav items from CMS — falls back to `OCZKI_NAV_ITEMS` if not provided. */
+  navItems?: readonly NavItemProps[]
+  /** CTA button data from CMS — falls back to `OCZKI_NAVBAR_CTA` if not provided. */
+  cta?: NavCtaProps
 }
 
 /**
@@ -32,47 +41,74 @@ type OczkiNavbarProps = {
  *     - `Navbar link` (`OczkiNavbarNav` → `ul` → `OczkiNavbarLink`, hidden `<md`)
  *     - `Action button container` (`OczkiNavbarCta` → `OczkiButton`, hidden `<md`)
  *     - `Menu button` (`OczkiNavbarMenuButton`, `md:hidden`)
+ * - `OczkiNavbarMobileMenu` — full-screen dialog overlay (`md:hidden`)
  */
-export function OczkiNavbar({ theme = null, variant = 'solid' }: OczkiNavbarProps) {
+export function OczkiNavbar({
+  theme = null,
+  variant = 'solid',
+  navItems: navItemsFromCms,
+  cta: ctaFromCms,
+}: OczkiNavbarProps) {
   const pathname = usePathname()
   const isOverlay = variant === 'overlay'
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  // `??` would keep an empty array (it only falls back on null/undefined), so
+  // guard on length to ensure the nav never renders empty if the CMS global is
+  // unpopulated.
+  const navItems: readonly NavItemProps[] =
+    navItemsFromCms && navItemsFromCms.length > 0 ? navItemsFromCms : OCZKI_NAV_ITEMS
+  const cta: NavCtaProps = ctaFromCms ?? OCZKI_NAVBAR_CTA
 
   return (
-    <header
-      className={`z-30 w-full [font-family:var(--font-oczki-body)] ${
-        isOverlay ? 'absolute left-0 top-0' : 'relative'
-      }`}
-      data-figma-node={OCZKI_NAVBAR_FIGMA_NODES.desktop}
-      {...(theme ? { 'data-theme': theme } : {})}
-    >
-      <div
-        className={`w-full ${OCZKI_NAVBAR_SHELL_PADDING_Y_CLASS} ${
-          isOverlay ? 'bg-transparent' : 'bg-[var(--oczki-primary-100)]'
+    <>
+      <header
+        className={`z-30 w-full [font-family:var(--font-oczki-body)] ${
+          isOverlay ? 'absolute left-0 top-0' : 'relative'
         }`}
+        data-figma-node={OCZKI_NAVBAR_FIGMA_NODES.desktop}
+        {...(theme ? { 'data-theme': theme } : {})}
       >
-        <div className={`mx-auto w-full max-w-[1366px] ${OCZKI_NAVBAR_CAP_PADDING_CLASS}`}>
-          <div
-            className="flex min-w-0 flex-1 items-center justify-between"
-            data-name="Navbar container"
-          >
-            <Link
-              aria-label="Oczki fotografia - strona główna"
-              className="shrink-0"
-              data-name="Logo"
-              href="/"
+        <div
+          className={`w-full ${OCZKI_NAVBAR_SHELL_PADDING_Y_CLASS} ${
+            isOverlay ? 'bg-transparent' : 'bg-[var(--oczki-primary-100)]'
+          }`}
+        >
+          <div className={`mx-auto w-full max-w-[1366px] ${OCZKI_NAVBAR_CAP_PADDING_CLASS}`}>
+            <div
+              className="flex min-w-0 flex-1 items-center justify-between"
+              data-name="Navbar container"
             >
-              <Logo loading="eager" priority="high" />
-            </Link>
+              <Link
+                aria-label="Oczki fotografia - strona główna"
+                className="shrink-0"
+                data-name="Logo"
+                href="/"
+              >
+                <Logo loading="eager" priority="high" />
+              </Link>
 
-            <OczkiNavbarNav pathname={pathname} />
+              <OczkiNavbarNav navItems={navItems} pathname={pathname} />
 
-            <OczkiNavbarCta />
+              <OczkiNavbarCta cta={cta} />
 
-            <OczkiNavbarMenuButton />
+              <OczkiNavbarMenuButton
+                isOpen={menuOpen}
+                onClick={() => setMenuOpen((prev) => !prev)}
+              />
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* Mobile menu rendered outside the header so it covers the full viewport */}
+      <OczkiNavbarMobileMenu
+        cta={cta}
+        isOpen={menuOpen}
+        navItems={navItems}
+        onClose={() => setMenuOpen(false)}
+      />
+    </>
   )
 }
 

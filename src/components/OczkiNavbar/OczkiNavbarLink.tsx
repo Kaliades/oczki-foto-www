@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import { OczkiNavbarActiveIndicator } from './OczkiNavbarActiveIndicator'
 import { OczkiNavbarDropdownIcon } from './OczkiNavbarDropdownIcon'
-import type { OczkiNavItem } from './constants'
+import type { NavItemProps } from './types'
 
 type OczkiNavbarLinkProps = {
   href: string
@@ -39,7 +39,7 @@ export function OczkiNavbarLink({
   )
 }
 
-export function mapNavItemToLinkProps(item: OczkiNavItem, pathname: string): OczkiNavbarLinkProps {
+export function mapNavItemToLinkProps(item: NavItemProps, pathname: string): OczkiNavbarLinkProps {
   const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`)
 
   return {
