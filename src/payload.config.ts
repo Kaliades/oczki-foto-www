@@ -5,6 +5,7 @@ import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
+import { ConsentLogs } from './collections/ConsentLogs'
 import { Galleries } from './collections/Galleries'
 import { Media } from './collections/Media'
 import { OfferItems } from './collections/OfferItems'
@@ -17,6 +18,7 @@ import { SiteSettings } from './SiteSettings/config'
 import { AboutPage } from './globals/AboutPage/config'
 import { ContactPage } from './globals/ContactPage/config'
 import { GalleryPage } from './globals/GalleryPage/config'
+import { CookieConsent } from './globals/CookieConsent/config'
 import { PrivacyPolicyPage } from './globals/PrivacyPolicyPage/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
@@ -68,6 +70,7 @@ export default buildConfig({
         'galleryPage',
         'header',
         'siteSettings',
+        'cookieConsent',
       ],
     },
   },
@@ -78,7 +81,7 @@ export default buildConfig({
       connectionString: process.env.POSTGRES_URL || '',
     },
   }),
-  collections: [Pages, Posts, OfferItems, Galleries, Media, Categories, Users],
+  collections: [Pages, Posts, OfferItems, Galleries, Media, Categories, Users, ConsentLogs],
   cors: [getServerSideURL()].filter(Boolean),
   localization: {
     /**
@@ -91,7 +94,16 @@ export default buildConfig({
     defaultLocale: 'pl',
     fallback: true,
   },
-  globals: [Header, Footer, SiteSettings, AboutPage, ContactPage, PrivacyPolicyPage, GalleryPage],
+  globals: [
+    Header,
+    Footer,
+    SiteSettings,
+    AboutPage,
+    ContactPage,
+    PrivacyPolicyPage,
+    GalleryPage,
+    CookieConsent,
+  ],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

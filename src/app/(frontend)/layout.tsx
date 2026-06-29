@@ -7,6 +7,8 @@ import { GeistMono } from 'geist/font/mono'
 import React from 'react'
 
 import { ConditionalSiteFooter } from '@/components/ConditionalSiteFooter'
+import { ConsentModeInit } from '@/components/ConsentModeInit/ConsentModeInit'
+import { CookieConsentRoot, TrackingScripts } from '@/components/CookieConsent'
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
@@ -14,7 +16,10 @@ import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { defaultTheme } from '@/providers/Theme/shared'
 import { BRAND_ASSETS } from '@/constants/brandAssets'
+import { applyDevConsentPreview } from '@/consent/applyDevConsentPreview'
+import { mapCookieConsentGlobal } from '@/consent/mapCookieConsentGlobal'
 import { getDefaultOgImage } from '@/utilities/getDefaultOgImage'
+import { getGlobalForRequest } from '@/utilities/getGlobals'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 
@@ -89,6 +94,8 @@ const dancingScript = Dancing_Script({
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
+  const cookieConsentDoc = await getGlobalForRequest('cookieConsent', 0)
+  const consentConfig = applyDevConsentPreview(mapCookieConsentGlobal(cookieConsentDoc))
 
   return (
     <html
@@ -103,8 +110,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       suppressHydrationWarning
     >
       <body>
+        <ConsentModeInit />
         <InitTheme />
-        <Providers>
+        <Providers consentConfig={consentConfig}>
           <AdminBar
             adminBarProps={{
               preview: isEnabled,
@@ -116,6 +124,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <ConditionalSiteFooter>
             <Footer />
           </ConditionalSiteFooter>
+          <CookieConsentRoot />
+          <TrackingScripts />
         </Providers>
       </body>
     </html>

@@ -7,6 +7,9 @@ import * as migration_20260625_085425_footer_links_disable_label from './2026062
 import * as migration_20260625_093536_header_nav_cta from './20260625_093536_header_nav_cta';
 import * as migration_20260629_135257_gallery_page_portfolio_category from './20260629_135257_gallery_page_portfolio_category';
 import * as migration_20260629_145700_header_site_settings_drafts from './20260629_145700_header_site_settings_drafts';
+import * as migration_20260629_153443_cookie_consent_global from './20260629_153443_cookie_consent_global';
+import * as migration_20260629_154101_cookie_consent_preferences from './20260629_154101_cookie_consent_preferences';
+import * as migration_20260629_154355_consent_logs from './20260629_154355_consent_logs';
 
 export const migrations = [
   {
@@ -53,5 +56,20 @@ export const migrations = [
     up: migration_20260629_145700_header_site_settings_drafts.up,
     down: migration_20260629_145700_header_site_settings_drafts.down,
     name: '20260629_145700_header_site_settings_drafts',
+  },
+  {
+    up: migration_20260629_153443_cookie_consent_global.up,
+    down: migration_20260629_153443_cookie_consent_global.down,
+    name: '20260629_153443_cookie_consent_global',
+  },
+  {
+    up: migration_20260629_154101_cookie_consent_preferences.up,
+    down: migration_20260629_154101_cookie_consent_preferences.down,
+    name: '20260629_154101_cookie_consent_preferences',
+  },
+  {
+    up: migration_20260629_154355_consent_logs.up,
+    down: migration_20260629_154355_consent_logs.down,
+    name: '20260629_154355_consent_logs'
   },
 ];

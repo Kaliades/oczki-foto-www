@@ -1,8 +1,11 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
 
+import { cn } from '@/utilities/ui'
+
 type ScallopedButtonProps = {
   children: ReactNode
   fullWidth?: boolean
+  labelClassName?: string
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
 function ScallopSide({ side }: { side: 'left' | 'right' }) {
@@ -46,18 +49,27 @@ export function ScallopedButton({
   children,
   className,
   fullWidth = false,
+  labelClassName,
   type = 'button',
   ...buttonProps
 }: ScallopedButtonProps) {
   return (
     <button
-      className={`inline-flex h-11 items-stretch justify-center text-[var(--oczki-primary-900)] ${fullWidth ? 'w-full' : 'w-auto'} ${className ?? ''}`}
+      className={cn(
+        'inline-flex h-11 cursor-pointer items-stretch justify-center text-[var(--oczki-primary-900)] disabled:cursor-not-allowed',
+        fullWidth ? 'w-full' : 'w-auto',
+        className,
+      )}
       type={type}
       {...buttonProps}
     >
       <ScallopSide side="left" />
       <span
-        className={`oczki-body-m-medium flex items-center justify-center bg-[var(--oczki-primary-500)] px-1 ${fullWidth ? 'min-w-0 flex-1' : 'flex-none'}`}
+        className={cn(
+          'oczki-body-m-medium flex items-center justify-center bg-[var(--oczki-primary-500)] px-1 pb-[10px] pt-[11px]',
+          fullWidth ? 'min-w-0 flex-1' : 'flex-none',
+          labelClassName,
+        )}
       >
         {children}
       </span>

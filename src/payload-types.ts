@@ -74,6 +74,7 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    consentLogs: ConsentLog;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -98,6 +99,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    consentLogs: ConsentLogsSelect<false> | ConsentLogsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -121,6 +123,7 @@ export interface Config {
     contactPage: ContactPage;
     privacyPolicyPage: PrivacyPolicyPage;
     galleryPage: GalleryPage;
+    cookieConsent: CookieConsent;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
@@ -130,6 +133,7 @@ export interface Config {
     contactPage: ContactPageSelect<false> | ContactPageSelect<true>;
     privacyPolicyPage: PrivacyPolicyPageSelect<false> | PrivacyPolicyPageSelect<true>;
     galleryPage: GalleryPageSelect<false> | GalleryPageSelect<true>;
+    cookieConsent: CookieConsentSelect<false> | CookieConsentSelect<true>;
   };
   locale: 'pl';
   widgets: {
@@ -1656,6 +1660,33 @@ export interface Gallery {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Rejestr wyborów użytkowników (RODO — dowód zgody). Wpisy powstają automatycznie z frontu.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "consentLogs".
+ */
+export interface ConsentLog {
+  id: number;
+  consentId: string;
+  policyVersion: number;
+  recordedAt: string;
+  source: 'banner-accept-all' | 'banner-reject-all' | 'banner-preferences' | 'gpc';
+  choices?: {
+    analytics?: boolean | null;
+    marketing?: boolean | null;
+  };
+  /**
+   * Stan flag CMS w momencie zapisu zgody.
+   */
+  context?: {
+    bannerEnabled?: boolean | null;
+    analyticsCategoryEnabled?: boolean | null;
+    marketingCategoryEnabled?: boolean | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
@@ -1872,6 +1903,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'consentLogs';
+        value: number | ConsentLog;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -2934,6 +2969,31 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "consentLogs_select".
+ */
+export interface ConsentLogsSelect<T extends boolean = true> {
+  consentId?: T;
+  policyVersion?: T;
+  recordedAt?: T;
+  source?: T;
+  choices?:
+    | T
+    | {
+        analytics?: T;
+        marketing?: T;
+      };
+  context?:
+    | T
+    | {
+        bannerEnabled?: T;
+        analyticsCategoryEnabled?: T;
+        marketingCategoryEnabled?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects_select".
  */
 export interface RedirectsSelect<T extends boolean = true> {
@@ -3692,6 +3752,77 @@ export interface GalleryPage {
   createdAt?: string | null;
 }
 /**
+ * Baner cookies i kategorie zgody. Domyślnie wyłączone — włącz dopiero po aktualizacji polityki prywatności i podłączeniu skryptów (env).
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cookieConsent".
+ */
+export interface CookieConsent {
+  id: number;
+  /**
+   * Master switch — baner, link w stopce i mechanizm zgody. Włącz na końcu, po aktualizacji polityki.
+   */
+  bannerEnabled?: boolean | null;
+  /**
+   * Pokaż kategorię analityczną i ładuj GA po zgodzie (wymaga NEXT_PUBLIC_GA_MEASUREMENT_ID).
+   */
+  analyticsEnabled?: boolean | null;
+  /**
+   * Pokaż kategorię marketingową i ładuj Meta Pixel po zgodzie (wymaga NEXT_PUBLIC_META_PIXEL_ID).
+   */
+  marketingEnabled?: boolean | null;
+  /**
+   * Podbij po zmianie polityki prywatności lub dodaniu nowego trackera — użytkownicy ze starą wersją zobaczą baner ponownie.
+   */
+  policyVersion: number;
+  title?: string | null;
+  descriptionBeforeLink?: string | null;
+  learnMoreLabel?: string | null;
+  learnMoreHref?: string | null;
+  acceptLabel?: string | null;
+  preferencesLabel?: string | null;
+  rejectLabel?: string | null;
+  preferencesTitle?: string | null;
+  preferencesIntro?: string | null;
+  saveLabel?: string | null;
+  backLabel?: string | null;
+  rejectAllLabel?: string | null;
+  necessaryCategory?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  analyticsCategory?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  marketingCategory?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  settingsLinkLabel?: string | null;
+  /**
+   * Opcjonalnie — baner używa learnMoreHref powyżej. Pole na przyszłe rozszerzenia.
+   */
+  privacyLink: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -4146,6 +4277,60 @@ export interface GalleryPageSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cookieConsent_select".
+ */
+export interface CookieConsentSelect<T extends boolean = true> {
+  bannerEnabled?: T;
+  analyticsEnabled?: T;
+  marketingEnabled?: T;
+  policyVersion?: T;
+  title?: T;
+  descriptionBeforeLink?: T;
+  learnMoreLabel?: T;
+  learnMoreHref?: T;
+  acceptLabel?: T;
+  preferencesLabel?: T;
+  rejectLabel?: T;
+  preferencesTitle?: T;
+  preferencesIntro?: T;
+  saveLabel?: T;
+  backLabel?: T;
+  rejectAllLabel?: T;
+  necessaryCategory?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  analyticsCategory?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  marketingCategory?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  settingsLinkLabel?: T;
+  privacyLink?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -4179,7 +4364,17 @@ export interface TaskSchedulePublish {
           relationTo: 'galleries';
           value: number | Gallery;
         } | null);
-    global?: ('header' | 'siteSettings' | 'aboutPage' | 'contactPage' | 'privacyPolicyPage' | 'galleryPage') | null;
+    global?:
+      | (
+          | 'header'
+          | 'siteSettings'
+          | 'aboutPage'
+          | 'contactPage'
+          | 'privacyPolicyPage'
+          | 'galleryPage'
+          | 'cookieConsent'
+        )
+      | null;
     user?: (number | null) | User;
   };
   output?: unknown;

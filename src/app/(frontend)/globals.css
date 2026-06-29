@@ -424,3 +424,12 @@ dialog.mobile-menu-dialog[open]::backdrop {
     background: rgba(57, 40, 24, 0);
   }
 }
+
+/* ─── Cookie consent centred dialog ───────────────────────────────────────── */
+dialog.cookie-consent-dialog::backdrop {
+  background: rgba(57, 40, 24, 0.45);
+}
+
+dialog.cookie-consent-dialog[open]::backdrop {
+  background: rgba(57, 40, 24, 0.45);
+}

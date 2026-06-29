@@ -1,4 +1,5 @@
 import type { FooterNavLink, FooterSocialLink } from './constants'
+import { CookieSettingsLink } from '@/components/CookieConsent/CookieSettingsLink'
 import { FooterBrandBlock } from './FooterBrandBlock'
 import { FooterLinkColumn } from './FooterLinkColumn'
 
@@ -31,6 +32,13 @@ export function FooterNav({ serviceLinks, pageLinks, socialLinks }: FooterNavPro
 
       <div className="hidden shrink-0 min-[1366px]:block min-[1366px]:w-[286px]">
         <FooterLinkColumn align="right" links={pageLinks} />
+        <div className="mt-4 flex justify-end">
+          <CookieSettingsLink />
+        </div>
+      </div>
+
+      <div className="flex min-[1366px]:hidden justify-center pt-2">
+        <CookieSettingsLink />
       </div>
     </div>
   )
