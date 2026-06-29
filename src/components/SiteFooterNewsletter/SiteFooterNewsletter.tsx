@@ -1,4 +1,4 @@
-import { getCachedGlobal } from '@/utilities/getGlobals'
+import { getGlobalForRequest } from '@/utilities/getGlobals'
 import {
   AboutFooterNewsletter,
 } from '@/components/AboutFooterNewsletter'
@@ -123,7 +123,7 @@ function mapSiteSettings(settings: SiteSetting): HomeFooterNewsletterData {
  * calls used on every page.
  */
 export async function SiteFooterNewsletter({ variant }: { variant: SiteFooterVariant }) {
-  const settings = await getCachedGlobal('siteSettings', 1)()
+  const settings = await getGlobalForRequest('siteSettings', 1)
   const data = settings ? mapSiteSettings(settings as SiteSetting) : homeFooterNewsletterDefaults
 
   switch (variant) {

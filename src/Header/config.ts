@@ -1,12 +1,20 @@
 import type { GlobalConfig } from 'payload'
 
 import { link } from '@/fields/link'
+import { generateGlobalPreviewPath } from '@/utilities/generatePreviewPath'
 import { revalidateHeader } from './hooks/revalidateHeader'
 
 export const Header: GlobalConfig = {
   slug: 'header',
+  label: 'Nagłówek',
   access: {
     read: () => true,
+  },
+  admin: {
+    description:
+      'Linki nawigacji i przycisk CTA w navbarze. Podgląd na żywo otwiera stronę główną, gdzie nagłówek jest widoczny na każdej podstronie.',
+    livePreview: { url: () => generateGlobalPreviewPath('/') },
+    preview: () => generateGlobalPreviewPath('/'),
   },
   fields: [
     {
@@ -56,4 +64,5 @@ export const Header: GlobalConfig = {
   hooks: {
     afterChange: [revalidateHeader],
   },
+  versions: { drafts: { autosave: { interval: 100 }, schedulePublish: true } },
 }

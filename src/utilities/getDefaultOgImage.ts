@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { BRAND_ASSETS } from '@/constants/brandAssets'
-import { getCachedGlobal } from '@/utilities/getGlobals'
+import { getGlobalForRequest } from '@/utilities/getGlobals'
 import { getServerSideURL } from '@/utilities/getURL'
 import type { Media } from '@/payload-types'
 
@@ -50,7 +50,7 @@ function mediaToOgImage(
  */
 export async function getDefaultOgImage(): Promise<NonNullable<Metadata['openGraph']>['images']> {
   try {
-    const settings = await getCachedGlobal('siteSettings', 1)()
+    const settings = await getGlobalForRequest('siteSettings', 1)
     const image = settings.defaultOgImage
 
     if (image && typeof image === 'object' && 'url' in image && image.url) {

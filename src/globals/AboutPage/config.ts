@@ -1,5 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
+import { generateGlobalPreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateAboutPage } from './hooks/revalidateAboutPage'
 
 export const AboutPage: GlobalConfig = {
@@ -9,8 +10,8 @@ export const AboutPage: GlobalConfig = {
   admin: {
     description:
       'Treść podstrony /o-mnie. Układ, ozdobniki botaniczne i piksele layoutu są zaszyte w kodzie — tu edytujesz tylko teksty i zdjęcia.',
-    livePreview: { url: ({ req }) => `${req.payload.config.serverURL}/o-mnie` },
-    preview: (_, { req }) => `${req.payload.config.serverURL}/o-mnie`,
+    livePreview: { url: () => generateGlobalPreviewPath('/o-mnie') },
+    preview: () => generateGlobalPreviewPath('/o-mnie'),
   },
   versions: { drafts: { autosave: { interval: 100 }, schedulePublish: true } },
   fields: [

@@ -1,5 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
+import { generateGlobalPreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateContactPage } from './hooks/revalidateContactPage'
 
 export const ContactPage: GlobalConfig = {
@@ -9,8 +10,8 @@ export const ContactPage: GlobalConfig = {
   admin: {
     description:
       'Treść podstrony /kontakt. Formularz, botanika i layout są zaszyte w kodzie — tu edytujesz tylko teksty.',
-    livePreview: { url: ({ req }) => `${req.payload.config.serverURL}/kontakt` },
-    preview: (_, { req }) => `${req.payload.config.serverURL}/kontakt`,
+    livePreview: { url: () => generateGlobalPreviewPath('/kontakt') },
+    preview: () => generateGlobalPreviewPath('/kontakt'),
   },
   versions: { drafts: { autosave: { interval: 100 }, schedulePublish: true } },
   fields: [

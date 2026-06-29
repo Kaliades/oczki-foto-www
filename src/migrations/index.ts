@@ -6,6 +6,7 @@ import * as migration_20260625_081408_home_blocks_site_settings from './20260625
 import * as migration_20260625_085425_footer_links_disable_label from './20260625_085425_footer_links_disable_label';
 import * as migration_20260625_093536_header_nav_cta from './20260625_093536_header_nav_cta';
 import * as migration_20260629_135257_gallery_page_portfolio_category from './20260629_135257_gallery_page_portfolio_category';
+import * as migration_20260629_145700_header_site_settings_drafts from './20260629_145700_header_site_settings_drafts';
 
 export const migrations = [
   {
@@ -46,6 +47,11 @@ export const migrations = [
   {
     up: migration_20260629_135257_gallery_page_portfolio_category.up,
     down: migration_20260629_135257_gallery_page_portfolio_category.down,
-    name: '20260629_135257_gallery_page_portfolio_category'
+    name: '20260629_135257_gallery_page_portfolio_category',
+  },
+  {
+    up: migration_20260629_145700_header_site_settings_drafts.up,
+    down: migration_20260629_145700_header_site_settings_drafts.down,
+    name: '20260629_145700_header_site_settings_drafts',
   },
 ];

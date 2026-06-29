@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { link } from '@/fields/link'
+import { generateGlobalPreviewPath } from '@/utilities/generatePreviewPath'
 import { revalidateSiteSettings } from './hooks/revalidateSiteSettings'
 
 export const SiteSettings: GlobalConfig = {
@@ -12,6 +13,8 @@ export const SiteSettings: GlobalConfig = {
   admin: {
     description:
       'Centralne dane brandowe: kontakt, lokalizacje, social media oraz domyślny CTA. Używane w stopce i jako fallback w blokach contentowych.',
+    livePreview: { url: () => generateGlobalPreviewPath('/') },
+    preview: () => generateGlobalPreviewPath('/'),
   },
   fields: [
     {
@@ -306,4 +309,5 @@ export const SiteSettings: GlobalConfig = {
   hooks: {
     afterChange: [revalidateSiteSettings],
   },
+  versions: { drafts: { autosave: { interval: 100 }, schedulePublish: true } },
 }

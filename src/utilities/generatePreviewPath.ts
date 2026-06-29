@@ -21,13 +21,26 @@ export const generatePreviewPath = ({ collection, slug }: Props) => {
 
   // Encode to support slugs with special characters
   const encodedSlug = encodeURIComponent(slug)
+  const prefix = collectionPrefixMap[collection] ?? ''
+  const path = encodedSlug ? `${prefix}/${encodedSlug}` : prefix || '/'
 
+  return buildPreviewRouteUrl(path)
+}
+
+/** Preview route for globals and other fixed frontend paths (e.g. /o-mnie). */
+export const generateGlobalPreviewPath = (path: string) => {
+  if (!path.startsWith('/')) {
+    return null
+  }
+
+  return buildPreviewRouteUrl(path)
+}
+
+function buildPreviewRouteUrl(path: string) {
   const encodedParams = new URLSearchParams({
-    path: `${collectionPrefixMap[collection]}/${encodedSlug}`,
+    path,
     previewSecret: process.env.PREVIEW_SECRET || '',
   } satisfies PreviewSearchParams)
 
-  const url = `/next/preview?${encodedParams.toString()}`
-
-  return url
+  return `/next/preview?${encodedParams.toString()}`
 }

@@ -1,5 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
+import { generateGlobalPreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidatePrivacyPolicyPage } from './hooks/revalidatePrivacyPolicyPage'
 
 export const PrivacyPolicyPage: GlobalConfig = {
@@ -9,8 +10,8 @@ export const PrivacyPolicyPage: GlobalConfig = {
   admin: {
     description:
       'Treść podstrony /polityka-prywatnosci. Układ i ozdobniki są zaszyte w kodzie — tu edytujesz przepisy prawne.',
-    livePreview: { url: ({ req }) => `${req.payload.config.serverURL}/polityka-prywatnosci` },
-    preview: (_, { req }) => `${req.payload.config.serverURL}/polityka-prywatnosci`,
+    livePreview: { url: () => generateGlobalPreviewPath('/polityka-prywatnosci') },
+    preview: () => generateGlobalPreviewPath('/polityka-prywatnosci'),
   },
   versions: { drafts: { autosave: { interval: 100 }, schedulePublish: true } },
   fields: [

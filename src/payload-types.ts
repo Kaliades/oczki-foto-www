@@ -3208,6 +3208,8 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
+ * Linki nawigacji i przycisk CTA w navbarze. Podgląd na żywo otwiera stronę główną, gdzie nagłówek jest widoczny na każdej podstronie.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header".
  */
@@ -3245,6 +3247,7 @@ export interface Header {
    * Adres URL do którego prowadzi przycisk CTA (np. /kontakt)
    */
   ctaUrl?: string | null;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3403,6 +3406,7 @@ export interface SiteSetting {
         id?: string | null;
       }[]
     | null;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3709,6 +3713,7 @@ export interface HeaderSelect<T extends boolean = true> {
       };
   ctaLabel?: T;
   ctaUrl?: T;
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -3820,6 +3825,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         alt?: T;
         id?: T;
       };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -4173,7 +4179,7 @@ export interface TaskSchedulePublish {
           relationTo: 'galleries';
           value: number | Gallery;
         } | null);
-    global?: ('aboutPage' | 'contactPage' | 'privacyPolicyPage' | 'galleryPage') | null;
+    global?: ('header' | 'siteSettings' | 'aboutPage' | 'contactPage' | 'privacyPolicyPage' | 'galleryPage') | null;
     user?: (number | null) | User;
   };
   output?: unknown;

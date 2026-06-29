@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { GALLERY_SESSION_FILTERS } from '@/components/GalleryHero/constants'
+import { generateGlobalPreviewPath } from '../../utilities/generatePreviewPath'
 
 import { revalidateGalleryPage } from './hooks/revalidateGalleryPage'
 
@@ -16,8 +17,8 @@ export const GalleryPage: GlobalConfig = {
   admin: {
     description:
       'Treść strony /galeria: nagłówek hero, filtry typów sesji i ustawienia siatki portfolio.',
-    livePreview: { url: ({ req }) => `${req.payload.config.serverURL}/galeria` },
-    preview: (_, { req }) => `${req.payload.config.serverURL}/galeria`,
+    livePreview: { url: () => generateGlobalPreviewPath('/galeria') },
+    preview: () => generateGlobalPreviewPath('/galeria'),
   },
   versions: { drafts: { autosave: { interval: 100 }, schedulePublish: true } },
   fields: [
