@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 
 import { ABOUT_HERO_FIGMA_NODES, type AboutHeroLayoutVariant } from './constants'
 

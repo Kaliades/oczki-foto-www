@@ -3,9 +3,9 @@
 import type { StaticImageData } from 'next/image'
 
 import { cn } from '@/utilities/ui'
-import NextImage from 'next/image'
 import React from 'react'
 
+import { OczkiImage } from '@/components/OczkiImage/OczkiImage'
 import type { Props as MediaProps } from '../types'
 
 import { cssVariables } from '@/cssVariables'
@@ -28,7 +28,7 @@ const placeholderBlur =
  * Flow:
  *   1. Resource URL from Payload: `/media/image-123.jpg`
  *   2. getMediaUrl() adds base URL: `https://yourdomain.com/media/image-123.jpg`
- *   3. Next.js Image optimizes via remotePatterns: `/_next/image?url=...&w=1200&q=75`
+ *   3. Next.js Image optimizes via remotePatterns: `/_next/image?url=...&w=1200&q=100`
  *
  * If your storage/plugin returns **external CDN URLs** (e.g. `https://cdn.example.com/...`),
  * choose ONE of the following:
@@ -86,7 +86,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
 
   return (
     <picture className={cn(pictureClassName)}>
-      <NextImage
+      <OczkiImage
         alt={alt || ''}
         className={cn(imgClassName)}
         fill={fill}
@@ -94,7 +94,6 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         placeholder="blur"
         blurDataURL={placeholderBlur}
         priority={priority}
-        quality={100}
         loading={loading}
         sizes={sizes}
         src={src}

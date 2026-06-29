@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 
 import { HOME_OFFER_FIGMA_NODES, type HomeOfferData } from './constants'
 import { OfferCardsRail } from './OfferCardsRail'

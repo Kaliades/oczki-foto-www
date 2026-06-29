@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import Image from 'next/image'
+import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 import React from 'react'
 
 interface Props {

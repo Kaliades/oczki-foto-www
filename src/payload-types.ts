@@ -120,6 +120,7 @@ export interface Config {
     aboutPage: AboutPage;
     contactPage: ContactPage;
     privacyPolicyPage: PrivacyPolicyPage;
+    galleryPage: GalleryPage;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
@@ -128,6 +129,7 @@ export interface Config {
     aboutPage: AboutPageSelect<false> | AboutPageSelect<true>;
     contactPage: ContactPageSelect<false> | ContactPageSelect<true>;
     privacyPolicyPage: PrivacyPolicyPageSelect<false> | PrivacyPolicyPageSelect<true>;
+    galleryPage: GalleryPageSelect<false> | GalleryPageSelect<true>;
   };
   locale: 'pl';
   widgets: {
@@ -1640,6 +1642,11 @@ export interface Gallery {
   };
   publishedAt?: string | null;
   /**
+   * Filtr typu sesji na stronie /galeria.
+   */
+  portfolioCategory: 'kobieca' | 'wizerunkowa' | 'slubny' | 'narzezenska' | 'rodzinna';
+  showOnPortfolio?: boolean | null;
+  /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
   generateSlug?: boolean | null;
@@ -2780,6 +2787,8 @@ export interface GalleriesSelect<T extends boolean = true> {
         description?: T;
       };
   publishedAt?: T;
+  portfolioCategory?: T;
+  showOnPortfolio?: T;
   generateSlug?: T;
   slug?: T;
   updatedAt?: T;
@@ -3276,6 +3285,14 @@ export interface Footer {
  */
 export interface SiteSetting {
   id: number;
+  /**
+   * Wyświetlany przy udostępnianiu linku w social mediach (Facebook, LinkedIn, Messenger). Zalecany format ok. 1200×630 px.
+   */
+  defaultOgImage?: (number | null) | Media;
+  /**
+   * Krótki opis obrazu dla czytników ekranu i platform social — np. nazwa marki + hasło.
+   */
+  defaultOgImageAlt?: string | null;
   email?: string | null;
   phone?: string | null;
   /**
@@ -3632,6 +3649,45 @@ export interface PrivacyPolicyPage {
   createdAt?: string | null;
 }
 /**
+ * Treść strony /galeria: nagłówek hero, filtry typów sesji i ustawienia siatki portfolio.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "galleryPage".
+ */
+export interface GalleryPage {
+  id: number;
+  heroContent?: {
+    title?: {
+      lead?: string | null;
+      emphasis?: string | null;
+      trail?: string | null;
+    };
+    description?: string | null;
+    /**
+     * Etykiety filtrów na stronie galerii. Id kategorii musi odpowiadać polu „Kategoria” w galeriach.
+     */
+    filters?:
+      | {
+          category: 'kobieca' | 'wizerunkowa' | 'slubny' | 'narzezenska' | 'rodzinna';
+          label: string;
+          id?: string | null;
+        }[]
+      | null;
+    defaultFilter?: ('kobieca' | 'wizerunkowa' | 'slubny' | 'narzezenska' | 'rodzinna') | null;
+  };
+  portfolioSettings?: {
+    /**
+     * Ile kafelków pokazać przed kliknięciem „Zobacz więcej zdjęć”.
+     */
+    initialCount?: number | null;
+    loadMoreBatchSize?: number | null;
+    loadMoreLabel?: string | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -3685,6 +3741,8 @@ export interface FooterSelect<T extends boolean = true> {
  * via the `definition` "siteSettings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
+  defaultOgImage?: T;
+  defaultOgImageAlt?: T;
   email?: T;
   phone?: T;
   locationsLabel?: T;
@@ -4045,6 +4103,43 @@ export interface PrivacyPolicyPageSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "galleryPage_select".
+ */
+export interface GalleryPageSelect<T extends boolean = true> {
+  heroContent?:
+    | T
+    | {
+        title?:
+          | T
+          | {
+              lead?: T;
+              emphasis?: T;
+              trail?: T;
+            };
+        description?: T;
+        filters?:
+          | T
+          | {
+              category?: T;
+              label?: T;
+              id?: T;
+            };
+        defaultFilter?: T;
+      };
+  portfolioSettings?:
+    | T
+    | {
+        initialCount?: T;
+        loadMoreBatchSize?: T;
+        loadMoreLabel?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -4078,7 +4173,7 @@ export interface TaskSchedulePublish {
           relationTo: 'galleries';
           value: number | Gallery;
         } | null);
-    global?: ('aboutPage' | 'contactPage' | 'privacyPolicyPage') | null;
+    global?: ('aboutPage' | 'contactPage' | 'privacyPolicyPage' | 'galleryPage') | null;
     user?: (number | null) | User;
   };
   output?: unknown;

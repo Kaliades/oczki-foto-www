@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 
 import { GRAIN_DOT_CLUSTER_LAYOUT, GRAIN_DOT_CLUSTER_SRC, type GrainDotClusterVariant } from './constants'
 

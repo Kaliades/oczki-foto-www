@@ -104,6 +104,8 @@ async function run() {
       'Reportaż ślubny Justyny i Krzysia — gorący czerwiec, chłodne mury kościoła w Wieprzu i wesele pełne luzu.',
     coverImage: heroBg,
     slug: SLUG,
+    portfolioCategory: 'slubny' as const,
+    showOnPortfolio: true,
     _status: 'published' as const,
     publishedAt: new Date().toISOString(),
     photos: data.photoGallery.items.map((g, i) => ({

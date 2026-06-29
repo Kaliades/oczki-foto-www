@@ -1,7 +1,7 @@
 'use client'
 
 import { OCZKI_NAVBAR_NAV_GAP_CLASS } from './constants'
-import { OczkiNavbarLink, mapNavItemToLinkProps } from './OczkiNavbarLink'
+import { OczkiNavbarNavItem } from './OczkiNavbarNavItem'
 import type { NavItemProps } from './types'
 
 type OczkiNavbarNavProps = {
@@ -18,15 +18,11 @@ export function OczkiNavbarNav({ pathname, navItems }: OczkiNavbarNavProps) {
       data-name="Navbar link"
     >
       <ul className={`flex items-center ${OCZKI_NAVBAR_NAV_GAP_CLASS}`}>
-        {navItems.map((item) => {
-          const linkProps = mapNavItemToLinkProps(item, pathname)
-
-          return (
-            <li key={item.href}>
-              <OczkiNavbarLink {...linkProps} />
-            </li>
-          )
-        })}
+        {navItems.map((item) => (
+          <li key={item.href}>
+            <OczkiNavbarNavItem item={item} pathname={pathname} />
+          </li>
+        ))}
       </ul>
     </nav>
   )

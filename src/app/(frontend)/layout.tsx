@@ -13,6 +13,8 @@ import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { defaultTheme } from '@/providers/Theme/shared'
+import { BRAND_ASSETS } from '@/constants/brandAssets'
+import { getDefaultOgImage } from '@/utilities/getDefaultOgImage'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 
@@ -100,10 +102,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       lang="pl"
       suppressHydrationWarning
     >
-      <head>
-        <link href="/favicon.ico" rel="icon" sizes="32x32" />
-        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
-      </head>
       <body>
         <InitTheme />
         <Providers>
@@ -124,11 +122,41 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   )
 }
 
-export const metadata: Metadata = {
-  metadataBase: new URL(getServerSideURL()),
-  openGraph: mergeOpenGraph(),
-  twitter: {
-    card: 'summary_large_image',
-    site: '@oczkifotografia',
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  const ogImages = await getDefaultOgImage()
+  const ogImageUrls = (Array.isArray(ogImages) ? ogImages : ogImages ? [ogImages] : []).flatMap(
+    (image) => {
+      if (typeof image === 'string') return [image]
+      if (image instanceof URL) return [image.toString()]
+      return image.url ? [image.url.toString()] : []
+    },
+  )
+
+  return {
+    metadataBase: new URL(getServerSideURL()),
+    icons: {
+      icon: [
+        {
+          url: BRAND_ASSETS.faviconLight,
+          type: 'image/png',
+          media: '(prefers-color-scheme: light)',
+        },
+        {
+          url: BRAND_ASSETS.faviconDark,
+          type: 'image/png',
+          media: '(prefers-color-scheme: dark)',
+        },
+      ],
+      apple: {
+        url: BRAND_ASSETS.faviconApple,
+        type: 'image/png',
+      },
+    },
+    openGraph: mergeOpenGraph({ images: ogImages }),
+    twitter: {
+      card: 'summary_large_image',
+      site: '@oczkifotografia',
+      images: ogImageUrls,
+    },
+  }
 }

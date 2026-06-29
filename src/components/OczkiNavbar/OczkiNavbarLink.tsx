@@ -12,6 +12,9 @@ type OczkiNavbarLinkProps = {
   label: string
   showActiveIndicator?: boolean
   withDropdownIcon?: boolean
+  ariaHasPopup?: 'menu' | boolean
+  ariaExpanded?: boolean
+  ariaControls?: string
 }
 
 export function OczkiNavbarLink({
@@ -20,10 +23,16 @@ export function OczkiNavbarLink({
   label,
   showActiveIndicator = false,
   withDropdownIcon = false,
+  ariaHasPopup,
+  ariaExpanded,
+  ariaControls,
 }: OczkiNavbarLinkProps) {
   return (
     <Link
+      aria-controls={ariaControls}
       aria-current={isActive ? 'page' : undefined}
+      aria-expanded={ariaExpanded}
+      aria-haspopup={ariaHasPopup}
       className={`inline-flex h-11 items-center gap-1 transition-colors ${
         isActive
           ? 'oczki-body-m-medium text-[var(--oczki-primary-800)]'

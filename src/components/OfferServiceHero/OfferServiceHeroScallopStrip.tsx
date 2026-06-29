@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 
 import {
   OFFER_SERVICE_HERO_DESKTOP_LAYOUT,

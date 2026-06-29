@@ -11,6 +11,7 @@ import {
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { GALLERY_SESSION_FILTERS } from '@/components/GalleryHero/constants'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateGallery, revalidateGalleryDelete } from './hooks/revalidateGallery'
 
@@ -362,6 +363,27 @@ export const Galleries: CollectionConfig<'galleries'> = {
     {
       name: 'publishedAt',
       type: 'date',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'portfolioCategory',
+      type: 'select',
+      label: 'Kategoria na liście',
+      required: true,
+      defaultValue: 'kobieca',
+      options: GALLERY_SESSION_FILTERS.map((f) => ({ label: f.label, value: f.id })),
+      admin: {
+        position: 'sidebar',
+        description: 'Filtr typu sesji na stronie /galeria.',
+      },
+    },
+    {
+      name: 'showOnPortfolio',
+      type: 'checkbox',
+      label: 'Pokaż na liście /galeria',
+      defaultValue: true,
       admin: {
         position: 'sidebar',
       },

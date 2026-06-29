@@ -1,7 +1,7 @@
 'use client'
 
 import { OczkiNavbar, type OczkiNavbarVariant } from '@/components/OczkiNavbar'
-import type { NavCtaProps, NavItemProps } from '@/components/OczkiNavbar/types'
+import type { NavCtaProps, NavDropdownItem, NavItemProps } from '@/components/OczkiNavbar/types'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -35,9 +35,10 @@ function mapHeaderData(data: Header): { navItems: readonly NavItemProps[]; cta: 
 
 interface HeaderClientProps {
   data: Header
+  offerNavItems: readonly NavDropdownItem[]
 }
 
-export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
+export const HeaderClient: React.FC<HeaderClientProps> = ({ data, offerNavItems }) => {
   const [theme, setTheme] = useState<string | null>(null)
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const pathname = usePathname()
@@ -53,7 +54,15 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [headerTheme])
 
-  const { navItems, cta } = mapHeaderData(data)
+  const { navItems: rawNavItems, cta } = mapHeaderData(data)
 
-  return <OczkiNavbar cta={cta} navItems={navItems} theme={theme} variant={variant} />
+  return (
+    <OczkiNavbar
+      cta={cta}
+      navItems={rawNavItems}
+      offerNavItems={offerNavItems}
+      theme={theme}
+      variant={variant}
+    />
+  )
 }

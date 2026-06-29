@@ -48,33 +48,40 @@ export const Media: CollectionConfig = {
       {
         name: 'thumbnail',
         width: 300,
+        formatOptions: { format: 'webp', options: { quality: 100 } },
       },
       {
         name: 'square',
         width: 500,
         height: 500,
+        formatOptions: { format: 'webp', options: { quality: 100 } },
       },
       {
         name: 'small',
         width: 600,
+        formatOptions: { format: 'webp', options: { quality: 100 } },
       },
       {
         name: 'medium',
         width: 900,
+        formatOptions: { format: 'webp', options: { quality: 100 } },
       },
       {
         name: 'large',
         width: 1400,
+        formatOptions: { format: 'webp', options: { quality: 100 } },
       },
       {
         name: 'xlarge',
-        width: 1920,
+        width: 2560,
+        formatOptions: { format: 'webp', options: { quality: 100 } },
       },
       {
         name: 'og',
         width: 1200,
         height: 630,
         crop: 'center',
+        formatOptions: { format: 'webp', options: { quality: 100 } },
       },
     ],
   },

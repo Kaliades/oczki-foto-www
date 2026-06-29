@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 import Link from 'next/link'
 import type { ComponentPropsWithoutRef } from 'react'
 
@@ -14,6 +14,8 @@ type OczkiTextLinkProps = {
   iconDirection?: OczkiTextLinkIconDirection
   newTab?: boolean
   className?: string
+  /** Extra classes on the label + icon row (e.g. wider gap for load-more). */
+  labelRowClassName?: string
 } & Pick<ComponentPropsWithoutRef<'button'>, 'onClick' | 'type' | 'disabled'>
 
 /**
@@ -32,6 +34,7 @@ export function OczkiTextLink({
   iconDirection = 'end',
   newTab = false,
   className,
+  labelRowClassName,
   onClick,
   type = 'button',
   disabled,
@@ -39,7 +42,7 @@ export function OczkiTextLink({
   const content = (
     <span className="flex flex-col items-start">
       <span
-        className="flex items-start gap-1 pb-1"
+        className={`flex items-start gap-1 pb-1 ${labelRowClassName ?? ''}`}
         data-figma-node={OCZKI_TEXT_LINK_FIGMA_NODES.labelRow}
       >
         <span className="oczki-body-m whitespace-nowrap text-center text-[var(--oczki-primary-900)]">
@@ -47,7 +50,7 @@ export function OczkiTextLink({
         </span>
         <span
           className={`flex w-[14px] flex-col items-start pt-[5px] ${
-            iconDirection === 'down' ? '-rotate-90' : ''
+            iconDirection === 'down' ? 'rotate-90' : ''
           }`}
         >
           <Image

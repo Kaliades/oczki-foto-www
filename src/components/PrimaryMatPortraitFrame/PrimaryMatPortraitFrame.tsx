@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 
 import {
   PRIMARY_MAT_PORTRAIT_CROP_CLASS,

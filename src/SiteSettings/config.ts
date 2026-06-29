@@ -18,6 +18,30 @@ export const SiteSettings: GlobalConfig = {
       type: 'tabs',
       tabs: [
         {
+          label: 'SEO i social',
+          fields: [
+            {
+              name: 'defaultOgImage',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Domyślny obraz Open Graph',
+              admin: {
+                description:
+                  'Wyświetlany przy udostępnianiu linku w social mediach (Facebook, LinkedIn, Messenger). Zalecany format ok. 1200×630 px.',
+              },
+            },
+            {
+              name: 'defaultOgImageAlt',
+              type: 'text',
+              label: 'Opis alt obrazu OG',
+              admin: {
+                description:
+                  'Krótki opis obrazu dla czytników ekranu i platform social — np. nazwa marki + hasło.',
+              },
+            },
+          ],
+        },
+        {
           label: 'Kontakt',
           fields: [
             {

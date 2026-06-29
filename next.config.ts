@@ -25,8 +25,15 @@ const nextConfig: NextConfig = {
       {
         pathname: '/figma/**',
       },
+      {
+        pathname: '/brand/**',
+      },
+      {
+        pathname: '/media/**',
+      },
     ],
     qualities: [100],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1366, 1920, 2048, 2560, 3840],
     remotePatterns: [
       ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
         const url = new URL(item)

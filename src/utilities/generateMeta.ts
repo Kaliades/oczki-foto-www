@@ -2,19 +2,19 @@ import type { Metadata } from 'next'
 
 import type { Media, Page, Post, Config } from '../payload-types'
 
+import { getStaticDefaultOgImageUrl } from './getDefaultOgImage'
 import { mergeOpenGraph } from './mergeOpenGraph'
 import { getServerSideURL } from './getURL'
 
 /**
  * Resolves a Media field (object or id) to an absolute OG image URL, preferring
- * the generated 1200×630 `og` size. Falls back to the branding placeholder when
- * no image is present. Shared with route-level generateMetadata helpers.
+ * the generated 1200×630 `og` size. Falls back to the branded default when
+ * no image is present.
  */
 export const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
   const serverUrl = getServerSideURL()
 
-  // TODO: replace with a branded 1200×630 OG image once it's designed.
-  let url = serverUrl + '/website-template-OG.webp'
+  let url = getStaticDefaultOgImageUrl()
 
   if (image && typeof image === 'object' && 'url' in image) {
     const ogUrl = image.sizes?.og?.url

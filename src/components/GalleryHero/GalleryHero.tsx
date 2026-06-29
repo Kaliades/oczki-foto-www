@@ -9,6 +9,7 @@ import {
 
 type GalleryHeroProps = {
   data: GalleryHeroData
+  activeFilterId?: GallerySessionFilterId
   onFilterChange?: (id: GallerySessionFilterId) => void
 }
 
@@ -22,7 +23,7 @@ type GalleryHeroProps = {
  *         ├── GalleryHeroHeading
  *         └── GalleryHeroFilters
  */
-export function GalleryHero({ data, onFilterChange }: GalleryHeroProps) {
+export function GalleryHero({ data, activeFilterId, onFilterChange }: GalleryHeroProps) {
   const { title, description, filters, defaultFilterId } = data
 
   return (
@@ -41,6 +42,7 @@ export function GalleryHero({ data, onFilterChange }: GalleryHeroProps) {
             titleTrail={title.trail}
           />
           <GalleryHeroFilters
+            activeFilterId={activeFilterId}
             defaultFilterId={defaultFilterId}
             filters={filters}
             onFilterChange={onFilterChange}

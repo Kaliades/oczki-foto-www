@@ -5,6 +5,7 @@ import { GALLERY_PORTFOLIO_FIGMA_NODES, type GalleryPortfolioData } from './cons
 type GalleryPortfolioProps = {
   data: GalleryPortfolioData
   onLoadMore?: () => void
+  loadMoreDisabled?: boolean
 }
 
 /**
@@ -16,7 +17,7 @@ type GalleryPortfolioProps = {
  *         ├── GalleryPortfolioGrid
  *         └── GalleryPortfolioLoadMore
  */
-export function GalleryPortfolio({ data, onLoadMore }: GalleryPortfolioProps) {
+export function GalleryPortfolio({ data, onLoadMore, loadMoreDisabled = false }: GalleryPortfolioProps) {
   const { items, loadMoreLabel } = data
 
   return (
@@ -31,7 +32,11 @@ export function GalleryPortfolio({ data, onLoadMore }: GalleryPortfolioProps) {
           data-figma-node={GALLERY_PORTFOLIO_FIGMA_NODES.imageGallery.desktop}
         >
           <GalleryPortfolioGrid items={items} />
-          <GalleryPortfolioLoadMore label={loadMoreLabel} onLoadMore={onLoadMore} />
+          <GalleryPortfolioLoadMore
+            disabled={loadMoreDisabled}
+            label={loadMoreLabel}
+            onLoadMore={onLoadMore}
+          />
         </div>
       </div>
     </section>

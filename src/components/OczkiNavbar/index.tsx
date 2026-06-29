@@ -16,7 +16,8 @@ import { OczkiNavbarCta } from './OczkiNavbarCta'
 import { OczkiNavbarMenuButton } from './OczkiNavbarMenuButton'
 import { OczkiNavbarMobileMenu } from './OczkiNavbarMobileMenu'
 import { OczkiNavbarNav } from './OczkiNavbarNav'
-import type { NavCtaProps, NavItemProps } from './types'
+import type { NavCtaProps, NavDropdownItem, NavItemProps } from './types'
+import { enrichNavItemsWithOfferDropdown } from '@/utilities/enrichNavItemsWithOfferDropdown'
 
 export type OczkiNavbarVariant = 'overlay' | 'solid'
 
@@ -25,6 +26,8 @@ type OczkiNavbarProps = {
   variant?: OczkiNavbarVariant
   /** Nav items from CMS — falls back to `OCZKI_NAV_ITEMS` if not provided. */
   navItems?: readonly NavItemProps[]
+  /** Offer sub-links for the Oferta dropdown — from CMS `offerItems`. */
+  offerNavItems?: readonly NavDropdownItem[]
   /** CTA button data from CMS — falls back to `OCZKI_NAVBAR_CTA` if not provided. */
   cta?: NavCtaProps
 }
@@ -47,6 +50,7 @@ export function OczkiNavbar({
   theme = null,
   variant = 'solid',
   navItems: navItemsFromCms,
+  offerNavItems = [],
   cta: ctaFromCms,
 }: OczkiNavbarProps) {
   const pathname = usePathname()
@@ -56,8 +60,9 @@ export function OczkiNavbar({
   // `??` would keep an empty array (it only falls back on null/undefined), so
   // guard on length to ensure the nav never renders empty if the CMS global is
   // unpopulated.
-  const navItems: readonly NavItemProps[] =
+  const baseNavItems: readonly NavItemProps[] =
     navItemsFromCms && navItemsFromCms.length > 0 ? navItemsFromCms : OCZKI_NAV_ITEMS
+  const navItems = enrichNavItemsWithOfferDropdown(baseNavItems, offerNavItems)
   const cta: NavCtaProps = ctaFromCms ?? OCZKI_NAVBAR_CTA
 
   return (

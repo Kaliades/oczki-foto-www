@@ -5,6 +5,7 @@ import * as migration_20260625_063924_page_globals_about_contact_privacy from '.
 import * as migration_20260625_081408_home_blocks_site_settings from './20260625_081408_home_blocks_site_settings';
 import * as migration_20260625_085425_footer_links_disable_label from './20260625_085425_footer_links_disable_label';
 import * as migration_20260625_093536_header_nav_cta from './20260625_093536_header_nav_cta';
+import * as migration_20260629_135257_gallery_page_portfolio_category from './20260629_135257_gallery_page_portfolio_category';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20260625_093536_header_nav_cta.up,
     down: migration_20260625_093536_header_nav_cta.down,
-    name: '20260625_093536_header_nav_cta'
+    name: '20260625_093536_header_nav_cta',
+  },
+  {
+    up: migration_20260629_135257_gallery_page_portfolio_category.up,
+    down: migration_20260629_135257_gallery_page_portfolio_category.down,
+    name: '20260629_135257_gallery_page_portfolio_category'
   },
 ];

@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 
 import { PackagePanel, type PackagePanelData } from '@/components/PackagePanel'
 import { cn } from '@/utilities/ui'

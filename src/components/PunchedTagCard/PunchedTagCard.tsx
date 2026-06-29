@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 import type { CSSProperties, ReactNode } from 'react'
 
 import { cn } from '@/utilities/ui'

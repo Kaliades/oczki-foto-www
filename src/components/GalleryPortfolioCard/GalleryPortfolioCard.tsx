@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 import Link from 'next/link'
 import { useState } from 'react'
 

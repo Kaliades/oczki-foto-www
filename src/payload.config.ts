@@ -16,6 +16,7 @@ import { Header } from './Header/config'
 import { SiteSettings } from './SiteSettings/config'
 import { AboutPage } from './globals/AboutPage/config'
 import { ContactPage } from './globals/ContactPage/config'
+import { GalleryPage } from './globals/GalleryPage/config'
 import { PrivacyPolicyPage } from './globals/PrivacyPolicyPage/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
@@ -81,7 +82,7 @@ export default buildConfig({
     defaultLocale: 'pl',
     fallback: true,
   },
-  globals: [Header, Footer, SiteSettings, AboutPage, ContactPage, PrivacyPolicyPage],
+  globals: [Header, Footer, SiteSettings, AboutPage, ContactPage, PrivacyPolicyPage, GalleryPage],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

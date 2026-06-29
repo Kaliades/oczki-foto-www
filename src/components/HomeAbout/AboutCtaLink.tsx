@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 import Link from 'next/link'
 
 import { resolveLinkHref, type SectionLink } from '@/utilities/resolveLinkHref'

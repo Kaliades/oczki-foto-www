@@ -106,6 +106,8 @@ export function OczkiNavbarMobileMenu({
             {navItems.map((item) => {
               const isActive =
                 pathname === item.href || pathname.startsWith(`${item.href}/`)
+              const hasDropdown =
+                item.withDropdownIcon && item.dropdownItems && item.dropdownItems.length > 0
 
               return (
                 <li key={item.href}>
@@ -121,6 +123,31 @@ export function OczkiNavbarMobileMenu({
                   >
                     {item.label}
                   </Link>
+                  {hasDropdown && item.dropdownItems ? (
+                    <ul className="border-b border-[var(--oczki-primary-300)] pb-2 pl-4">
+                      {item.dropdownItems.map((subItem) => {
+                        const isSubActive =
+                          pathname === subItem.href || pathname.startsWith(`${subItem.href}/`)
+
+                        return (
+                          <li key={subItem.href}>
+                            <Link
+                              aria-current={isSubActive ? 'page' : undefined}
+                              className={`flex min-h-11 items-center oczki-body-m transition-colors ${
+                                isSubActive
+                                  ? 'text-[var(--oczki-primary-800)] oczki-body-m-medium'
+                                  : 'text-[var(--oczki-primary-700)] hover:text-[var(--oczki-primary-800)]'
+                              }`}
+                              href={subItem.href}
+                              onClick={onClose}
+                            >
+                              {subItem.label}
+                            </Link>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  ) : null}
                 </li>
               )
             })}

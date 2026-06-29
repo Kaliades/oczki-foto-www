@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { OczkiPill } from '@/components/OczkiPill'
 
@@ -9,6 +9,7 @@ import { GALLERY_HERO_FIGMA_NODES, type GallerySessionFilter, type GallerySessio
 type GalleryHeroFiltersProps = {
   filters: readonly GallerySessionFilter[]
   defaultFilterId: GallerySessionFilterId
+  activeFilterId?: GallerySessionFilterId
   onFilterChange?: (id: GallerySessionFilterId) => void
 }
 
@@ -21,9 +22,18 @@ type GalleryHeroFiltersProps = {
 export function GalleryHeroFilters({
   filters,
   defaultFilterId,
+  activeFilterId: activeFilterIdFromParent,
   onFilterChange,
 }: GalleryHeroFiltersProps) {
-  const [activeId, setActiveId] = useState<GallerySessionFilterId>(defaultFilterId)
+  const [internalActiveId, setInternalActiveId] =
+    useState<GallerySessionFilterId>(defaultFilterId)
+
+  const isControlled = activeFilterIdFromParent !== undefined
+  const activeId = isControlled ? activeFilterIdFromParent : internalActiveId
+
+  useEffect(() => {
+    if (!isControlled) setInternalActiveId(defaultFilterId)
+  }, [defaultFilterId, isControlled])
 
   return (
     <nav
@@ -41,7 +51,7 @@ export function GalleryHeroFilters({
             key={filter.id}
             label={filter.label}
             onClick={() => {
-              setActiveId(filter.id)
+              if (!isControlled) setInternalActiveId(filter.id)
               onFilterChange?.(filter.id)
             }}
           />

@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 
 import {
   ORNATE_CTA_DESKTOP_DECOR_LEFT_IN_FRAME,

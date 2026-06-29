@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 
 import { ROTATED_BOTANICAL_ORNAMENT } from './constants'
 
