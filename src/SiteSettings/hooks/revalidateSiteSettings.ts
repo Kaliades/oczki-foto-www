@@ -1,6 +1,6 @@
 import type { GlobalAfterChangeHook } from 'payload'
 
-import { revalidateTag } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 
 import type { SiteSetting } from '@/payload-types'
 
@@ -18,6 +18,16 @@ export const revalidateSiteSettings: GlobalAfterChangeHook = ({
   if (!context.disableRevalidate && _status === 'published') {
     payload.logger.info('Revalidating site settings')
     revalidateTag('global_siteSettings', 'max')
+    for (const path of [
+      '/',
+      '/galeria',
+      '/o-mnie',
+      '/kontakt',
+      '/polityka-prywatnosci',
+      '/oferta',
+    ]) {
+      revalidatePath(path)
+    }
   }
 
   return doc

@@ -8,6 +8,8 @@ type NewsletterPhotoProps = {
 
 /** Lifestyle photo column — Figma `7091:3621`, 660×660 on desktop. */
 export function NewsletterPhoto({ alt, sizes, src }: NewsletterPhotoProps) {
+  if (!src.trim()) return null
+
   return (
     <div className="relative aspect-square w-full shrink-0 overflow-hidden">
       <Image alt={alt} className="object-cover" fill priority={false} sizes={sizes} src={src} />

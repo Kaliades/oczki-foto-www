@@ -21,8 +21,6 @@ import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 
 import { GALLERY_PAGE_BREADCRUMBS } from './constants'
 
-export const revalidate = 60
-
 const GALLERY_META_DESCRIPTION =
   'Portfolio ślubne i kobiece z Krakowa i okolic — naturalne kadry, autentyczne emocje. Przeglądaj reportaże ślubne, sesje kobiece i wizerunkowe.'
 

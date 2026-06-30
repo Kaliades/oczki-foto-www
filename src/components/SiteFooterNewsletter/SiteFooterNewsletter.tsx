@@ -100,7 +100,7 @@ function mapSiteSettings(settings: SiteSetting): HomeFooterNewsletterData {
       intro: nl?.intro ?? d.newsletter.intro,
       submitLabel: nl?.submitLabel ?? d.newsletter.submitLabel,
       privacyLink: mapLink(nl?.privacyLink, d.newsletter.privacyLink),
-      photoSrc: resolvePopulatedMediaUrl(nl?.photo) ?? '',
+      photoSrc: resolvePopulatedMediaUrl(nl?.photo) ?? d.newsletter.photoSrc,
       photoAlt: nl?.photoAlt ?? d.newsletter.photoAlt,
     },
     footer: {
