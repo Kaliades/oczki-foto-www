@@ -10,6 +10,10 @@ type TiltedPhotoFrameProps = {
   imageSrc: string
   imageAlt: string
   className?: string
+  /** Override shell position — e.g. envelope-relative coords inside `EaseEnvelope`. */
+  shellOffset?: { left: number; top: number }
+  /** Override shell rotation — envelope-local degrees when parent group already rotates. */
+  shellRotateDeg?: number
 }
 
 /**
@@ -20,8 +24,11 @@ export function TiltedPhotoFrame({
   imageSrc,
   imageAlt,
   className,
+  shellOffset,
+  shellRotateDeg,
 }: TiltedPhotoFrameProps) {
   const layout = TILTED_PHOTO_FRAME_LAYOUT[variant]
+  const rotateDeg = shellRotateDeg ?? layout.rotateDeg
 
   return (
     <div
@@ -29,14 +36,14 @@ export function TiltedPhotoFrame({
       data-figma-node={layout.figmaNode}
       style={{
         height: layout.shellHeight,
-        left: layout.left,
-        top: layout.top,
+        left: shellOffset?.left ?? layout.left,
+        top: shellOffset?.top ?? layout.top,
         width: layout.shellWidth,
       }}
     >
       <div
         className="flex-none"
-        style={{ transform: `rotate(${layout.rotateDeg}deg)` }}
+        style={{ transform: `rotate(${rotateDeg}deg)` }}
       >
         <div
           className="flex flex-col items-start bg-[var(--oczki-primary-200)] shadow-[1px_4px_2.9px_rgba(53,39,25,0.2),6px_11px_6.65px_rgba(53,39,25,0.12)]"

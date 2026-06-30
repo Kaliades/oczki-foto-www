@@ -88,6 +88,7 @@ export function mapGalleryPage(doc: GalleryPage | null | undefined): GalleryPage
         src: easePhotoSrc ?? '',
         alt: pick(doc?.easeSection?.photoAlt, easeDefaults.tiltedPhoto.alt),
       },
+      handwrittenQuote: easeDefaults.handwrittenQuote,
     },
     faq: {
       heading: {

@@ -1,3 +1,5 @@
+import { SCALLOPED_HANDWRITTEN_BADGE_DEFAULT_QUOTE } from '@/components/ScallopedHandwrittenBadge'
+
 export const HOME_EASE_FIGMA_NODES = {
   desktopFrame: '6912:13184',
   tabletFrame: '7104:18140',
@@ -14,6 +16,8 @@ export type HomeEaseData = {
     src: string
     alt: string
   }
+  /** Decorative handwritten quote on the scalloped badge — Figma `6952:19961`. */
+  handwrittenQuote: string
 }
 
 // TODO(galeria/ease): Replace defaults with Payload gallery page block once CMS schema ships.
@@ -28,4 +32,5 @@ export const homeEaseDefaults: HomeEaseData = {
     src: '/figma/ease-tilted-photo.png',
     alt: 'Para młoda podczas ceremonii — czarno-biały kadr w ramce',
   },
+  handwrittenQuote: SCALLOPED_HANDWRITTEN_BADGE_DEFAULT_QUOTE,
 }
