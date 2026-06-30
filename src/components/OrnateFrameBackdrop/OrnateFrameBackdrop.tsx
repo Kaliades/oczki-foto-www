@@ -5,6 +5,7 @@ import {
   type OrnateFrameSet,
   type OrnateFrameVariant,
 } from './constants'
+import { OrnateFrameBackdropMobile } from './OrnateFrameBackdropMobile'
 
 type OrnateFrameBackdropProps = {
   frameSet?: OrnateFrameSet
@@ -67,11 +68,7 @@ export function OrnateFrameBackdrop({
   )
 }
 
-/**
- * Responsive wrapper — tablet/desktop only.
- *
- * TODO(galeria/cta): Re-enable mobile frame when Figma 7104:19441 is finalised.
- */
+/** Responsive wrapper — all three breakpoints. */
 export function OrnateFrameBackdropResponsive({
   frameSet = GALLERY_CTA_FRAME_SET,
 }: {
@@ -79,11 +76,14 @@ export function OrnateFrameBackdropResponsive({
 }) {
   return (
     <>
-      <div className="hidden lg:block">
-        <OrnateFrameBackdrop frameSet={frameSet} variant="desktop" />
+      <div className="md:hidden">
+        <OrnateFrameBackdropMobile />
       </div>
       <div className="hidden md:block lg:hidden">
         <OrnateFrameBackdrop frameSet={frameSet} variant="tablet" />
+      </div>
+      <div className="hidden lg:block">
+        <OrnateFrameBackdrop frameSet={frameSet} variant="desktop" />
       </div>
     </>
   )

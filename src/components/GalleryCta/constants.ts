@@ -29,7 +29,6 @@ export type GalleryCtaData = {
 }
 
 // TODO(galeria/cta): Replace defaults with Payload gallery page block once CMS schema ships.
-// TODO(galeria/cta): Wire mobile OrnateFrameBackdrop when Figma 7104:19441 is finalised.
 export const galleryCtaDefaults: GalleryCtaData = {
   heading: {
     start: 'Twoja autentyczność to ',
