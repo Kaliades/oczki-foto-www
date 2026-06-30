@@ -2,10 +2,13 @@ import type { Payload } from 'payload'
 
 import { GALLERY_SESSION_FILTERS } from '@/components/GalleryHero/constants'
 
+import {
+  buildPortfolioCaseStudyImageFields,
+  CASE_STUDY_SLUG,
+  loadCaseStudySeedMedia,
+} from './lib/gallerySeedShared'
 import { createUploadMedia } from './lib/uploadMedia'
 import { runSeedCli } from './lib/seedCli'
-
-const CASE_STUDY_SLUG = 'slub-justyny-i-krzysia'
 
 const ENTRIES_PER_CATEGORY = 16
 
@@ -19,6 +22,8 @@ const CATEGORY_LABEL = Object.fromEntries(
 ) as Record<(typeof GALLERY_SESSION_FILTERS)[number]['id'], string>
 
 export async function seedPortfolioGalleries(payload: Payload): Promise<void> {
+  const sharedMedia = await loadCaseStudySeedMedia(payload)
+  const caseStudyImages = buildPortfolioCaseStudyImageFields(sharedMedia)
   const uploadImage = createUploadMedia(payload, { prefix: 'portfolio' })
 
   const existing = await payload.find({
@@ -43,7 +48,6 @@ export async function seedPortfolioGalleries(payload: Payload): Promise<void> {
 
   for (const category of GALLERY_SESSION_FILTERS) {
     const label = CATEGORY_LABEL[category.id]
-    // Full case study already appears under „Reportaż ślubny” — one fewer placeholder there.
     const count =
       category.id === 'slubny' ? ENTRIES_PER_CATEGORY - 1 : ENTRIES_PER_CATEGORY
 
@@ -65,7 +69,7 @@ export async function seedPortfolioGalleries(payload: Payload): Promise<void> {
           showOnPortfolio: true,
           _status: 'published' as const,
           publishedAt: new Date().toISOString(),
-          photos: [{ image: coverId, caption: cover.alt }],
+          ...caseStudyImages,
         },
         context: { disableRevalidate: true },
       })

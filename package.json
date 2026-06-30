@@ -17,6 +17,8 @@
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "seed:all": "cross-env NODE_ENV=production tsx scripts/seedAll.ts",
     "seed:production": "cross-env NODE_ENV=production SEED_TARGET=production tsx scripts/seedAll.ts",
+    "seed:portfolio": "cross-env NODE_ENV=production tsx scripts/seedPortfolioGalleries.ts",
+    "seed:portfolio:production": "cross-env NODE_ENV=production SEED_TARGET=production tsx scripts/seedPortfolioGalleries.ts",
     "db:reset:local": "tsx scripts/resetLocalDb.ts",
     "reinstall": "cross-env NODE_OPTIONS=--no-deprecation rm -rf node_modules && rm pnpm-lock.yaml && pnpm --ignore-workspace install",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
