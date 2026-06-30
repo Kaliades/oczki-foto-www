@@ -38,7 +38,7 @@ function EnvelopeSvgLayer({
 
 /**
  * Pink envelope stack — Figma `6952:19916`.
- * Layer order: back (`1140`) → tilted photo → flaps.
+ * Layer order: envelope back → tilted photo → flaps.
  */
 export function EaseEnvelope({ variant, imageSrc, imageAlt }: EaseEnvelopeProps) {
   const layout = EASE_ENVELOPE_LAYOUT[variant]

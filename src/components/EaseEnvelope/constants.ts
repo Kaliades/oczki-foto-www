@@ -22,20 +22,21 @@ type EaseEnvelopeLayout = {
   photoRotateDeg: number
 }
 
-const KOPERTA_BACK = '/figma/koperta/Vector%201140.svg' as const
-const KOPERTA_FLAPS = '/figma/koperta/envelope-flaps.svg' as const
+const EASE_ENVELOPE_BACK_ASSET = '/figma/ease-cluster/envelope-back.svg' as const
+const EASE_ENVELOPE_FLAPS_ASSET = '/figma/ease-cluster/envelope-flaps.svg' as const
 
-/** `envelope-flaps.svg` artboard — flaps are anchored to `Vector 1140` bottom + side edges. */
-const KOPERTA_FLAPS_INTRINSIC_WIDTH = 535
-const KOPERTA_FLAPS_INTRINSIC_HEIGHT = 362
+/** `envelope-flaps.svg` artboard — flaps are anchored to `envelope-back` bottom + side edges. */
+const EASE_ENVELOPE_FLAPS_INTRINSIC_WIDTH = 535
+const EASE_ENVELOPE_FLAPS_INTRINSIC_HEIGHT = 362
 
 export function combinedFlapsAlignedToBack(back: EnvelopeAssetLayer): EnvelopeAssetLayer {
   const width = back.width
-  const scaledHeight = KOPERTA_FLAPS_INTRINSIC_HEIGHT * (width / KOPERTA_FLAPS_INTRINSIC_WIDTH)
+  const scaledHeight =
+    EASE_ENVELOPE_FLAPS_INTRINSIC_HEIGHT * (width / EASE_ENVELOPE_FLAPS_INTRINSIC_WIDTH)
   const height = Math.min(scaledHeight, back.height)
 
   return {
-    src: KOPERTA_FLAPS,
+    src: EASE_ENVELOPE_FLAPS_ASSET,
     left: back.left,
     top: back.top + back.height - height,
     width,
@@ -51,7 +52,7 @@ export const EASE_ENVELOPE_LAYOUT: Record<EaseEnvelopeVariant, EaseEnvelopeLayou
     height: 545,
     rotateDeg: 8.14,
     back: {
-      src: KOPERTA_BACK,
+      src: EASE_ENVELOPE_BACK_ASSET,
       left: 1.1,
       top: 0.1,
       width: 560,
@@ -66,7 +67,7 @@ export const EASE_ENVELOPE_LAYOUT: Record<EaseEnvelopeVariant, EaseEnvelopeLayou
     height: 436,
     rotateDeg: 8.14,
     back: {
-      src: KOPERTA_BACK,
+      src: EASE_ENVELOPE_BACK_ASSET,
       left: 0.9,
       top: 0.1,
       width: 448,
@@ -81,7 +82,7 @@ export const EASE_ENVELOPE_LAYOUT: Record<EaseEnvelopeVariant, EaseEnvelopeLayou
     height: 262,
     rotateDeg: 8.14,
     back: {
-      src: KOPERTA_BACK,
+      src: EASE_ENVELOPE_BACK_ASSET,
       left: 0.5,
       top: 0.1,
       width: 269,
