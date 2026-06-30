@@ -7,6 +7,7 @@ import {
   type HomeOfferItem,
 } from '@/components/HomeOfferShowcase/constants'
 import type { SectionLink } from '@/utilities/resolveLinkHref'
+import { resolvePopulatedMediaUrl } from '@/utilities/resolvePopulatedMediaUrl'
 
 function mapOfferItem(raw: OfferItem | string | number): HomeOfferItem | null {
   if (typeof raw !== 'object') return null
@@ -54,10 +55,6 @@ export const OfferShowcaseBlock: React.FC<OfferShowcaseBlockProps> = (props) => 
     .filter((item): item is HomeOfferItem => item !== null)
 
   const texture = props.backgroundTexture
-  const textureSrc =
-    texture && typeof texture === 'object' && 'url' in texture && texture.url
-      ? texture.url
-      : homeOfferDefaults.textureSrc
 
   const data: HomeOfferData = {
     heading: {
@@ -66,14 +63,15 @@ export const OfferShowcaseBlock: React.FC<OfferShowcaseBlockProps> = (props) => 
       end: props.heading?.end ?? homeOfferDefaults.heading.end,
     },
     subtitle: props.subtitle ?? homeOfferDefaults.subtitle,
-    items: items.length > 0 ? items : homeOfferDefaults.items,
+    items,
     inquiry: {
       title: props.inquiry?.title ?? homeOfferDefaults.inquiry.title,
       text: props.inquiry?.text ?? homeOfferDefaults.inquiry.text,
       cta: pickInquiryCta(props.inquiry?.cta, homeOfferDefaults.inquiry.cta),
     },
     showFooterNotch: props.showFooterNotch ?? homeOfferDefaults.showFooterNotch,
-    textureSrc,
+    textureSrc:
+      resolvePopulatedMediaUrl(texture) ?? homeOfferDefaults.textureSrc,
   }
 
   return <HomeOfferShowcase data={data} />

@@ -12,6 +12,7 @@ import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
+import { isLocalMediaStorage } from '@/utilities/isLocalMediaStorage'
 import { getServerSideURL } from '@/utilities/getURL'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
@@ -28,6 +29,10 @@ export const plugins: Plugin[] = [
   redirectsPlugin({
     collections: ['pages', 'posts'],
     overrides: {
+      admin: {
+        hidden: true,
+        group: 'System',
+      },
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
@@ -59,7 +64,17 @@ export const plugins: Plugin[] = [
     fields: {
       payment: false,
     },
+    formSubmissionOverrides: {
+      admin: {
+        hidden: true,
+        group: 'System',
+      },
+    },
     formOverrides: {
+      admin: {
+        hidden: true,
+        group: 'System',
+      },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
           if ('name' in field && field.name === 'confirmationMessage') {
@@ -85,13 +100,17 @@ export const plugins: Plugin[] = [
     collections: ['posts'],
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
+      admin: {
+        hidden: true,
+        group: 'System',
+      },
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields]
       },
     },
   }),
   vercelBlobStorage({
-    enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+    enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN) && !isLocalMediaStorage(),
     collections: {
       media: true,
     },

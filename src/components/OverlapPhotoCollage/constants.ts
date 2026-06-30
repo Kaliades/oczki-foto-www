@@ -3,10 +3,8 @@ export type OverlapPhotoCollageVariant = 'desktop' | 'tablet' | 'mobile'
 export const OVERLAP_PHOTO_COLLAGE_ASSETS = {
   /** Figma `6994:25775` — intrinsic 229×301. */
   botanical: '/figma/offer-inclusions-botanical.svg',
-  mainPhoto: '/figma/offer-inclusions-main-photo.png',
   scallopEarHorizontal: '/figma/offer-inclusions-scallop-ear-horizontal.svg',
   scallopEarVertical: '/figma/offer-inclusions-scallop-ear-vertical.svg',
-  scallopPhoto: '/figma/offer-inclusions-scallop-photo.png',
 } as const
 
 export const OVERLAP_PHOTO_COLLAGE_FIGMA_NODES = {

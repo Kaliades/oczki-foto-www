@@ -2,21 +2,16 @@ import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { Archive } from '../../blocks/ArchiveBlock/config'
-import { CallToAction } from '../../blocks/CallToAction/config'
-import { Content } from '../../blocks/Content/config'
-import { FormBlock } from '../../blocks/Form/config'
 import { HomeAbout } from '../../blocks/HomeAbout/config'
 import { HomeCta } from '../../blocks/HomeCta/config'
 import { HomeGallery } from '../../blocks/HomeGallery/config'
 import { HomeHero } from '../../blocks/HomeHero/config'
 import { HomeInstagram } from '../../blocks/HomeInstagram/config'
 import { IntroQuote } from '../../blocks/IntroQuote/config'
-import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { OfferShowcase } from '../../blocks/OfferShowcase/config'
 import { ProcessSteps } from '../../blocks/ProcessSteps/config'
 import { Testimonial } from '../../blocks/Testimonial/config'
-import { hero } from '@/heros/config'
+import { ADMIN_GROUP_PAGES } from '@/constants/adminGroups'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
@@ -32,6 +27,10 @@ import {
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
+  labels: {
+    singular: 'Strona główna',
+    plural: 'Strona główna',
+  },
   access: {
     create: authenticated,
     delete: authenticated,
@@ -46,6 +45,9 @@ export const Pages: CollectionConfig<'pages'> = {
     slug: true,
   },
   admin: {
+    group: ADMIN_GROUP_PAGES,
+    description:
+      'Edytuj wyłącznie wpis ze slugiem „home” — to strona startowa (/). Nie dodawaj nowych stron; pozostałe podstrony są w sekcji „Strony witryny” po lewej.',
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) =>
@@ -68,20 +70,18 @@ export const Pages: CollectionConfig<'pages'> = {
     {
       name: 'title',
       type: 'text',
+      label: 'Tytuł (w panelu)',
       required: true,
     },
     {
       type: 'tabs',
       tabs: [
         {
-          fields: [hero],
-          label: 'Hero',
-        },
-        {
           fields: [
             {
               name: 'layout',
               type: 'blocks',
+              label: 'Sekcje strony głównej',
               blocks: [
                 HomeHero,
                 IntroQuote,
@@ -92,19 +92,16 @@ export const Pages: CollectionConfig<'pages'> = {
                 HomeAbout,
                 HomeInstagram,
                 HomeCta,
-                CallToAction,
-                Content,
-                MediaBlock,
-                Archive,
-                FormBlock,
               ],
               required: true,
               admin: {
                 initCollapsed: true,
+                description:
+                  'Kolejność sekcji jest ustalona w projekcie. Edytuj treść i zdjęcia wewnątrz każdego bloku.',
               },
             },
           ],
-          label: 'Content',
+          label: 'Treść',
         },
         {
           name: 'meta',

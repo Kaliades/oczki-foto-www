@@ -4,11 +4,7 @@ import { HomeInstagram } from '@/components/HomeInstagram/HomeInstagram'
 import { homeInstagramDefaults, type HomeInstagramData } from '@/components/HomeInstagram/constants'
 import type { InstagramPost } from '@/components/InstagramSection/constants'
 import type { SectionLink } from '@/utilities/resolveLinkHref'
-
-function mediaUrl(image: unknown): string | null {
-  if (!image || typeof image !== 'object') return null
-  return 'url' in image ? ((image as { url?: string | null }).url ?? null) : null
-}
+import { resolvePopulatedMediaUrl } from '@/utilities/resolvePopulatedMediaUrl'
 
 export const HomeInstagramBlock: React.FC<HomeInstagramBlockProps> = (props) => {
   const d = homeInstagramDefaults
@@ -24,7 +20,7 @@ export const HomeInstagramBlock: React.FC<HomeInstagramBlockProps> = (props) => 
   }
 
   const posts: InstagramPost[] = (props.posts ?? []).flatMap((entry, idx) => {
-    const src = mediaUrl(entry?.image) ?? d.posts[idx]?.imageSrc
+    const src = resolvePopulatedMediaUrl(entry?.image)
     if (!src) return []
     const fallback = d.posts[idx]
     return [
@@ -43,11 +39,11 @@ export const HomeInstagramBlock: React.FC<HomeInstagramBlockProps> = (props) => 
       emphasis: props.heading?.emphasis ?? d.heading.emphasis,
     },
     profile: {
-      avatarSrc: mediaUrl(props.profile?.avatar) ?? d.profile.avatarSrc,
+      avatarSrc: resolvePopulatedMediaUrl(props.profile?.avatar) ?? '',
       avatarAlt: props.profile?.avatarAlt ?? d.profile.avatarAlt,
       link: profileLink,
     },
-    posts: posts.length === 5 ? posts : d.posts,
+    posts,
   }
 
   return <HomeInstagram data={data} />

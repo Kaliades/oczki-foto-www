@@ -4,6 +4,7 @@ import {
   type FooterNewsletterFigmaNodes,
   type HomeFooterNewsletterData,
 } from './constants'
+import type { NewsletterSignupSource } from '@/newsletter/types'
 import { FooterGalleryGrid } from './FooterGalleryGrid'
 import { FooterNav } from './FooterNav'
 import { FooterScallopRow } from './FooterScallopRow'
@@ -14,6 +15,7 @@ type HomeFooterNewsletterProps = {
   /** Defaults to homepage nodes; pass gallery nodes on `/galeria`. */
   figmaNodes?: FooterNewsletterFigmaNodes
   headingId?: string
+  signupSource: NewsletterSignupSource
 }
 
 /**
@@ -35,6 +37,7 @@ export function HomeFooterNewsletter({
   data,
   figmaNodes = HOME_FOOTER_NEWSLETTER_FIGMA_NODES,
   headingId = 'footer-newsletter-heading',
+  signupSource,
 }: HomeFooterNewsletterProps) {
   const { newsletter, footer } = data
 
@@ -53,6 +56,7 @@ export function HomeFooterNewsletter({
         photoAlt={newsletter.photoAlt}
         photoSrc={newsletter.photoSrc}
         privacyLink={newsletter.privacyLink}
+        signupSource={signupSource}
         submitLabel={newsletter.submitLabel}
       />
 

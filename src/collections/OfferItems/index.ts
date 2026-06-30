@@ -11,6 +11,7 @@ import {
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { ADMIN_GROUP_PAGES } from '@/constants/adminGroups'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateOfferItem, revalidateOfferItemDelete } from './hooks/revalidateOfferItem'
 
@@ -99,6 +100,9 @@ export const OfferItems: CollectionConfig<'offerItems'> = {
     imageCropClassName: true,
   },
   admin: {
+    group: ADMIN_GROUP_PAGES,
+    description:
+      'Każda oferta to kafelek na /oferta oraz pełna podstrona /oferta/[slug]. Edytuj zakładkami — hero, pakiety, galeria itd.',
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
@@ -344,11 +348,23 @@ export const OfferItems: CollectionConfig<'offerItems'> = {
                       ],
                     },
                     {
+                      name: 'mainImage',
+                      type: 'upload',
+                      relationTo: 'media',
+                      label: 'Zdjęcie główne (kolaż)',
+                    },
+                    {
+                      name: 'scallopImage',
+                      type: 'upload',
+                      relationTo: 'media',
+                      label: 'Zdjęcie w ramce (kolaż)',
+                    },
+                    {
                       name: 'mainImageAlt',
                       type: 'text',
                       label: 'Opis zdjęcia głównego',
                       admin: {
-                        description: 'Same zdjęcia kolażu są elementem layoutu (w kodzie) — tu podajesz tylko opis alternatywny.',
+                        description: 'Opis alternatywny zdjęcia głównego w kolażu.',
                       },
                     },
                     { name: 'scallopImageAlt', type: 'text', label: 'Opis zdjęcia w ramce' },

@@ -3,11 +3,13 @@ import {
   homeFooterNewsletterDefaults,
   type HomeFooterNewsletterData,
 } from '@/components/HomeFooterNewsletter/constants'
+import type { NewsletterSignupSource } from '@/newsletter/types'
 
 import { PRIVACY_POLICY_FOOTER_NEWSLETTER_FIGMA_NODES } from './constants'
 
 type PrivacyPolicyFooterNewsletterProps = {
   data?: HomeFooterNewsletterData
+  signupSource?: NewsletterSignupSource
 }
 
 /**
@@ -23,12 +25,14 @@ type PrivacyPolicyFooterNewsletterProps = {
  */
 export function PrivacyPolicyFooterNewsletter({
   data = homeFooterNewsletterDefaults,
+  signupSource = 'privacy',
 }: PrivacyPolicyFooterNewsletterProps) {
   return (
     <HomeFooterNewsletter
       data={data}
       figmaNodes={PRIVACY_POLICY_FOOTER_NEWSLETTER_FIGMA_NODES}
       headingId="privacy-policy-footer-newsletter-heading"
+      signupSource={signupSource}
     />
   )
 }

@@ -1,101 +1,43 @@
-import { readFile } from 'fs/promises'
-import path from 'path'
-
-import config from '@payload-config'
-import { getPayload } from 'payload'
+import type { Payload } from 'payload'
 
 import { getCaseStudyBySlug } from '@/app/(frontend)/galeria/[slug]/constants'
 
-/**
- * Seeds the `slub-justyny-i-krzysia` gallery into Payload from the code-side
- * defaults. Inverse of `mapGallery`: writes the content the case-study page used
- * to render statically and uploads the Figma placeholder images. Run with:
- *
- *   pnpm payload run scripts/seedGallery.ts
- *
- * Idempotent — an existing gallery with the same slug is deleted first.
- */
+import { createSeedImageUploader } from './lib/createSeedImageUploader'
+import { runSeedCli } from './lib/seedCli'
 
 const SLUG = 'slub-justyny-i-krzysia'
 
-function mimeFromExt(filePath: string): string {
-  const ext = filePath.split('.').pop()?.toLowerCase()
-  switch (ext) {
-    case 'png':
-      return 'image/png'
-    case 'jpg':
-    case 'jpeg':
-      return 'image/jpeg'
-    case 'webp':
-      return 'image/webp'
-    case 'svg':
-      return 'image/svg+xml'
-    default:
-      return 'application/octet-stream'
-  }
-}
-
-async function run() {
-  const payload = await getPayload({ config })
+export async function seedGallery(payload: Payload): Promise<void> {
   const data = getCaseStudyBySlug(SLUG)
 
   if (!data) {
     throw new Error(`No code-side defaults found for slug "${SLUG}"`)
   }
 
-  const uploadCache = new Map<string, number>()
-  let uploadCounter = 0
+  const uploadImage = createSeedImageUploader(payload, 'gallery')
 
-  const uploadImage = async (src: string, alt: string): Promise<number> => {
-    const cached = uploadCache.get(src)
-    if (cached) return cached
-
-    const rel = src.replace(/^\//, '')
-    const abs = path.resolve(process.cwd(), 'public', rel)
-    const buffer = await readFile(abs)
-
-    // Unique prefix avoids filename collisions when distinct source files share
-    // a basename and are uploaded concurrently (Payload enforces unique filename).
-    const base = path.basename(abs)
-    const uniqueName = `${String(++uploadCounter).padStart(3, '0')}-${base}`
-
-    const doc = await payload.create({
-      collection: 'media',
-      data: { alt },
-      file: {
-        name: uniqueName,
-        data: buffer,
-        mimetype: mimeFromExt(abs),
-        size: buffer.byteLength,
-      },
-      context: { disableRevalidate: true },
-    })
-
-    uploadCache.set(src, doc.id)
-    payload.logger.info(`Uploaded ${rel} -> media #${doc.id}`)
-    return doc.id
-  }
-
-  const heroBg = await uploadImage(data.hero.background.src, data.hero.background.alt)
-  const duoPhoto = await uploadImage(data.duoPerspective.photo.src, data.duoPerspective.photo.alt)
+  const heroBg = await uploadImage('case-study-hero-bg', data.hero.background.alt)
+  const duoPhoto = await uploadImage('case-study-duo-photo-desktop', data.duoPerspective.photo.alt)
   const venue = data.venueStory.photos.desktop
-  const venueBack = await uploadImage(venue.back.src, venue.back.alt)
-  const venueFront = await uploadImage(venue.front.src, venue.front.alt)
-  const venueScallop = await uploadImage(venue.scallop.src, venue.scallop.alt)
+  const venueBack = await uploadImage('case-study-venue-back-desktop', venue.back.alt)
+  const venueFront = await uploadImage('case-study-venue-front-desktop', venue.front.alt)
+  const venueScallop = await uploadImage('case-study-venue-scallop-desktop', venue.scallop.alt)
   const testimonialPhoto = await uploadImage(
-    data.testimonial.items[0].photoSrc,
+    'case-study-testimonial-polaroid-photo',
     data.testimonial.items[0].photoAlt,
   )
   const portraitPhoto = await uploadImage(
-    data.memorableMoment.portraitPhoto.src,
+    'case-study-memorable-portrait',
     data.memorableMoment.portraitPhoto.alt,
   )
   const landscapePhoto = await uploadImage(
-    data.memorableMoment.landscapePhoto.src,
+    'case-study-memorable-landscape',
     data.memorableMoment.landscapePhoto.alt,
   )
   const galleryImages = await Promise.all(
-    data.photoGallery.items.map((g) => uploadImage(g.imageSrc, g.imageAlt)),
+    data.photoGallery.items.map((g, i) =>
+      uploadImage(`case-study-gallery-${i + 1}`, g.imageAlt),
+    ),
   )
 
   const galleryData = {
@@ -214,4 +156,4 @@ async function run() {
   payload.logger.info(`Seeded gallery "${created.slug}" -> #${created.id}`)
 }
 
-await run()
+runSeedCli(seedGallery, 'seedGallery')

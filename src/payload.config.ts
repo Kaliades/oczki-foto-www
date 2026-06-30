@@ -8,6 +8,7 @@ import { Categories } from './collections/Categories'
 import { ConsentLogs } from './collections/ConsentLogs'
 import { Galleries } from './collections/Galleries'
 import { Media } from './collections/Media'
+import { NewsletterSubscriptions } from './collections/NewsletterSubscriptions'
 import { OfferItems } from './collections/OfferItems'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
@@ -29,6 +30,9 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    meta: {
+      titleSuffix: '— Oczki Fotografia',
+    },
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
@@ -80,8 +84,20 @@ export default buildConfig({
     pool: {
       connectionString: process.env.POSTGRES_URL || '',
     },
+    // Migrations are the source of truth — dev `push` prompts for stdin and hangs `next dev`.
+    push: false,
   }),
-  collections: [Pages, Posts, OfferItems, Galleries, Media, Categories, Users, ConsentLogs],
+  collections: [
+    Pages,
+    Posts,
+    OfferItems,
+    Galleries,
+    Media,
+    Categories,
+    Users,
+    ConsentLogs,
+    NewsletterSubscriptions,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
   localization: {
     /**

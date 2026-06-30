@@ -11,6 +11,7 @@ import {
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { ADMIN_GROUP_PAGES } from '@/constants/adminGroups'
 import { GALLERY_SESSION_FILTERS } from '@/components/GalleryHero/constants'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateGallery, revalidateGalleryDelete } from './hooks/revalidateGallery'
@@ -50,8 +51,8 @@ const imageWithAlt = (config: { imageName: string; altName: string; imageLabel: 
 export const Galleries: CollectionConfig<'galleries'> = {
   slug: 'galleries',
   labels: {
-    singular: 'Galeria',
-    plural: 'Galerie',
+    singular: 'Realizacja',
+    plural: 'Realizacje',
   },
   access: {
     create: authenticated,
@@ -66,6 +67,9 @@ export const Galleries: CollectionConfig<'galleries'> = {
     intro: true,
   },
   admin: {
+    group: ADMIN_GROUP_PAGES,
+    description:
+      'Pojedyncza realizacja w portfolio (/galeria/[adres]). Okładka trafia na listę /galeria; pełny case study wypełniasz tylko dla wybranych reportaży.',
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {

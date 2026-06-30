@@ -64,6 +64,8 @@ export type OfferServiceInclusionsData = {
   images: {
     mainAlt: string
     scallopAlt: string
+    mainPhotoSrc?: string
+    scallopPhotoSrc?: string
   }
   intro: string
 }

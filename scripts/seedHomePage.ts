@@ -1,8 +1,4 @@
-import fs from 'fs'
-import path from 'path'
-
-import config from '@payload-config'
-import { getPayload } from 'payload'
+import type { Payload } from 'payload'
 
 import { homeAboutDefaults } from '@/components/HomeAbout/constants'
 import { homeCtaDefaults } from '@/components/HomeCta/constants'
@@ -14,24 +10,20 @@ import { homeOfferDefaults } from '@/components/HomeOfferShowcase/constants'
 import { homeProcessStepsDefaults } from '@/components/HomeProcessSteps/constants'
 import { homeTestimonialDefaults } from '@/components/HomeTestimonial/constants'
 
+import { createUploadMedia } from './lib/uploadMedia'
+import { runSeedCli } from './lib/seedCli'
+
 /**
  * Seeds an editable `home` Pages document so the homepage can be managed in
  * the admin (instead of falling back to the static `homeStatic` layout).
  *
- * The layout mirrors `src/endpoints/seed/home-static.ts` block-for-block, but
- * uploads the `/figma/*` assets into Media and references real records, so the
- * required upload/relationship fields validate and the editor starts from a
- * fully populated page.
- *
  * Idempotent: an existing `home` page is deleted first, then recreated.
  */
-const PUBLIC_DIR = path.resolve(process.cwd(), 'public')
+function seedAssetPath(figmaSrc: string): string {
+  return figmaSrc.replace(/^\/figma\//, '/seed-assets/')
+}
 
-let uploadCounter = 0
-
-async function run() {
-  const payload = await getPayload({ config })
-
+export async function seedHomePage(payload: Payload): Promise<void> {
   const existing = await payload.find({
     collection: 'pages',
     where: { slug: { equals: 'home' } },
@@ -48,40 +40,38 @@ async function run() {
     console.log(`Removed existing home page #${doc.id}`)
   }
 
-  const uploadImage = async (figmaPath: string, alt: string): Promise<number> => {
-    const fullPath = path.join(PUBLIC_DIR, figmaPath.replace(/^\//, ''))
-    const filename = `${String(++uploadCounter).padStart(3, '0')}-${path.basename(fullPath)}`
-    const media = await payload.create({
-      collection: 'media',
-      data: { alt },
-      file: {
-        data: fs.readFileSync(fullPath),
-        mimetype: 'image/png',
-        name: filename,
-        size: fs.statSync(fullPath).size,
-      },
-    })
-    return media.id as number
-  }
+  const upload = createUploadMedia(payload, { prefix: 'home' })
 
   console.log('Uploading homepage media…')
-  const heroBgId = await uploadImage(homeHeroDefaults.background.src, 'Tło sekcji hero strony głównej')
-  const collageId = await uploadImage(homeIntroDefaults.collageImage.src, homeIntroDefaults.collageImage.alt)
+  const heroBgId = await upload(
+    seedAssetPath(homeHeroDefaults.background.src),
+    'Tło sekcji hero strony głównej',
+  )
+  const collageId = await upload(
+    seedAssetPath(homeIntroDefaults.collageImage.src),
+    homeIntroDefaults.collageImage.alt,
+  )
   const galleryIds: number[] = []
   for (const item of homeGalleryDefaults.items) {
-    galleryIds.push(await uploadImage(item.imageSrc, item.imageAlt))
+    galleryIds.push(await upload(seedAssetPath(item.imageSrc), item.imageAlt))
   }
   const testimonialPhotoIds: number[] = []
   for (const item of homeTestimonialDefaults.items) {
-    testimonialPhotoIds.push(await uploadImage(item.photoSrc, item.photoAlt))
+    testimonialPhotoIds.push(await upload(seedAssetPath(item.photoSrc), item.photoAlt))
   }
-  const portraitId = await uploadImage(homeAboutDefaults.portrait.src, homeAboutDefaults.portrait.alt)
-  const avatarId = await uploadImage(homeInstagramDefaults.profile.avatarSrc, homeInstagramDefaults.profile.avatarAlt)
+  const portraitId = await upload(
+    seedAssetPath(homeAboutDefaults.portrait.src),
+    homeAboutDefaults.portrait.alt,
+  )
+  const avatarId = await upload(
+    seedAssetPath(homeInstagramDefaults.profile.avatarSrc),
+    homeInstagramDefaults.profile.avatarAlt,
+  )
   const instagramPostIds: number[] = []
   for (const post of homeInstagramDefaults.posts) {
-    instagramPostIds.push(await uploadImage(post.imageSrc, post.imageAlt))
+    instagramPostIds.push(await upload(seedAssetPath(post.imageSrc), post.imageAlt))
   }
-  console.log(`✓ Uploaded ${uploadCounter} images`)
+  console.log('✓ Homepage media uploaded')
 
   // Offer cards reference existing OfferItems (required relationship).
   const offers = await payload.find({
@@ -111,7 +101,6 @@ async function run() {
       slug: 'home',
       _status: 'published',
       title: 'Strona główna',
-      hero: { type: 'none' },
       layout: [
         {
           blockType: 'homeHero',
@@ -231,11 +220,6 @@ async function run() {
   })
 
   console.log('✓ Home page created (slug: home, status: published)')
-  console.log('Done.')
-  process.exit(0)
 }
 
-run().catch((err) => {
-  console.error(err)
-  process.exit(1)
-})
+runSeedCli(seedHomePage, 'seedHomePage')

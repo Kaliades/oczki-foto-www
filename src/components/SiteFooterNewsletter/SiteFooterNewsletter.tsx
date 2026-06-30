@@ -8,15 +8,18 @@ import { OfferServiceFooterNewsletter } from '@/components/OfferServiceFooterNew
 import { PrivacyPolicyFooterNewsletter } from '@/components/PrivacyPolicyFooterNewsletter'
 import {
   homeFooterNewsletterDefaults,
+  GALLERY_FOOTER_NEWSLETTER_FIGMA_NODES,
   type HomeFooterNewsletterData,
   type FooterNavLink,
   type FooterGalleryImage,
   type FooterSocialLink,
 } from '@/components/HomeFooterNewsletter/constants'
+import type { NewsletterSignupSource } from '@/newsletter/types'
 import type { SiteSetting } from '@/payload-types'
 import type { SectionLink } from '@/utilities/resolveLinkHref'
+import { resolvePopulatedMediaUrl } from '@/utilities/resolvePopulatedMediaUrl'
 
-export type SiteFooterVariant = 'home' | 'about' | 'contact' | 'offer-service' | 'privacy'
+export type SiteFooterVariant = NewsletterSignupSource
 
 /** Platforms the footer icon row can render (subset of SiteSettings.socials). */
 const SUPPORTED_FOOTER_SOCIALS: ReadonlySet<string> = new Set<FooterSocialLink['platform']>([
@@ -25,12 +28,6 @@ const SUPPORTED_FOOTER_SOCIALS: ReadonlySet<string> = new Set<FooterSocialLink['
   'pinterest',
   'weselezklasa',
 ])
-
-/** Resolves a Payload Media field to an absolute URL string or null. */
-function mediaUrl(image: unknown): string | null {
-  if (!image || typeof image !== 'object') return null
-  return 'url' in image ? ((image as { url?: string | null }).url ?? null) : null
-}
 
 /** Maps a Payload link group to the SectionLink shape used by components. */
 function mapLink(
@@ -87,11 +84,11 @@ function mapSiteSettings(settings: SiteSetting): HomeFooterNewsletterData {
   const galleryImages: readonly FooterGalleryImage[] =
     settings.galleryImages && settings.galleryImages.length > 0
       ? settings.galleryImages.flatMap((item) => {
-          const src = mediaUrl(item.image)
+          const src = resolvePopulatedMediaUrl(item.image)
           if (!src) return []
           return [{ src, alt: item.alt }]
         })
-      : d.footer.galleryImages
+      : []
 
   return {
     newsletter: {
@@ -103,7 +100,7 @@ function mapSiteSettings(settings: SiteSetting): HomeFooterNewsletterData {
       intro: nl?.intro ?? d.newsletter.intro,
       submitLabel: nl?.submitLabel ?? d.newsletter.submitLabel,
       privacyLink: mapLink(nl?.privacyLink, d.newsletter.privacyLink),
-      photoSrc: mediaUrl(nl?.photo) ?? d.newsletter.photoSrc,
+      photoSrc: resolvePopulatedMediaUrl(nl?.photo) ?? '',
       photoAlt: nl?.photoAlt ?? d.newsletter.photoAlt,
     },
     footer: {
@@ -135,8 +132,17 @@ export async function SiteFooterNewsletter({ variant }: { variant: SiteFooterVar
       return <OfferServiceFooterNewsletter data={data} />
     case 'privacy':
       return <PrivacyPolicyFooterNewsletter data={data} />
+    case 'gallery':
+      return (
+        <HomeFooterNewsletter
+          data={data}
+          figmaNodes={GALLERY_FOOTER_NEWSLETTER_FIGMA_NODES}
+          headingId="gallery-footer-newsletter-heading"
+          signupSource="gallery"
+        />
+      )
     case 'home':
     default:
-      return <HomeFooterNewsletter data={data} />
+      return <HomeFooterNewsletter data={data} signupSource="home" />
   }
 }

@@ -1,5 +1,6 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 
+import type { NewsletterSignupSource } from '@/newsletter/types'
 import type { SectionLink } from '@/utilities/resolveLinkHref'
 
 import { FOOTER_NEWSLETTER_SHELL } from './constants'
@@ -18,6 +19,7 @@ type NewsletterFormColumnProps = {
   shellClassName: string
   submitFullWidth?: boolean
   submitLabel: string
+  signupSource: NewsletterSignupSource
   fieldIdPrefix?: string
 }
 
@@ -33,6 +35,7 @@ export function NewsletterFormColumn({
   shellClassName,
   submitFullWidth,
   submitLabel,
+  signupSource,
   fieldIdPrefix,
 }: NewsletterFormColumnProps) {
   const { formColumnGap, formContentMaxWidth, headerGap } = FOOTER_NEWSLETTER_SHELL.newsletter
@@ -78,6 +81,7 @@ export function NewsletterFormColumn({
         <NewsletterForm
           fieldIdPrefix={fieldIdPrefix}
           privacyLink={privacyLink}
+          signupSource={signupSource}
           submitFullWidth={submitFullWidth}
           submitLabel={submitLabel}
         />

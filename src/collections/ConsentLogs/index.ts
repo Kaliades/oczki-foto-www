@@ -15,11 +15,11 @@ export const ConsentLogs: CollectionConfig = {
     delete: authenticated,
   },
   admin: {
+    hidden: true,
     useAsTitle: 'consentId',
     defaultColumns: ['consentId', 'source', 'recordedAt', 'policyVersion'],
     description:
       'Rejestr wyborów użytkowników (RODO — dowód zgody). Wpisy powstają automatycznie z frontu.',
-    group: 'System',
   },
   timestamps: true,
   fields: [

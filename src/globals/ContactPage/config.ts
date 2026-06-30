@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { generateGlobalPreviewPath } from '../../utilities/generatePreviewPath'
+import { ADMIN_GROUP_PAGES } from '@/constants/adminGroups'
 import { revalidateContactPage } from './hooks/revalidateContactPage'
 
 export const ContactPage: GlobalConfig = {
@@ -8,6 +9,7 @@ export const ContactPage: GlobalConfig = {
   label: 'Strona „Kontakt"',
   access: { read: () => true },
   admin: {
+    group: ADMIN_GROUP_PAGES,
     description:
       'Treść podstrony /kontakt. Formularz, botanika i layout są zaszyte w kodzie — tu edytujesz tylko teksty.',
     livePreview: { url: () => generateGlobalPreviewPath('/kontakt') },

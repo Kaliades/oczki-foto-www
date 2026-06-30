@@ -21,7 +21,7 @@ import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 
 import type { Gallery } from '@/payload-types'
 
-import { CASE_STUDY_SLUGS, getCaseStudyBySlug } from './constants'
+import { CASE_STUDY_SLUGS } from './constants'
 import { mapGallery } from './mapGallery'
 
 type Args = {
@@ -66,6 +66,7 @@ const queryGalleryBySlug = cache(async ({ slug }: { slug: string }): Promise<Gal
     const result = await payload.find({
       collection: 'galleries',
       draft,
+      depth: 1,
       limit: 1,
       overrideAccess: draft,
       pagination: false,
@@ -79,30 +80,55 @@ const queryGalleryBySlug = cache(async ({ slug }: { slug: string }): Promise<Gal
   }
 })
 
+const queryRelatedGalleries = cache(
+  async ({ excludeSlug }: { excludeSlug: string }): Promise<Gallery[]> => {
+    const { isEnabled: draft } = await draftMode()
+
+    try {
+      const payload = await getPayload({ config: configPromise })
+      const result = await payload.find({
+        collection: 'galleries',
+        draft,
+        depth: 1,
+        limit: 3,
+        overrideAccess: draft,
+        pagination: false,
+        sort: '-publishedAt',
+        where: {
+          and: [
+            { showOnPortfolio: { equals: true } },
+            { slug: { not_equals: excludeSlug } },
+          ],
+        },
+      })
+      return result.docs
+    } catch {
+      return []
+    }
+  },
+)
+
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { slug } = await params
   const decodedSlug = decodeURIComponent(slug)
   const doc = await queryGalleryBySlug({ slug: decodedSlug })
 
-  if (doc) {
-    const title = doc.meta?.title || `${doc.title} | Oczki fotografia`
-    const description = doc.meta?.description || doc.intro || undefined
-
-    return {
-      title,
-      description,
-      openGraph: mergeOpenGraph({
-        title,
-        description: description ?? '',
-        url: `/galeria/${decodedSlug}`,
-        images: [{ url: getImageURL(doc.coverImage) }],
-      }),
-    }
+  if (!doc) {
+    return { title: 'Galeria | Oczki fotografia' }
   }
 
-  const caseStudy = getCaseStudyBySlug(decodedSlug)
+  const title = doc.meta?.title || `${doc.title} | Oczki fotografia`
+  const description = doc.meta?.description || doc.intro || undefined
+
   return {
-    title: caseStudy ? `${caseStudy.hero.title} | Oczki fotografia` : 'Galeria | Oczki fotografia',
+    title,
+    description,
+    openGraph: mergeOpenGraph({
+      title,
+      description: description ?? '',
+      url: `/galeria/${decodedSlug}`,
+      images: [{ url: getImageURL(doc.coverImage) }],
+    }),
   }
 }
 
@@ -112,11 +138,13 @@ export default async function CaseStudyPage({ params }: Args) {
   const decodedSlug = decodeURIComponent(slug)
 
   const doc = await queryGalleryBySlug({ slug: decodedSlug })
-  const caseStudy = doc ? mapGallery(doc) : getCaseStudyBySlug(decodedSlug)
 
-  if (!caseStudy) {
+  if (!doc) {
     notFound()
   }
+
+  const relatedGalleries = await queryRelatedGalleries({ excludeSlug: decodedSlug })
+  const caseStudy = mapGallery(doc, relatedGalleries)
 
   return (
     <main className="min-h-screen bg-[var(--oczki-primary-100)] [font-family:var(--font-oczki-body)]">
@@ -130,7 +158,7 @@ export default async function CaseStudyPage({ params }: Args) {
       <CaseStudyMemorableMoment data={caseStudy.memorableMoment} />
       <CaseStudyClosingCta data={caseStudy.closingCta} />
       <CaseStudyRelatedStories data={caseStudy.relatedStories} />
-      <SiteFooterNewsletter variant="home" />
+      <SiteFooterNewsletter variant="gallery" />
     </main>
   )
 }

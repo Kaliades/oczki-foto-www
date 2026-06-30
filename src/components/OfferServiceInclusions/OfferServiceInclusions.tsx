@@ -95,7 +95,9 @@ export function OfferServiceInclusions({ data }: OfferServiceInclusionsProps) {
           <OverlapPhotoCollage
             className="order-2 shrink-0 lg:order-1"
             mainPhotoAlt={images.mainAlt}
+            mainPhotoSrc={images.mainPhotoSrc ?? ''}
             scallopPhotoAlt={images.scallopAlt}
+            scallopPhotoSrc={images.scallopPhotoSrc ?? ''}
           />
         </div>
 

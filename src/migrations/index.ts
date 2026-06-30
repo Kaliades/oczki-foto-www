@@ -10,6 +10,9 @@ import * as migration_20260629_145700_header_site_settings_drafts from './202606
 import * as migration_20260629_153443_cookie_consent_global from './20260629_153443_cookie_consent_global';
 import * as migration_20260629_154101_cookie_consent_preferences from './20260629_154101_cookie_consent_preferences';
 import * as migration_20260629_154355_consent_logs from './20260629_154355_consent_logs';
+import * as migration_20260629_161142_gallery_page_sections_and_about_instagram from './20260629_161142_gallery_page_sections_and_about_instagram';
+import * as migration_20260629_170000_newsletter_subscriptions from './20260629_170000_newsletter_subscriptions';
+import * as migration_20260630_081500_offer_inclusions_collage_images from './20260630_081500_offer_inclusions_collage_images';
 
 export const migrations = [
   {
@@ -70,6 +73,21 @@ export const migrations = [
   {
     up: migration_20260629_154355_consent_logs.up,
     down: migration_20260629_154355_consent_logs.down,
-    name: '20260629_154355_consent_logs'
+    name: '20260629_154355_consent_logs',
+  },
+  {
+    up: migration_20260629_161142_gallery_page_sections_and_about_instagram.up,
+    down: migration_20260629_161142_gallery_page_sections_and_about_instagram.down,
+    name: '20260629_161142_gallery_page_sections_and_about_instagram',
+  },
+  {
+    up: migration_20260629_170000_newsletter_subscriptions.up,
+    down: migration_20260629_170000_newsletter_subscriptions.down,
+    name: '20260629_170000_newsletter_subscriptions',
+  },
+  {
+    up: migration_20260630_081500_offer_inclusions_collage_images.up,
+    down: migration_20260630_081500_offer_inclusions_collage_images.down,
+    name: '20260630_081500_offer_inclusions_collage_images',
   },
 ];

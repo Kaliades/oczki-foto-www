@@ -3,11 +3,7 @@ import type { HomeAboutBlock as HomeAboutBlockProps } from '@/payload-types'
 import { HomeAbout } from '@/components/HomeAbout/HomeAbout'
 import { homeAboutDefaults, type HomeAboutData } from '@/components/HomeAbout/constants'
 import type { SectionLink } from '@/utilities/resolveLinkHref'
-
-function mediaUrl(image: HomeAboutBlockProps['portrait'] | undefined | null): string | null {
-  if (!image || typeof image === 'number') return null
-  return image.url ?? null
-}
+import { resolvePopulatedMediaUrl } from '@/utilities/resolvePopulatedMediaUrl'
 
 function resolveLink(cta: HomeAboutBlockProps['cta'] | undefined): SectionLink {
   const d = homeAboutDefaults.cta
@@ -22,7 +18,7 @@ function resolveLink(cta: HomeAboutBlockProps['cta'] | undefined): SectionLink {
 }
 
 export const HomeAboutBlock: React.FC<HomeAboutBlockProps> = (props) => {
-  const portraitSrc = mediaUrl(props.portrait) ?? homeAboutDefaults.portrait.src
+  const portraitSrc = resolvePopulatedMediaUrl(props.portrait) ?? ''
 
   const data: HomeAboutData = {
     heading: {

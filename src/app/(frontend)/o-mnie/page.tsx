@@ -29,6 +29,7 @@ const queryAboutPage = cache(async (): Promise<AboutPage | null> => {
     const payload = await getPayload({ config: configPromise })
     return await payload.findGlobal({
       slug: 'aboutPage',
+      depth: 1,
       draft,
       overrideAccess: draft,
     })

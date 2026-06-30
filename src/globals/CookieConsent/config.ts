@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { link } from '@/fields/link'
+import { ADMIN_GROUP_SITE } from '@/constants/adminGroups'
 import { revalidateCookieConsent } from './hooks/revalidateCookieConsent'
 
 export const CookieConsent: GlobalConfig = {
@@ -8,6 +9,7 @@ export const CookieConsent: GlobalConfig = {
   label: 'Zgoda na cookies',
   access: { read: () => true },
   admin: {
+    group: ADMIN_GROUP_SITE,
     description:
       'Baner cookies i kategorie zgody. Domyślnie wyłączone — włącz dopiero po aktualizacji polityki prywatności i podłączeniu skryptów (env).',
   },

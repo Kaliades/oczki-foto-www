@@ -43,6 +43,7 @@ export const OFFER_SERVICE_SLUGS = [
   'reportaze-slubne',
   'sesje-wizerunkowe',
   'sesje-rodzinne',
+  'sesje-milosne',
 ] as const
 
 export type OfferServiceSlug = (typeof OFFER_SERVICE_SLUGS)[number]
@@ -121,6 +122,19 @@ const OFFER_SERVICE_PAGES: Record<OfferServiceSlug, OfferServicePageData> = {
   'sesje-rodzinne': {
     slug: 'sesje-rodzinne',
     hero: buildFallbackHero('Sesja rodzinna', 'Sesje rodzinne'),
+    approach: offerServiceApproachSesjeKobieceDefaults,
+    care: offerServiceCareSesjeKobieceDefaults,
+    closingCta: offerServiceClosingCtaSesjeKobieceDefaults,
+    faq: offerServiceFaqSesjeKobieceDefaults,
+    gallery: offerServiceGallerySesjeKobieceDefaults,
+    processSteps: offerServiceProcessStepsSesjeKobieceDefaults,
+    testimonial: offerServiceTestimonialSesjeKobieceDefaults,
+    inclusions: offerServiceInclusionsSesjeKobieceDefaults,
+    packages: offerServicePackagesSesjeKobieceDefaults,
+  },
+  'sesje-milosne': {
+    slug: 'sesje-milosne',
+    hero: buildFallbackHero('Sesja miłosna', 'Sesje miłosne'),
     approach: offerServiceApproachSesjeKobieceDefaults,
     care: offerServiceCareSesjeKobieceDefaults,
     closingCta: offerServiceClosingCtaSesjeKobieceDefaults,

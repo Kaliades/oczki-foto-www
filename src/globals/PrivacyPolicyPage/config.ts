@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { generateGlobalPreviewPath } from '../../utilities/generatePreviewPath'
+import { ADMIN_GROUP_PAGES } from '@/constants/adminGroups'
 import { revalidatePrivacyPolicyPage } from './hooks/revalidatePrivacyPolicyPage'
 
 export const PrivacyPolicyPage: GlobalConfig = {
@@ -8,6 +9,7 @@ export const PrivacyPolicyPage: GlobalConfig = {
   label: 'Polityka prywatności',
   access: { read: () => true },
   admin: {
+    group: ADMIN_GROUP_PAGES,
     description:
       'Treść podstrony /polityka-prywatnosci. Układ i ozdobniki są zaszyte w kodzie — tu edytujesz przepisy prawne.',
     livePreview: { url: () => generateGlobalPreviewPath('/polityka-prywatnosci') },

@@ -9,13 +9,37 @@
     }
   }
 
-  &__instructions {
-    list-style: decimal;
-    margin-bottom: base(0.5);
+  &__lead {
+    margin: base(0.75) 0 base(1);
+    max-width: 52rem;
+  }
 
-    & li {
-      width: 100%;
+  &__map {
+    width: 100%;
+    max-width: 52rem;
+    border-collapse: collapse;
+    margin-bottom: base(1);
+    font-size: 13px;
+
+    th,
+    td {
+      border: 1px solid var(--theme-elevation-150);
+      padding: base(0.4) base(0.5);
+      text-align: left;
+      vertical-align: top;
     }
+
+    th {
+      background: var(--theme-elevation-50);
+      font-weight: 600;
+    }
+  }
+
+  &__note {
+    margin: 0;
+    max-width: 52rem;
+    font-size: 13px;
+    color: var(--theme-elevation-800);
   }
 
   & a:hover {

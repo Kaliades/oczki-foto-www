@@ -1,27 +1,19 @@
 import { readFile } from 'fs/promises'
 import path from 'path'
 
-import config from '@payload-config'
-import { getPayload } from 'payload'
+import type { Payload } from 'payload'
 
 import { BRAND_ASSETS } from '@/constants/brandAssets'
 
-/**
- * Uploads the branded OG image to Media and wires it into SiteSettings.
- *
- *   pnpm tsx scripts/seedSiteBrand.ts
- */
+import { runSeedCli } from './lib/seedCli'
 
-async function run() {
-  const payload = await getPayload({ config })
+export async function seedSiteBrand(payload: Payload): Promise<void> {
   const abs = path.resolve(process.cwd(), 'public', BRAND_ASSETS.ogDefault.replace(/^\//, ''))
   const buffer = await readFile(abs)
 
   const media = await payload.create({
     collection: 'media',
-    data: {
-      alt: BRAND_ASSETS.ogDefaultAlt,
-    },
+    data: { alt: BRAND_ASSETS.ogDefaultAlt },
     file: {
       name: 'brand-og-default.png',
       data: buffer,
@@ -41,10 +33,6 @@ async function run() {
   })
 
   payload.logger.info(`✓ SiteSettings default OG image -> media #${media.id}`)
-  process.exit(0)
 }
 
-run().catch((err) => {
-  console.error(err)
-  process.exit(1)
-})
+runSeedCli(seedSiteBrand, 'seedSiteBrand')

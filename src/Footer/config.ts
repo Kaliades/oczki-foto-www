@@ -5,6 +5,10 @@ import { revalidateFooter } from './hooks/revalidateFooter'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
+  label: 'Stopka (szablon — nieużywane)',
+  admin: {
+    hidden: true,
+  },
   access: {
     read: () => true,
   },

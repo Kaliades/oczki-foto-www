@@ -3,7 +3,6 @@ import type { AboutPage } from '@/payload-types'
 import type { AboutHeroData } from '@/components/AboutHero'
 import {
   aboutHeroDefaults,
-  ABOUT_HERO_ASSETS,
 } from '@/components/AboutHero/constants'
 import type { PhilosophyPrinciplesSectionData } from '@/components/PhilosophyPrinciplesSection'
 import { aboutPhilosophyDefaults } from '@/components/PhilosophyPrinciplesSection/constants'
@@ -24,6 +23,7 @@ import type { AboutInstagramSectionData } from '@/components/AboutInstagramSecti
 import { aboutInstagramDefaults } from '@/components/AboutInstagramSection/constants'
 import type { AboutCtaData } from '@/components/AboutCta'
 import { aboutCtaDefaults } from '@/components/AboutCta/constants'
+import { resolvePopulatedMediaUrl } from '@/utilities/resolvePopulatedMediaUrl'
 
 /**
  * Maps a Payload `AboutPage` global document onto the per-section data shapes
@@ -33,19 +33,12 @@ import { aboutCtaDefaults } from '@/components/AboutCta/constants'
  * code-side defaults. Technical values (Figma nodes, layout offsets, crop classes,
  * botanical asset paths, variantIndex) are always injected from code.
  * Any CMS field left blank falls back to the default, so the page never breaks.
+ *
+ * Content images come from CMS only — no `/figma/` PNG fallbacks.
  */
-
-type MediaLike = number | { url?: string | null } | null | undefined
 
 function pick<T>(value: T | null | undefined | '', fallback: T): T {
   return value === null || value === undefined || value === '' ? fallback : (value as T)
-}
-
-function mediaUrl(media: MediaLike): string | null {
-  if (media && typeof media === 'object' && 'url' in media && typeof media.url === 'string') {
-    return media.url
-  }
-  return null
 }
 
 export function mapAboutHero(doc: AboutPage): AboutHeroData {
@@ -63,11 +56,11 @@ export function mapAboutHero(doc: AboutPage): AboutHeroData {
       label: pick(cms?.cta?.label, d.cta.label),
     },
     portrait: {
-      src: pick(mediaUrl(cms?.portrait), d.portrait.src),
+      src: resolvePopulatedMediaUrl(cms?.portrait) ?? '',
       alt: pick(cms?.portraitAlt, d.portrait.alt),
     },
     secondaryPhoto: {
-      src: pick(mediaUrl(cms?.secondaryPhoto), d.secondaryPhoto.src),
+      src: resolvePopulatedMediaUrl(cms?.secondaryPhoto) ?? '',
       alt: pick(cms?.secondaryPhotoAlt, d.secondaryPhoto.alt),
     },
   }
@@ -162,7 +155,7 @@ export function mapBeyondPhotography(doc: AboutPage): BeyondPhotographySectionDa
     backdrop: {
       // crop values are technical — always from code
       crop: BEYOND_PHOTOGRAPHY_BACKDROP_CROP,
-      src: pick(mediaUrl(cms?.backdrop), d.backdrop.src),
+      src: resolvePopulatedMediaUrl(cms?.backdrop) ?? '',
       alt: pick(cms?.backdropAlt, d.backdrop.alt),
     },
     features,
@@ -188,7 +181,7 @@ export function mapDualPerspective(doc: AboutPage): DualPerspectiveSectionData {
     },
     intro: pick(cms?.intro, d.intro),
     portrait: {
-      src: pick(mediaUrl(cms?.portrait), d.portrait.src),
+      src: resolvePopulatedMediaUrl(cms?.portrait) ?? '',
       alt: pick(cms?.portraitAlt, d.portrait.alt),
     },
     profileHeading: pick(cms?.profileHeading, d.profileHeading),
@@ -225,6 +218,19 @@ export function mapCollaborationPillars(doc: AboutPage): CollaborationPillarsSec
 export function mapInstagram(doc: AboutPage): AboutInstagramSectionData {
   const d = aboutInstagramDefaults
   const cms = doc.instagram
+  const posts = (cms?.posts ?? []).flatMap((p, i) => {
+    const imageSrc = resolvePopulatedMediaUrl(p.image)
+    if (!imageSrc) return []
+    return [
+      {
+        imageSrc,
+        imageAlt: pick(p.imageAlt, d.posts[i]?.imageAlt ?? ''),
+        cropClassName: p.cropClassName || d.posts[i]?.cropClassName,
+        href: p.href || d.posts[i]?.href,
+      },
+    ]
+  })
+
   return {
     ...d,
     heading: {
@@ -233,10 +239,13 @@ export function mapInstagram(doc: AboutPage): AboutInstagramSectionData {
     },
     profile: {
       ...d.profile,
+      avatarSrc: resolvePopulatedMediaUrl(cms?.avatar) ?? '',
+      avatarAlt: pick(cms?.avatarAlt, d.profile.avatarAlt),
       link: pick(cms?.profileUrl, null)
         ? { ...d.profile.link, url: cms!.profileUrl! }
         : d.profile.link,
     },
+    posts,
   }
 }
 

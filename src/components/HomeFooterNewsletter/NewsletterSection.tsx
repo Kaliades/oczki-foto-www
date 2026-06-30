@@ -1,3 +1,4 @@
+import type { NewsletterSignupSource } from '@/newsletter/types'
 import type { SectionLink } from '@/utilities/resolveLinkHref'
 
 import type { FooterNewsletterFigmaNodes } from './constants'
@@ -17,6 +18,7 @@ type NewsletterSectionProps = {
   privacyLink: SectionLink
   photoSrc: string
   photoAlt: string
+  signupSource: NewsletterSignupSource
 }
 
 /**
@@ -38,6 +40,7 @@ export function NewsletterSection({
   privacyLink,
   photoSrc,
   photoAlt,
+  signupSource,
 }: NewsletterSectionProps) {
   const columnProps = {
     heading,
@@ -45,6 +48,7 @@ export function NewsletterSection({
     intro,
     privacyLink,
     submitLabel,
+    signupSource,
   }
 
   return (

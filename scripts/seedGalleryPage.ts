@@ -1,18 +1,23 @@
-import config from '@payload-config'
-import { getPayload } from 'payload'
+import type { Payload } from 'payload'
 
+import { galleryCtaDefaults } from '@/components/GalleryCta/constants'
 import { GALLERY_SESSION_FILTERS, galleryHeroDefaults } from '@/components/GalleryHero/constants'
+import { homeEaseDefaults } from '@/components/HomeEase/constants'
+import { homeFaqDefaults } from '@/components/HomeFaq/constants'
 import { GALLERY_PORTFOLIO_LOAD_MORE_LABEL } from '@/components/GalleryPortfolio/constants'
 
-/**
- * Seeds the GalleryPage global (hero copy, filters, portfolio pagination).
- *
- * Run with:
- *   pnpm tsx scripts/seedGalleryPage.ts
- */
-async function run() {
-  const payload = await getPayload({ config })
+import { createUploadMedia } from './lib/uploadMedia'
+import { runSeedCli } from './lib/seedCli'
+
+export async function seedGalleryPage(payload: Payload): Promise<void> {
+  const upload = createUploadMedia(payload, { prefix: 'gallery-page' })
+
   const d = galleryHeroDefaults
+  const ease = homeEaseDefaults
+  const faq = homeFaqDefaults
+  const cta = galleryCtaDefaults
+
+  const easePhotoId = await upload('/seed-assets/ease-tilted-photo.png', ease.tiltedPhoto.alt)
 
   await payload.updateGlobal({
     slug: 'galleryPage',
@@ -35,15 +40,42 @@ async function run() {
         loadMoreBatchSize: 12,
         loadMoreLabel: GALLERY_PORTFOLIO_LOAD_MORE_LABEL,
       },
+      easeSection: {
+        heading: {
+          start: ease.heading.start,
+          emphasis: ease.heading.emphasis,
+        },
+        body: ease.body,
+        photo: easePhotoId,
+        photoAlt: ease.tiltedPhoto.alt,
+      },
+      faqSection: {
+        heading: {
+          emphasis: faq.heading.emphasis,
+          start: faq.heading.start,
+        },
+        intro: faq.intro,
+        items: faq.items.map((item) => ({
+          id: item.id,
+          question: item.question,
+          answer: item.answer,
+        })),
+      },
+      ctaSection: {
+        heading: {
+          start: cta.heading.start,
+          emphasis: cta.heading.emphasis,
+          end: cta.heading.end,
+        },
+        body: cta.body,
+        button: {
+          label: cta.cta.label ?? 'Porozmawiajmy',
+          url: cta.cta.url ?? '/kontakt',
+        },
+      },
     },
     context: { disableRevalidate: true },
   })
-
-  console.log('✓ GalleryPage global seeded')
-  process.exit(0)
 }
 
-run().catch((err) => {
-  console.error(err)
-  process.exit(1)
-})
+runSeedCli(seedGalleryPage, 'seedGalleryPage')

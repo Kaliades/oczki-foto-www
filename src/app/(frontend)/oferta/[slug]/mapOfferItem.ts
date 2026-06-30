@@ -41,6 +41,8 @@ import {
   type OfferServiceFaqData,
 } from '@/components/OfferServiceFaq'
 
+import { resolvePopulatedMediaUrl } from '@/utilities/resolvePopulatedMediaUrl'
+
 import type { OfferServicePageData } from './constants'
 
 /**
@@ -52,19 +54,13 @@ import type { OfferServicePageData } from './constants'
  * sources, fixed orderings). CMS content is overlaid on top. Any field or whole
  * section left blank in the panel falls back to the default, so partial content
  * never breaks the page.
+ *
+ * Content images come from CMS only — no `/figma/` PNG fallbacks.
  */
 
 /** Returns a non-empty CMS value, otherwise the code-side fallback. */
 function pick<T>(value: T | null | undefined | '', fallback: T): T {
   return value === null || value === undefined || value === '' ? fallback : (value as T)
-}
-
-/** Resolves a populated Media relationship to its public URL, if available. */
-function mediaUrl(media: OfferItem['image'] | null | undefined): string | null {
-  if (media && typeof media === 'object' && 'url' in media && typeof media.url === 'string') {
-    return media.url
-  }
-  return null
 }
 
 function mapHero(doc: OfferItem): OfferServiceHeroData {
@@ -90,7 +86,7 @@ function mapHero(doc: OfferItem): OfferServiceHeroData {
       label: pick(cms?.cta?.label, d.cta.label),
     },
     image: {
-      src: pick(mediaUrl(cms?.image), d.image.src),
+      src: resolvePopulatedMediaUrl(cms?.image) ?? '',
       alt: pick(cms?.imageAlt, d.image.alt),
     },
   }
@@ -118,7 +114,7 @@ function mapApproach(doc: OfferItem): OfferServiceApproachData {
     ],
     blocks,
     portrait: {
-      src: pick(mediaUrl(cms?.portraitImage), d.portrait.src),
+      src: resolvePopulatedMediaUrl(cms?.portraitImage) ?? '',
       alt: pick(cms?.portraitAlt, d.portrait.alt),
     },
   }
@@ -133,7 +129,7 @@ function mapPackages(doc: OfferItem): OfferServicePackagesData {
     return {
       image: {
         ...def.image,
-        src: pick(mediaUrl(row.image), def.image.src),
+        src: resolvePopulatedMediaUrl(row.image) ?? '',
         alt: pick(row.imageAlt, def.image.alt),
       },
       panel: {
@@ -205,6 +201,8 @@ function mapInclusions(doc: OfferItem): OfferServiceInclusionsData {
     images: {
       mainAlt: pick(cms?.mainImageAlt, d.images.mainAlt),
       scallopAlt: pick(cms?.scallopImageAlt, d.images.scallopAlt),
+      mainPhotoSrc: resolvePopulatedMediaUrl(cms?.mainImage) ?? '',
+      scallopPhotoSrc: resolvePopulatedMediaUrl(cms?.scallopImage) ?? '',
     },
   }
 }
@@ -235,7 +233,7 @@ function mapCare(doc: OfferItem): OfferServiceCareData {
     intro: pick(cms?.intro, d.intro),
     features,
     image: {
-      src: pick(mediaUrl(cms?.image), d.image.src),
+      src: resolvePopulatedMediaUrl(cms?.image) ?? '',
       alt: pick(cms?.imageAlt, d.image.alt),
     },
     cta: {
@@ -257,11 +255,11 @@ function mapTestimonial(doc: OfferItem): OfferServiceTestimonialData {
           return {
             quote: pick(row.quote, def?.quote ?? ''),
             author: pick(row.author, def?.author ?? ''),
-            photoSrc: pick(mediaUrl(row.photo), def?.photoSrc ?? d.items[0].photoSrc),
-            photoAlt: pick(row.photoAlt, def?.photoAlt ?? d.items[0].photoAlt),
+            photoSrc: resolvePopulatedMediaUrl(row.photo) ?? '',
+            photoAlt: pick(row.photoAlt, def?.photoAlt ?? ''),
           }
         })
-      : d.items
+      : []
 
   return {
     heading: {
@@ -311,18 +309,21 @@ function mapGallery(doc: OfferItem): OfferServiceGalleryData {
   const d = offerServiceGallerySesjeKobieceDefaults
   const cms = doc.gallery
 
-  const items = d.items.map((def, i) => {
-    const row = cms?.items?.[i]
-    if (!row) return def
-    return {
-      ...def,
-      imageSrc: pick(mediaUrl(row.image), def.imageSrc),
-      imageAlt: pick(row.imageAlt, def.imageAlt),
-      caption: {
-        title: pick(row.captionTitle, def.caption?.title ?? ''),
-        subtitle: pick(row.captionSubtitle, def.caption?.subtitle ?? ''),
+  const items = (cms?.items ?? []).flatMap((row, i) => {
+    const imageSrc = resolvePopulatedMediaUrl(row.image)
+    if (!imageSrc) return []
+
+    const def = d.items[i]
+    return [
+      {
+        imageSrc,
+        imageAlt: pick(row.imageAlt, def?.imageAlt ?? ''),
+        caption: {
+          title: pick(row.captionTitle, def?.caption?.title ?? ''),
+          subtitle: pick(row.captionSubtitle, def?.caption?.subtitle ?? ''),
+        },
       },
-    }
+    ]
   }) as OfferServiceGalleryData['items']
 
   return {

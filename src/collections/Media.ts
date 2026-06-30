@@ -10,18 +10,27 @@ import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { ADMIN_GROUP_MEDIA } from '@/constants/adminGroups'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  labels: {
+    singular: 'Plik',
+    plural: 'Zdjęcia i pliki',
+  },
   folders: true,
   access: {
     create: authenticated,
     delete: authenticated,
     read: anyone,
     update: authenticated,
+  },
+  admin: {
+    group: ADMIN_GROUP_MEDIA,
+    description: 'Biblioteka zdjęć używanych na stronie. Po wgraniu przypisz je w odpowiedniej sekcji.',
   },
   fields: [
     {

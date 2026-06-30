@@ -1,7 +1,6 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 
 import {
-  OVERLAP_PHOTO_COLLAGE_ASSETS,
   OVERLAP_PHOTO_COLLAGE_FIGMA_NODES,
   OVERLAP_PHOTO_COLLAGE_LAYOUT,
   type OverlapPhotoCollageVariant,
@@ -11,7 +10,9 @@ import { ScallopFrameEar } from './ScallopFrameEar'
 
 type OverlapPhotoCollageLayerProps = {
   mainPhotoAlt: string
+  mainPhotoSrc: string
   scallopPhotoAlt: string
+  scallopPhotoSrc: string
   variant: OverlapPhotoCollageVariant
 }
 
@@ -44,12 +45,13 @@ const SCALLOP_FRAME_EAR_FIGMA_NODES = {
  */
 export function OverlapPhotoCollageLayer({
   mainPhotoAlt,
+  mainPhotoSrc,
   scallopPhotoAlt,
+  scallopPhotoSrc,
   variant,
 }: OverlapPhotoCollageLayerProps) {
   const layout = OVERLAP_PHOTO_COLLAGE_LAYOUT[variant]
   const { botanical, mainPhoto, scallopFrame } = layout
-  const assets = OVERLAP_PHOTO_COLLAGE_ASSETS
   const earNodes = SCALLOP_FRAME_EAR_FIGMA_NODES[variant]
 
   return (
@@ -87,7 +89,7 @@ export function OverlapPhotoCollageLayer({
           className="object-cover"
           fill
           sizes={`${mainPhoto.width}px`}
-          src={assets.mainPhoto}
+          src={mainPhotoSrc}
         />
       </div>
 
@@ -124,7 +126,7 @@ export function OverlapPhotoCollageLayer({
             className="object-cover"
             fill
             sizes={`${scallopFrame.photoWidth}px`}
-            src={assets.scallopPhoto}
+            src={scallopPhotoSrc}
           />
         </div>
       </div>

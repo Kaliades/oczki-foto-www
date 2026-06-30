@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { link } from '@/fields/link'
+import { ADMIN_GROUP_SITE } from '@/constants/adminGroups'
 import { generateGlobalPreviewPath } from '@/utilities/generatePreviewPath'
 import { revalidateSiteSettings } from './hooks/revalidateSiteSettings'
 
@@ -11,6 +12,7 @@ export const SiteSettings: GlobalConfig = {
     read: () => true,
   },
   admin: {
+    group: ADMIN_GROUP_SITE,
     description:
       'Centralne dane brandowe: kontakt, lokalizacje, social media oraz domyślny CTA. Używane w stopce i jako fallback w blokach contentowych.',
     livePreview: { url: () => generateGlobalPreviewPath('/') },

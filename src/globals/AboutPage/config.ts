@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { generateGlobalPreviewPath } from '../../utilities/generatePreviewPath'
+import { ADMIN_GROUP_PAGES } from '@/constants/adminGroups'
 import { revalidateAboutPage } from './hooks/revalidateAboutPage'
 
 export const AboutPage: GlobalConfig = {
@@ -8,6 +9,7 @@ export const AboutPage: GlobalConfig = {
   label: 'Strona „O mnie"',
   access: { read: () => true },
   admin: {
+    group: ADMIN_GROUP_PAGES,
     description:
       'Treść podstrony /o-mnie. Układ, ozdobniki botaniczne i piksele layoutu są zaszyte w kodzie — tu edytujesz tylko teksty i zdjęcia.',
     livePreview: { url: () => generateGlobalPreviewPath('/o-mnie') },
@@ -254,6 +256,39 @@ export const AboutPage: GlobalConfig = {
               ],
             },
             { name: 'profileUrl', type: 'text', label: 'URL profilu Instagram' },
+            {
+              name: 'avatar',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Zdjęcie profilowe',
+            },
+            { name: 'avatarAlt', type: 'text', label: 'Opis alternatywny avatara' },
+            {
+              name: 'posts',
+              type: 'array',
+              label: 'Posty w siatce',
+              labels: { singular: 'Post', plural: 'Posty' },
+              admin: { initCollapsed: true },
+              fields: [
+                {
+                  name: 'image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  label: 'Zdjęcie',
+                  required: true,
+                },
+                { name: 'imageAlt', type: 'text', label: 'Opis alternatywny' },
+                {
+                  name: 'cropClassName',
+                  type: 'text',
+                  label: 'Klasy kadrowania (opcjonalnie)',
+                  admin: {
+                    description: 'Zostaw puste — układ domyślny. Używane tylko przy nietypowym kadrze.',
+                  },
+                },
+                { name: 'href', type: 'text', label: 'Link do posta (opcjonalnie)' },
+              ],
+            },
           ],
         },
         {

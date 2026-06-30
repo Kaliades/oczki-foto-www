@@ -6,9 +6,11 @@ import type { CaseStudyDuoPerspectiveData } from '@/components/CaseStudyDuoPersp
 import type { CaseStudyHeroData } from '@/components/CaseStudyHero'
 import type { CaseStudyMemorableMomentData } from '@/components/CaseStudyMemorableMoment'
 import type { CaseStudyPhotoGalleryData } from '@/components/CaseStudyPhotoGallery/constants'
+import type { CaseStudyRelatedStoriesData } from '@/components/CaseStudyRelatedStories'
 import type { CaseStudyTestimonialData } from '@/components/CaseStudyTestimonial/constants'
 import type { CaseStudyVenueStoryData } from '@/components/CaseStudyVenueStory'
 import type { CaseStudyClosingCtaData } from '@/components/CaseStudyClosingCta'
+import { resolvePopulatedMediaUrl } from '@/utilities/resolvePopulatedMediaUrl'
 
 import { CASE_STUDY_CASES, type CaseStudyPageData, type CaseStudySlug } from './constants'
 
@@ -22,8 +24,7 @@ import { CASE_STUDY_CASES, type CaseStudyPageData, type CaseStudySlug } from './
  * top; any field or section left blank in the panel falls back to the skeleton,
  * so partial content never breaks the page.
  *
- * `relatedStories` is intentionally not exposed in the CMS yet (it needs a
- * gallery↔gallery relationship design) — it always renders the code defaults.
+ * Content images come from CMS only — no `/figma/` PNG fallbacks.
  * The bento `photoGallery` reuses the `photos[]` array from the "Treść" tab.
  */
 
@@ -34,21 +35,12 @@ function pick<T>(value: T | null | undefined | '', fallback: T): T {
   return value === null || value === undefined || value === '' ? fallback : (value as T)
 }
 
-type MediaLike = number | { url?: string | null } | null | undefined
-
-function mediaUrl(media: MediaLike): string | null {
-  if (media && typeof media === 'object' && 'url' in media && typeof media.url === 'string') {
-    return media.url
-  }
-  return null
-}
-
 function mapHero(doc: Gallery, d: CaseStudyHeroData): CaseStudyHeroData {
   const cms = doc.hero
   return {
     title: doc.title,
     background: {
-      src: pick(mediaUrl(cms?.backgroundImage), d.background.src),
+      src: resolvePopulatedMediaUrl(cms?.backgroundImage) ?? '',
       alt: pick(cms?.backgroundAlt, d.background.alt),
     },
     breadcrumbs: [
@@ -107,7 +99,7 @@ function mapDuoPerspective(
     leadParagraph: pick(cms?.leadParagraph, d.leadParagraph),
     callout: pick(cms?.callout, d.callout),
     photo: {
-      src: pick(mediaUrl(cms?.photo), d.photo.src),
+      src: resolvePopulatedMediaUrl(cms?.photo) ?? '',
       alt: pick(cms?.photoAlt, d.photo.alt),
     },
     highlights,
@@ -118,15 +110,15 @@ function mapVenueStory(doc: Gallery, d: CaseStudyVenueStoryData): CaseStudyVenue
   const cms = doc.venueStory
   // One CMS-uploaded set of three photos is reused on every breakpoint.
   const back = {
-    src: pick(mediaUrl(cms?.backImage), d.photos.desktop.back.src),
+    src: resolvePopulatedMediaUrl(cms?.backImage) ?? '',
     alt: pick(cms?.backAlt, d.photos.desktop.back.alt),
   }
   const front = {
-    src: pick(mediaUrl(cms?.frontImage), d.photos.desktop.front.src),
+    src: resolvePopulatedMediaUrl(cms?.frontImage) ?? '',
     alt: pick(cms?.frontAlt, d.photos.desktop.front.alt),
   }
   const scallop = {
-    src: pick(mediaUrl(cms?.scallopImage), d.photos.desktop.scallop.src),
+    src: resolvePopulatedMediaUrl(cms?.scallopImage) ?? '',
     alt: pick(cms?.scallopAlt, d.photos.desktop.scallop.alt),
   }
   const set = { back, front, scallop }
@@ -146,10 +138,10 @@ function mapPhotoGallery(doc: Gallery, d: CaseStudyPhotoGalleryData): CaseStudyP
     doc.photos.length > 0
       ? doc.photos.map((photo, i) => ({
           id: pick(photo.id, String(i + 1)),
-          imageSrc: pick(mediaUrl(photo.image), d.items[i]?.imageSrc ?? ''),
+          imageSrc: resolvePopulatedMediaUrl(photo.image) ?? '',
           imageAlt: pick(photo.caption, d.items[i]?.imageAlt ?? ''),
         }))
-      : [...d.items]
+      : []
   return {
     heading: {
       start: pick(cms?.heading?.start, d.heading.start),
@@ -169,10 +161,10 @@ function mapTestimonial(doc: Gallery, d: CaseStudyTestimonialData): CaseStudyTes
       ? cmsItems.map((item, i) => ({
           quote: pick(item.quote, d.items[i]?.quote ?? ''),
           author: pick(item.author, d.items[i]?.author ?? ''),
-          photoSrc: pick(mediaUrl(item.photo), d.items[i]?.photoSrc ?? ''),
+          photoSrc: resolvePopulatedMediaUrl(item.photo) ?? '',
           photoAlt: pick(item.photoAlt, d.items[i]?.photoAlt ?? ''),
         }))
-      : d.items
+      : []
   return {
     heading: {
       start: pick(cms?.heading?.start, d.heading.start),
@@ -192,11 +184,11 @@ function mapMemorableMoment(
     title: pick(cms?.title, d.title),
     body: pick(cms?.body, d.body),
     portraitPhoto: {
-      src: pick(mediaUrl(cms?.portraitPhoto), d.portraitPhoto.src),
+      src: resolvePopulatedMediaUrl(cms?.portraitPhoto) ?? '',
       alt: pick(cms?.portraitAlt, d.portraitPhoto.alt),
     },
     landscapePhoto: {
-      src: pick(mediaUrl(cms?.landscapePhoto), d.landscapePhoto.src),
+      src: resolvePopulatedMediaUrl(cms?.landscapePhoto) ?? '',
       alt: pick(cms?.landscapeAlt, d.landscapePhoto.alt),
     },
   }
@@ -219,7 +211,34 @@ function mapClosingCta(doc: Gallery, d: CaseStudyClosingCtaData): CaseStudyClosi
   }
 }
 
-export function mapGallery(doc: Gallery): CaseStudyPageData {
+export function mapRelatedStories(
+  relatedGalleries: Gallery[],
+  defaults: CaseStudyRelatedStoriesData,
+): CaseStudyRelatedStoriesData {
+  const items = relatedGalleries.slice(0, 3).flatMap((gallery, i) => {
+    const imageSrc = resolvePopulatedMediaUrl(gallery.coverImage)
+    if (!imageSrc) return []
+
+    const skeleton = defaults.items[i]
+    return [
+      {
+        id: String(gallery.id),
+        imageSrc,
+        imageAlt: gallery.intro || gallery.title,
+        cropClassName: skeleton?.cropClassName,
+        href: `/galeria/${gallery.slug}`,
+        figmaNodes: skeleton?.figmaNodes,
+      },
+    ]
+  })
+
+  return {
+    heading: defaults.heading,
+    items,
+  }
+}
+
+export function mapGallery(doc: Gallery, relatedGalleries: Gallery[] = []): CaseStudyPageData {
   const d = CASE_STUDY_CASES[SKELETON_SLUG]
   return {
     slug: doc.slug as CaseStudySlug,
@@ -231,6 +250,6 @@ export function mapGallery(doc: Gallery): CaseStudyPageData {
     testimonial: mapTestimonial(doc, d.testimonial),
     memorableMoment: mapMemorableMoment(doc, d.memorableMoment),
     closingCta: mapClosingCta(doc, d.closingCta),
-    relatedStories: d.relatedStories,
+    relatedStories: mapRelatedStories(relatedGalleries, d.relatedStories),
   }
 }

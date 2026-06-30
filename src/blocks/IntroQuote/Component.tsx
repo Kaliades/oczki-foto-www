@@ -2,13 +2,10 @@ import type { IntroQuoteBlock as IntroQuoteBlockProps } from '@/payload-types'
 
 import { HomeIntroSection } from '@/components/HomeIntro/HomeIntroSection'
 import { homeIntroDefaults, type HomeIntroData } from '@/components/HomeIntro/constants'
+import { resolvePopulatedMediaUrl } from '@/utilities/resolvePopulatedMediaUrl'
 
 export const IntroQuoteBlock: React.FC<IntroQuoteBlockProps> = (props) => {
-  const collageImage = props.collageImage
-  const collageSrc =
-    collageImage && typeof collageImage === 'object' && 'url' in collageImage && collageImage.url
-      ? collageImage.url
-      : homeIntroDefaults.collageImage.src
+  const collageSrc = resolvePopulatedMediaUrl(props.collageImage) ?? ''
 
   const data: HomeIntroData = {
     heading: {

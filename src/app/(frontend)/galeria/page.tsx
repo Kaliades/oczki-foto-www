@@ -3,12 +3,9 @@ import { GaleriaPageClient } from '@/app/(frontend)/galeria/GaleriaPageClient'
 import { mapGalleryPage } from '@/app/(frontend)/galeria/mapGalleryPage'
 import type { GallerySessionFilterId } from '@/components/GalleryHero/constants'
 import { GalleryCta } from '@/components/GalleryCta/GalleryCta'
-import { galleryCtaDefaults } from '@/components/GalleryCta/constants'
 import { HomeEase } from '@/components/HomeEase/HomeEase'
-import { homeEaseDefaults } from '@/components/HomeEase/constants'
 import { SiteFooterNewsletter } from '@/components/SiteFooterNewsletter'
 import { HomeFaq } from '@/components/HomeFaq/HomeFaq'
-import { homeFaqDefaults } from '@/components/HomeFaq/constants'
 import {
   OczkiBreadcrumbContainer,
   OczkiBreadcrumbs,
@@ -44,7 +41,7 @@ const queryGalleryPageSettings = cache(async () => {
     const payload = await getPayload({ config: configPromise })
     const doc = await payload.findGlobal({
       slug: 'galleryPage',
-      depth: 0,
+      depth: 1,
       draft,
       overrideAccess: draft,
     })
@@ -132,13 +129,10 @@ export default async function GaleriaPage() {
         loadMoreBatchSize={pageSettings.loadMoreBatchSize}
         loadMoreLabel={pageSettings.loadMoreLabel}
       />
-      {/* TODO(galeria/ease): Drive HomeEase from Payload when gallery ease block is wired. */}
-      <HomeEase data={homeEaseDefaults} />
-      {/* TODO(galeria/faq): Drive HomeFaq from Payload when gallery FAQ block is wired. */}
-      <HomeFaq data={homeFaqDefaults} />
-      {/* TODO(galeria/cta): Drive GalleryCta from Payload when gallery CTA block is wired. */}
-      <GalleryCta data={galleryCtaDefaults} />
-      <SiteFooterNewsletter variant="home" />
+      <HomeEase data={pageSettings.ease} />
+      <HomeFaq data={pageSettings.faq} />
+      <GalleryCta data={pageSettings.cta} />
+      <SiteFooterNewsletter variant="gallery" />
     </main>
   )
 }

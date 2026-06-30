@@ -3,11 +3,13 @@ import {
   homeFooterNewsletterDefaults,
   type HomeFooterNewsletterData,
 } from '@/components/HomeFooterNewsletter/constants'
+import type { NewsletterSignupSource } from '@/newsletter/types'
 
 import { ABOUT_FOOTER_NEWSLETTER_FIGMA_NODES } from './constants'
 
 type AboutFooterNewsletterProps = {
   data?: HomeFooterNewsletterData
+  signupSource?: NewsletterSignupSource
 }
 
 /**
@@ -23,12 +25,14 @@ type AboutFooterNewsletterProps = {
  */
 export function AboutFooterNewsletter({
   data = homeFooterNewsletterDefaults,
+  signupSource = 'about',
 }: AboutFooterNewsletterProps) {
   return (
     <HomeFooterNewsletter
       data={data}
       figmaNodes={ABOUT_FOOTER_NEWSLETTER_FIGMA_NODES}
       headingId="about-footer-newsletter-heading"
+      signupSource={signupSource}
     />
   )
 }

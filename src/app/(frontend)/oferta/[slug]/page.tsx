@@ -68,6 +68,7 @@ const queryOfferBySlug = cache(async ({ slug }: { slug: string }): Promise<Offer
     const result = await payload.find({
       collection: 'offerItems',
       draft,
+      depth: 1,
       limit: 1,
       overrideAccess: draft,
       pagination: false,

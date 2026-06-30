@@ -1,8 +1,4 @@
-import { readFile } from 'fs/promises'
-import path from 'path'
-
-import config from '@payload-config'
-import { getPayload } from 'payload'
+import type { Payload } from 'payload'
 
 import { aboutHeroDefaults } from '@/components/AboutHero/constants'
 import { aboutPhilosophyDefaults } from '@/components/PhilosophyPrinciplesSection/constants'
@@ -18,60 +14,37 @@ import { serviceAreaSectionDefaults } from '@/components/ServiceAreaSection/cons
 import { contactFaqDefaults } from '@/components/ContactFaq/constants'
 import { privacyPolicyDefaults } from '@/components/PrivacyPolicySection/constants'
 
+import { createSeedImageUploader } from './lib/createSeedImageUploader'
+import { runSeedCli } from './lib/seedCli'
+
 /**
  * Seeds the three page Globals (aboutPage, contactPage, privacyPolicyPage)
- * from code-side defaults. Run with:
- *
- *   pnpm payload run scripts/seedPages.ts
- *
- * Idempotent — each Global is unconditionally overwritten via updateGlobal.
+ * from code-side defaults.
  */
-
-function mimeFromExt(filePath: string): string {
-  const ext = filePath.split('.').pop()?.toLowerCase()
-  switch (ext) {
-    case 'png': return 'image/png'
-    case 'jpg':
-    case 'jpeg': return 'image/jpeg'
-    case 'webp': return 'image/webp'
-    default: return 'application/octet-stream'
-  }
-}
-
-async function run() {
-  const payload = await getPayload({ config })
-
-  const uploadCache = new Map<string, number>()
-  let counter = 0
-
-  const uploadImage = async (src: string, alt: string): Promise<number> => {
-    const cached = uploadCache.get(src)
-    if (cached) return cached
-
-    const rel = src.replace(/^\//, '')
-    const abs = path.resolve(process.cwd(), 'public', rel)
-    const buffer = await readFile(abs)
-    const base = path.basename(abs)
-    const uniqueName = `${String(++counter).padStart(3, '0')}-${base}`
-
-    const doc = await payload.create({
-      collection: 'media',
-      data: { alt },
-      file: { name: uniqueName, data: buffer, mimetype: mimeFromExt(abs), size: buffer.byteLength },
-      context: { disableRevalidate: true },
-    })
-
-    uploadCache.set(src, doc.id)
-    payload.logger.info(`Uploaded ${rel} -> media #${doc.id}`)
-    return doc.id
-  }
+export async function seedPages(payload: Payload): Promise<void> {
+  const uploadImage = createSeedImageUploader(payload, 'about-page')
 
   // ── O MNIE ──────────────────────────────────────────────────────────────
   payload.logger.info('Seeding aboutPage global...')
-  const portrait = await uploadImage(aboutHeroDefaults.portrait.src, aboutHeroDefaults.portrait.alt)
-  const secondary = await uploadImage(aboutHeroDefaults.secondaryPhoto.src, aboutHeroDefaults.secondaryPhoto.alt)
-  const backdrop = await uploadImage(beyondPhotographyDefaults.backdrop.src, beyondPhotographyDefaults.backdrop.alt)
-  const dualPortrait = await uploadImage(dualPerspectiveDefaults.portrait.src, dualPerspectiveDefaults.portrait.alt)
+  const portrait = await uploadImage('about-hero-portrait', aboutHeroDefaults.portrait.alt)
+  const secondary = await uploadImage(
+    'about-hero-secondary-photo',
+    aboutHeroDefaults.secondaryPhoto.alt,
+  )
+  const backdrop = await uploadImage(
+    'beyond-photography-backdrop',
+    beyondPhotographyDefaults.backdrop.alt,
+  )
+  const dualPortrait = await uploadImage(
+    'dual-perspective-portrait-b',
+    dualPerspectiveDefaults.portrait.alt,
+  )
+
+  const ig = aboutInstagramDefaults
+  const instagramAvatarId = await uploadImage('instagram-profile', ig.profile.avatarAlt)
+  const instagramPostIds = await Promise.all(
+    ig.posts.map((post, i) => uploadImage(`instagram-post-${i + 1}`, post.imageAlt)),
+  )
 
   await payload.updateGlobal({
     slug: 'aboutPage',
@@ -131,6 +104,14 @@ async function run() {
       instagram: {
         heading: { plain: aboutInstagramDefaults.heading.plain, emphasis: aboutInstagramDefaults.heading.emphasis },
         profileUrl: aboutInstagramDefaults.profile.link.url,
+        avatar: instagramAvatarId,
+        avatarAlt: ig.profile.avatarAlt,
+        posts: ig.posts.map((post, i) => ({
+          image: instagramPostIds[i],
+          imageAlt: post.imageAlt,
+          cropClassName: post.cropClassName,
+          href: post.href,
+        })),
       },
       cta: {
         headingText: aboutCtaDefaults.heading.type === 'single' ? aboutCtaDefaults.heading.text : '',
@@ -203,4 +184,4 @@ async function run() {
   payload.logger.info('privacyPolicyPage seeded.')
 }
 
-await run()
+runSeedCli(seedPages, 'seedPages')

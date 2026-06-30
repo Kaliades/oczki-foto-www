@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { link } from '@/fields/link'
+import { ADMIN_GROUP_SITE } from '@/constants/adminGroups'
 import { generateGlobalPreviewPath } from '@/utilities/generatePreviewPath'
 import { revalidateHeader } from './hooks/revalidateHeader'
 
@@ -11,6 +12,7 @@ export const Header: GlobalConfig = {
     read: () => true,
   },
   admin: {
+    group: ADMIN_GROUP_SITE,
     description:
       'Linki nawigacji i przycisk CTA w navbarze. Podgląd na żywo otwiera stronę główną, gdzie nagłówek jest widoczny na każdej podstronie.',
     livePreview: { url: () => generateGlobalPreviewPath('/') },

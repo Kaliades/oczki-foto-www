@@ -13,7 +13,7 @@ function resolveBackground(
       alt: background.alt ?? '',
     }
   }
-  return homeHeroDefaults.background
+  return { src: '', alt: '' }
 }
 
 function pickCta(
