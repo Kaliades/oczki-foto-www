@@ -22,6 +22,20 @@ export function loadSeedEnv(): void {
     if (!process.env.PAYLOAD_SECRET && payloadSecretBeforeProd) {
       process.env.PAYLOAD_SECRET = payloadSecretBeforeProd
     }
+
+    const prodServerUrl =
+      process.env.NEXT_PUBLIC_SERVER_URL ||
+      (process.env.VERCEL_PROJECT_PRODUCTION_URL
+        ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+        : undefined)
+    if (
+      prodServerUrl &&
+      (!process.env.NEXT_PUBLIC_SERVER_URL ||
+        process.env.NEXT_PUBLIC_SERVER_URL.includes('localhost') ||
+        process.env.NEXT_PUBLIC_SERVER_URL.includes('127.0.0.1'))
+    ) {
+      process.env.NEXT_PUBLIC_SERVER_URL = prodServerUrl
+    }
   } else if (process.env.POSTGRES_URL_LOCAL) {
     process.env.POSTGRES_URL = process.env.POSTGRES_URL_LOCAL
   }

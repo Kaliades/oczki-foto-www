@@ -1,10 +1,12 @@
 import type { CollectionSlug, GlobalSlug, Payload } from 'payload'
 
-const UPDATE_CONTEXT = { disableRevalidate: true } as const
+const DEFAULT_UPDATE_CONTEXT = { disableRevalidate: true } as const
 
 type VersionedUpdateOptions = {
   apply: boolean
 }
+
+type UpdateContext = Record<string, unknown>
 
 /**
  * Updates published content and an existing draft version (if any) in one pass.
@@ -17,6 +19,7 @@ export async function updateVersionedCollectionDoc(
   id: number,
   data: Record<string, unknown>,
   options: VersionedUpdateOptions,
+  context: UpdateContext = DEFAULT_UPDATE_CONTEXT,
 ): Promise<void> {
   if (!options.apply) return
 
@@ -26,7 +29,7 @@ export async function updateVersionedCollectionDoc(
     data,
     draft: false,
     overrideAccess: true,
-    context: UPDATE_CONTEXT,
+    context,
   })
 
   try {
@@ -45,7 +48,7 @@ export async function updateVersionedCollectionDoc(
         data,
         draft: true,
         overrideAccess: true,
-        context: UPDATE_CONTEXT,
+        context,
       })
     }
   } catch {
@@ -58,6 +61,7 @@ export async function updateVersionedGlobal(
   slug: GlobalSlug,
   data: Record<string, unknown>,
   options: VersionedUpdateOptions,
+  context: UpdateContext = DEFAULT_UPDATE_CONTEXT,
 ): Promise<void> {
   if (!options.apply) return
 
@@ -66,7 +70,7 @@ export async function updateVersionedGlobal(
     data,
     draft: false,
     overrideAccess: true,
-    context: UPDATE_CONTEXT,
+    context,
   })
 
   try {
@@ -83,7 +87,7 @@ export async function updateVersionedGlobal(
         data,
         draft: true,
         overrideAccess: true,
-        context: UPDATE_CONTEXT,
+        context,
       })
     }
   } catch {

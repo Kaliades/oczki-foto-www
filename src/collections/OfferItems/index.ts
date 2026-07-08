@@ -14,6 +14,7 @@ import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { ADMIN_GROUP_PAGES } from '@/constants/adminGroups'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateOfferItem, revalidateOfferItemDelete } from './hooks/revalidateOfferItem'
+import { deduplicateSharedOfferMedia } from './hooks/deduplicateSharedOfferMedia'
 
 /**
  * Split heading shared across most offer sections. The sentence is one
@@ -581,6 +582,7 @@ export const OfferItems: CollectionConfig<'offerItems'> = {
     slugField(),
   ],
   hooks: {
+    beforeChange: [deduplicateSharedOfferMedia],
     afterChange: [revalidateOfferItem],
     afterDelete: [revalidateOfferItemDelete],
   },

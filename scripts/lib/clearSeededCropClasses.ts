@@ -8,6 +8,8 @@ import {
 } from './seededCropValues'
 import { updateVersionedCollectionDoc, updateVersionedGlobal } from './versionedUpdate'
 
+const UPDATE_CONTEXT = { disableRevalidate: true, disableMediaDedupe: true } as const
+
 export type ClearSeededCropClassesResult = {
   offersChecked: number
   offersUpdated: number
@@ -19,6 +21,7 @@ export type ClearSeededCropClassesResult = {
 
 export type ClearSeededCropClassesOptions = {
   apply: boolean
+  scopes?: Array<'offers' | 'pages' | 'aboutPage'>
 }
 
 function stripCollectionDoc<T extends { id: number; createdAt?: string; updatedAt?: string }>(
@@ -77,6 +80,8 @@ export async function clearSeededCropClasses(
   payload: Payload,
   options: ClearSeededCropClassesOptions,
 ): Promise<ClearSeededCropClassesResult> {
+  const scopes = options.scopes ?? ['offers', 'pages', 'aboutPage']
+
   const summary: ClearSeededCropClassesResult = {
     offersChecked: 0,
     offersUpdated: 0,
@@ -86,76 +91,89 @@ export async function clearSeededCropClasses(
     aboutPageWouldUpdate: false,
   }
 
-  const offersResult = await payload.find({
-    collection: 'offerItems',
-    depth: 0,
-    limit: 200,
-    pagination: false,
-    overrideAccess: true,
-  })
+  if (scopes.includes('offers')) {
+    const offersResult = await payload.find({
+      collection: 'offerItems',
+      depth: 0,
+      limit: 200,
+      pagination: false,
+      overrideAccess: true,
+    })
 
-  for (const offer of offersResult.docs as OfferItem[]) {
-    summary.offersChecked += 1
-    const next = structuredClone(offer) as OfferItem
-    if (!clearOfferCropFields(next)) continue
+    for (const offer of offersResult.docs as OfferItem[]) {
+      summary.offersChecked += 1
+      const next = structuredClone(offer) as OfferItem
+      if (!clearOfferCropFields(next)) continue
 
-    if (options.apply) {
-      await updateVersionedCollectionDoc(
-        payload,
-        'offerItems',
-        offer.id,
-        stripCollectionDoc(next),
-        options,
-      )
-      summary.offersUpdated += 1
-      payload.logger.info(`Cleared seeded crop on offer #${offer.id} (${offer.slug})`)
-    } else {
-      summary.offersUpdated += 1
-      payload.logger.info(`[dry-run] Would clear seeded crop on offer #${offer.id} (${offer.slug})`)
+      if (options.apply) {
+        await updateVersionedCollectionDoc(
+          payload,
+          'offerItems',
+          offer.id,
+          stripCollectionDoc(next),
+          options,
+          UPDATE_CONTEXT,
+        )
+        summary.offersUpdated += 1
+        payload.logger.info(`Cleared seeded crop on offer #${offer.id} (${offer.slug})`)
+      } else {
+        summary.offersUpdated += 1
+        payload.logger.info(`[dry-run] Would clear seeded crop on offer #${offer.id} (${offer.slug})`)
+      }
     }
   }
 
-  const pagesResult = await payload.find({
-    collection: 'pages',
-    depth: 0,
-    limit: 100,
-    pagination: false,
-    overrideAccess: true,
-  })
+  if (scopes.includes('pages')) {
+    const pagesResult = await payload.find({
+      collection: 'pages',
+      depth: 0,
+      limit: 100,
+      pagination: false,
+      overrideAccess: true,
+    })
 
-  for (const page of pagesResult.docs as Page[]) {
-    summary.pagesChecked += 1
-    const next = structuredClone(page) as Page
-    if (!clearPageCropFields(next)) continue
+    for (const page of pagesResult.docs as Page[]) {
+      summary.pagesChecked += 1
+      const next = structuredClone(page) as Page
+      if (!clearPageCropFields(next)) continue
 
-    if (options.apply) {
-      await updateVersionedCollectionDoc(payload, 'pages', page.id, stripCollectionDoc(next), options)
-      summary.pagesUpdated += 1
-      payload.logger.info(`Cleared seeded Instagram crops on page #${page.id} (${page.slug})`)
-    } else {
-      summary.pagesUpdated += 1
-      payload.logger.info(
-        `[dry-run] Would clear seeded Instagram crops on page #${page.id} (${page.slug})`,
-      )
+      if (options.apply) {
+        await updateVersionedCollectionDoc(
+          payload,
+          'pages',
+          page.id,
+          stripCollectionDoc(next),
+          options,
+        )
+        summary.pagesUpdated += 1
+        payload.logger.info(`Cleared seeded Instagram crops on page #${page.id} (${page.slug})`)
+      } else {
+        summary.pagesUpdated += 1
+        payload.logger.info(
+          `[dry-run] Would clear seeded Instagram crops on page #${page.id} (${page.slug})`,
+        )
+      }
     }
   }
 
-  const aboutPage = (await payload.findGlobal({
-    slug: 'aboutPage',
-    depth: 0,
-    overrideAccess: true,
-  })) as AboutPage
+  if (scopes.includes('aboutPage')) {
+    const aboutPage = (await payload.findGlobal({
+      slug: 'aboutPage',
+      depth: 0,
+      overrideAccess: true,
+    })) as AboutPage
 
-  const nextAbout = structuredClone(aboutPage) as AboutPage
-  if (clearAboutPageCropFields(nextAbout)) {
-    if (options.apply) {
-      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...data } = nextAbout
-      await updateVersionedGlobal(payload, 'aboutPage', data, options)
-      summary.aboutPageUpdated = true
-      payload.logger.info('Cleared seeded Instagram crops on aboutPage global')
-    } else {
-      summary.aboutPageWouldUpdate = true
-      payload.logger.info('[dry-run] Would clear seeded Instagram crops on aboutPage global')
+    const nextAbout = structuredClone(aboutPage) as AboutPage
+    if (clearAboutPageCropFields(nextAbout)) {
+      if (options.apply) {
+        const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...data } = nextAbout
+        await updateVersionedGlobal(payload, 'aboutPage', data, options)
+        summary.aboutPageUpdated = true
+        payload.logger.info('Cleared seeded Instagram crops on aboutPage global')
+      } else {
+        summary.aboutPageWouldUpdate = true
+        payload.logger.info('[dry-run] Would clear seeded Instagram crops on aboutPage global')
+      }
     }
   }
 

@@ -21,6 +21,8 @@
     "seed:portfolio:production": "cross-env NODE_ENV=production SEED_TARGET=production tsx scripts/seedPortfolioGalleries.ts",
     "split:offer-media": "cross-env NODE_ENV=production tsx scripts/splitOfferMedia.ts",
     "split:offer-media:apply": "cross-env NODE_ENV=production tsx scripts/splitOfferMedia.ts --apply",
+    "split:offer-media:production": "cross-env NODE_ENV=production SEED_TARGET=production tsx scripts/splitOfferMedia.ts",
+    "split:offer-media:production:apply": "cross-env NODE_ENV=production SEED_TARGET=production tsx scripts/splitOfferMedia.ts --apply",
     "split:cms-media": "cross-env NODE_ENV=production tsx scripts/splitCmsMedia.ts",
     "split:cms-media:apply": "cross-env NODE_ENV=production tsx scripts/splitCmsMedia.ts --apply",
     "split:cms-media:production": "cross-env NODE_ENV=production SEED_TARGET=production tsx scripts/splitCmsMedia.ts",
