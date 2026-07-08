@@ -3,10 +3,11 @@ import type { Payload } from 'payload'
 import { GALLERY_SESSION_FILTERS } from '@/components/GalleryHero/constants'
 
 import {
-  buildPortfolioCaseStudyImageFields,
+  buildCaseStudyImageFields,
   CASE_STUDY_SLUG,
-  loadCaseStudySeedMedia,
+  uploadCaseStudySectionMedia,
 } from './lib/gallerySeedShared'
+import { createSeedImageUploader } from './lib/createSeedImageUploader'
 import { createUploadMedia } from './lib/uploadMedia'
 import { runSeedCli } from './lib/seedCli'
 
@@ -22,9 +23,7 @@ const CATEGORY_LABEL = Object.fromEntries(
 ) as Record<(typeof GALLERY_SESSION_FILTERS)[number]['id'], string>
 
 export async function seedPortfolioGalleries(payload: Payload): Promise<void> {
-  const sharedMedia = await loadCaseStudySeedMedia(payload)
-  const caseStudyImages = buildPortfolioCaseStudyImageFields(sharedMedia)
-  const uploadImage = createUploadMedia(payload, { prefix: 'portfolio' })
+  const uploadCover = createUploadMedia(payload, { prefix: 'portfolio-cover' })
 
   const existing = await payload.find({
     collection: 'galleries',
@@ -54,9 +53,13 @@ export async function seedPortfolioGalleries(payload: Payload): Promise<void> {
     for (let i = 1; i <= count; i++) {
       const cover = PORTFOLIO_COVERS[coverIndex % PORTFOLIO_COVERS.length]
       coverIndex++
-      const coverId = await uploadImage(cover.src, cover.alt)
       const slug = `portfolio-${category.id}-${String(i).padStart(2, '0')}`
       const title = `${label} ${i}`
+
+      const coverId = await uploadCover(cover.src, cover.alt)
+      const uploadSection = createSeedImageUploader(payload, `portfolio-${slug}`)
+      const sectionMedia = await uploadCaseStudySectionMedia(uploadSection, CASE_STUDY_SLUG)
+      const caseStudyImages = buildCaseStudyImageFields(sectionMedia, CASE_STUDY_SLUG)
 
       const created = await payload.create({
         collection: 'galleries',

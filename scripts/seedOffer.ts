@@ -2,7 +2,6 @@ import type { Payload } from 'payload'
 
 import {
   type OfferListingSeed,
-  resetSharedOfferMediaCache,
   seedFullOfferItem,
 } from './lib/offerSeedShared'
 import { runSeedCli } from './lib/seedCli'
@@ -17,7 +16,6 @@ const SESJE_KOBIECE: OfferListingSeed = {
 }
 
 export async function seedOffer(payload: Payload): Promise<void> {
-  resetSharedOfferMediaCache()
   await seedFullOfferItem(payload, SESJE_KOBIECE)
 }
 

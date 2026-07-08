@@ -225,7 +225,7 @@ export function mapInstagram(doc: AboutPage): AboutInstagramSectionData {
       {
         imageSrc,
         imageAlt: pick(p.imageAlt, d.posts[i]?.imageAlt ?? ''),
-        cropClassName: p.cropClassName || d.posts[i]?.cropClassName,
+        cropClassName: p.cropClassName || undefined,
         href: p.href || d.posts[i]?.href,
       },
     ]

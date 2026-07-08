@@ -225,7 +225,6 @@ export function mapRelatedStories(
         id: String(gallery.id),
         imageSrc,
         imageAlt: gallery.intro || gallery.title,
-        cropClassName: skeleton?.cropClassName,
         href: `/galeria/${gallery.slug}`,
         figmaNodes: skeleton?.figmaNodes,
       },

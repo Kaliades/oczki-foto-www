@@ -16,7 +16,7 @@ export type OfferListingSeed = {
   imageCropClassName?: string
 }
 
-type SharedOfferMedia = {
+type OfferSectionMedia = {
   heroImage: number
   portraitImage: number
   packageImages: number[]
@@ -27,22 +27,24 @@ type SharedOfferMedia = {
   inclusionsScallopImage: number
 }
 
-let sharedMediaCache: SharedOfferMedia | null = null
-
 function seedAssetPath(figmaSrc: string): string {
   return figmaSrc.replace(/^\/figma\//, '/seed-assets/')
 }
 
-/** Same section photos for every offer detail page — uploaded once per seed run. */
-export async function getSharedOfferMedia(payload: Payload): Promise<SharedOfferMedia> {
-  if (sharedMediaCache) return sharedMediaCache
-
-  const data = getOfferServiceBySlug('sesje-kobiece')
+/**
+ * Uploads a fresh copy of each detail-page photo for one offer.
+ * Section images are never shared across offers — each slug gets its own media IDs.
+ */
+async function uploadOfferSectionMedia(
+  payload: Payload,
+  slug: OfferListingSeed['slug'],
+): Promise<OfferSectionMedia> {
+  const data = getOfferServiceBySlug(slug) ?? getOfferServiceBySlug('sesje-kobiece')
   if (!data) {
     throw new Error('Missing code-side defaults for sesje-kobiece')
   }
 
-  const upload = createUploadMedia(payload, { prefix: 'offer-shared' })
+  const upload = createUploadMedia(payload, { prefix: `offer-${slug}` })
 
   const heroImage = await upload(seedAssetPath(data.hero.image.src), data.hero.image.alt)
   const portraitImage = await upload(
@@ -68,7 +70,7 @@ export async function getSharedOfferMedia(payload: Payload): Promise<SharedOffer
     data.inclusions.images.scallopAlt,
   )
 
-  sharedMediaCache = {
+  return {
     heroImage,
     portraitImage,
     packageImages,
@@ -78,12 +80,6 @@ export async function getSharedOfferMedia(payload: Payload): Promise<SharedOffer
     inclusionsMainImage,
     inclusionsScallopImage,
   }
-
-  return sharedMediaCache
-}
-
-export function resetSharedOfferMediaCache(): void {
-  sharedMediaCache = null
 }
 
 export async function seedFullOfferItem(
@@ -96,8 +92,8 @@ export async function seedFullOfferItem(
     throw new Error(`No page defaults for offer slug "${listing.slug}"`)
   }
 
-  const media = await getSharedOfferMedia(payload)
-  const uploadListing = createUploadMedia(payload, { prefix: 'offer-listing' })
+  const media = await uploadOfferSectionMedia(payload, listing.slug)
+  const uploadListing = createUploadMedia(payload, { prefix: `offer-listing-${listing.slug}` })
   const listingImageId = await uploadListing(listing.listingImageSrc, listing.listingImageAlt)
 
   const offerData = {

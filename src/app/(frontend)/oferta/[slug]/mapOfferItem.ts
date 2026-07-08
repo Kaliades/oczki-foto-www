@@ -126,11 +126,12 @@ function mapPackages(doc: OfferItem): OfferServicePackagesData {
   const packages = d.packages.map((def, i) => {
     const row = cms?.items?.[i]
     if (!row) return def
+    const cmsImageSrc = resolvePopulatedMediaUrl(row.image)
     return {
       image: {
-        ...def.image,
-        src: resolvePopulatedMediaUrl(row.image) ?? '',
         alt: pick(row.imageAlt, def.image.alt),
+        src: cmsImageSrc ?? '',
+        position: cmsImageSrc ? undefined : def.image.position,
       },
       panel: {
         ...def.panel,

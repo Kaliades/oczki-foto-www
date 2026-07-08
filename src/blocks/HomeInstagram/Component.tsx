@@ -28,7 +28,7 @@ export const HomeInstagramBlock: React.FC<HomeInstagramBlockProps> = (props) => 
         imageSrc: src,
         imageAlt: entry?.imageAlt ?? fallback?.imageAlt ?? '',
         href: entry?.href ?? fallback?.href,
-        cropClassName: entry?.cropClassName ?? fallback?.cropClassName,
+        cropClassName: entry?.cropClassName ?? undefined,
       },
     ]
   })
