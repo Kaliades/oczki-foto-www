@@ -10,6 +10,7 @@ export function loadSeedEnv(): void {
     const payloadSecretBeforeProd = process.env.PAYLOAD_SECRET
     loadEnv({ path: '.env.local', override: true })
     loadEnv({ path: '.env.production.local', override: true })
+    loadEnv({ path: '.env.vercel.production', override: true })
 
     const prodDbUrl =
       process.env.DATABASE_URL ||
@@ -27,7 +28,8 @@ export function loadSeedEnv(): void {
       process.env.NEXT_PUBLIC_SERVER_URL ||
       (process.env.VERCEL_PROJECT_PRODUCTION_URL
         ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-        : undefined)
+        : undefined) ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined)
     if (
       prodServerUrl &&
       (!process.env.NEXT_PUBLIC_SERVER_URL ||
