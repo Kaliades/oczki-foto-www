@@ -588,9 +588,7 @@ export const OfferItems: CollectionConfig<'offerItems'> = {
   },
   versions: {
     drafts: {
-      autosave: {
-        interval: 100,
-      },
+      // No autosave — editors confirm image/text changes with an explicit save.
       schedulePublish: true,
     },
     maxPerDoc: 50,

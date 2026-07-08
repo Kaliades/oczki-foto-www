@@ -1,29 +1,17 @@
-import { OfferServiceApproach } from '@/components/OfferServiceApproach'
-import { OfferServiceCare } from '@/components/OfferServiceCare'
-import { OfferServiceClosingCta } from '@/components/OfferServiceClosingCta'
-import { OfferServiceFaq } from '@/components/OfferServiceFaq'
-import { SiteFooterNewsletter } from '@/components/SiteFooterNewsletter'
-import { OfferServiceGallery } from '@/components/OfferServiceGallery'
-import { OfferServiceProcessSteps } from '@/components/OfferServiceProcessSteps'
-import { OfferServiceTestimonial } from '@/components/OfferServiceTestimonial'
-import { OfferServiceHero } from '@/components/OfferServiceHero'
-import { OfferServiceInclusions } from '@/components/OfferServiceInclusions'
-import { OfferServicePackages } from '@/components/OfferServicePackages'
-import { LivePreviewListener } from '@/components/LivePreviewListener'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
-import { cache } from 'react'
 import type { Metadata } from 'next'
-
-import type { OfferItem } from '@/payload-types'
 
 import { getImageURL } from '@/utilities/generateMeta'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 
 import { OFFER_SERVICE_SLUGS, getOfferServiceBySlug } from './constants'
 import { mapOfferItem } from './mapOfferItem'
+import { OfferServicePageContent } from './OfferServicePageContent'
+import { OfferServicePagePreview } from './OfferServicePagePreview'
+import { queryOfferBySlug } from './queryOfferBySlug'
 
 type Args = {
   params: Promise<{
@@ -60,28 +48,6 @@ export async function generateStaticParams() {
   return Array.from(slugs).map((slug) => ({ slug }))
 }
 
-const queryOfferBySlug = cache(async ({ slug }: { slug: string }): Promise<OfferItem | null> => {
-  const { isEnabled: draft } = await draftMode()
-
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const result = await payload.find({
-      collection: 'offerItems',
-      draft,
-      depth: 1,
-      limit: 1,
-      overrideAccess: draft,
-      pagination: false,
-      where: {
-        slug: { equals: slug },
-      },
-    })
-    return result.docs?.[0] ?? null
-  } catch {
-    return null
-  }
-})
-
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { slug } = await params
   const decodedSlug = decodeURIComponent(slug)
@@ -115,26 +81,16 @@ export default async function OfferServicePage({ params }: Args) {
   const decodedSlug = decodeURIComponent(slug)
 
   const doc = await queryOfferBySlug({ slug: decodedSlug })
+
+  if (draft && doc) {
+    return <OfferServicePagePreview initialDoc={doc} />
+  }
+
   const offerService = doc ? mapOfferItem(doc) : getOfferServiceBySlug(decodedSlug)
 
   if (!offerService) {
     notFound()
   }
 
-  return (
-    <main className="min-h-screen bg-[var(--oczki-primary-100)] [font-family:var(--font-oczki-body)]">
-      {draft && <LivePreviewListener />}
-      <OfferServiceHero data={offerService.hero} />
-      <OfferServiceApproach data={offerService.approach} />
-      <OfferServicePackages data={offerService.packages} />
-      <OfferServiceInclusions data={offerService.inclusions} />
-      <OfferServiceCare data={offerService.care} />
-      <OfferServiceTestimonial data={offerService.testimonial} />
-      <OfferServiceProcessSteps data={offerService.processSteps} />
-      <OfferServiceGallery data={offerService.gallery} />
-      <OfferServiceClosingCta data={offerService.closingCta} />
-      <OfferServiceFaq data={offerService.faq} />
-      <SiteFooterNewsletter variant="offer-service" />
-    </main>
-  )
+  return <OfferServicePageContent data={offerService} />
 }
