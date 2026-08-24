@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import { cn } from '@/utilities/ui'
 
@@ -31,7 +32,7 @@ export function TiltedPhotoFrame({
   const rotateDeg = shellRotateDeg ?? layout.rotateDeg
 
   return (
-    <div
+    <PhotoUnitReveal
       className={cn('pointer-events-none absolute flex items-center justify-center', className)}
       data-figma-node={layout.figmaNode}
       style={{
@@ -41,10 +42,7 @@ export function TiltedPhotoFrame({
         width: layout.shellWidth,
       }}
     >
-      <div
-        className="flex-none"
-        style={{ transform: `rotate(${rotateDeg}deg)` }}
-      >
+      <div className="flex-none" style={{ transform: `rotate(${rotateDeg}deg)` }}>
         <div
           className="flex flex-col items-start bg-[var(--oczki-primary-200)] shadow-[1px_4px_2.9px_rgba(53,39,25,0.2),6px_11px_6.65px_rgba(53,39,25,0.12)]"
           style={{
@@ -64,6 +62,6 @@ export function TiltedPhotoFrame({
           </div>
         </div>
       </div>
-    </div>
+    </PhotoUnitReveal>
   )
 }

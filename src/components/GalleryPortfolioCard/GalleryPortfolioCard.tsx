@@ -4,6 +4,7 @@ import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 import Link from 'next/link'
 import { useState } from 'react'
 
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 import { cn } from '@/utilities/ui'
 
 import { GalleryPortfolioCardHoverOverlay } from './GalleryPortfolioCardHoverOverlay'
@@ -47,7 +48,7 @@ export function GalleryPortfolioCard({ item, sizes, className }: GalleryPortfoli
   }
 
   const content = (
-    <>
+    <PhotoUnitReveal className="absolute inset-0">
       <div
         className="absolute inset-0 overflow-hidden"
         data-figma-node={GALLERY_PORTFOLIO_CARD_FIGMA_NODES.image}
@@ -73,7 +74,7 @@ export function GalleryPortfolioCard({ item, sizes, className }: GalleryPortfoli
           <GalleryPortfolioCardHoverOverlay caption={caption} />
         </div>
       ) : null}
-    </>
+    </PhotoUnitReveal>
   )
 
   const rootClassName = cn(

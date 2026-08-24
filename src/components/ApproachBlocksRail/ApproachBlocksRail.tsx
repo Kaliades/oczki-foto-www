@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import { BorderedApproachBlock } from '@/components/BorderedApproachBlock'
 
@@ -60,13 +61,15 @@ export function ApproachBlocksRail({ blocks, image }: ApproachBlocksRailProps) {
         data-figma-node={image.figmaNode}
         data-name="Image"
       >
-        <Image
-          alt={image.alt}
-          className="object-cover"
-          fill
-          sizes="(min-width: 1366px) 241px, (min-width: 768px) 300px, 100vw"
-          src={image.src}
-        />
+        <PhotoUnitReveal className="absolute inset-0">
+          <Image
+            alt={image.alt}
+            className="object-cover"
+            fill
+            sizes="(min-width: 1366px) 241px, (min-width: 768px) 300px, 100vw"
+            src={image.src}
+          />
+        </PhotoUnitReveal>
       </div>
 
       <BorderedApproachBlock

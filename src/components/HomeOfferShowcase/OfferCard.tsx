@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 import Link from 'next/link'
 
 import { cn } from '@/utilities/ui'
@@ -27,7 +28,7 @@ export function OfferCard({
 }: OfferCardProps) {
   const inner = (
     <div className="flex flex-col rounded-t-[999px] bg-[var(--oczki-primary-100)] ring-1 ring-inset ring-[var(--oczki-tertiary-700)]">
-      <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded-t-[999px]">
+      <PhotoUnitReveal className="relative aspect-square w-full shrink-0 overflow-hidden rounded-t-[999px]">
         {cropClassName ? (
           <Image
             alt={imageAlt}
@@ -45,7 +46,7 @@ export function OfferCard({
             src={imageSrc}
           />
         )}
-      </div>
+      </PhotoUnitReveal>
 
       {/* Uniform card height locked to Figma's MAX values per breakpoint so
           every description (incl. the 5-line ones — "Sesja wizerunkowa",

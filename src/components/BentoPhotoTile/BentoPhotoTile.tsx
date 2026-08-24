@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import { cn } from '@/utilities/ui'
 
@@ -36,7 +37,7 @@ export function BentoPhotoTile({ item, span, sizes, className }: BentoPhotoTileP
   const { imageAlt, imageSrc, cropClassName } = item
 
   return (
-    <figure
+    <PhotoUnitReveal
       className={cn(
         'relative min-w-0 overflow-hidden',
         BENTO_PHOTO_TILE_COL_SPAN[span],
@@ -54,6 +55,6 @@ export function BentoPhotoTile({ item, span, sizes, className }: BentoPhotoTileP
         src={imageSrc}
         width={cropClassName ? 683 : undefined}
       />
-    </figure>
+    </PhotoUnitReveal>
   )
 }

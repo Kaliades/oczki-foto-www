@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import { cn } from '@/utilities/ui'
 
@@ -18,25 +19,27 @@ type InstagramPostTileProps = {
  */
 export function InstagramPostTile({ figmaNode, href, post }: InstagramPostTileProps) {
   return (
-    <a
-      className="relative block aspect-square w-full min-w-0 border border-solid border-[var(--oczki-primary-200)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--oczki-primary-800)]"
-      data-figma-node={figmaNode}
-      data-name="Image"
-      href={href}
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <Image
-          alt={post.imageAlt}
-          className={cn(post.cropClassName ?? 'object-cover')}
-          fill={!post.cropClassName}
-          height={post.cropClassName ? 1024 : undefined}
-          sizes="(min-width: 1024px) 250px, (min-width: 768px) 131px, 50px"
-          src={post.imageSrc}
-          width={post.cropClassName ? 1024 : undefined}
-        />
-      </div>
-    </a>
+    <PhotoUnitReveal className="min-w-0 w-full">
+      <a
+        className="relative block aspect-square w-full min-w-0 border border-solid border-[var(--oczki-primary-200)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--oczki-primary-800)]"
+        data-figma-node={figmaNode}
+        data-name="Image"
+        href={href}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <Image
+            alt={post.imageAlt}
+            className={cn(post.cropClassName ?? 'object-cover')}
+            fill={!post.cropClassName}
+            height={post.cropClassName ? 1024 : undefined}
+            sizes="(min-width: 1024px) 250px, (min-width: 768px) 131px, 50px"
+            src={post.imageSrc}
+            width={post.cropClassName ? 1024 : undefined}
+          />
+        </div>
+      </a>
+    </PhotoUnitReveal>
   )
 }

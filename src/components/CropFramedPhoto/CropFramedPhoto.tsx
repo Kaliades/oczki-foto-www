@@ -1,5 +1,6 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 import Link from 'next/link'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import { cn } from '@/utilities/ui'
 
@@ -55,27 +56,21 @@ export function CropFramedPhoto({
   )
 
   const style = width === undefined ? { height } : { height, width }
+  const figma = figmaNode ?? CROP_FRAMED_PHOTO_FIGMA_NODES.image
 
   if (href) {
     return (
-      <Link
-        className={rootClassName}
-        data-figma-node={figmaNode ?? CROP_FRAMED_PHOTO_FIGMA_NODES.image}
-        href={href}
-        style={style}
-      >
-        {image}
-      </Link>
+      <PhotoUnitReveal className={rootClassName} data-figma-node={figma} style={style}>
+        <Link className="absolute inset-0" href={href}>
+          {image}
+        </Link>
+      </PhotoUnitReveal>
     )
   }
 
   return (
-    <figure
-      className={rootClassName}
-      data-figma-node={figmaNode ?? CROP_FRAMED_PHOTO_FIGMA_NODES.image}
-      style={style}
-    >
-      {image}
-    </figure>
+    <PhotoUnitReveal className={rootClassName} data-figma-node={figma} style={style}>
+      <figure className="absolute inset-0 m-0">{image}</figure>
+    </PhotoUnitReveal>
   )
 }

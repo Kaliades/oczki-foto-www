@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import {
   PRIMARY_MAT_PORTRAIT_CROP_CLASS,
@@ -30,7 +31,7 @@ export function PrimaryMatPortraitFrame({
   src,
 }: PrimaryMatPortraitFrameProps) {
   return (
-    <div
+    <PhotoUnitReveal
       className="flex w-full shrink-0 flex-col items-start bg-[var(--oczki-primary-200)] p-16 aspect-[360/470] md:aspect-auto min-[1366px]:aspect-auto min-[1366px]:w-1/2 min-[1366px]:self-stretch"
       data-figma-node={figmaNode ?? PRIMARY_MAT_PORTRAIT_FRAME_FIGMA_NODES.desktop}
       data-figma-node-mobile={PRIMARY_MAT_PORTRAIT_FRAME_FIGMA_NODES.mobile}
@@ -50,6 +51,6 @@ export function PrimaryMatPortraitFrame({
           src={src}
         />
       </div>
-    </div>
+    </PhotoUnitReveal>
   )
 }

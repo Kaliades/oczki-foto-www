@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import { GrainDotCluster, type GrainDotClusterVariant } from '@/components/GrainDotCluster'
 
@@ -14,10 +15,6 @@ type LandscapeWithDotDecorProps = {
 
 /**
  * Landscape photo with grain-dot cluster — Figma `Additional Image Container`.
- *
- * <div Additional Image Container>
- * ├── GrainDotCluster (`Warstwa_1`) — back / overlapping
- * └── Additional Image — front
  */
 export function LandscapeWithDotDecor({
   dotsOffset,
@@ -29,7 +26,7 @@ export function LandscapeWithDotDecor({
   variant,
 }: LandscapeWithDotDecorProps) {
   return (
-    <div
+    <PhotoUnitReveal
       className="relative"
       data-name="Additional Image Container"
       style={{ height: group.height, width: group.width }}
@@ -62,6 +59,6 @@ export function LandscapeWithDotDecor({
           src={imageSrc}
         />
       </div>
-    </div>
+    </PhotoUnitReveal>
   )
 }

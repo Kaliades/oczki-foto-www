@@ -1,6 +1,7 @@
 'use client'
 
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import { cn } from '@/utilities/ui'
 
@@ -63,19 +64,21 @@ export function GalleryItem({
           isFocused ? 'h-[366px] md:h-[486px]' : 'h-[262px]',
         )}
       >
-        <Image
-          alt={item.imageAlt}
-          className={cn(
-            'object-cover',
-            item.cropClassName ?? 'absolute inset-0 size-full max-w-none',
-          )}
-          fill={!item.cropClassName}
-          height={item.cropClassName ? 1024 : undefined}
-          sizes={isFocused ? '(min-width: 768px) 393px, 296px' : '211px'}
-          src={item.imageSrc}
-          width={item.cropClassName ? 683 : undefined}
-          priority={false}
-        />
+        <PhotoUnitReveal className="absolute inset-0">
+          <Image
+            alt={item.imageAlt}
+            className={cn(
+              'object-cover',
+              item.cropClassName ?? 'absolute inset-0 size-full max-w-none',
+            )}
+            fill={!item.cropClassName}
+            height={item.cropClassName ? 1024 : undefined}
+            sizes={isFocused ? '(min-width: 768px) 393px, 296px' : '211px'}
+            src={item.imageSrc}
+            width={item.cropClassName ? 683 : undefined}
+            priority={false}
+          />
+        </PhotoUnitReveal>
       </div>
 
       {/* Caption gutter always reserved — opacity-only toggle avoids layout shift */}

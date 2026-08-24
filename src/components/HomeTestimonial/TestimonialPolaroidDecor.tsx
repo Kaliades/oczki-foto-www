@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 type TestimonialPolaroidDecorProps = {
   photoSrc: string
@@ -63,7 +64,7 @@ export const TestimonialPolaroidDecor = ({
   photoAlt,
 }: TestimonialPolaroidDecorProps) => {
   return (
-    <div
+    <PhotoUnitReveal
       aria-hidden="true"
       className="pointer-events-none absolute bottom-0 right-0 z-10 origin-bottom-right scale-[0.379] md:bottom-auto md:right-[-135px] md:top-2 md:origin-top-right md:scale-[0.78] lg:right-[-44px] lg:top-[-49px] lg:z-30 lg:scale-100"
     >
@@ -153,6 +154,6 @@ export const TestimonialPolaroidDecor = ({
           />
         </div>
       </div>
-    </div>
+    </PhotoUnitReveal>
   )
 }

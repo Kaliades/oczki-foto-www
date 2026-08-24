@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import { ABOUT_HERO_FIGMA_NODES, type AboutHeroLayoutVariant } from './constants'
 
@@ -39,7 +40,7 @@ export function AboutHeroSecondaryPhoto({
   const isFlow = layout === 'flow'
 
   return (
-    <div
+    <PhotoUnitReveal
       className={isFlow ? 'relative z-[1] shrink-0' : 'absolute z-[1]'}
       data-figma-node={ABOUT_HERO_FIGMA_NODES.secondaryPhoto[variant]}
       data-name="Featured Image Left"
@@ -62,6 +63,6 @@ export function AboutHeroSecondaryPhoto({
         sizes={SECONDARY_SIZES[variant]}
         src={src}
       />
-    </div>
+    </PhotoUnitReveal>
   )
 }

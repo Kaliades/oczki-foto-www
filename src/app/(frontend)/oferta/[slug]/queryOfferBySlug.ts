@@ -6,8 +6,9 @@ import { cache } from 'react'
 
 import type { OfferItem } from '@/payload-types'
 
-/** Must match `useLivePreview` depth in OfferServicePagePreview. */
-export const OFFER_QUERY_DEPTH = 2
+import { OFFER_QUERY_DEPTH } from './offerQueryConstants'
+
+export { OFFER_QUERY_DEPTH } from './offerQueryConstants'
 
 async function fetchOfferBySlug(slug: string, draft: boolean): Promise<OfferItem | null> {
   try {

@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import { OFFER_SERVICE_HERO_FIGMA_NODES } from './constants'
 
@@ -13,7 +14,7 @@ type OfferServiceHeroStackedImageProps = {
  */
 export function OfferServiceHeroStackedImage({ alt, src }: OfferServiceHeroStackedImageProps) {
   return (
-    <div
+    <PhotoUnitReveal
       className="relative aspect-[360/267] w-full shrink-0 md:aspect-[768/569]"
       data-figma-node={OFFER_SERVICE_HERO_FIGMA_NODES.mainImage.mobile}
       data-name="Main image"
@@ -26,6 +27,6 @@ export function OfferServiceHeroStackedImage({ alt, src }: OfferServiceHeroStack
         sizes="(min-width: 768px) 768px, 100vw"
         src={src}
       />
-    </div>
+    </PhotoUnitReveal>
   )
 }

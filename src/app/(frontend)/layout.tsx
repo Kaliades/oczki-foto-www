@@ -10,6 +10,7 @@ import { ConditionalSiteFooter } from '@/components/ConditionalSiteFooter'
 import { ConsentModeInit } from '@/components/ConsentModeInit/ConsentModeInit'
 import { CookieConsentRoot, TrackingScripts } from '@/components/CookieConsent'
 import { AdminBar } from '@/components/AdminBar'
+import { PageLoadOverlay } from '@/components/PageLoadOverlay'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
@@ -124,6 +125,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <ConditionalSiteFooter>
             <Footer />
           </ConditionalSiteFooter>
+          <PageLoadOverlay />
           <CookieConsentRoot />
           <TrackingScripts />
         </Providers>

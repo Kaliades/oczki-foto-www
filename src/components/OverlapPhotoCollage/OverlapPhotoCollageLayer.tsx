@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import {
   OVERLAP_PHOTO_COLLAGE_FIGMA_NODES,
@@ -55,10 +56,11 @@ export function OverlapPhotoCollageLayer({
   const earNodes = SCALLOP_FRAME_EAR_FIGMA_NODES[variant]
 
   return (
-    <div
+    <PhotoUnitReveal
       className="relative shrink-0 overflow-visible"
       data-figma-node={OVERLAP_PHOTO_COLLAGE_FIGMA_NODES[variant]}
       data-name="Image Container"
+      photoCount={2}
       style={{ height: layout.containerHeight, width: layout.containerWidth }}
     >
       <div
@@ -130,6 +132,6 @@ export function OverlapPhotoCollageLayer({
           />
         </div>
       </div>
-    </div>
+    </PhotoUnitReveal>
   )
 }

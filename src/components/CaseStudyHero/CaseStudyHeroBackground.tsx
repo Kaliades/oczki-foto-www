@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import {
   CASE_STUDY_HERO_BACKGROUND,
@@ -18,7 +19,7 @@ export function CaseStudyHeroBackground({
   src = CASE_STUDY_HERO_BACKGROUND.src,
 }: CaseStudyHeroBackgroundProps) {
   return (
-    <div
+    <PhotoUnitReveal
       aria-hidden
       className="absolute inset-0 h-[648px] w-full"
       data-figma-node={CASE_STUDY_HERO_FIGMA_NODES.background.desktop}
@@ -32,6 +33,6 @@ export function CaseStudyHeroBackground({
         src={src}
       />
       <div className="absolute inset-0 bg-gradient-to-l from-white/0 to-white/[0.16]" />
-    </div>
+    </PhotoUnitReveal>
   )
 }

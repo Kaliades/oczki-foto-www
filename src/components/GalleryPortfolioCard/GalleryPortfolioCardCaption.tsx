@@ -12,15 +12,22 @@ type GalleryPortfolioCardCaptionProps = {
 /**
  * Centred caption stack inside the hover overlay.
  * Figma `Image description container` — title body/xl, subtitle body/l, -2px title margin.
+ * Clamped so long CMS intros never spill past the card image bounds.
  */
 export function GalleryPortfolioCardCaption({ caption }: GalleryPortfolioCardCaptionProps) {
   return (
     <div
-      className="pointer-events-none absolute left-1/2 top-1/2 flex w-[169px] -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center [font-feature-settings:'ss01'_1,'ss02'_1,'ss03'_1,'ss08'_1,'ss10'_1,'ss12'_1,'lnum'_1,'pnum'_1]"
+      className="pointer-events-none absolute inset-x-3 inset-y-6 flex items-center justify-center overflow-hidden"
       data-figma-node={GALLERY_PORTFOLIO_CARD_FIGMA_NODES.captionContainer}
     >
-      <p className="oczki-body-xl mb-[-2px] w-full text-[var(--oczki-primary-900)]">{caption.title}</p>
-      <p className="oczki-body-l w-full text-[var(--oczki-primary-800)]">{caption.subtitle}</p>
+      <div className="flex w-[169px] max-h-full flex-col items-center overflow-hidden text-center [font-feature-settings:'ss01'_1,'ss02'_1,'ss03'_1,'ss08'_1,'ss10'_1,'ss12'_1,'lnum'_1,'pnum'_1]">
+        <p className="oczki-body-xl mb-[-2px] line-clamp-3 w-full text-[var(--oczki-primary-900)]">
+          {caption.title}
+        </p>
+        <p className="oczki-body-l line-clamp-5 w-full text-[var(--oczki-primary-800)]">
+          {caption.subtitle}
+        </p>
+      </div>
     </div>
   )
 }

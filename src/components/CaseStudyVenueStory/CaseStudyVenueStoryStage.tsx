@@ -38,6 +38,11 @@ export function CaseStudyVenueStoryStage({
       <LayeredMatCollage images={photos} variant={variant} />
 
       <RotatedScallopPhoto
+        contentMode={
+          photos.scallop.src.includes('case-study-venue-scallop')
+            ? 'figma-baked'
+            : 'upright'
+        }
         imageAlt={photos.scallop.alt}
         imageSrc={photos.scallop.src}
         variant={variant}

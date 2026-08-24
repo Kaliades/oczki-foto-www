@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import { CreamMatPhoto } from '@/components/CreamMatPhoto'
 
@@ -25,7 +26,7 @@ export function LayeredMatCollage({ variant, images }: LayeredMatCollageProps) {
 
   return (
     <>
-      <div
+      <PhotoUnitReveal
         className="pointer-events-none absolute overflow-hidden"
         data-figma-node={layout.backImage.figmaNode}
         data-name="Image"
@@ -43,7 +44,7 @@ export function LayeredMatCollage({ variant, images }: LayeredMatCollageProps) {
           sizes={`${layout.backImage.width}px`}
           src={back.src}
         />
-      </div>
+      </PhotoUnitReveal>
 
       <div
         className="absolute"
@@ -51,7 +52,6 @@ export function LayeredMatCollage({ variant, images }: LayeredMatCollageProps) {
       >
         <CreamMatPhoto imageAlt={front.alt} imageSrc={front.src} variant={variant} />
       </div>
-
     </>
   )
 }

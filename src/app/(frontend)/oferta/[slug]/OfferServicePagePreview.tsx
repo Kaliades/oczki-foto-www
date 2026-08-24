@@ -5,7 +5,7 @@ import { useLivePreview } from '@payloadcms/live-preview-react'
 import type { OfferItem } from '@/payload-types'
 import { getClientSideURL } from '@/utilities/getURL'
 
-import { OFFER_QUERY_DEPTH } from './queryOfferBySlug'
+import { OFFER_QUERY_DEPTH } from './offerQueryConstants'
 import { mapOfferItem } from './mapOfferItem'
 import { OfferServicePageContent } from './OfferServicePageContent'
 

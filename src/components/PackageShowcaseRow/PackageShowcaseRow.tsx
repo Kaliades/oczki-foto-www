@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import { PackagePanel, type PackagePanelData } from '@/components/PackagePanel'
 import { cn } from '@/utilities/ui'
@@ -45,30 +46,32 @@ export function PackageShowcaseRow({ figmaNode, image, panel }: PackageShowcaseR
         data-figma-node={image.figmaNode}
         data-name="Image"
       >
-        {position ? (
-          <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <PhotoUnitReveal className="absolute inset-0">
+          {position ? (
+            <div className="pointer-events-none absolute inset-0 overflow-hidden">
+              <Image
+                alt={image.alt}
+                className="absolute left-0 w-full max-w-none object-cover"
+                height={1280}
+                sizes="(min-width: 1366px) 683px, 100vw"
+                src={image.src}
+                style={{
+                  height: `${position.heightPercent}%`,
+                  top: `${position.topPercent}%`,
+                }}
+                width={1920}
+              />
+            </div>
+          ) : (
             <Image
               alt={image.alt}
-              className="absolute left-0 w-full max-w-none object-cover"
-              height={1280}
+              className="object-cover"
+              fill
               sizes="(min-width: 1366px) 683px, 100vw"
               src={image.src}
-              style={{
-                height: `${position.heightPercent}%`,
-                top: `${position.topPercent}%`,
-              }}
-              width={1920}
             />
-          </div>
-        ) : (
-          <Image
-            alt={image.alt}
-            className="object-cover"
-            fill
-            sizes="(min-width: 1366px) 683px, 100vw"
-            src={image.src}
-          />
-        )}
+          )}
+        </PhotoUnitReveal>
       </div>
     </div>
   )

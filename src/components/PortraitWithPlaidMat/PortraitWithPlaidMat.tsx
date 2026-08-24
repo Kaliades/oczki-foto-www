@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import { TertiaryPlaidTile, type TertiaryPlaidTileSize } from '@/components/TertiaryPlaidTile'
 
@@ -31,15 +32,12 @@ export function PortraitWithPlaidMat({
   plaid,
 }: PortraitWithPlaidMatProps) {
   return (
-    <div
+    <PhotoUnitReveal
       className="relative"
       data-name="Image Container"
       style={{ height: group.height, width: group.width }}
     >
-      <div
-        className="absolute"
-        style={{ left: plaid.left, top: plaid.top }}
-      >
+      <div className="absolute" style={{ left: plaid.left, top: plaid.top }}>
         <TertiaryPlaidTile size={plaid.size} />
       </div>
 
@@ -66,6 +64,6 @@ export function PortraitWithPlaidMat({
           style={{ height: Math.round(photo.height * 0.42) }}
         />
       </div>
-    </div>
+    </PhotoUnitReveal>
   )
 }

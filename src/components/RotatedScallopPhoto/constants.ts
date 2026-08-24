@@ -1,5 +1,15 @@
 export type RotatedScallopPhotoVariant = 'desktop' | 'tablet' | 'mobile'
 
+/**
+ * Figma Union export embeds the photo already rotated −90° so CSS `rotate-90`
+ * yields upright subjects. CMS / live photos are upright and need compensation.
+ */
+export type RotatedScallopPhotoContentMode = 'figma-baked' | 'upright'
+
+/** Alpha mask of the Figma scallop Union (portrait, before CSS rotate). */
+export const ROTATED_SCALLOP_PHOTO_MASK =
+  '/figma/case-study-venue-scallop-mask.png' as const
+
 type RotatedScallopPhotoLayout = {
   figmaNode: string
   /** Positioning wrapper — `get_design_context` when metadata x differs from layout. */

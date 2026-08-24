@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 type NewsletterPhotoProps = {
   alt: string
@@ -11,8 +12,8 @@ export function NewsletterPhoto({ alt, sizes, src }: NewsletterPhotoProps) {
   if (!src.trim()) return null
 
   return (
-    <div className="relative aspect-square w-full shrink-0 overflow-hidden">
+    <PhotoUnitReveal className="relative aspect-square w-full shrink-0 overflow-hidden">
       <Image alt={alt} className="object-cover" fill priority={false} sizes={sizes} src={src} />
-    </div>
+    </PhotoUnitReveal>
   )
 }

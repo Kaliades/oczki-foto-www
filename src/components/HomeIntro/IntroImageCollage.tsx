@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import { cn } from '@/utilities/ui'
 
@@ -16,7 +17,7 @@ export function IntroImageCollage({
   className,
 }: IntroImageCollageProps) {
   return (
-    <div
+    <PhotoUnitReveal
       className={cn(
         'relative h-[321px] w-[403px] shrink-0 md:h-[428px] md:w-[533px]',
         className,
@@ -42,6 +43,7 @@ export function IntroImageCollage({
               aria-hidden="true"
               className="relative h-[155.66px] w-[218.713px] shrink-0 md:h-[207.547px] md:w-[291.617px]"
               height={208}
+              participateInReveal={false}
               src="/figma/intro-polaroid-bottom.svg"
               width={292}
             />
@@ -56,17 +58,15 @@ export function IntroImageCollage({
             aria-hidden="true"
             className="h-[139.399px] w-[158.878px] md:h-[185.866px] md:w-[211.838px]"
             height={186}
+            participateInReveal={false}
             src="/figma/intro-stamp-note.svg"
             width={212}
           />
-          {/* Handwritten quote size matches Figma `header/s`: mobile 20 /
-              tablet 24 / desktop 24. Earlier the code used `oczki-handwritten-s`
-              (fixed 24) across all breakpoints. */}
           <blockquote className="absolute left-[13px] top-5 w-[134px] text-center text-[20px] font-normal leading-[0.98] tracking-[0] text-[var(--oczki-secondary-600)] [font-family:var(--font-oczki-handwritten)] [font-feature-settings:'lnum'_1,'pnum'_1] md:left-4 md:top-[45px] md:w-[179px] md:text-[24px]">
             {handwrittenQuote}
           </blockquote>
         </div>
       </figure>
-    </div>
+    </PhotoUnitReveal>
   )
 }

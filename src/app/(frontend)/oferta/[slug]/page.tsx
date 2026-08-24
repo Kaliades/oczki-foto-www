@@ -6,6 +6,7 @@ import type { Metadata } from 'next'
 
 import { getImageURL } from '@/utilities/generateMeta'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+import { SiteFooterNewsletter } from '@/components/SiteFooterNewsletter'
 
 import { OFFER_SERVICE_SLUGS, getOfferServiceBySlug } from './constants'
 import { mapOfferItem } from './mapOfferItem'
@@ -83,7 +84,12 @@ export default async function OfferServicePage({ params }: Args) {
   const doc = await queryOfferBySlug({ slug: decodedSlug })
 
   if (draft && doc) {
-    return <OfferServicePagePreview initialDoc={doc} />
+    return (
+      <>
+        <OfferServicePagePreview initialDoc={doc} />
+        <SiteFooterNewsletter variant="offer-service" />
+      </>
+    )
   }
 
   const offerService = doc ? mapOfferItem(doc) : getOfferServiceBySlug(decodedSlug)
@@ -92,5 +98,10 @@ export default async function OfferServicePage({ params }: Args) {
     notFound()
   }
 
-  return <OfferServicePageContent data={offerService} />
+  return (
+    <>
+      <OfferServicePageContent data={offerService} />
+      <SiteFooterNewsletter variant="offer-service" />
+    </>
+  )
 }

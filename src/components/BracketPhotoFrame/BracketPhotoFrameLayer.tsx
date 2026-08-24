@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import { BracketPhotoBotanical } from './BracketPhotoBotanical'
 import {
@@ -24,10 +25,11 @@ export function BracketPhotoFrameLayer({ variant, imageSrc, imageAlt }: BracketP
   const nodes = BRACKET_PHOTO_FRAME_FIGMA_NODES
 
   return (
-    <div
+    <PhotoUnitReveal
       className="relative shrink-0"
       data-figma-node={nodes[variant]}
       data-name="Image Container"
+      photoCount={2}
       style={{ height: layout.containerHeight, width: layout.containerWidth }}
     >
       <div
@@ -85,6 +87,6 @@ export function BracketPhotoFrameLayer({ variant, imageSrc, imageAlt }: BracketP
           src={imageSrc}
         />
       </div>
-    </div>
+    </PhotoUnitReveal>
   )
 }

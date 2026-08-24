@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import { cn } from '@/utilities/ui'
 
@@ -32,7 +33,7 @@ export function CrossMaskedPhotoVisualLayer({
   const alt = photoAlt ?? metrics.photoAlt
 
   return (
-    <div
+    <PhotoUnitReveal
       className={cn(
         'relative flex shrink-0 items-center',
         metrics.containerGapClassName,
@@ -73,6 +74,6 @@ export function CrossMaskedPhotoVisualLayer({
           width={536}
         />
       </div>
-    </div>
+    </PhotoUnitReveal>
   )
 }

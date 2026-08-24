@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import { ABOUT_HERO_FIGMA_NODES, type AboutHeroLayoutVariant } from './constants'
 
@@ -25,7 +26,7 @@ const PORTRAIT_SIZES: Record<AboutHeroLayoutVariant, string> = {
 /** Lead portrait — Figma `Featured Image Right`. */
 export function AboutHeroPortrait({ alt, box, src, variant }: AboutHeroPortraitProps) {
   return (
-    <div
+    <PhotoUnitReveal
       className="absolute z-[1] overflow-visible"
       data-figma-node={ABOUT_HERO_FIGMA_NODES.portrait[variant]}
       data-name="Featured Image Right"
@@ -44,6 +45,6 @@ export function AboutHeroPortrait({ alt, box, src, variant }: AboutHeroPortraitP
         sizes={PORTRAIT_SIZES[variant]}
         src={src}
       />
-    </div>
+    </PhotoUnitReveal>
   )
 }

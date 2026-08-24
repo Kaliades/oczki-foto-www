@@ -2,6 +2,7 @@ import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 
 import { CenteredSectionCopy } from '@/components/CenteredSectionCopy'
 import { GrainDotCluster } from '@/components/GrainDotCluster'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 import { TertiaryPlaidTile } from '@/components/TertiaryPlaidTile'
 
 import {
@@ -54,7 +55,7 @@ export function CaseStudyMemorableMomentStage({
         <GrainDotCluster variant={variant} />
       </div>
 
-      <div
+      <PhotoUnitReveal
         className="absolute overflow-hidden"
         data-figma-node={nodes.landscape[variant]}
         data-name="Additional Image"
@@ -72,7 +73,7 @@ export function CaseStudyMemorableMomentStage({
           sizes={`${layout.landscape.width}px`}
           src={data.landscapePhoto.src}
         />
-      </div>
+      </PhotoUnitReveal>
 
       <div
         className="absolute"
@@ -82,7 +83,7 @@ export function CaseStudyMemorableMomentStage({
         <TertiaryPlaidTile size={layout.plaid.size} />
       </div>
 
-      <div
+      <PhotoUnitReveal
         className="absolute overflow-hidden"
         data-figma-node={nodes.portrait[variant]}
         data-name="Main Image"
@@ -105,7 +106,7 @@ export function CaseStudyMemorableMomentStage({
           className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[var(--oczki-primary-100)] from-0% to-transparent to-50%"
           style={{ height: Math.round(layout.portrait.height * 0.38) }}
         />
-      </div>
+      </PhotoUnitReveal>
 
       <div
         className="absolute z-10"

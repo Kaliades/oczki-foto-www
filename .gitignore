@@ -36,3 +36,6 @@ tsconfig.tsbuildinfo
 .claude/scheduled_tasks.lock
 .subagents/
 analiza-projektu.html
+
+# Local staging of client WP gallery originals (hardlinks / copies; never commit)
+scripts/live-gallery-staging/

@@ -1,4 +1,5 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
+import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 
 import { BorderedFeatureList } from '@/components/BorderedFeatureList'
 import { CenteredSplitCopy } from '@/components/CenteredSplitCopy'
@@ -65,7 +66,7 @@ export function OfferServiceCare({ data }: OfferServiceCareProps) {
             data-figma-node={nodes.image.desktop}
             data-name="Image"
           >
-            <div className="pointer-events-none absolute inset-0 overflow-hidden">
+            <PhotoUnitReveal className="pointer-events-none absolute inset-0 overflow-hidden">
               <Image
                 alt={image.alt}
                 className={`object-cover ${OFFER_SERVICE_CARE_PORTRAIT_CROP_CLASS}`}
@@ -74,7 +75,7 @@ export function OfferServiceCare({ data }: OfferServiceCareProps) {
                 src={image.src}
                 width={1280}
               />
-            </div>
+            </PhotoUnitReveal>
           </div>
 
           <div

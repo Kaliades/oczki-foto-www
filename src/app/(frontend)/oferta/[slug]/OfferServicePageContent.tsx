@@ -2,7 +2,6 @@ import { OfferServiceApproach } from '@/components/OfferServiceApproach'
 import { OfferServiceCare } from '@/components/OfferServiceCare'
 import { OfferServiceClosingCta } from '@/components/OfferServiceClosingCta'
 import { OfferServiceFaq } from '@/components/OfferServiceFaq'
-import { SiteFooterNewsletter } from '@/components/SiteFooterNewsletter'
 import { OfferServiceGallery } from '@/components/OfferServiceGallery'
 import { OfferServiceProcessSteps } from '@/components/OfferServiceProcessSteps'
 import { OfferServiceTestimonial } from '@/components/OfferServiceTestimonial'
@@ -16,6 +15,10 @@ type OfferServicePageContentProps = {
   data: OfferServicePageData
 }
 
+/**
+ * Offer detail sections only — footer stays on the server page so live preview
+ * (a Client Component) never imports `getGlobals` / `next/headers`.
+ */
 export function OfferServicePageContent({ data }: OfferServicePageContentProps) {
   return (
     <main className="min-h-screen bg-[var(--oczki-primary-100)] [font-family:var(--font-oczki-body)]">
@@ -29,7 +32,6 @@ export function OfferServicePageContent({ data }: OfferServicePageContentProps) 
       <OfferServiceGallery data={data.gallery} />
       <OfferServiceClosingCta data={data.closingCta} />
       <OfferServiceFaq data={data.faq} />
-      <SiteFooterNewsletter variant="offer-service" />
     </main>
   )
 }

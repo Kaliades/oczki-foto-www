@@ -23,6 +23,7 @@ function mapOfferItem(raw: OfferItem | string | number): HomeOfferItem | null {
     imageAlt: raw.imageAlt,
     imageSrc: image.url,
     cropClassName: raw.imageCropClassName ?? undefined,
+    href: raw.slug ? `/oferta/${raw.slug}` : undefined,
   }
 }
 
@@ -50,9 +51,12 @@ function pickInquiryCta(
 }
 
 export const OfferShowcaseBlock: React.FC<OfferShowcaseBlockProps> = (props) => {
-  const items = (props.items ?? [])
+  const mapped = (props.items ?? [])
     .map(mapOfferItem)
     .filter((item): item is HomeOfferItem => item !== null)
+
+  // Depth-0 / missing media would otherwise yield an empty carousel.
+  const items = mapped.length > 0 ? mapped : [...homeOfferDefaults.items]
 
   const texture = props.backgroundTexture
 

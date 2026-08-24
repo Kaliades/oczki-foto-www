@@ -32,6 +32,20 @@ function mediaUrl(media: unknown): string | null {
   return null
 }
 
+/** Hover card caption is a narrow Figma box — keep only a short lead-in. */
+function truncateHoverCaption(text: string, maxChars = 110): string {
+  const cleaned = text.replace(/\s+/g, ' ').trim()
+  if (!cleaned) return ''
+  if (cleaned.length <= maxChars) return cleaned
+
+  const sentence = cleaned.match(/^(.+?[.!?…])(?:\s|$)/)?.[1]
+  if (sentence && sentence.length <= maxChars) return sentence
+
+  const slice = cleaned.slice(0, maxChars)
+  const lastSpace = slice.lastIndexOf(' ')
+  return `${(lastSpace > 40 ? slice.slice(0, lastSpace) : slice).trim()}…`
+}
+
 const queryGalleryPageSettings = cache(async () => {
   const { isEnabled: draft } = await draftMode()
 
@@ -77,13 +91,14 @@ const queryPortfolioListingItems = cache(
         if (!imageSrc) return []
 
         const category = (gallery.portfolioCategory ?? 'kobieca') as GallerySessionFilterId
+        const subtitle = truncateHoverCaption(gallery.intro || '')
 
         return [
           {
             id: String(gallery.id),
             imageSrc,
             imageAlt: gallery.intro || gallery.title,
-            caption: { title: gallery.title, subtitle: gallery.intro || '' },
+            caption: { title: gallery.title, subtitle },
             href: `/galeria/${gallery.slug}`,
             category,
           },
