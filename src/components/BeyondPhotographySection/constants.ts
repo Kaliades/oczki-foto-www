@@ -33,10 +33,16 @@ export const BEYOND_PHOTOGRAPHY_SECTION_FIGMA_NODES = {
   },
 } as const
 
+/**
+ * Full-bleed cover crops. Previous Figma absolute scales (e.g. h-[320%]) only
+ * worked with one specific portrait asset — any CMS image with a different
+ * aspect ratio looked extremely zoomed/cropped. object-cover keeps the frame
+ * filled for arbitrary photos while biasing toward the upper subject.
+ */
 export const BEYOND_PHOTOGRAPHY_BACKDROP_CROP = {
-  mobile: 'absolute h-[162.75%] left-[-66.45%] max-w-none top-[-62.75%] w-[225.69%]',
-  tablet: 'absolute h-[192.41%] left-[-40.12%] max-w-none top-[-65.28%] w-[180.34%]',
-  desktop: 'absolute h-[320.83%] left-0 max-w-none top-[-121.2%] w-[113.18%]',
+  mobile: 'absolute inset-0 size-full max-w-none object-cover object-[center_22%]',
+  tablet: 'absolute inset-0 size-full max-w-none object-cover object-[center_20%]',
+  desktop: 'absolute inset-0 size-full max-w-none object-cover object-[center_18%]',
 } as const
 
 export const beyondPhotographyDefaults: BeyondPhotographySectionData = {
