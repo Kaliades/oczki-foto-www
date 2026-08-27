@@ -39,3 +39,6 @@ analiza-projektu.html
 
 # Local staging of client WP gallery originals (hardlinks / copies; never commit)
 scripts/live-gallery-staging/
+
+# Production migration backups (pg_dump + JSON inventories — never commit)
+scripts/prod-migration-backups/

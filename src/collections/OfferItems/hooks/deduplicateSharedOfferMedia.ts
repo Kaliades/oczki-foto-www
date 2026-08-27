@@ -9,10 +9,12 @@ import {
   splitSharedMediaOnOffer,
 } from '@/utilities/cmsMedia/offerMedia'
 import { entityKey } from '@/utilities/cmsMedia/mediaRefs'
+import { isSharedPlaceholderFilename } from '@/utilities/cmsMedia/sharedPlaceholders'
 
 /**
  * On save, detaches shared media IDs so one offer cannot affect another.
  * Lowest numeric offer id keeps the original file per shared media ID.
+ * Intentional brand placeholders (`placeholder-offer-*`) stay shared.
  */
 export const deduplicateSharedOfferMedia: CollectionBeforeChangeHook<OfferItem> = async ({
   data,
@@ -37,7 +39,26 @@ export const deduplicateSharedOfferMedia: CollectionBeforeChangeHook<OfferItem> 
     doc.id === offerId ? ({ ...doc, ...data } as OfferItem) : (doc as OfferItem),
   )
 
+  const candidateIds = [...new Set(offers.flatMap((o) => collectOfferMediaIds(o)))]
+  const exemptIds = new Set<number>()
+  if (candidateIds.length) {
+    const media = await req.payload.find({
+      collection: 'media',
+      depth: 0,
+      limit: candidateIds.length,
+      pagination: false,
+      overrideAccess: true,
+      where: { id: { in: candidateIds } },
+    })
+    for (const m of media.docs) {
+      if (isSharedPlaceholderFilename((m as { filename?: string }).filename)) {
+        exemptIds.add(m.id as number)
+      }
+    }
+  }
+
   const canonicalOwner = buildOfferCanonicalOwners(offers)
+  for (const id of exemptIds) canonicalOwner.delete(id)
   if (canonicalOwner.size === 0) return data
 
   const merged = { ...originalDoc, ...data } as OfferItem
