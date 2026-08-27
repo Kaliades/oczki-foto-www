@@ -77,7 +77,7 @@ async function ensureFolder(
 
   const existing = await payload.find({
     collection: 'payload-folders',
-    where,
+    where: where as never,
     limit: 1,
     depth: 0,
     overrideAccess: true,

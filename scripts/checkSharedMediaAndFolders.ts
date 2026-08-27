@@ -42,7 +42,7 @@ async function main() {
 
   const owners = new Map<number, Owner[]>()
 
-  const addOwners = (collection: string, doc: Record<string, unknown> & { id: number | string; slug?: string }) => {
+  const addOwners = (collection: string, doc: { id: number | string; slug?: string }) => {
     const refs: number[] = []
     collectMediaRefs(doc, '', refs)
     for (const id of new Set(refs)) {
@@ -63,7 +63,9 @@ async function main() {
         draft: true,
         overrideAccess: true,
       })
-      for (const doc of res.docs) addOwners(c, doc as typeof doc & { slug?: string })
+      for (const doc of res.docs) {
+        addOwners(c, doc as { id: number | string; slug?: string })
+      }
       if (!res.hasNextPage) break
       page++
     }
