@@ -10,7 +10,6 @@ type ConditionalSiteFooterProps = {
 function routeHasDesignedFooter(pathname: string): boolean {
   return (
     pathname === '/' ||
-    pathname === '/home' ||
     pathname === '/kontakt' ||
     pathname === '/o-mnie' ||
     pathname === '/polityka-prywatnosci' ||

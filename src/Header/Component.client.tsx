@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react'
 import type { Header } from '@/payload-types'
 
 function resolveNavbarVariant(pathname: string): OczkiNavbarVariant {
-  if (pathname === '/' || pathname === '/home') {
+  if (pathname === '/') {
     return 'overlay'
   }
 
