@@ -633,7 +633,7 @@ export interface OfferItem {
       url?: string | null;
     };
     /**
-     * Dokładnie 3 pakiety. Kolorystyka (sage/cream/rose) i kadrowanie są przypisane wg kolejności.
+     * 2–3 pakiety. Kolorystyka (sage/cream/rose) i kadrowanie są przypisane wg kolejności.
      */
     items?:
       | {
@@ -644,9 +644,13 @@ export interface OfferItem {
           imageAlt?: string | null;
           title: string;
           /**
-           * Tekst wyświetlany wprost, np. „750 zł”.
+           * Krótka linia „Dla Ciebie, jeśli…” nad listą cech. Zostaw puste, by ukryć.
            */
-          price: string;
+          description?: string | null;
+          /**
+           * Tekst wyświetlany wprost, np. „750 zł”. Zostaw puste, by ukryć cenę (np. reportaż).
+           */
+          price?: string | null;
           /**
            * Np. „Najczęściej wybierany”.
            */
@@ -781,6 +785,7 @@ export interface OfferItem {
        * Opcjonalne — zostaw puste, jeśli nagłówek nie ma wyróżnionego fragmentu.
        */
       emphasis?: string | null;
+      end?: string | null;
     };
     description?: string | null;
     cta?: {
@@ -788,7 +793,42 @@ export interface OfferItem {
       url?: string | null;
     };
     /**
-     * Maksymalnie 5 zdjęć (układ kafelków jest stały).
+     * Do 5 zdjęć (rail) lub 6 (mozaika reportażu). Układ kafelków jest stały w kodzie.
+     */
+    items?:
+      | {
+          image?: (number | null) | Media;
+          /**
+           * Opis dla dostępności i SEO (krótkie, opisowe zdanie).
+           */
+          imageAlt?: string | null;
+          captionTitle?: string | null;
+          captionSubtitle?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Druga galeria (rail) po krokach procesu — używana na reportażu ślubnym. Zostaw puste na innych ofertach.
+   */
+  storiesGallery?: {
+    /**
+     * Jedno zdanie podzielone na części. „Wyróżnienie” jest renderowane innym krojem/kolorem — razem tworzą całość.
+     */
+    heading?: {
+      start?: string | null;
+      /**
+       * Opcjonalne — zostaw puste, jeśli nagłówek nie ma wyróżnionego fragmentu.
+       */
+      emphasis?: string | null;
+    };
+    description?: string | null;
+    cta?: {
+      label?: string | null;
+      url?: string | null;
+    };
+    /**
+     * Maksymalnie 5 zdjęć w układzie rail.
      */
     items?:
       | {
@@ -823,7 +863,10 @@ export interface OfferItem {
     items?:
       | {
           question: string;
-          answer: string;
+          /**
+           * Możesz uzupełnić później — puste odpowiedzi nie blokują zapisu.
+           */
+          answer?: string | null;
           id?: string | null;
         }[]
       | null;
@@ -2195,6 +2238,7 @@ export interface OfferItemsSelect<T extends boolean = true> {
               image?: T;
               imageAlt?: T;
               title?: T;
+              description?: T;
               price?: T;
               badgeLabel?: T;
               features?:
@@ -2313,6 +2357,33 @@ export interface OfferItemsSelect<T extends boolean = true> {
             };
       };
   gallery?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
+              end?: T;
+            };
+        description?: T;
+        cta?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+        items?:
+          | T
+          | {
+              image?: T;
+              imageAlt?: T;
+              captionTitle?: T;
+              captionSubtitle?: T;
+              id?: T;
+            };
+      };
+  storiesGallery?:
     | T
     | {
         heading?:

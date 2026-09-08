@@ -1,49 +1,64 @@
 import type { OfferItem } from '@/payload-types'
 
 import {
+  offerServiceHeroReportazeSlubneDefaults,
   offerServiceHeroSesjeKobieceDefaults,
   type OfferServiceHeroData,
 } from '@/components/OfferServiceHero'
 import {
+  offerServiceApproachReportazeSlubneDefaults,
   offerServiceApproachSesjeKobieceDefaults,
   type OfferServiceApproachData,
 } from '@/components/OfferServiceApproach'
 import {
+  offerServicePackagesReportazeSlubneDefaults,
   offerServicePackagesSesjeKobieceDefaults,
   type OfferServicePackagesData,
 } from '@/components/OfferServicePackages'
 import {
+  offerServiceInclusionsReportazeSlubneDefaults,
   offerServiceInclusionsSesjeKobieceDefaults,
   type OfferServiceInclusionsData,
 } from '@/components/OfferServiceInclusions'
 import {
+  offerServiceCareReportazeSlubneDefaults,
   offerServiceCareSesjeKobieceDefaults,
   type OfferServiceCareData,
 } from '@/components/OfferServiceCare'
 import {
+  offerServiceDuoReportazeSlubneDefaults,
+  type OfferServiceDuoData,
+} from '@/components/OfferServiceDuo'
+import {
+  offerServiceTestimonialReportazeSlubneDefaults,
   offerServiceTestimonialSesjeKobieceDefaults,
   type OfferServiceTestimonialData,
 } from '@/components/OfferServiceTestimonial'
 import {
+  offerServiceProcessStepsReportazeSlubneDefaults,
   offerServiceProcessStepsSesjeKobieceDefaults,
   type OfferServiceProcessStepsData,
 } from '@/components/OfferServiceProcessSteps'
 import {
+  offerServiceGalleryReportazeSlubneDefaults,
   offerServiceGallerySesjeKobieceDefaults,
+  offerServiceGalleryStoriesReportazeSlubneDefaults,
   type OfferServiceGalleryData,
 } from '@/components/OfferServiceGallery'
 import {
+  offerServiceClosingCtaReportazeSlubneDefaults,
   offerServiceClosingCtaSesjeKobieceDefaults,
   type OfferServiceClosingCtaData,
 } from '@/components/OfferServiceClosingCta'
 import {
+  offerServiceFaqReportazeSlubneDefaults,
   offerServiceFaqSesjeKobieceDefaults,
   type OfferServiceFaqData,
 } from '@/components/OfferServiceFaq'
 
 import { resolvePopulatedMediaUrl } from '@/utilities/resolvePopulatedMediaUrl'
 
-import type { OfferServicePageData } from './constants'
+import type { OfferServicePageData, OfferServiceSlug } from './constants'
 
 /**
  * Maps a Payload `OfferItem` document onto the `OfferServicePageData` shape the
@@ -63,22 +78,156 @@ function pick<T>(value: T | null | undefined | '', fallback: T): T {
   return value === null || value === undefined || value === '' ? fallback : (value as T)
 }
 
+const HERO_DEFAULTS_BY_SLUG: Partial<Record<OfferServiceSlug, OfferServiceHeroData>> = {
+  'sesje-kobiece': offerServiceHeroSesjeKobieceDefaults,
+  'reportaze-slubne': offerServiceHeroReportazeSlubneDefaults,
+}
+
+const APPROACH_DEFAULTS_BY_SLUG: Partial<Record<OfferServiceSlug, OfferServiceApproachData>> = {
+  'sesje-kobiece': offerServiceApproachSesjeKobieceDefaults,
+  'reportaze-slubne': offerServiceApproachReportazeSlubneDefaults,
+}
+
+const PACKAGES_DEFAULTS_BY_SLUG: Partial<Record<OfferServiceSlug, OfferServicePackagesData>> = {
+  'sesje-kobiece': offerServicePackagesSesjeKobieceDefaults,
+  'reportaze-slubne': offerServicePackagesReportazeSlubneDefaults,
+}
+
+const INCLUSIONS_DEFAULTS_BY_SLUG: Partial<Record<OfferServiceSlug, OfferServiceInclusionsData>> = {
+  'sesje-kobiece': offerServiceInclusionsSesjeKobieceDefaults,
+  'reportaze-slubne': offerServiceInclusionsReportazeSlubneDefaults,
+}
+
+const DUO_DEFAULTS_BY_SLUG: Partial<Record<OfferServiceSlug, OfferServiceDuoData>> = {
+  'reportaze-slubne': offerServiceDuoReportazeSlubneDefaults,
+}
+
+const STORIES_GALLERY_DEFAULTS_BY_SLUG: Partial<
+  Record<OfferServiceSlug, OfferServiceGalleryData>
+> = {
+  'reportaze-slubne': offerServiceGalleryStoriesReportazeSlubneDefaults,
+}
+
+const CLOSING_CTA_DEFAULTS_BY_SLUG: Partial<
+  Record<OfferServiceSlug, OfferServiceClosingCtaData>
+> = {
+  'sesje-kobiece': offerServiceClosingCtaSesjeKobieceDefaults,
+  'reportaze-slubne': offerServiceClosingCtaReportazeSlubneDefaults,
+}
+
+const CARE_DEFAULTS_BY_SLUG: Partial<Record<OfferServiceSlug, OfferServiceCareData>> = {
+  'sesje-kobiece': offerServiceCareSesjeKobieceDefaults,
+  'reportaze-slubne': offerServiceCareReportazeSlubneDefaults,
+}
+
+const TESTIMONIAL_DEFAULTS_BY_SLUG: Partial<Record<OfferServiceSlug, OfferServiceTestimonialData>> = {
+  'sesje-kobiece': offerServiceTestimonialSesjeKobieceDefaults,
+  'reportaze-slubne': offerServiceTestimonialReportazeSlubneDefaults,
+}
+
+const GALLERY_DEFAULTS_BY_SLUG: Partial<Record<OfferServiceSlug, OfferServiceGalleryData>> = {
+  'sesje-kobiece': offerServiceGallerySesjeKobieceDefaults,
+  'reportaze-slubne': offerServiceGalleryReportazeSlubneDefaults,
+}
+
+const PROCESS_STEPS_DEFAULTS_BY_SLUG: Partial<
+  Record<OfferServiceSlug, OfferServiceProcessStepsData>
+> = {
+  'sesje-kobiece': offerServiceProcessStepsSesjeKobieceDefaults,
+  'reportaze-slubne': offerServiceProcessStepsReportazeSlubneDefaults,
+}
+
+const FAQ_DEFAULTS_BY_SLUG: Partial<Record<OfferServiceSlug, OfferServiceFaqData>> = {
+  'sesje-kobiece': offerServiceFaqSesjeKobieceDefaults,
+  'reportaze-slubne': offerServiceFaqReportazeSlubneDefaults,
+}
+
+function resolveHeroDefaults(slug: string): OfferServiceHeroData {
+  return HERO_DEFAULTS_BY_SLUG[slug as OfferServiceSlug] ?? offerServiceHeroSesjeKobieceDefaults
+}
+
+function resolveApproachDefaults(slug: string): OfferServiceApproachData {
+  return (
+    APPROACH_DEFAULTS_BY_SLUG[slug as OfferServiceSlug] ?? offerServiceApproachSesjeKobieceDefaults
+  )
+}
+
+function resolvePackagesDefaults(slug: string): OfferServicePackagesData {
+  return (
+    PACKAGES_DEFAULTS_BY_SLUG[slug as OfferServiceSlug] ?? offerServicePackagesSesjeKobieceDefaults
+  )
+}
+
+function resolveInclusionsDefaults(slug: string): OfferServiceInclusionsData {
+  return (
+    INCLUSIONS_DEFAULTS_BY_SLUG[slug as OfferServiceSlug] ??
+    offerServiceInclusionsSesjeKobieceDefaults
+  )
+}
+
+/** Code defaults only until a Payload `duo` group is wired (CMS-ready shape). */
+function resolveDuoDefaults(slug: string): OfferServiceDuoData | undefined {
+  return DUO_DEFAULTS_BY_SLUG[slug as OfferServiceSlug]
+}
+
+/** Code defaults only — second stories rail after process steps (reportaż). */
+function resolveStoriesGalleryDefaults(slug: string): OfferServiceGalleryData | undefined {
+  return STORIES_GALLERY_DEFAULTS_BY_SLUG[slug as OfferServiceSlug]
+}
+
+function resolveClosingCtaDefaults(slug: string): OfferServiceClosingCtaData {
+  return (
+    CLOSING_CTA_DEFAULTS_BY_SLUG[slug as OfferServiceSlug] ??
+    offerServiceClosingCtaSesjeKobieceDefaults
+  )
+}
+
+function resolveCareDefaults(slug: string): OfferServiceCareData {
+  return CARE_DEFAULTS_BY_SLUG[slug as OfferServiceSlug] ?? offerServiceCareSesjeKobieceDefaults
+}
+
+function resolveTestimonialDefaults(slug: string): OfferServiceTestimonialData {
+  return (
+    TESTIMONIAL_DEFAULTS_BY_SLUG[slug as OfferServiceSlug] ??
+    offerServiceTestimonialSesjeKobieceDefaults
+  )
+}
+
+function resolveGalleryDefaults(slug: string): OfferServiceGalleryData {
+  return (
+    GALLERY_DEFAULTS_BY_SLUG[slug as OfferServiceSlug] ??
+    offerServiceGallerySesjeKobieceDefaults
+  )
+}
+
+function resolveProcessStepsDefaults(slug: string): OfferServiceProcessStepsData {
+  return (
+    PROCESS_STEPS_DEFAULTS_BY_SLUG[slug as OfferServiceSlug] ??
+    offerServiceProcessStepsSesjeKobieceDefaults
+  )
+}
+
+function resolveFaqDefaults(slug: string): OfferServiceFaqData {
+  return FAQ_DEFAULTS_BY_SLUG[slug as OfferServiceSlug] ?? offerServiceFaqSesjeKobieceDefaults
+}
+
 function mapHero(doc: OfferItem): OfferServiceHeroData {
-  const d = offerServiceHeroSesjeKobieceDefaults
+  const d = resolveHeroDefaults(doc.slug)
   const cms = doc.hero
+  const breadcrumbCurrent =
+    d.breadcrumbs[d.breadcrumbs.length - 1]?.label ?? doc.title
   return {
     title: `${doc.title} | Oczki fotografia`,
     breadcrumbs: [
       { label: 'Strona główna', href: '/' },
       { label: 'Oferta', href: '/oferta' },
-      { label: doc.title },
+      { label: breadcrumbCurrent },
     ],
     heading: {
       start: pick(cms?.heading?.start, d.heading.start),
-      // Default the emphasis to the offer's own name (not the sesje-kobiece
-      // skeleton default) so an offer seeded/created without bespoke hero copy
-      // still shows its real title in the H1.
-      emphasis: pick(cms?.heading?.emphasis, doc.title),
+      // Prefer CMS emphasis, then slug-specific defaults, then the offer title
+      // so seeded/blank heroes still show the real service name in the H1.
+      emphasis: pick(cms?.heading?.emphasis, d.heading.emphasis || doc.title),
     },
     description: pick(cms?.description, d.description),
     cta: {
@@ -93,7 +242,7 @@ function mapHero(doc: OfferItem): OfferServiceHeroData {
 }
 
 function mapApproach(doc: OfferItem): OfferServiceApproachData {
-  const d = offerServiceApproachSesjeKobieceDefaults
+  const d = resolveApproachDefaults(doc.slug)
   const cms = doc.approach
   const blocks = d.blocks.map((def, i) => {
     const row = cms?.blocks?.[i]
@@ -121,7 +270,7 @@ function mapApproach(doc: OfferItem): OfferServiceApproachData {
 }
 
 function mapPackages(doc: OfferItem): OfferServicePackagesData {
-  const d = offerServicePackagesSesjeKobieceDefaults
+  const d = resolvePackagesDefaults(doc.slug)
   const cms = doc.packages
   const packages = d.packages.map((def, i) => {
     const row = cms?.items?.[i]
@@ -136,15 +285,17 @@ function mapPackages(doc: OfferItem): OfferServicePackagesData {
       panel: {
         ...def.panel,
         title: pick(row.title, def.panel.title),
-        price: pick(row.price, def.panel.price),
-        badgeLabel: pick(row.badgeLabel, def.panel.badgeLabel),
+        // Empty string from CMS must hide the line (do not fall back via `pick`).
+        description: row.description ?? def.panel.description,
+        price: row.price ?? def.panel.price,
+        badgeLabel: row.badgeLabel ?? def.panel.badgeLabel,
         features:
           row.features && row.features.length > 0
             ? row.features.map((f) => f.text)
             : def.panel.features,
       },
     }
-  }) as unknown as OfferServicePackagesData['packages']
+  })
 
   return {
     catalogDownload: {
@@ -152,12 +303,13 @@ function mapPackages(doc: OfferItem): OfferServicePackagesData {
       label: pick(cms?.catalogDownload?.label, d.catalogDownload.label),
       url: pick(cms?.catalogDownload?.url, d.catalogDownload.url),
     },
+    heading: d.heading,
     packages,
   }
 }
 
 function mapInclusions(doc: OfferItem): OfferServiceInclusionsData {
-  const d = offerServiceInclusionsSesjeKobieceDefaults
+  const d = resolveInclusionsDefaults(doc.slug)
   const cms = doc.inclusions
 
   const checklist = (
@@ -209,7 +361,7 @@ function mapInclusions(doc: OfferItem): OfferServiceInclusionsData {
 }
 
 function mapCare(doc: OfferItem): OfferServiceCareData {
-  const d = offerServiceCareSesjeKobieceDefaults
+  const d = resolveCareDefaults(doc.slug)
   const cms = doc.care
 
   const features = (
@@ -246,7 +398,7 @@ function mapCare(doc: OfferItem): OfferServiceCareData {
 }
 
 function mapTestimonial(doc: OfferItem): OfferServiceTestimonialData {
-  const d = offerServiceTestimonialSesjeKobieceDefaults
+  const d = resolveTestimonialDefaults(doc.slug)
   const cms = doc.testimonial
 
   const items =
@@ -260,7 +412,7 @@ function mapTestimonial(doc: OfferItem): OfferServiceTestimonialData {
             photoAlt: pick(row.photoAlt, def?.photoAlt ?? ''),
           }
         })
-      : []
+      : d.items
 
   return {
     heading: {
@@ -273,7 +425,7 @@ function mapTestimonial(doc: OfferItem): OfferServiceTestimonialData {
 }
 
 function mapProcessSteps(doc: OfferItem): OfferServiceProcessStepsData {
-  const d = offerServiceProcessStepsSesjeKobieceDefaults
+  const d = resolveProcessStepsDefaults(doc.slug)
   const cms = doc.processSteps
 
   const items =
@@ -307,10 +459,10 @@ function mapProcessSteps(doc: OfferItem): OfferServiceProcessStepsData {
 }
 
 function mapGallery(doc: OfferItem): OfferServiceGalleryData {
-  const d = offerServiceGallerySesjeKobieceDefaults
+  const d = resolveGalleryDefaults(doc.slug)
   const cms = doc.gallery
 
-  const items = (cms?.items ?? []).flatMap((row, i) => {
+  const cmsItems = (cms?.items ?? []).flatMap((row, i) => {
     const imageSrc = resolvePopulatedMediaUrl(row.image)
     if (!imageSrc) return []
 
@@ -319,6 +471,7 @@ function mapGallery(doc: OfferItem): OfferServiceGalleryData {
       {
         imageSrc,
         imageAlt: pick(row.imageAlt, def?.imageAlt ?? ''),
+        cropClassName: def?.cropClassName,
         caption: {
           title: pick(row.captionTitle, def?.caption?.title ?? ''),
           subtitle: pick(row.captionSubtitle, def?.caption?.subtitle ?? ''),
@@ -328,9 +481,11 @@ function mapGallery(doc: OfferItem): OfferServiceGalleryData {
   }) as OfferServiceGalleryData['items']
 
   return {
+    layout: d.layout,
     heading: {
       start: pick(cms?.heading?.start, d.heading.start),
       emphasis: cms?.heading?.emphasis ?? d.heading.emphasis,
+      end: pick(cms?.heading?.end, d.heading.end ?? ''),
     },
     description: pick(cms?.description, d.description),
     cta: {
@@ -338,12 +493,57 @@ function mapGallery(doc: OfferItem): OfferServiceGalleryData {
       label: pick(cms?.cta?.label, d.cta.label),
       url: pick(cms?.cta?.url, d.cta.url),
     },
-    items,
+    items: cmsItems.length > 0 ? cmsItems : d.items,
+  }
+}
+
+function mapStoriesGallery(doc: OfferItem): OfferServiceGalleryData | undefined {
+  const d = resolveStoriesGalleryDefaults(doc.slug)
+  const cms = doc.storiesGallery
+
+  if (!d && !(cms?.items && cms.items.length > 0)) return undefined
+
+  const defaults = d ?? offerServiceGalleryStoriesReportazeSlubneDefaults
+
+  const cmsItems = (cms?.items ?? []).flatMap((row, i) => {
+    const imageSrc = resolvePopulatedMediaUrl(row.image)
+    if (!imageSrc) return []
+
+    const def = defaults.items[i]
+    return [
+      {
+        imageSrc,
+        imageAlt: pick(row.imageAlt, def?.imageAlt ?? ''),
+        cropClassName: def?.cropClassName,
+        caption: {
+          title: pick(row.captionTitle, def?.caption?.title ?? ''),
+          subtitle: pick(row.captionSubtitle, def?.caption?.subtitle ?? ''),
+        },
+      },
+    ]
+  }) as OfferServiceGalleryData['items']
+
+  if (cmsItems.length === 0 && !d) return undefined
+
+  return {
+    layout: defaults.layout,
+    heading: {
+      start: pick(cms?.heading?.start, defaults.heading.start),
+      emphasis: cms?.heading?.emphasis ?? defaults.heading.emphasis,
+      end: defaults.heading.end,
+    },
+    description: pick(cms?.description, defaults.description),
+    cta: {
+      ...defaults.cta,
+      label: pick(cms?.cta?.label, defaults.cta.label),
+      url: pick(cms?.cta?.url, defaults.cta.url),
+    },
+    items: cmsItems.length > 0 ? cmsItems : defaults.items,
   }
 }
 
 function mapClosingCta(doc: OfferItem): OfferServiceClosingCtaData {
-  const d = offerServiceClosingCtaSesjeKobieceDefaults
+  const d = resolveClosingCtaDefaults(doc.slug)
   const cms = doc.closingCta
   return {
     heading: pick(cms?.heading, d.heading),
@@ -358,7 +558,7 @@ function mapClosingCta(doc: OfferItem): OfferServiceClosingCtaData {
 }
 
 function mapFaq(doc: OfferItem): OfferServiceFaqData {
-  const d = offerServiceFaqSesjeKobieceDefaults
+  const d = resolveFaqDefaults(doc.slug)
   const cms = doc.faq
 
   const items =
@@ -391,9 +591,11 @@ export function mapOfferItem(doc: OfferItem): OfferServicePageData {
     packages: mapPackages(doc),
     inclusions: mapInclusions(doc),
     care: mapCare(doc),
+    duo: resolveDuoDefaults(doc.slug),
     testimonial: mapTestimonial(doc),
     processSteps: mapProcessSteps(doc),
     gallery: mapGallery(doc),
+    storiesGallery: mapStoriesGallery(doc),
     closingCta: mapClosingCta(doc),
     faq: mapFaq(doc),
   }

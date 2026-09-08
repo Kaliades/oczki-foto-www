@@ -1,41 +1,56 @@
 import {
+  offerServiceHeroReportazeSlubneDefaults,
   offerServiceHeroSesjeKobieceDefaults,
   type OfferServiceHeroData,
 } from '@/components/OfferServiceHero'
 import {
+  offerServiceApproachReportazeSlubneDefaults,
   offerServiceApproachSesjeKobieceDefaults,
   type OfferServiceApproachData,
 } from '@/components/OfferServiceApproach'
 import {
+  offerServiceCareReportazeSlubneDefaults,
   offerServiceCareSesjeKobieceDefaults,
   type OfferServiceCareData,
 } from '@/components/OfferServiceCare'
 import {
+  offerServiceDuoReportazeSlubneDefaults,
+  type OfferServiceDuoData,
+} from '@/components/OfferServiceDuo'
+import {
+  offerServiceProcessStepsReportazeSlubneDefaults,
   offerServiceProcessStepsSesjeKobieceDefaults,
   type OfferServiceProcessStepsData,
 } from '@/components/OfferServiceProcessSteps'
 import {
+  offerServiceTestimonialReportazeSlubneDefaults,
   offerServiceTestimonialSesjeKobieceDefaults,
   type OfferServiceTestimonialData,
 } from '@/components/OfferServiceTestimonial'
 import {
+  offerServiceInclusionsReportazeSlubneDefaults,
   offerServiceInclusionsSesjeKobieceDefaults,
   type OfferServiceInclusionsData,
 } from '@/components/OfferServiceInclusions'
 import {
+  offerServicePackagesReportazeSlubneDefaults,
   offerServicePackagesSesjeKobieceDefaults,
   type OfferServicePackagesData,
 } from '@/components/OfferServicePackages'
 import {
+  offerServiceClosingCtaReportazeSlubneDefaults,
   offerServiceClosingCtaSesjeKobieceDefaults,
   type OfferServiceClosingCtaData,
 } from '@/components/OfferServiceClosingCta'
 import {
+  offerServiceFaqReportazeSlubneDefaults,
   offerServiceFaqSesjeKobieceDefaults,
   type OfferServiceFaqData,
 } from '@/components/OfferServiceFaq'
 import {
+  offerServiceGalleryReportazeSlubneDefaults,
   offerServiceGallerySesjeKobieceDefaults,
+  offerServiceGalleryStoriesReportazeSlubneDefaults,
   type OfferServiceGalleryData,
 } from '@/components/OfferServiceGallery'
 export const OFFER_SERVICE_SLUGS = [
@@ -53,8 +68,15 @@ export type OfferServicePageData = {
   approach: OfferServiceApproachData
   care: OfferServiceCareData
   closingCta: OfferServiceClosingCtaData
+  /** Reportaż-only Asia & Łukasz section. */
+  duo?: OfferServiceDuoData
   faq: OfferServiceFaqData
   gallery: OfferServiceGalleryData
+  /**
+   * Optional second gallery (stories rail) after process steps — reportaż only.
+   * Does not replace `gallery` (mosaic) or ClosingCta/FAQ.
+   */
+  storiesGallery?: OfferServiceGalleryData
   hero: OfferServiceHeroData
   inclusions: OfferServiceInclusionsData
   packages: OfferServicePackagesData
@@ -95,16 +117,18 @@ const OFFER_SERVICE_PAGES: Record<OfferServiceSlug, OfferServicePageData> = {
   },
   'reportaze-slubne': {
     slug: 'reportaze-slubne',
-    hero: buildFallbackHero('Reportaż ślubny', 'Reportaże ślubne'),
-    approach: offerServiceApproachSesjeKobieceDefaults,
-    care: offerServiceCareSesjeKobieceDefaults,
-    closingCta: offerServiceClosingCtaSesjeKobieceDefaults,
-    faq: offerServiceFaqSesjeKobieceDefaults,
-    gallery: offerServiceGallerySesjeKobieceDefaults,
-    processSteps: offerServiceProcessStepsSesjeKobieceDefaults,
-    testimonial: offerServiceTestimonialSesjeKobieceDefaults,
-    inclusions: offerServiceInclusionsSesjeKobieceDefaults,
-    packages: offerServicePackagesSesjeKobieceDefaults,
+    hero: offerServiceHeroReportazeSlubneDefaults,
+    approach: offerServiceApproachReportazeSlubneDefaults,
+    care: offerServiceCareReportazeSlubneDefaults,
+    duo: offerServiceDuoReportazeSlubneDefaults,
+    closingCta: offerServiceClosingCtaReportazeSlubneDefaults,
+    faq: offerServiceFaqReportazeSlubneDefaults,
+    gallery: offerServiceGalleryReportazeSlubneDefaults,
+    storiesGallery: offerServiceGalleryStoriesReportazeSlubneDefaults,
+    processSteps: offerServiceProcessStepsReportazeSlubneDefaults,
+    testimonial: offerServiceTestimonialReportazeSlubneDefaults,
+    inclusions: offerServiceInclusionsReportazeSlubneDefaults,
+    packages: offerServicePackagesReportazeSlubneDefaults,
   },
   'sesje-wizerunkowe': {
     slug: 'sesje-wizerunkowe',

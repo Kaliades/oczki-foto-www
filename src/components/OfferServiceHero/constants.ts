@@ -39,10 +39,11 @@ export const OFFER_SERVICE_HERO_DESKTOP_LAYOUT = {
   breadcrumbPaddingX: 32,
   breadcrumbPaddingY: 4,
   copyContainerHeight: 517,
-  copyPaddingTop: 64,
+  copyPaddingTop: 48,
   copyPaddingLeft: 64,
   copyPaddingRight: 128,
-  copyPaddingBottom: 80,
+  /** Reportaż metadata: button bottom at 445 in a 517 frame → 72 px remaining. */
+  copyPaddingBottom: 72,
   copyInnerGap: 16,
   copyInnerMaxWidth: 406,
   descriptionPaddingRight: 48,
@@ -151,5 +152,36 @@ export const offerServiceHeroSesjeKobieceDefaults: OfferServiceHeroData = {
   image: {
     src: '/figma/offer-service-hero-main.png',
     alt: 'Kobieta w czarnej bluzce w białe kropki podczas sesji kobiecej',
+  },
+}
+
+/**
+ * Reportaż ślubny hero copy — Figma file `S8AUxLTY5y4aMCSIchKAi2`
+ * (`7338:7953` / `7338:8613` / `7338:9273`).
+ *
+ * Layout reuses the shared `OfferServiceHero` skeleton (kobiece Figma nodes
+ * above). Content-only override for `/oferta/reportaze-slubne`.
+ */
+export const offerServiceHeroReportazeSlubneDefaults: OfferServiceHeroData = {
+  title: 'Reportaż ślubny | Oczki fotografia',
+  breadcrumbs: [
+    { label: 'Strona główna', href: '/' },
+    { label: 'Oferta', href: '/oferta' },
+    { label: 'Reportaże ślubne' },
+  ],
+  heading: {
+    emphasis: 'Reportaż ślubny',
+    start:
+      ' w Krakowie, Przemyślu i okolicach — zatrzymajcie dzień, którego nie da się powtórzyć',
+  },
+  description:
+    'Jeszcze zanim wybrzmi pierwszy taniec, ten dzień zacznie mijać szybciej, niż się spodziewacie. Emocje będą mieszać się z radością, wzruszeniem i odrobiną chaosu. Właśnie dlatego jestem obok — żeby uchwycić to wszystko, czego nie zdążycie zauważyć.',
+  cta: {
+    href: '/kontakt',
+    label: 'Umów sesję',
+  },
+  image: {
+    src: '/figma/offer-service-hero-reportaze-slubne.png',
+    alt: 'Para młoda idąca przez łąkę wśród gór podczas reportażu ślubnego',
   },
 }

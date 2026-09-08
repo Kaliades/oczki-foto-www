@@ -32,7 +32,7 @@ export function PackageShowcaseRow({ figmaNode, image, panel }: PackageShowcaseR
 
   return (
     <div
-      className="flex w-full flex-col min-[1366px]:flex-row min-[1366px]:items-start"
+      className="flex w-full flex-col min-[1366px]:flex-row min-[1366px]:items-stretch"
       data-figma-node={figmaNode}
       data-name="Row"
     >

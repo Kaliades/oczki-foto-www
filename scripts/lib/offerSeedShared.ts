@@ -1,11 +1,14 @@
+import { access } from 'fs/promises'
 import type { Payload } from 'payload'
+import sharp from 'sharp'
 
 import {
   getOfferServiceBySlug,
   type OfferServiceSlug,
 } from '@/app/(frontend)/oferta/[slug]/constants'
 
-import { createUploadMedia } from './uploadMedia'
+import { resolveSeedAssetAbs } from './seedAssetIO'
+import { createUploadMedia, type UploadMediaFn } from './uploadMedia'
 
 export type OfferListingSeed = {
   slug: OfferServiceSlug | 'sesje-milosne'
@@ -23,6 +26,7 @@ type OfferSectionMedia = {
   careImage: number
   testimonialImages: number[]
   galleryImages: number[]
+  storiesGalleryImages: number[]
   inclusionsMainImage: number
   inclusionsScallopImage: number
 }
@@ -31,9 +35,98 @@ function seedAssetPath(figmaSrc: string): string {
   return figmaSrc.replace(/^\/figma\//, '/seed-assets/')
 }
 
+async function seedAssetExists(logicalPath: string): Promise<boolean> {
+  try {
+    await access(resolveSeedAssetAbs(logicalPath))
+    return true
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Brand "DO ZAMIANY" placeholder (same look as `replaceOfferPlaceholders…`).
+ * Used when a Figma/seed PNG is missing for a slot.
+ */
+async function ensureOfferPlaceholderMedia(
+  payload: Payload,
+  cache: Map<string, number>,
+): Promise<number> {
+  const cached = cache.get('__placeholder-offer-portrait__')
+  if (cached) return cached
+
+  const existing = await payload.find({
+    collection: 'media',
+    where: { filename: { like: 'placeholder-offer-portrait' } },
+    limit: 1,
+    depth: 0,
+    overrideAccess: true,
+  })
+  if (existing.docs[0]) {
+    const id = existing.docs[0].id as number
+    cache.set('__placeholder-offer-portrait__', id)
+    return id
+  }
+
+  const width = 1067
+  const height = 1600
+  const svg = `
+<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#f6f5f2"/>
+  <rect x="64" y="64" width="${width - 128}" height="${height - 128}"
+        fill="none" stroke="#cba783" stroke-width="5" stroke-dasharray="18 14"/>
+  <text x="50%" y="46%" text-anchor="middle" font-family="Georgia, serif"
+        font-size="56" fill="#4f3a26" letter-spacing="4">DO ZAMIANY</text>
+  <text x="50%" y="54%" text-anchor="middle" font-family="Helvetica, Arial, sans-serif"
+        font-size="28" fill="#6b5947">Placeholder oferty</text>
+  <text x="50%" y="60%" text-anchor="middle" font-family="Helvetica, Arial, sans-serif"
+        font-size="22" fill="#6b5947">Podmień na zdjęcie</text>
+</svg>`
+
+  const buffer = await sharp(Buffer.from(svg)).jpeg({ quality: 82, mozjpeg: true }).toBuffer()
+  const doc = await payload.create({
+    collection: 'media',
+    data: { alt: 'Placeholder oferty — podmień na zdjęcie' },
+    file: {
+      name: 'placeholder-offer-portrait.jpg',
+      data: buffer,
+      mimetype: 'image/jpeg',
+      size: buffer.byteLength,
+    },
+    context: { disableRevalidate: true },
+  })
+
+  const id = doc.id as number
+  cache.set('__placeholder-offer-portrait__', id)
+  payload.logger.info(`Created shared offer placeholder -> media #${id}`)
+  return id
+}
+
+/** Upload seed asset, or fall back to the shared brand placeholder. */
+function createOfferUpload(
+  payload: Payload,
+  prefix: string,
+): UploadMediaFn {
+  const upload = createUploadMedia(payload, { prefix })
+  const placeholderCache = new Map<string, number>()
+
+  return async (assetPath: string, alt: string): Promise<number> => {
+    const normalized = assetPath.startsWith('/') ? assetPath : `/${assetPath}`
+    if (await seedAssetExists(normalized)) {
+      return upload(normalized, alt)
+    }
+
+    payload.logger.warn(
+      `Missing seed asset ${normalized} — using shared placeholder-offer-portrait`,
+    )
+    return ensureOfferPlaceholderMedia(payload, placeholderCache)
+  }
+}
+
 /**
  * Uploads a fresh copy of each detail-page photo for one offer.
  * Section images are never shared across offers — each slug gets its own media IDs.
+ * Duo collage stays code-hardcoded (not seeded into CMS).
  */
 async function uploadOfferSectionMedia(
   payload: Payload,
@@ -44,7 +137,7 @@ async function uploadOfferSectionMedia(
     throw new Error('Missing code-side defaults for sesje-kobiece')
   }
 
-  const upload = createUploadMedia(payload, { prefix: `offer-${slug}` })
+  const upload = createOfferUpload(payload, `offer-${slug}`)
 
   const heroImage = await upload(seedAssetPath(data.hero.image.src), data.hero.image.alt)
   const portraitImage = await upload(
@@ -61,12 +154,21 @@ async function uploadOfferSectionMedia(
   const galleryImages = await Promise.all(
     data.gallery.items.map((g) => upload(seedAssetPath(g.imageSrc), g.imageAlt)),
   )
+  const storiesGalleryImages = data.storiesGallery
+    ? await Promise.all(
+        data.storiesGallery.items.map((g) => upload(seedAssetPath(g.imageSrc), g.imageAlt)),
+      )
+    : []
   const inclusionsMainImage = await upload(
-    '/seed-assets/offer-inclusions-main-photo.png',
+    seedAssetPath(
+      data.inclusions.images.mainPhotoSrc ?? '/figma/offer-inclusions-main-photo.png',
+    ),
     data.inclusions.images.mainAlt,
   )
   const inclusionsScallopImage = await upload(
-    '/seed-assets/offer-inclusions-scallop-photo.png',
+    seedAssetPath(
+      data.inclusions.images.scallopPhotoSrc ?? '/figma/offer-inclusions-scallop-photo.png',
+    ),
     data.inclusions.images.scallopAlt,
   )
 
@@ -77,6 +179,7 @@ async function uploadOfferSectionMedia(
     careImage,
     testimonialImages,
     galleryImages,
+    storiesGalleryImages,
     inclusionsMainImage,
     inclusionsScallopImage,
   }
@@ -93,7 +196,7 @@ export async function seedFullOfferItem(
   }
 
   const media = await uploadOfferSectionMedia(payload, listing.slug)
-  const uploadListing = createUploadMedia(payload, { prefix: `offer-listing-${listing.slug}` })
+  const uploadListing = createOfferUpload(payload, `offer-listing-${listing.slug}`)
   const listingImageId = await uploadListing(listing.listingImageSrc, listing.listingImageAlt)
 
   const offerData = {
@@ -139,6 +242,7 @@ export async function seedFullOfferItem(
         image: media.packageImages[i],
         imageAlt: p.image.alt,
         title: p.panel.title,
+        description: p.panel.description,
         price: p.panel.price,
         badgeLabel: p.panel.badgeLabel,
         features: p.panel.features.map((text) => ({ text })),
@@ -207,6 +311,7 @@ export async function seedFullOfferItem(
       heading: {
         start: pageData.gallery.heading.start,
         emphasis: pageData.gallery.heading.emphasis,
+        end: pageData.gallery.heading.end,
       },
       description: pageData.gallery.description,
       cta: { label: pageData.gallery.cta.label, url: pageData.gallery.cta.url },
@@ -217,6 +322,27 @@ export async function seedFullOfferItem(
         captionSubtitle: g.caption?.subtitle ?? '',
       })),
     },
+    ...(pageData.storiesGallery && media.storiesGalleryImages.length > 0
+      ? {
+          storiesGallery: {
+            heading: {
+              start: pageData.storiesGallery.heading.start,
+              emphasis: pageData.storiesGallery.heading.emphasis,
+            },
+            description: pageData.storiesGallery.description,
+            cta: {
+              label: pageData.storiesGallery.cta.label,
+              url: pageData.storiesGallery.cta.url,
+            },
+            items: pageData.storiesGallery.items.map((g, i) => ({
+              image: media.storiesGalleryImages[i],
+              imageAlt: g.imageAlt,
+              captionTitle: g.caption?.title ?? '',
+              captionSubtitle: g.caption?.subtitle ?? '',
+            })),
+          },
+        }
+      : {}),
     closingCta: {
       heading: pageData.closingCta.heading,
       body: pageData.closingCta.body,

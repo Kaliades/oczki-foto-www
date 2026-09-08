@@ -1,8 +1,12 @@
 import { OfferServiceApproach } from '@/components/OfferServiceApproach'
 import { OfferServiceCare } from '@/components/OfferServiceCare'
 import { OfferServiceClosingCta } from '@/components/OfferServiceClosingCta'
+import { OfferServiceDuo } from '@/components/OfferServiceDuo'
 import { OfferServiceFaq } from '@/components/OfferServiceFaq'
-import { OfferServiceGallery } from '@/components/OfferServiceGallery'
+import {
+  OfferServiceGallery,
+  OFFER_SERVICE_GALLERY_STORIES_REPORTAZE_FIGMA_NODES,
+} from '@/components/OfferServiceGallery'
 import { OfferServiceProcessSteps } from '@/components/OfferServiceProcessSteps'
 import { OfferServiceTestimonial } from '@/components/OfferServiceTestimonial'
 import { OfferServiceHero } from '@/components/OfferServiceHero'
@@ -26,10 +30,27 @@ export function OfferServicePageContent({ data }: OfferServicePageContentProps) 
       <OfferServiceApproach data={data.approach} />
       <OfferServicePackages data={data.packages} />
       <OfferServiceInclusions data={data.inclusions} />
+      {data.duo ? <OfferServiceDuo data={data.duo} /> : null}
       <OfferServiceCare data={data.care} />
       <OfferServiceTestimonial data={data.testimonial} />
-      <OfferServiceProcessSteps data={data.processSteps} />
-      <OfferServiceGallery data={data.gallery} />
+      {data.gallery.layout === 'mosaic' ? (
+        <>
+          <OfferServiceGallery data={data.gallery} />
+          <OfferServiceProcessSteps data={data.processSteps} />
+        </>
+      ) : (
+        <>
+          <OfferServiceProcessSteps data={data.processSteps} />
+          <OfferServiceGallery data={data.gallery} />
+        </>
+      )}
+      {data.storiesGallery ? (
+        <OfferServiceGallery
+          data={data.storiesGallery}
+          figmaNodes={OFFER_SERVICE_GALLERY_STORIES_REPORTAZE_FIGMA_NODES}
+          headingId="offer-service-stories-gallery-heading"
+        />
+      ) : null}
       <OfferServiceClosingCta data={data.closingCta} />
       <OfferServiceFaq data={data.faq} />
     </main>

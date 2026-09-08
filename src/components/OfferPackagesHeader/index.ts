@@ -1,1 +1,1 @@
-export { OfferPackagesHeader } from './OfferPackagesHeader'
+export { OfferPackagesHeader, type OfferPackagesHeaderHeading } from './OfferPackagesHeader'

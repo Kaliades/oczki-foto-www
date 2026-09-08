@@ -16,12 +16,17 @@ const PACKAGE_ROW_KEYS = ['starter', 'story', 'premium'] as const
  * Pricing packages section on offer-service pages.
  *
  * Figma `App container`:
- *   desktop `6986:20158` — pt 64 pb 128, header/content gap 48
- *   tablet  `7100:7874` — pt 64 pb 128, header px 80
- *   mobile  `7102:9545` — pt 48 pb 64, header/content gap 36
+ *   desktop `6986:20158` / reportaż `7338:8017` — pt 64 pb 128, header/content gap 48
+ *   tablet  `7100:7874` / reportaż `7338:8677` — pt 64 pb 128, header px 80
+ *   mobile  `7102:9545` / reportaż `7338:9337` — pt 48 pb 64, header/content gap 36
  */
 export function OfferServicePackages({ data }: OfferServicePackagesProps) {
-  const { catalogDownload, headingId = 'offer-service-packages-heading', packages } = data
+  const {
+    catalogDownload,
+    heading,
+    headingId = 'offer-service-packages-heading',
+    packages,
+  } = data
   const rowNodes = OFFER_SERVICE_PACKAGES_FIGMA_NODES.rows
 
   return (
@@ -35,6 +40,7 @@ export function OfferServicePackages({ data }: OfferServicePackagesProps) {
           catalogDownload={catalogDownload}
           className="px-4 md:px-20 min-[1366px]:px-8"
           figmaNode={OFFER_SERVICE_PACKAGES_FIGMA_NODES.header.desktop}
+          heading={heading}
           headingId={headingId}
         />
 
@@ -44,7 +50,7 @@ export function OfferServicePackages({ data }: OfferServicePackagesProps) {
           data-name="Content container"
         >
           {packages.map((pkg, index) => {
-            const rowKey = PACKAGE_ROW_KEYS[index]
+            const rowKey = PACKAGE_ROW_KEYS[index] ?? PACKAGE_ROW_KEYS[0]
             const nodes = rowNodes[rowKey]
 
             return (
@@ -56,7 +62,7 @@ export function OfferServicePackages({ data }: OfferServicePackagesProps) {
                   position: pkg.image.position,
                   src: pkg.image.src,
                 }}
-                key={rowKey}
+                key={`${rowKey}-${pkg.panel.title}`}
                 panel={{
                   ...pkg.panel,
                   figmaNodes: {

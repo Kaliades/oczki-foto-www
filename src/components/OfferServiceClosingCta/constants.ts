@@ -4,8 +4,11 @@ import type { SectionLink } from '@/utilities/resolveLinkHref'
 /**
  * Offer-service closing reservation CTA — Figma `Proces`.
  *
- * Desktop / tablet / mobile:
- *   - 6986:20363 / 7100:8319 / 7102:9985
+ * Sesje kobiece — file `uukPuuZgLMm4kTbXUJFdLI`:
+ *   - desktop / tablet / mobile: 6986:20363 / 7100:8319 / 7102:9985
+ *
+ * Reportaż ślubny — file `S8AUxLTY5y4aMCSIchKAi2` (same shell, content overlay):
+ *   - desktop / tablet / mobile: 7338:8309 / 7338:8969 / 7338:9629
  */
 export const OFFER_SERVICE_CLOSING_CTA_FIGMA_NODES = {
   desktop: '6986:20363',
@@ -27,6 +30,12 @@ export const OFFER_SERVICE_CLOSING_CTA_FIGMA_NODES = {
       tablet: '7100:8321',
     },
   },
+} as const
+
+export const OFFER_SERVICE_CLOSING_CTA_REPORTAZE_FIGMA_NODES = {
+  desktop: '7338:8309',
+  tablet: '7338:8969',
+  mobile: '7338:9629',
 } as const
 
 export const OFFER_SERVICE_CLOSING_CTA_TEXTURE = {
@@ -85,6 +94,20 @@ export const offerServiceClosingCtaSesjeKobieceDefaults: OfferServiceClosingCtaD
     type: 'custom',
     url: '/kontakt',
     label: 'Zarezerwuj czas dla siebie',
+    newTab: false,
+  },
+  textureSrc: '/figma/offer-texture.jpg',
+}
+
+/** Reportaż ślubny — Figma desktop `7338:8309` (same taped-note shell). */
+export const offerServiceClosingCtaReportazeSlubneDefaults: OfferServiceClosingCtaData = {
+  heading:
+    'Wasza miłość nie potrzebuje filtra. Potrzebuje tylko odpowiedniego światła.',
+  body: 'Najpiękniejsze momenty to te całkowicie nieplanowane. Pozwólcie nam opowiedzieć Waszą historię dokładnie taką, jaka jest: autentyczną, czułą i pełną prawdziwych emocji, do których będziecie wracać z uśmiechem za 10, 20 i 50 lat.',
+  cta: {
+    type: 'custom',
+    url: '/kontakt',
+    label: 'Zarezerwuj reportaż ślubny',
     newTab: false,
   },
   textureSrc: '/figma/offer-texture.jpg',

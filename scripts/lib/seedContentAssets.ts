@@ -77,15 +77,87 @@ export const SEED_CONTENT_ASSETS: readonly SeedContentAsset[] = [
   { path: '/seed-assets/offer-gallery-small-2.png', alt: 'Galeria oferty — zdjęcie 2' },
   { path: '/seed-assets/offer-gallery-small-3.png', alt: 'Galeria oferty — zdjęcie 3' },
   { path: '/seed-assets/offer-gallery-small-4.png', alt: 'Galeria oferty — zdjęcie 4' },
+  {
+    path: '/seed-assets/offer-gallery-reportaze-slubne-1.png',
+    alt: 'Para młoda całująca się przed drewnianym budynkiem z oknem',
+  },
+  {
+    path: '/seed-assets/offer-gallery-reportaze-slubne-2.png',
+    alt: 'Sylwetka panny młodej w welonie w jasnym progu',
+  },
+  {
+    path: '/seed-assets/offer-gallery-reportaze-slubne-3.png',
+    alt: 'Para młoda na wzgórzu w mglistym świetle zachodzącego słońca',
+  },
+  {
+    path: '/seed-assets/offer-gallery-reportaze-slubne-4.png',
+    alt: 'Para młoda spacerująca przez ogród w złotej godzinie',
+  },
+  {
+    path: '/seed-assets/offer-gallery-reportaze-slubne-5.png',
+    alt: 'Portret pana młodego podczas przygotowań',
+  },
+  {
+    path: '/seed-assets/offer-gallery-reportaze-slubne-6.png',
+    alt: 'Para młoda całująca się pod welonem',
+  },
+  {
+    path: '/seed-assets/offer-gallery-stories-reportaze-slubne-1.png',
+    alt: 'Para młoda nad jeziorem w górach',
+  },
+  {
+    path: '/seed-assets/offer-gallery-stories-reportaze-slubne-2.png',
+    alt: 'Para młoda całująca się pod welonem',
+  },
+  {
+    path: '/seed-assets/offer-gallery-stories-reportaze-slubne-3.png',
+    alt: 'Ola i Mateusz spacerujący przez łąkę wśród gór',
+  },
+  {
+    path: '/seed-assets/offer-gallery-stories-reportaze-slubne-4.png',
+    alt: 'Para młoda całująca się przed białą kolumnadą',
+  },
+  {
+    path: '/seed-assets/offer-gallery-stories-reportaze-slubne-5.png',
+    alt: 'Para młoda obejmująca się w plenerze',
+  },
   { path: '/seed-assets/offer-inclusions-main-photo.png', alt: 'Kobieta w różowym garniturze podczas sesji w studio' },
+  {
+    path: '/seed-assets/offer-inclusions-main-photo-reportaze-slubne.png',
+    alt: 'Para młoda obejmująca się przy jeziorze podczas reportażu ślubnego',
+  },
   { path: '/seed-assets/offer-inclusions-scallop-photo.png', alt: 'Czarno-biały portret kobiety w ciąży w owalnej ramce' },
+  {
+    path: '/seed-assets/offer-inclusions-scallop-photo-reportaze-slubne.png',
+    alt: 'Czarno-białe ujęcie pary młodej w owalnej ramce',
+  },
   { path: '/seed-assets/offer-package-premium-photo.png', alt: 'Pakiet premium — zdjęcie ilustracyjne' },
+  {
+    path: '/seed-assets/offer-package-plener-poslubny-photo.png',
+    alt: 'Para młoda spacerująca wśród owiec w górach podczas sesji poślubnej',
+  },
+  {
+    path: '/seed-assets/offer-package-reportaz-slubny-photo.png',
+    alt: 'Para młoda przy jeziorze podczas reportażu ślubnego',
+  },
   { path: '/seed-assets/offer-package-starter-photo.png', alt: 'Pakiet starter — zdjęcie ilustracyjne' },
   { path: '/seed-assets/offer-package-story-photo.png', alt: 'Pakiet story — zdjęcie ilustracyjne' },
   { path: '/seed-assets/offer-reportaz-slubny.png', alt: 'Para młoda patrząca na siebie podczas reportażu ślubnego' },
   { path: '/seed-assets/offer-service-approach-portrait.png', alt: 'Portret podczas sesji kobiecej' },
+  {
+    path: '/seed-assets/offer-service-approach-portrait-reportaze-slubne.png',
+    alt: 'Panna młoda w welonie z bukietem róż i kwiatów',
+  },
   { path: '/seed-assets/offer-service-care-portrait.png', alt: 'Portret kobiety podczas sesji' },
+  {
+    path: '/seed-assets/offer-service-care-portrait-reportaze-slubne.png',
+    alt: 'Asia w różowej marynarce z aparatem, uśmiechnięta podczas sesji',
+  },
   { path: '/seed-assets/offer-service-hero-main.png', alt: 'Główne zdjęcie hero oferty sesji kobiecej' },
+  {
+    path: '/seed-assets/offer-service-hero-reportaze-slubne.png',
+    alt: 'Para młoda idąca przez łąkę wśród gór podczas reportażu ślubnego',
+  },
   { path: '/seed-assets/offer-session-kobieca.png', alt: 'Kobieta z bukietem przy oknie' },
   { path: '/seed-assets/offer-session-milosna.png', alt: 'Para podczas sesji miłosnej' },
   { path: '/seed-assets/offer-session-rodzinna.png', alt: 'Mama trzymająca dziecko przy oknie' },

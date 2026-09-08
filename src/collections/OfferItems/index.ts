@@ -269,11 +269,11 @@ export const OfferItems: CollectionConfig<'offerItems'> = {
                       name: 'items',
                       type: 'array',
                       label: 'Pakiety',
-                      minRows: 3,
+                      minRows: 2,
                       maxRows: 3,
                       admin: {
                         description:
-                          'Dokładnie 3 pakiety. Kolorystyka (sage/cream/rose) i kadrowanie są przypisane wg kolejności.',
+                          '2–3 pakiety. Kolorystyka (sage/cream/rose) i kadrowanie są przypisane wg kolejności.',
                       },
                       fields: [
                         ...imageWithAlt({
@@ -283,11 +283,22 @@ export const OfferItems: CollectionConfig<'offerItems'> = {
                         }),
                         { name: 'title', type: 'text', required: true, label: 'Nazwa pakietu' },
                         {
+                          name: 'description',
+                          type: 'textarea',
+                          label: 'Zdanie wprowadzające',
+                          admin: {
+                            description:
+                              'Krótka linia „Dla Ciebie, jeśli…” nad listą cech. Zostaw puste, by ukryć.',
+                          },
+                        },
+                        {
                           name: 'price',
                           type: 'text',
-                          required: true,
                           label: 'Cena',
-                          admin: { description: 'Tekst wyświetlany wprost, np. „750 zł”.' },
+                          admin: {
+                            description:
+                              'Tekst wyświetlany wprost, np. „750 zł”. Zostaw puste, by ukryć cenę (np. reportaż).',
+                          },
                         },
                         {
                           name: 'badgeLabel',
@@ -484,6 +495,46 @@ export const OfferItems: CollectionConfig<'offerItems'> = {
                   type: 'group',
                   label: false,
                   fields: [
+                    splitHeading({ withEnd: true, emphasisOptional: true }),
+                    { name: 'description', type: 'textarea', label: 'Opis' },
+                    ctaGroup('Zobacz wszystkie zdjęcia', '/galeria'),
+                    {
+                      name: 'items',
+                      type: 'array',
+                      label: 'Zdjęcia',
+                      maxRows: 6,
+                      admin: {
+                        description:
+                          'Do 5 zdjęć (rail) lub 6 (mozaika reportażu). Układ kafelków jest stały w kodzie.',
+                      },
+                      fields: [
+                        ...imageWithAlt({
+                          imageName: 'image',
+                          altName: 'imageAlt',
+                          imageLabel: 'Zdjęcie',
+                        }),
+                        { name: 'captionTitle', type: 'text', label: 'Podpis — tytuł' },
+                        { name: 'captionSubtitle', type: 'text', label: 'Podpis — opis' },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: 'collapsible',
+              label: 'Galeria — historie (opcjonalna)',
+              admin: { initCollapsed: true },
+              fields: [
+                {
+                  name: 'storiesGallery',
+                  type: 'group',
+                  label: false,
+                  admin: {
+                    description:
+                      'Druga galeria (rail) po krokach procesu — używana na reportażu ślubnym. Zostaw puste na innych ofertach.',
+                  },
+                  fields: [
                     splitHeading({ emphasisOptional: true }),
                     { name: 'description', type: 'textarea', label: 'Opis' },
                     ctaGroup('Zobacz wszystkie zdjęcia', '/galeria'),
@@ -492,7 +543,7 @@ export const OfferItems: CollectionConfig<'offerItems'> = {
                       type: 'array',
                       label: 'Zdjęcia',
                       maxRows: 5,
-                      admin: { description: 'Maksymalnie 5 zdjęć (układ kafelków jest stały).' },
+                      admin: { description: 'Maksymalnie 5 zdjęć w układzie rail.' },
                       fields: [
                         ...imageWithAlt({
                           imageName: 'image',
@@ -542,7 +593,15 @@ export const OfferItems: CollectionConfig<'offerItems'> = {
                       label: 'Pytania i odpowiedzi',
                       fields: [
                         { name: 'question', type: 'text', required: true, label: 'Pytanie' },
-                        { name: 'answer', type: 'textarea', required: true, label: 'Odpowiedź' },
+                        {
+                          name: 'answer',
+                          type: 'textarea',
+                          label: 'Odpowiedź',
+                          admin: {
+                            description:
+                              'Możesz uzupełnić później — puste odpowiedzi nie blokują zapisu.',
+                          },
+                        },
                       ],
                     },
                   ],

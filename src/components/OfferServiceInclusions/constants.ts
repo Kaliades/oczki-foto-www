@@ -157,5 +157,74 @@ export const offerServiceInclusionsSesjeKobieceDefaults: OfferServiceInclusionsD
   images: {
     mainAlt: 'Kobieta w różowym garniturze podczas sesji w studio',
     scallopAlt: 'Czarno-biały portret kobiety w ciąży w owalnej ramce',
+    mainPhotoSrc: '/figma/offer-inclusions-main-photo.png',
+    scallopPhotoSrc: '/figma/offer-inclusions-scallop-photo.png',
+  },
+}
+
+const reportazeSlubneChecklist: readonly ChecklistFeatureListItem[] = [
+  {
+    id: 'pre-wedding-meeting',
+    title: 'Spotkanie przed ślubem',
+    description:
+      'Poznajemy się, rozmawiamy o planie dnia i wspólnie ustalamy, co jest dla Was naprawdę ważne.',
+    tilt: { degrees: 2.34 },
+    figmaNode: '7338:8189',
+  },
+  {
+    id: 'photo-planning',
+    title: 'Pomoc w zaplanowaniu zdjęć',
+    description:
+      'Podpowiadam, jak ułożyć harmonogram, aby zdjęcia nie zabierały czasu bliskim, tylko były naturalną częścią dnia.',
+    figmaNode: '7338:8197',
+  },
+  {
+    id: 'selection-edit',
+    title: 'Staranną selekcję i autorską obróbkę',
+    description:
+      'Każde zdjęcie wybieram i opracowuję osobiście, dbając o spójne kolory i ponadczasowy charakter całego reportażu.',
+    tilt: { degrees: -2.26 },
+    figmaNode: '7338:8205',
+  },
+  {
+    id: 'private-gallery',
+    title: 'Prywatną galerię online',
+    description:
+      'Dzięki niej łatwo podzielicie się zdjęciami z rodziną i przyjaciółmi, niezależnie od tego, gdzie mieszkają.',
+    figmaNode: '7338:8213',
+  },
+  {
+    id: 'albums-prints',
+    title: 'Możliwość zamówienia albumów i odbitek',
+    description:
+      'Bo najpiękniejsze wspomnienia warto nie tylko oglądać na ekranie, ale również trzymać w dłoniach.',
+    tilt: { degrees: 2.29 },
+    figmaNode: '7338:8221',
+  },
+] as const
+
+/**
+ * Reportaż ślubny inclusions — Figma file `S8AUxLTY5y4aMCSIchKAi2`
+ * (`7338:8111` / `7338:8771` / `7338:9431`). Five checklist cards; accordion
+ * copy matches the reportaż tablet/mobile frames (same titles as kobiece).
+ */
+export const offerServiceInclusionsReportazeSlubneDefaults: OfferServiceInclusionsData = {
+  heading: {
+    start: 'Co dokładnie otrzymujecie, wybierając reportaż ślubny?',
+    emphasis: '',
+    end: '',
+  },
+  intro:
+    'Zależy mi na tym, żebyście od pierwszej wiadomości aż do odebrania galerii czuli, że wszystko jest pod kontrolą. W każdym pakiecie otrzymujecie nie tylko zdjęcia, ale również moje doświadczenie, wsparcie i pełne zaangażowanie.',
+  checklist: reportazeSlubneChecklist,
+  accordion: {
+    heading: 'Dodatkowe informacje',
+    items: sesjeKobieceAccordion,
+  },
+  images: {
+    mainAlt: 'Para młoda obejmująca się przy jeziorze podczas reportażu ślubnego',
+    scallopAlt: 'Czarno-białe ujęcie pary młodej w owalnej ramce',
+    mainPhotoSrc: '/figma/offer-inclusions-main-photo-reportaze-slubne.png',
+    scallopPhotoSrc: '/figma/offer-inclusions-scallop-photo-reportaze-slubne.png',
   },
 }

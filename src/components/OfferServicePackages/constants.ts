@@ -129,8 +129,14 @@ export type OfferServicePackageItem = {
 
 export type OfferServicePackagesData = {
   catalogDownload: SectionLink
+  heading?: {
+    emphasis: string
+    end?: string
+    start: string
+  }
   headingId?: string
-  packages: readonly [OfferServicePackageItem, OfferServicePackageItem, OfferServicePackageItem]
+  /** Two (reportaż) or three (kobiece) package bands. */
+  packages: readonly OfferServicePackageItem[]
 }
 
 const BOOK_SESSION_CTA: SectionLink = {
@@ -160,6 +166,7 @@ export const offerServicePackagesSesjeKobieceDefaults: OfferServicePackagesData 
       },
       panel: {
         cta: BOOK_SESSION_CTA,
+        description: 'Dla Ciebie, jeśli chcesz po prostu zatrzymać kilka ważnych kadrów.',
         features: [
           '10 zdjęć w formie elektronicznej',
           '10 wydruków 13×19 cm zapakowanych w ozdobne opakowanie',
@@ -179,6 +186,8 @@ export const offerServicePackagesSesjeKobieceDefaults: OfferServicePackagesData 
       panel: {
         badgeLabel: 'Najczęściej wybierany',
         cta: BOOK_SESSION_CTA,
+        description:
+          'Dla Ciebie, jeśli chcesz pokazać siebie z różnych stron i zachować więcej wspomnień z tego dnia.',
         features: [
           '25 zdjęć w formie elektronicznej',
           '25 wydruków 13×19 cm zapakowanych w ozdobne opakowanie',
@@ -198,6 +207,8 @@ export const offerServicePackagesSesjeKobieceDefaults: OfferServicePackagesData 
       },
       panel: {
         cta: BOOK_SESSION_CTA,
+        description:
+          'Dla Ciebie, jeśli chcesz mieć pełną opowieść z sesji – od pierwszego uśmiechu po ostatni kadr, również w pięknej, drukowanej formie.',
         features: [
           '40 zdjęć w formie elektronicznej',
           'Mini album 10×10',
@@ -207,6 +218,72 @@ export const offerServicePackagesSesjeKobieceDefaults: OfferServicePackagesData 
         price: '1 000 zł',
         theme: 'rose',
         title: 'Premium',
+      },
+    },
+  ],
+}
+
+const ASK_FOR_OFFER_CTA: SectionLink = {
+  label: 'Zapytaj o ofertę',
+  type: 'custom',
+  url: '/kontakt',
+}
+
+const FULL_OFFER_DOWNLOAD: SectionLink = {
+  label: 'Pobierz pełną ofertę z cennikiem',
+  type: 'custom',
+  url: '/katalog',
+}
+
+/**
+ * Reportaż ślubny packages — Figma file `S8AUxLTY5y4aMCSIchKAi2`
+ * (`7338:8017` / `7338:8677` / `7338:9337`). Two bands, no price, CTA only.
+ */
+export const offerServicePackagesReportazeSlubneDefaults: OfferServicePackagesData = {
+  catalogDownload: FULL_OFFER_DOWNLOAD,
+  heading: {
+    start: 'Wybierz ',
+    emphasis: 'pakiet idealny',
+    end: ' dla Was',
+  },
+  packages: [
+    {
+      image: {
+        alt: 'Para młoda przy jeziorze podczas reportażu ślubnego',
+        // Logical seed key (`/figma/` → `scripts/seed-assets/` on seed). Page uses CMS Media URLs.
+        src: '/figma/offer-package-reportaz-slubny-photo.png',
+      },
+      panel: {
+        cta: ASK_FOR_OFFER_CTA,
+        detailsAlign: 'start',
+        features: [
+          'Pracujemy w zgranym duecie od przygotowań, przez ceremonię, aż do przyjęcia weselnego',
+          'Dostępne pakiety dostosowane do skali Waszego ślubu (od kameralnych uroczystości po pełny reportaż do oczepin)',
+          'Romantyczny plener w trakcie wesela oraz pamiątkowe zdjęcia grupowe z Waszymi bliskimi',
+          'Pakiet pierwszych kadrów udostępniamy już w ciągu 2 dni od ślubu!',
+          'Elegancka prywatna galeria online, starannie obrobione zdjęcia w pełnej rozdzielczości oraz spersonalizowane pudełko z wydrukami i pendrive’em',
+        ],
+        theme: 'sage',
+        title: 'Reportaż Ślubny',
+      },
+    },
+    {
+      image: {
+        alt: 'Para młoda spacerująca wśród owiec w górach podczas sesji poślubnej',
+        src: '/figma/offer-package-plener-poslubny-photo.png',
+      },
+      panel: {
+        cta: ASK_FOR_OFFER_CTA,
+        detailsAlign: 'start',
+        features: [
+          '40 autorsko obrobionych kadrów w formie elektronicznej',
+          '40 eleganckich odbitek w formacie 13×19 cm',
+          'Prywatna galerię online do łatwego udostępniania rodzinie i znajomym',
+          'Pomagamy w przygotowaniach oraz doborze idealnej lokalizacji (góry, morze, klimatyczne miasto lub ukochany las)',
+          'Ok. 1,5 godziny swobodnego spaceru i zdjęć',
+        ],
+        theme: 'rose',
+        title: 'Plenerowa Sesja Poślubna',
       },
     },
   ],

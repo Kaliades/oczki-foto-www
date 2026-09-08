@@ -119,3 +119,65 @@ export const offerServiceCareSesjeKobieceDefaults: OfferServiceCareData = {
     url: '/kontakt',
   },
 }
+
+const reportazeSlubneFeatures: readonly BorderedFeatureItem[] = [
+  {
+    title: 'Wsparcie w harmonogramie i przygotowaniach',
+    description:
+      'Nie musicie się martwić o to, jak poukładać dzień ślubu. Pomagamy w zaplanowaniu idealnego harmonogramu – od przygotowań po oczepiny – tak, abyście mieli czas na oddech, radość i chwile tylko dla siebie',
+    figmaNodes: {
+      desktop: '7338:8289',
+      tablet: '7356:11190',
+      mobile: '7356:11172',
+    },
+  },
+  {
+    title: 'Dwa spojrzenia, zerowy stres (Praca w duecie)',
+    description:
+      'Asia dba o artystyczny detal i budowanie ciepłej atmosfery, a Łukasz czuwa nad dynamiką kadrów i kwestiami technicznymi. Zapominacie o obecności aparatów, bo jesteśmy jak przyjaciele, na których możecie polegać.',
+    figmaNodes: {
+      desktop: '7338:8293',
+      tablet: '7356:11194',
+      mobile: '7356:11176',
+    },
+  },
+  {
+    title: 'Wasze tempo, Wasze emocje',
+    description:
+      'Nie gonimy z zegarkiem w ręku i niczego nie reżyserujemy. Potrzebujecie chwili na łzy wzruszenia, poprawienie fryzury, przytulenie świadka czy szybką kawę? Masz na to pełną przestrzeń.',
+    figmaNodes: {
+      desktop: '7338:8297',
+      tablet: '7356:11198',
+      mobile: '7356:11180',
+    },
+  },
+  {
+    title: 'Dyskrecja i czuła obserwacja',
+    description:
+      'Nasza praca polega na wyczuciu momentu. Wiemy, kiedy dyskretnie zniknąć w tle, by chwycić spontaniczny uśmiech, a kiedy podpowiedzieć Wam coś miłego, byście poczuli się pewnie.',
+    figmaNodes: {
+      desktop: '7338:8301',
+      tablet: '7356:11202',
+      mobile: '7356:11184',
+    },
+  },
+]
+
+/** Reportaż `7338:8281` / `7338:8941` / `7338:9601` — same Care shell, wedding-duo copy. */
+export const offerServiceCareReportazeSlubneDefaults: OfferServiceCareData = {
+  heading: {
+    emphasis: 'Wrażliwość',
+    start: ' i doświadczenie, które widzą więcej',
+  },
+  intro: 'Wspólnie dbamy o Wasz komfort i spokój na każdym etapie.',
+  features: reportazeSlubneFeatures,
+  image: {
+    alt: 'Asia w różowej marynarce z aparatem, uśmiechnięta podczas sesji',
+    src: '/figma/offer-service-care-portrait-reportaze-slubne.png',
+  },
+  cta: {
+    label: 'Umów sesję',
+    type: 'custom',
+    url: '/kontakt',
+  },
+}

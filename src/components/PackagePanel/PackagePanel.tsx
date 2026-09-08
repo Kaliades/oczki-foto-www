@@ -10,6 +10,8 @@ import { PACKAGE_PANEL_THEME_STYLES, type PackagePanelTheme } from './constants'
 export type PackagePanelData = {
   badgeLabel?: string
   cta: SectionLink
+  /** Short “for you if…” line shown above the feature checklist. */
+  description?: string
   features: readonly string[]
   figmaNodes?: {
     column?: string
@@ -17,7 +19,15 @@ export type PackagePanelData = {
     columnHeader?: string
     heading?: string
   }
-  price: string
+  /**
+   * Desktop details placement inside the fixed 640 px column.
+   * - `end` (default) — pin details to the bottom (kobiece / Figma with price)
+   * - `start` — stack under the header; empty space falls below the CTA
+   *   (reportaż without price — avoids a stranded button at the column base)
+   */
+  detailsAlign?: 'start' | 'end'
+  /** Omit or leave empty to hide the price (reportaż packages). */
+  price?: string
   theme: PackagePanelTheme
   title: string
 }
@@ -30,20 +40,30 @@ type PackagePanelProps = {
  * Coloured package copy column — Figma `Column`.
  *
  * <Column>
- * ├── <Column Header container> — border-b, ornament heading, optional badge
- * └── <Column details> — feature list + price/CTA
- *
- * Desktop: column stretches to row height; header + details pinned with justify-between.
- * Tablet/mobile: natural stack; details follow header immediately.
+ * ├── <Column Header container>
+ * └── <Column details> — (description + features) + price/CTA as ONE cluster
+ *     (gap 64 px desktop). Details never flex-grow internally.
  */
 export function PackagePanel({ data }: PackagePanelProps) {
-  const { badgeLabel, cta, features, figmaNodes, price, theme, title } = data
+  const {
+    badgeLabel,
+    cta,
+    description,
+    detailsAlign = 'end',
+    features,
+    figmaNodes,
+    price,
+    theme,
+    title,
+  } = data
   const themeStyles = PACKAGE_PANEL_THEME_STYLES[theme]
+  const pinDetailsToEnd = detailsAlign === 'end'
 
   return (
     <div
       className={cn(
-        'flex w-full flex-col overflow-hidden md:h-[400px] min-[1366px]:min-h-[640px] min-[1366px]:flex-1 min-[1366px]:justify-between',
+        'flex w-full flex-col overflow-hidden md:min-h-[400px] min-[1366px]:h-[640px] min-[1366px]:min-h-[640px] min-[1366px]:flex-1',
+        pinDetailsToEnd && 'min-[1366px]:justify-between',
         themeStyles.backgroundClassName,
       )}
       data-figma-node={figmaNodes?.column}
@@ -73,7 +93,14 @@ export function PackagePanel({ data }: PackagePanelProps) {
         data-figma-node={figmaNodes?.columnDetails}
         data-name="Column details"
       >
-        <PackageFeatureList features={features} />
+        <div className="flex w-full flex-col gap-3">
+          {description ? (
+            <p className="oczki-body-l tracking-[-0.24px] text-[var(--oczki-primary-700)]">
+              {description}
+            </p>
+          ) : null}
+          <PackageFeatureList features={features} />
+        </div>
         <PackagePriceCta cta={cta} price={price} />
       </div>
     </div>

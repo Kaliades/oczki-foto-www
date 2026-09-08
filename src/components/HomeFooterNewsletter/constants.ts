@@ -19,10 +19,15 @@ import type { SectionLink } from '@/utilities/resolveLinkHref'
  *   - tablet  768:  7102:13177
  *   - mobile  360:  7102:17058
  *
- * Offer service (`/oferta/[slug]`):
+ * Offer service (`/oferta/[slug]`) — sesje kobiece file `uukPuuZgLMm4kTbXUJFdLI`:
  *   - desktop 1366: 7100:6792
  *   - tablet  768:  7100:8624
  *   - mobile  360:  7102:10290
+ *
+ * Offer service reportaż ślubny — file `S8AUxLTY5y4aMCSIchKAi2` (same shell + copy):
+ *   - desktop 1366: 7338:8610
+ *   - tablet  768:  7338:9270
+ *   - mobile  360:  7338:9930
  *
  * About (`/o-mnie`):
  *   - desktop 1366: 7091:5203
@@ -61,6 +66,13 @@ export const OFFER_SERVICE_FOOTER_NEWSLETTER_FIGMA_NODES = {
   desktopFrame: '7100:6792',
   tabletFrame: '7100:8624',
   mobileFrame: '7102:10290',
+} as const
+
+/** Reportaż ślubny artboard — identical shell/copy to kobiece offer footer. */
+export const OFFER_SERVICE_FOOTER_NEWSLETTER_REPORTAZE_FIGMA_NODES = {
+  desktopFrame: '7338:8610',
+  tabletFrame: '7338:9270',
+  mobileFrame: '7338:9930',
 } as const
 
 export const ABOUT_FOOTER_NEWSLETTER_FIGMA_NODES = {

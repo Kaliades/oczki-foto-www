@@ -13,8 +13,9 @@ type OfferServiceFooterNewsletterProps = {
 }
 
 /**
- * Offer service page footer — reuses {@link HomeFooterNewsletter} with
- * sesje-kobiece artboard Figma instance nodes.
+ * Offer service page footer — reuses {@link HomeFooterNewsletter}.
+ * Reportaż artboards (`7338:8610` / `7338:9270` / `7338:9930`) match the
+ * shared shell and copy — no content overlay required.
  *
  * Page order (Figma y-coords): after `OfferServiceFaq`, last section on page.
  */

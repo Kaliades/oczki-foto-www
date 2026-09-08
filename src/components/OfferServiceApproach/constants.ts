@@ -78,3 +78,50 @@ export const offerServiceApproachSesjeKobieceDefaults: OfferServiceApproachData 
     alt: 'Uśmiechnięta kobieta w kwiatowej marynarce podczas sesji zdjęciowej',
   },
 }
+
+/**
+ * Reportaż ślubny approach — Figma file `S8AUxLTY5y4aMCSIchKAi2`
+ * (`7338:7990` / `7338:8650` / `7338:9310`).
+ *
+ * Layout reuses `OfferServiceApproach` + `ApproachBlocksRail` + `BorderedApproachBlock`.
+ * Single intro paragraph (second slot empty — filtered at render).
+ */
+export const offerServiceApproachReportazeSlubneDefaults: OfferServiceApproachData = {
+  heading: {
+    start: 'To nie tylko zdjęcia. To wspomnienia, których ',
+    emphasis: 'nie da się powtórzyć',
+    end: '.',
+  },
+  introParagraphs: [
+    'W dniu ślubu wszystko dzieje się bardzo szybko. Często dopiero oglądając galerię, odkrywacie momenty, których nawet nie zauważyliście.',
+    '',
+  ],
+  blocks: [
+    {
+      title: 'Dyskrecja zamiast reżyserii',
+      description:
+        'Nie przerywam ważnych chwil tylko po to, żeby poprawić ustawienie dłoni. Pozwalam wydarzeniom toczyć się własnym rytmem.',
+      layout: 'bookend',
+      figmaNode: '7338:7998',
+    },
+    {
+      title: 'Spokój w najbardziej intensywnym dniu',
+      description:
+        'Pomagam, kiedy trzeba, ale nigdy nie odbieram Wam przestrzeni do przeżywania tego dnia. Prowadzę Was naturalnie i daję wskazówki.',
+      layout: 'bookend',
+      figmaNode: '7338:8004',
+    },
+    {
+      title: 'Emocje zamiast perfekcji',
+      description:
+        'Najbardziej lubię fotografie, na których widać prawdziwe spojrzenia, śmiech i wzruszenie. To właśnie do nich wraca się po latach.',
+      layout: 'bookend',
+      stretchContent: true,
+      figmaNode: '7338:8011',
+    },
+  ],
+  portrait: {
+    src: '/figma/offer-service-approach-portrait-reportaze-slubne.png',
+    alt: 'Panna młoda w welonie z bukietem róż i kwiatów',
+  },
+}

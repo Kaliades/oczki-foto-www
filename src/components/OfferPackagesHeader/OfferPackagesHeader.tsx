@@ -3,11 +3,24 @@ import { SplitDisplayHeading } from '@/components/SplitDisplayHeading/SplitDispl
 import { resolveLinkHref, type SectionLink } from '@/utilities/resolveLinkHref'
 import { cn } from '@/utilities/ui'
 
+export type OfferPackagesHeaderHeading = {
+  emphasis: string
+  end?: string
+  start: string
+}
+
 type OfferPackagesHeaderProps = {
   catalogDownload: SectionLink
   className?: string
   figmaNode?: string
+  heading?: OfferPackagesHeaderHeading
   headingId: string
+}
+
+const DEFAULT_HEADING: OfferPackagesHeaderHeading = {
+  start: 'Wybierz ',
+  emphasis: 'pakiet idealny',
+  end: ' dla siebie',
 }
 
 /**
@@ -15,11 +28,14 @@ type OfferPackagesHeaderProps = {
  *
  * Mobile: column, gap 16, full-width download.
  * Tablet/desktop: row, space-between, intrinsic download width.
+ *
+ * Heading copy is overridable (reportaż: „dla Was”); layout stays shared.
  */
 export function OfferPackagesHeader({
   catalogDownload,
   className,
   figmaNode,
+  heading = DEFAULT_HEADING,
   headingId,
 }: OfferPackagesHeaderProps) {
   const downloadHref = resolveLinkHref(catalogDownload)
@@ -35,11 +51,11 @@ export function OfferPackagesHeader({
     >
       <SplitDisplayHeading
         className="w-full text-left [word-break:break-word] md:w-auto"
-        emphasis="pakiet idealny"
-        end=" dla siebie"
+        emphasis={heading.emphasis}
+        end={heading.end}
         id={headingId}
         sizeClassName="text-[28px] tracking-[-0.28px] md:text-[32px] md:tracking-[-0.32px] lg:text-[36px] lg:tracking-[-0.36px]"
-        start="Wybierz "
+        start={heading.start}
       />
 
       {downloadHref && catalogDownload.label ? (

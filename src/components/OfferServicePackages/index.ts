@@ -1,4 +1,5 @@
 export {
+  offerServicePackagesReportazeSlubneDefaults,
   offerServicePackagesSesjeKobieceDefaults,
   OFFER_SERVICE_PACKAGES_FIGMA_NODES,
   type OfferServicePackageItem,

@@ -81,14 +81,15 @@ function mapSiteSettings(settings: SiteSetting): HomeFooterNewsletterData {
   const socialLinks: readonly FooterSocialLink[] =
     mappedSocials.length > 0 ? mappedSocials : d.footer.socialLinks
 
+  const mappedGallery: FooterGalleryImage[] = (settings.galleryImages ?? []).flatMap((item) => {
+    const src = resolvePopulatedMediaUrl(item.image)
+    if (!src) return []
+    return [{ src, alt: item.alt }]
+  })
+  // Prefer CMS; if the global has slots but media URLs are missing/broken, keep the
+  // designed six-up strip rather than leaving an empty cream band under the nav.
   const galleryImages: readonly FooterGalleryImage[] =
-    settings.galleryImages && settings.galleryImages.length > 0
-      ? settings.galleryImages.flatMap((item) => {
-          const src = resolvePopulatedMediaUrl(item.image)
-          if (!src) return []
-          return [{ src, alt: item.alt }]
-        })
-      : []
+    mappedGallery.length > 0 ? mappedGallery : d.footer.galleryImages
 
   return {
     newsletter: {
