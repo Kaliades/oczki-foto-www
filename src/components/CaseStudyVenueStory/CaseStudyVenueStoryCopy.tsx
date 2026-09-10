@@ -1,6 +1,8 @@
 import { SplitDisplayHeading } from '@/components/SplitDisplayHeading/SplitDisplayHeading'
+import { truncateWithEllipsis } from '@/utilities/truncateWithEllipsis'
 
 import {
+  CASE_STUDY_VENUE_STORY_BODY_MAX_LENGTH,
   CASE_STUDY_VENUE_STORY_COPY_LAYOUT,
   CASE_STUDY_VENUE_STORY_FIGMA_NODES,
   type CaseStudyVenueStoryHeading,
@@ -15,16 +17,9 @@ type CaseStudyVenueStoryCopyProps = {
   headingId: string
 }
 
-/** Matches Figma body heights: D/T 144px (6 lines), M 216px (9 lines) at body/l 16×1.48. */
-const BODY_LINE_CLAMP_CLASS = {
-  desktop: 'line-clamp-6',
-  tablet: 'line-clamp-6',
-  mobile: 'line-clamp-9',
-} as const
-
 /**
  * Venue story title + body inside `Herosection`.
- * Overflow uses CSS line-clamp so ellipsis sits at the end of the last full line.
+ * Body is hard-capped to the CMS max so long entries cannot overflow the stage.
  */
 export function CaseStudyVenueStoryCopy({
   variant,
@@ -34,6 +29,7 @@ export function CaseStudyVenueStoryCopy({
 }: CaseStudyVenueStoryCopyProps) {
   const layout = CASE_STUDY_VENUE_STORY_COPY_LAYOUT[variant]
   const nodes = CASE_STUDY_VENUE_STORY_FIGMA_NODES.copy[variant]
+  const displayBody = truncateWithEllipsis(body, CASE_STUDY_VENUE_STORY_BODY_MAX_LENGTH)
 
   return (
     <div
@@ -63,10 +59,8 @@ export function CaseStudyVenueStoryCopy({
         data-name="Container"
         style={{ paddingRight: layout.bodyPaddingRight }}
       >
-        <p
-          className={`oczki-body-l w-full tracking-[-0.24px] text-[var(--oczki-primary-700)] ${BODY_LINE_CLAMP_CLASS[variant]}`}
-        >
-          {body}
+        <p className="oczki-body-l w-full tracking-[-0.24px] text-[var(--oczki-primary-700)]">
+          {displayBody}
         </p>
       </div>
     </div>

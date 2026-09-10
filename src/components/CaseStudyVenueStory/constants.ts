@@ -20,11 +20,10 @@ export const CASE_STUDY_VENUE_STORY_FIGMA_NODES = {
 } as const
 
 /**
- * CMS maxLength — matches the truncated Instagram-style reference sample
- * (“To było jedno z tych spotkań… jak to się”, 365 UTF-16 units / Payload count).
- * Display still uses line-clamp (D/T 6, M 9) so ellipsis sits at end of last full line.
+ * CMS + display cap — length of the reference truncated sample ending at “(ktoś wie”
+ * (353 UTF-16 units = Payload `maxLength`). Longer CMS copy is sliced + ellipsis on the site.
  */
-export const CASE_STUDY_VENUE_STORY_BODY_MAX_LENGTH = 365 as const
+export const CASE_STUDY_VENUE_STORY_BODY_MAX_LENGTH = 353 as const
 
 export type CaseStudyVenueStoryHeading = {
   emphasis: string

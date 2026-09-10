@@ -280,7 +280,7 @@ export const Galleries: CollectionConfig<'galleries'> = {
                   label: 'Treść',
                   maxLength: CASE_STUDY_VENUE_STORY_BODY_MAX_LENGTH,
                   admin: {
-                    description: `Max ${CASE_STUDY_VENUE_STORY_BODY_MAX_LENGTH} znaków (referencyjny skrócony opis). Na stronie urywa się wielokropkiem po ostatniej widocznej linii (desktop/tablet 6, mobile 9).`,
+                    description: `Max ${CASE_STUDY_VENUE_STORY_BODY_MAX_LENGTH} znaków. Dłuższy tekst na stronie jest ucinany z wielokropkiem.`,
                   },
                 },
                 ...imageWithAlt({
