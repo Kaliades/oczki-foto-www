@@ -12,15 +12,15 @@ import {
 
 type ScallopedFrameEarsProps = {
   /**
-   * Extra side tiles appended at the bottom of left + right strips.
-   * Bottom horizontal row shifts down by the same number of vertical steps.
+   * Extra side tiles (may be negative). Bottom horizontal row shifts by the
+   * same number of vertical steps so corners stay locked to the tile grid.
    */
   extraVerticalTiles?: number
 }
 
 /**
  * Scallop tile strips — absolute positions from Figma `get_design_context`.
- * Grows downward in whole-tile steps when `extraVerticalTiles` > 0.
+ * Grows/shrinks in whole-tile steps via `extraVerticalTiles`.
  */
 export function ScallopedFrameEars({ extraVerticalTiles = 0 }: ScallopedFrameEarsProps) {
   const { ears } = SCALLOPED_STORY_FRAME_LAYOUT
@@ -37,7 +37,7 @@ export function ScallopedFrameEars({ extraVerticalTiles = 0 }: ScallopedFrameEar
   const mobileBottomTop = ears.mobile.bottom.top + extraVerticalTiles * mobileStep
 
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0">
+    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-visible">
       <div
         className="absolute hidden md:block"
         style={{ left: ears.desktop.top.left, top: ears.desktop.top.top }}

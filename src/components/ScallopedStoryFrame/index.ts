@@ -7,6 +7,7 @@ export {
 } from './constants'
 export {
   scallopExtraVerticalTiles,
+  scallopFrameMetricsFromPanel,
   scallopVerticalStepPx,
   scallopVerticalStripLengthPx,
 } from './scallopedStoryFrameUtils'
