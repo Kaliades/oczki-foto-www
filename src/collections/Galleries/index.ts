@@ -12,6 +12,7 @@ import {
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { ADMIN_GROUP_PAGES } from '@/constants/adminGroups'
+import { CASE_STUDY_HERO_HEADING_MAX_LENGTH } from '@/components/CaseStudyHero'
 import { GALLERY_SESSION_FILTERS } from '@/components/GalleryHero/constants'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateGallery, revalidateGalleryDelete } from './hooks/revalidateGallery'
@@ -178,15 +179,38 @@ export const Galleries: CollectionConfig<'galleries'> = {
                   label: 'Nagłówek',
                   admin: {
                     description:
-                      'Zdanie podzielone na trzy części: początek, wyróżnienie i końcówka (np. kropka).',
+                      'Zdanie podzielone na trzy części: początek, wyróżnienie i końcówka (np. kropka). Trzymaj się limitów znaków — dłuższy tekst rozsadza ramkę hero.',
                   },
                   fields: [
-                    { name: 'lead', type: 'textarea', label: 'Początek' },
-                    { name: 'emphasis', type: 'text', label: 'Wyróżnienie' },
-                    { name: 'end', type: 'text', label: 'Koniec' },
+                    {
+                      name: 'lead',
+                      type: 'textarea',
+                      label: 'Początek',
+                      maxLength: CASE_STUDY_HERO_HEADING_MAX_LENGTH.lead,
+                      admin: {
+                        description: `Max ${CASE_STUDY_HERO_HEADING_MAX_LENGTH.lead} znaków.`,
+                      },
+                    },
+                    {
+                      name: 'emphasis',
+                      type: 'text',
+                      label: 'Wyróżnienie',
+                      maxLength: CASE_STUDY_HERO_HEADING_MAX_LENGTH.emphasis,
+                      admin: {
+                        description: `Max ${CASE_STUDY_HERO_HEADING_MAX_LENGTH.emphasis} znaków (np. imiona / tytuł sesji).`,
+                      },
+                    },
+                    {
+                      name: 'end',
+                      type: 'text',
+                      label: 'Koniec',
+                      maxLength: CASE_STUDY_HERO_HEADING_MAX_LENGTH.end,
+                      admin: {
+                        description: `Max ${CASE_STUDY_HERO_HEADING_MAX_LENGTH.end} znaków (zwykle kropka).`,
+                      },
+                    },
                   ],
                 },
-                { name: 'description', type: 'textarea', label: 'Opis' },
                 ...imageWithAlt({
                   imageName: 'backgroundImage',
                   altName: 'backgroundAlt',

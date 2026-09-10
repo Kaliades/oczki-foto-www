@@ -50,8 +50,6 @@ export const CASE_STUDY_CASES: Record<CaseStudySlug, CaseStudyPageData> = {
         emphasis: 'Justyny i Krzysia',
         end: '.',
       },
-      description:
-        'To był jeden z tych czerwcowych dni, kiedy słońce nie brało jeńców, a termometry uparcie pokazywały ponad 30 stopni. Jednak u Justyny i Krzysia upał był tylko tłem dla emocji, które biły od nich od samego rana. Zapraszam Was do obejrzenia historii, która udowadnia, że najlepszy przepis na ślub to spokój i otaczanie się ludźmi, przy których można być w pełni sobą.',
     },
     details: {
       heading: {

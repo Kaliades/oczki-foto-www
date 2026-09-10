@@ -53,7 +53,6 @@ function mapHero(doc: Gallery, d: CaseStudyHeroData): CaseStudyHeroData {
       emphasis: pick(cms?.heading?.emphasis, d.heading.emphasis),
       end: pick(cms?.heading?.end, d.heading.end),
     },
-    description: pick(cms?.description, d.description),
   }
 }
 

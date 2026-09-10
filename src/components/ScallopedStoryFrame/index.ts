@@ -5,3 +5,8 @@ export {
   SCALLOPED_STORY_FRAME_FIGMA_NODES,
   SCALLOPED_STORY_FRAME_LAYOUT,
 } from './constants'
+export {
+  scallopExtraVerticalTiles,
+  scallopVerticalStepPx,
+  scallopVerticalStripLengthPx,
+} from './scallopedStoryFrameUtils'

@@ -136,7 +136,6 @@ export async function exportLocalLiveGalleriesPackage(payload: Payload): Promise
       }),
       hero: {
         heading: hero.heading ?? null,
-        description: hero.description ?? null,
         backgroundImage: mediaIdOrFilename(hero.backgroundImage),
         backgroundAlt: hero.backgroundAlt ?? null,
       },

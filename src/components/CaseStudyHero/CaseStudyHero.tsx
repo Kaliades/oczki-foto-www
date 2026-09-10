@@ -10,19 +10,19 @@ type CaseStudyHeroProps = {
 }
 
 /**
- * Case study page hero — Figma `Frame 1000006620`.
+ * Case study page hero — Figma `Frame 1000006621`.
  *
  * <section> (full-bleed photo + gradient)
  * └── inner 1366 cap
  *     ├── breadcrumb row (on photo)
- *     └── main column (`Main Container`)
+ *     └── main column (`Main Container`) — vertically centres the card on md+
  *         └── ScallopedStoryFrame (`Group 62`)
- *             └── CaseStudyStoryCopy
+ *             └── CaseStudyStoryCopy (heading only)
  *
  * Navbar: global `OczkiNavbar` via layout — not rendered here.
  */
 export function CaseStudyHero({ data }: CaseStudyHeroProps) {
-  const { background, breadcrumbs, description, heading, title } = data
+  const { background, breadcrumbs, heading, title } = data
   const headingId = 'case-study-hero-heading'
 
   return (
@@ -42,15 +42,11 @@ export function CaseStudyHero({ data }: CaseStudyHeroProps) {
         </div>
 
         <div
-          className="relative z-10 flex min-h-[579px] flex-col items-start pl-[3px] pr-4 pb-12 pt-[22px] md:pl-20 md:pr-20 md:pt-8 lg:pl-8 lg:pr-8 lg:pt-[31px]"
+          className="relative z-10 flex min-h-[579px] flex-col items-center justify-center px-4 pb-8 md:items-start md:px-20 md:pb-24 md:pt-12 lg:px-8"
           data-figma-node={CASE_STUDY_HERO_FIGMA_NODES.mainContainer.desktop}
         >
           <ScallopedStoryFrame>
-            <CaseStudyStoryCopy
-              description={description}
-              heading={heading}
-              headingId={headingId}
-            />
+            <CaseStudyStoryCopy heading={heading} headingId={headingId} />
           </ScallopedStoryFrame>
         </div>
       </div>

@@ -359,7 +359,6 @@ export async function importLiveGalleriesProduction(payload: Payload): Promise<v
         })),
       hero: {
         heading: g.hero.heading,
-        description: g.hero.description,
         backgroundImage: mapFilename(
           typeof g.hero.backgroundImage === 'string' ? g.hero.backgroundImage : null,
           idByFilename,

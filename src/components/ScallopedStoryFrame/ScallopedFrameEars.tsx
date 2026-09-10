@@ -1,15 +1,40 @@
 import {
   SCALLOP_HORIZONTAL_TILE_COUNTS,
+  SCALLOP_TILE,
   SCALLOP_VERTICAL_TILE_COUNTS,
   SCALLOPED_STORY_FRAME_LAYOUT,
 } from './constants'
 import { ScallopTileStrip } from './ScallopTileStrip'
+import {
+  scallopVerticalStepPx,
+  scallopVerticalStripLengthPx,
+} from './scallopedStoryFrameUtils'
+
+type ScallopedFrameEarsProps = {
+  /**
+   * Extra side tiles appended at the bottom of left + right strips.
+   * Bottom horizontal row shifts down by the same number of vertical steps.
+   */
+  extraVerticalTiles?: number
+}
 
 /**
  * Scallop tile strips — absolute positions from Figma `get_design_context`.
+ * Grows downward in whole-tile steps when `extraVerticalTiles` > 0.
  */
-export function ScallopedFrameEars() {
+export function ScallopedFrameEars({ extraVerticalTiles = 0 }: ScallopedFrameEarsProps) {
   const { ears } = SCALLOPED_STORY_FRAME_LAYOUT
+  const desktopStep = scallopVerticalStepPx('desktop')
+  const mobileStep = scallopVerticalStepPx('mobile')
+
+  const desktopVerticalCount = SCALLOP_VERTICAL_TILE_COUNTS.desktop + extraVerticalTiles
+  const mobileVerticalCount = SCALLOP_VERTICAL_TILE_COUNTS.mobile + extraVerticalTiles
+
+  const desktopSideHeight = scallopVerticalStripLengthPx(desktopVerticalCount, 'desktop')
+  const mobileSideHeight = scallopVerticalStripLengthPx(mobileVerticalCount, 'mobile')
+
+  const desktopBottomTop = ears.desktop.bottom.top + extraVerticalTiles * desktopStep
+  const mobileBottomTop = ears.mobile.bottom.top + extraVerticalTiles * mobileStep
 
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -21,7 +46,7 @@ export function ScallopedFrameEars() {
       </div>
       <div
         className="absolute hidden md:block"
-        style={{ left: ears.desktop.bottom.left, top: ears.desktop.bottom.top }}
+        style={{ left: ears.desktop.bottom.left, top: desktopBottomTop }}
       >
         <div className="rotate-180">
           <ScallopTileStrip count={SCALLOP_HORIZONTAL_TILE_COUNTS.desktop} orientation="horizontal" />
@@ -30,27 +55,35 @@ export function ScallopedFrameEars() {
       <div
         className="absolute hidden items-center justify-center md:flex"
         style={{
-          height: ears.desktop.left.height,
+          height: desktopSideHeight,
           left: ears.desktop.left.left,
           top: ears.desktop.left.top,
           width: ears.desktop.left.width,
         }}
       >
         <div className="-rotate-90">
-          <ScallopTileStrip count={SCALLOP_VERTICAL_TILE_COUNTS.desktop} orientation="horizontal" />
+          <ScallopTileStrip
+            count={desktopVerticalCount}
+            orientation="horizontal"
+            overlap={SCALLOP_TILE.desktop.verticalOverlap}
+          />
         </div>
       </div>
       <div
         className="absolute hidden items-center justify-center md:flex"
         style={{
-          height: ears.desktop.right.height,
+          height: desktopSideHeight,
           left: ears.desktop.right.left,
           top: ears.desktop.right.top,
           width: ears.desktop.right.width,
         }}
       >
         <div className="-rotate-90 -scale-y-100">
-          <ScallopTileStrip count={SCALLOP_VERTICAL_TILE_COUNTS.desktop} orientation="horizontal" />
+          <ScallopTileStrip
+            count={desktopVerticalCount}
+            orientation="horizontal"
+            overlap={SCALLOP_TILE.desktop.verticalOverlap}
+          />
         </div>
       </div>
 
@@ -69,7 +102,7 @@ export function ScallopedFrameEars() {
         style={{
           height: ears.mobile.bottom.height,
           left: ears.mobile.bottom.left,
-          top: ears.mobile.bottom.top,
+          top: mobileBottomTop,
           width: ears.mobile.bottom.width,
         }}
       >
@@ -84,7 +117,7 @@ export function ScallopedFrameEars() {
       <div
         className="absolute flex items-center justify-center md:hidden"
         style={{
-          height: ears.mobile.left.height,
+          height: mobileSideHeight,
           left: ears.mobile.left.left,
           top: ears.mobile.left.top,
           width: ears.mobile.left.width,
@@ -92,8 +125,9 @@ export function ScallopedFrameEars() {
       >
         <div className="-rotate-90">
           <ScallopTileStrip
-            count={SCALLOP_VERTICAL_TILE_COUNTS.mobile}
+            count={mobileVerticalCount}
             orientation="horizontal"
+            overlap={SCALLOP_TILE.mobile.overlap}
             size="mobile"
           />
         </div>
@@ -101,7 +135,7 @@ export function ScallopedFrameEars() {
       <div
         className="absolute flex items-center justify-center md:hidden"
         style={{
-          height: ears.mobile.right.height,
+          height: mobileSideHeight,
           left: ears.mobile.right.left,
           top: ears.mobile.right.top,
           width: ears.mobile.right.width,
@@ -109,8 +143,9 @@ export function ScallopedFrameEars() {
       >
         <div className="-rotate-90 -scale-y-100">
           <ScallopTileStrip
-            count={SCALLOP_VERTICAL_TILE_COUNTS.mobile}
+            count={mobileVerticalCount}
             orientation="horizontal"
+            overlap={SCALLOP_TILE.mobile.overlap}
             size="mobile"
           />
         </div>

@@ -1159,14 +1159,22 @@ export interface Gallery {
    */
   hero?: {
     /**
-     * Zdanie podzielone na trzy części: początek, wyróżnienie i końcówka (np. kropka).
+     * Zdanie podzielone na trzy części: początek, wyróżnienie i końcówka (np. kropka). Trzymaj się limitów znaków — dłuższy tekst rozsadza ramkę hero.
      */
     heading?: {
+      /**
+       * Max 120 znaków.
+       */
       lead?: string | null;
+      /**
+       * Max 60 znaków (np. imiona / tytuł sesji).
+       */
       emphasis?: string | null;
+      /**
+       * Max 8 znaków (zwykle kropka).
+       */
       end?: string | null;
     };
-    description?: string | null;
     backgroundImage?: (number | null) | Media;
     /**
      * Opis dla dostępności i SEO (krótkie, opisowe zdanie).
@@ -2479,7 +2487,6 @@ export interface GalleriesSelect<T extends boolean = true> {
               emphasis?: T;
               end?: T;
             };
-        description?: T;
         backgroundImage?: T;
         backgroundAlt?: T;
       };

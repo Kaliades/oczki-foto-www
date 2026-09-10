@@ -54,16 +54,15 @@ export async function seedGallery(payload: Payload): Promise<void> {
       image: galleryImages[i],
       caption: g.imageAlt,
     })),
-    hero: {
-      heading: {
-        lead: data.hero.heading.lead,
-        emphasis: data.hero.heading.emphasis,
-        end: data.hero.heading.end,
+      hero: {
+        heading: {
+          lead: data.hero.heading.lead,
+          emphasis: data.hero.heading.emphasis,
+          end: data.hero.heading.end,
+        },
+        backgroundImage: heroBg,
+        backgroundAlt: data.hero.background.alt,
       },
-      description: data.hero.description,
-      backgroundImage: heroBg,
-      backgroundAlt: data.hero.background.alt,
-    },
     details: {
       heading: { start: data.details.heading.start, emphasis: data.details.heading.emphasis },
       items: data.details.items.map((d) => ({ title: d.title, description: d.description })),

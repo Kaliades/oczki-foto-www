@@ -6,20 +6,29 @@ type ScallopTileStripProps = {
   count: number
   orientation: 'horizontal' | 'vertical'
   size?: 'desktop' | 'mobile'
+  /** Override default overlap (side strips use vertical overlap after rotation). */
+  overlap?: number
 }
 
 /**
  * Repeating scallop tile row — Figma `Container` segments in `Group 62`.
  */
-export function ScallopTileStrip({ count, orientation, size = 'desktop' }: ScallopTileStripProps) {
+export function ScallopTileStrip({
+  count,
+  orientation,
+  size = 'desktop',
+  overlap: overlapOverride,
+}: ScallopTileStripProps) {
   const isMobile = size === 'mobile'
   const tileWidth = isMobile ? SCALLOP_TILE.mobile.width : SCALLOP_TILE.desktop.width
   const tileHeight = isMobile ? SCALLOP_TILE.mobile.height : SCALLOP_TILE.desktop.height
-  const overlap = isMobile
-    ? SCALLOP_TILE.mobile.overlap
-    : orientation === 'horizontal'
-      ? SCALLOP_TILE.desktop.horizontalOverlap
-      : SCALLOP_TILE.desktop.verticalOverlap
+  const overlap =
+    overlapOverride ??
+    (isMobile
+      ? SCALLOP_TILE.mobile.overlap
+      : orientation === 'horizontal'
+        ? SCALLOP_TILE.desktop.horizontalOverlap
+        : SCALLOP_TILE.desktop.verticalOverlap)
 
   const isHorizontal = orientation === 'horizontal'
 

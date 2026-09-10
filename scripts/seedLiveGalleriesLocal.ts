@@ -170,7 +170,6 @@ function buildCaseStudyFieldsFromPhotos(options: {
           emphasis: defaults.hero.heading.emphasis,
           end: defaults.hero.heading.end,
         },
-        description: defaults.hero.description,
         backgroundImage: pickId(photoIds, 0),
         backgroundAlt: defaults.hero.background.alt,
       },

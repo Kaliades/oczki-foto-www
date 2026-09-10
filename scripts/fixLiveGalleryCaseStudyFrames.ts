@@ -73,7 +73,6 @@ async function main(): Promise<void> {
               emphasis: defaults.hero.heading.emphasis,
               end: defaults.hero.heading.end,
             },
-            description: defaults.hero.description,
             // keep existing backgroundImage
           },
           details: {

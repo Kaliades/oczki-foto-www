@@ -1,22 +1,18 @@
 import { STORY_INTRO_COPY_FIGMA_NODES, type CaseStudyHeroHeading } from './constants'
 
 type CaseStudyStoryCopyProps = {
-  description: string
   heading: CaseStudyHeroHeading
   headingId: string
 }
 
 /**
- * Framed story intro copy — reusable inside `ScallopedStoryFrame`.
- * Mobile (`7130:9648`): 24 px lead + 32 px italic emphasis; gap 10 px.
- * Tablet+ (`6972:17845`): 32 px heading; gap 16 px.
+ * Framed story intro heading — reusable inside `ScallopedStoryFrame`.
+ * Heading only (Figma `7394:10926` / `7394:13442`): no body copy in the hero card.
+ * Mobile: 24 px lead + 32 px italic emphasis. Tablet+: 32 px throughout.
  */
-export function CaseStudyStoryCopy({ description, heading, headingId }: CaseStudyStoryCopyProps) {
+export function CaseStudyStoryCopy({ heading, headingId }: CaseStudyStoryCopyProps) {
   return (
-    <div
-      className="flex w-full flex-col gap-2.5 md:max-w-[402px] md:gap-4"
-      data-figma-node={STORY_INTRO_COPY_FIGMA_NODES.desktop}
-    >
+    <div className="w-full md:max-w-[402px]" data-figma-node={STORY_INTRO_COPY_FIGMA_NODES.desktop}>
       <h1
         className="w-full text-left font-normal leading-[1.04] text-[var(--oczki-primary-800)] [font-family:var(--font-oczki-display)] md:text-[32px] md:tracking-[-0.02em] [font-feature-settings:'lnum'_1,'pnum'_1]"
         id={headingId}
@@ -31,7 +27,6 @@ export function CaseStudyStoryCopy({ description, heading, headingId }: CaseStud
           {heading.end}
         </span>
       </h1>
-      <p className="oczki-body-l text-[var(--oczki-primary-700)]">{description}</p>
     </div>
   )
 }
