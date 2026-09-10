@@ -18,6 +18,14 @@ export const CASE_STUDY_PHOTO_GALLERY_FIGMA_NODES = {
 
 export const CASE_STUDY_PHOTO_GALLERY_LOAD_MORE_LABEL = 'Zobacz więcej zdjęć' as const
 
+/**
+ * `typography/header/m` from Figma variable defs — 24 / 28 / 32 px.
+ * `get_design_context` incorrectly emits 32 px on all breakpoints; metadata
+ * heading heights (50 / 58 / 66) confirm the stepped scale.
+ */
+export const CASE_STUDY_PHOTO_GALLERY_HEADING_SIZE_CLASSNAME =
+  'text-[24px] tracking-[-0.24px] md:text-[28px] md:tracking-[-0.28px] lg:text-[32px] lg:tracking-[-0.32px]' as const
+
 const GALLERY_IMAGE = (index: number) => `/figma/case-study-gallery-${index}.png` as const
 
 export type CaseStudyPhotoGalleryData = {

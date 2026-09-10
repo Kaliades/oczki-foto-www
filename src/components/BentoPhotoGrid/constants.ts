@@ -1,8 +1,8 @@
 export const BENTO_PHOTO_GRID_FIGMA_NODES = {
   imageContainer: {
-    desktop: '6972:19195',
-    tablet: '7102:12750',
-    mobile: '7102:16676',
+    desktop: '7356:12164',
+    tablet: '7356:13504',
+    mobile: '7356:14880',
   },
 } as const
 

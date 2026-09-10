@@ -2,7 +2,11 @@ import { BentoPhotoGrid } from '@/components/BentoPhotoGrid'
 import { GalleryPortfolioLoadMore } from '@/components/GalleryPortfolio/GalleryPortfolioLoadMore'
 import { SplitDisplayHeading } from '@/components/SplitDisplayHeading/SplitDisplayHeading'
 
-import { CASE_STUDY_PHOTO_GALLERY_FIGMA_NODES, type CaseStudyPhotoGalleryData } from './constants'
+import {
+  CASE_STUDY_PHOTO_GALLERY_FIGMA_NODES,
+  CASE_STUDY_PHOTO_GALLERY_HEADING_SIZE_CLASSNAME,
+  type CaseStudyPhotoGalleryData,
+} from './constants'
 
 type CaseStudyPhotoGalleryProps = {
   data: CaseStudyPhotoGalleryData
@@ -40,6 +44,7 @@ export function CaseStudyPhotoGallery({ data, onLoadMore }: CaseStudyPhotoGaller
           emphasisPosition="end"
           end={heading.end}
           id={headingId}
+          sizeClassName={CASE_STUDY_PHOTO_GALLERY_HEADING_SIZE_CLASSNAME}
           start={heading.start}
         />
 
