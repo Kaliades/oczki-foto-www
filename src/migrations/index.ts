@@ -15,6 +15,7 @@ import * as migration_20260629_170000_newsletter_subscriptions from './20260629_
 import * as migration_20260630_081500_offer_inclusions_collage_images from './20260630_081500_offer_inclusions_collage_images';
 import * as migration_20260908_164500_offer_reportaze_cms_fields from './20260908_164500_offer_reportaze_cms_fields';
 import * as migration_20260910_181500_gallery_hero_drop_description from './20260910_181500_gallery_hero_drop_description';
+import * as migration_20260910_191500_gallery_related_stories_heading from './20260910_191500_gallery_related_stories_heading';
 
 export const migrations = [
   {
@@ -101,5 +102,10 @@ export const migrations = [
     up: migration_20260910_181500_gallery_hero_drop_description.up,
     down: migration_20260910_181500_gallery_hero_drop_description.down,
     name: '20260910_181500_gallery_hero_drop_description',
+  },
+  {
+    up: migration_20260910_191500_gallery_related_stories_heading.up,
+    down: migration_20260910_191500_gallery_related_stories_heading.down,
+    name: '20260910_191500_gallery_related_stories_heading',
   },
 ];
