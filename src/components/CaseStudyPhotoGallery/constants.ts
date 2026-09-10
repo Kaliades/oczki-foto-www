@@ -18,6 +18,10 @@ export const CASE_STUDY_PHOTO_GALLERY_FIGMA_NODES = {
 
 export const CASE_STUDY_PHOTO_GALLERY_LOAD_MORE_LABEL = 'Zobacz więcej zdjęć' as const
 
+/** Figma `Image Container` shows 12 tiles; further photos load in the same batch size. */
+export const CASE_STUDY_PHOTO_GALLERY_INITIAL_COUNT = 12 as const
+export const CASE_STUDY_PHOTO_GALLERY_LOAD_MORE_BATCH = 12 as const
+
 /**
  * `typography/header/m` from Figma variable defs — 24 / 28 / 32 px.
  * `get_design_context` incorrectly emits 32 px on all breakpoints; metadata

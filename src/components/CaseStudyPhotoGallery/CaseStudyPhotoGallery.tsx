@@ -1,3 +1,7 @@
+'use client'
+
+import { useCallback, useMemo, useState } from 'react'
+
 import { BentoPhotoGrid } from '@/components/BentoPhotoGrid'
 import { GalleryPortfolioLoadMore } from '@/components/GalleryPortfolio/GalleryPortfolioLoadMore'
 import { SplitDisplayHeading } from '@/components/SplitDisplayHeading/SplitDisplayHeading'
@@ -5,12 +9,13 @@ import { SplitDisplayHeading } from '@/components/SplitDisplayHeading/SplitDispl
 import {
   CASE_STUDY_PHOTO_GALLERY_FIGMA_NODES,
   CASE_STUDY_PHOTO_GALLERY_HEADING_SIZE_CLASSNAME,
+  CASE_STUDY_PHOTO_GALLERY_INITIAL_COUNT,
+  CASE_STUDY_PHOTO_GALLERY_LOAD_MORE_BATCH,
   type CaseStudyPhotoGalleryData,
 } from './constants'
 
 type CaseStudyPhotoGalleryProps = {
   data: CaseStudyPhotoGalleryData
-  onLoadMore?: () => void
 }
 
 /**
@@ -20,16 +25,28 @@ type CaseStudyPhotoGalleryProps = {
  * └── inner 1366 cap
  *     ├── SplitDisplayHeading (centred, max 480 px)
  *     └── Image Gallery (flex col)
- *         ├── BentoPhotoGrid → Image Container → BentoPhotoTile × 12
- *         └── Footer → GalleryPortfolioLoadMore → OczkiTextLink
+ *         ├── BentoPhotoGrid → first N tiles (12, then +12 per click)
+ *         └── Footer → GalleryPortfolioLoadMore (hidden when nothing left)
  *
  * Section padding (metadata): mobile 48/64 px 16, gap 28; tablet 80 all, gap 36;
  * desktop 80 vertical px 32, gap 36. Image Gallery inner gap: 24 mobile / 32 tablet+.
  * Footer border-t pt: 8 mobile / 12 tablet+.
  */
-export function CaseStudyPhotoGallery({ data, onLoadMore }: CaseStudyPhotoGalleryProps) {
+export function CaseStudyPhotoGallery({ data }: CaseStudyPhotoGalleryProps) {
   const { heading, items, loadMoreLabel } = data
   const headingId = 'case-study-photo-gallery-heading'
+  const [visibleCount, setVisibleCount] = useState(
+    Math.min(CASE_STUDY_PHOTO_GALLERY_INITIAL_COUNT, items.length),
+  )
+
+  const visibleItems = useMemo(() => items.slice(0, visibleCount), [items, visibleCount])
+  const hasMore = visibleCount < items.length
+
+  const handleLoadMore = useCallback(() => {
+    setVisibleCount((count) =>
+      Math.min(count + CASE_STUDY_PHOTO_GALLERY_LOAD_MORE_BATCH, items.length),
+    )
+  }, [items.length])
 
   return (
     <section
@@ -53,14 +70,16 @@ export function CaseStudyPhotoGallery({ data, onLoadMore }: CaseStudyPhotoGaller
           data-figma-node={CASE_STUDY_PHOTO_GALLERY_FIGMA_NODES.imageGallery.desktop}
           data-name="Image Gallery"
         >
-          <BentoPhotoGrid items={items} />
+          <BentoPhotoGrid items={visibleItems} />
 
-          <GalleryPortfolioLoadMore
-            figmaNode={CASE_STUDY_PHOTO_GALLERY_FIGMA_NODES.loadMore.desktop}
-            footerClassName="pt-2 md:pt-3"
-            label={loadMoreLabel}
-            onLoadMore={onLoadMore}
-          />
+          {hasMore ? (
+            <GalleryPortfolioLoadMore
+              figmaNode={CASE_STUDY_PHOTO_GALLERY_FIGMA_NODES.loadMore.desktop}
+              footerClassName="pt-2 md:pt-3"
+              label={loadMoreLabel}
+              onLoadMore={handleLoadMore}
+            />
+          ) : null}
         </div>
       </div>
     </section>

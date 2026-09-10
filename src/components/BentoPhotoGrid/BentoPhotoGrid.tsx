@@ -31,7 +31,7 @@ export function BentoPhotoGrid({ items }: BentoPhotoGridProps) {
           key={item.id}
           item={item}
           sizes={BENTO_PHOTO_GRID_IMAGE_SIZES}
-          span={BENTO_PHOTO_SPANS[index] ?? 'narrow'}
+          span={BENTO_PHOTO_SPANS[index % BENTO_PHOTO_SPANS.length] ?? 'narrow'}
         />
       ))}
     </div>
