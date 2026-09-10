@@ -18,7 +18,8 @@ type CaseStudyVenueStoryStageProps = {
 /**
  * One breakpoint slice of the venue story `Herosection`.
  *
- * Layer order (back → front): back photo, cream mat, scallop union, copy (z-10), sygnet (z-20).
+ * Layer order (back → front): back photo, cream mat, scallop union (no border),
+ * copy (z-10), sygnet (z-20).
  */
 export function CaseStudyVenueStoryStage({
   variant,

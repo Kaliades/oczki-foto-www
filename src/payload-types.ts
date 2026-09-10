@@ -1231,6 +1231,9 @@ export interface Gallery {
       start?: string | null;
       emphasis?: string | null;
     };
+    /**
+     * Max 365 znaków (referencyjny skrócony opis). Na stronie urywa się wielokropkiem po ostatniej widocznej linii (desktop/tablet 6, mobile 9).
+     */
     body?: string | null;
     backImage?: (number | null) | Media;
     /**

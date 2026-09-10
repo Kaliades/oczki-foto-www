@@ -14,10 +14,10 @@ type LayeredMatCollageLayout = {
  */
 export const LAYERED_MAT_COLLAGE_LAYOUT: Record<LayeredMatCollageVariant, LayeredMatCollageLayout> = {
   desktop: {
-    figmaNode: '6952:17246',
+    figmaNode: '7356:12142',
     stageHeight: 620,
     backImage: {
-      figmaNode: '6986:19958',
+      figmaNode: '7356:12143',
       left: 896,
       top: 0,
       width: 470,
@@ -27,10 +27,10 @@ export const LAYERED_MAT_COLLAGE_LAYOUT: Record<LayeredMatCollageVariant, Layere
     sygnetBadge: { left: 1070, top: 266 },
   },
   tablet: {
-    figmaNode: '7102:12728',
+    figmaNode: '7356:13482',
     stageHeight: 1040,
     backImage: {
-      figmaNode: '7104:20202',
+      figmaNode: '7356:13495',
       left: 377,
       top: 0,
       width: 391,
@@ -40,10 +40,10 @@ export const LAYERED_MAT_COLLAGE_LAYOUT: Record<LayeredMatCollageVariant, Layere
     sygnetBadge: { left: 522, top: 221 },
   },
   mobile: {
-    figmaNode: '7102:16654',
+    figmaNode: '7356:14858',
     stageHeight: 842,
     backImage: {
-      figmaNode: '7111:8998',
+      figmaNode: '7356:14871',
       left: 119,
       top: 0,
       width: 241,

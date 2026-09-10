@@ -13,6 +13,7 @@ import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { ADMIN_GROUP_PAGES } from '@/constants/adminGroups'
 import { CASE_STUDY_HERO_HEADING_MAX_LENGTH } from '@/components/CaseStudyHero'
+import { CASE_STUDY_VENUE_STORY_BODY_MAX_LENGTH } from '@/components/CaseStudyVenueStory'
 import { GALLERY_SESSION_FILTERS } from '@/components/GalleryHero/constants'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateGallery, revalidateGalleryDelete } from './hooks/revalidateGallery'
@@ -273,7 +274,15 @@ export const Galleries: CollectionConfig<'galleries'> = {
               },
               fields: [
                 splitHeading(),
-                { name: 'body', type: 'textarea', label: 'Treść' },
+                {
+                  name: 'body',
+                  type: 'textarea',
+                  label: 'Treść',
+                  maxLength: CASE_STUDY_VENUE_STORY_BODY_MAX_LENGTH,
+                  admin: {
+                    description: `Max ${CASE_STUDY_VENUE_STORY_BODY_MAX_LENGTH} znaków (referencyjny skrócony opis). Na stronie urywa się wielokropkiem po ostatniej widocznej linii (desktop/tablet 6, mobile 9).`,
+                  },
+                },
                 ...imageWithAlt({
                   imageName: 'backImage',
                   altName: 'backAlt',

@@ -1,13 +1,6 @@
-import { CaseStudyClosingCta } from '@/components/CaseStudyClosingCta'
-import { CaseStudyDetails } from '@/components/CaseStudyDetails'
-import { CaseStudyDuoPerspective } from '@/components/CaseStudyDuoPerspective'
 import { CaseStudyHero } from '@/components/CaseStudyHero'
-import { CaseStudyMemorableMoment } from '@/components/CaseStudyMemorableMoment'
-import { CaseStudyPhotoGallery } from '@/components/CaseStudyPhotoGallery'
-import { CaseStudyRelatedStories } from '@/components/CaseStudyRelatedStories'
-import { SiteFooterNewsletter } from '@/components/SiteFooterNewsletter'
-import { CaseStudyTestimonial } from '@/components/CaseStudyTestimonial'
 import { CaseStudyVenueStory } from '@/components/CaseStudyVenueStory'
+import { SiteFooterNewsletter } from '@/components/SiteFooterNewsletter'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -150,14 +143,8 @@ export default async function CaseStudyPage({ params }: Args) {
     <main className="min-h-screen bg-[var(--oczki-primary-100)] [font-family:var(--font-oczki-body)]">
       {draft && <LivePreviewListener />}
       <CaseStudyHero data={caseStudy.hero} />
-      <CaseStudyDetails data={caseStudy.details} />
-      <CaseStudyDuoPerspective data={caseStudy.duoPerspective} />
       <CaseStudyVenueStory data={caseStudy.venueStory} />
-      <CaseStudyPhotoGallery data={caseStudy.photoGallery} />
-      <CaseStudyTestimonial data={caseStudy.testimonial} />
-      <CaseStudyMemorableMoment data={caseStudy.memorableMoment} />
-      <CaseStudyClosingCta data={caseStudy.closingCta} />
-      <CaseStudyRelatedStories data={caseStudy.relatedStories} />
+      {/* Remaining case-study sections remount as Figma redesign arrives. */}
       <SiteFooterNewsletter variant="gallery" />
     </main>
   )

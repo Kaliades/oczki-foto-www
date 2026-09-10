@@ -1,23 +1,30 @@
 export const CASE_STUDY_VENUE_STORY_FIGMA_NODES = {
-  desktop: '6986:20005',
-  tablet: '7102:12727',
-  mobile: '7102:16653',
+  desktop: '7356:12141',
+  tablet: '7356:13481',
+  mobile: '7356:14857',
   heroSection: {
-    desktop: '6952:17246',
-    tablet: '7102:12728',
-    mobile: '7102:16654',
+    desktop: '7356:12142',
+    tablet: '7356:13482',
+    mobile: '7356:14858',
   },
   copy: {
-    desktop: '6952:17250',
-    tablet: '7102:12740',
-    mobile: '7102:16666',
+    desktop: '7356:12154',
+    tablet: '7356:13491',
+    mobile: '7356:14859',
   },
   body: {
-    desktop: '6952:17252',
-    tablet: '7102:12742',
-    mobile: '7102:16668',
+    desktop: '7356:12157',
+    tablet: '7356:13494',
+    mobile: '7356:14862',
   },
 } as const
+
+/**
+ * CMS maxLength — matches the truncated Instagram-style reference sample
+ * (“To było jedno z tych spotkań… jak to się”, 365 UTF-16 units / Payload count).
+ * Display still uses line-clamp (D/T 6, M 9) so ellipsis sits at end of last full line.
+ */
+export const CASE_STUDY_VENUE_STORY_BODY_MAX_LENGTH = 365 as const
 
 export type CaseStudyVenueStoryHeading = {
   emphasis: string
@@ -40,7 +47,7 @@ export type CaseStudyVenueStoryData = {
   }
 }
 
-/** Copy block offsets inside `Herosection` — Figma metadata. */
+/** Copy block offsets inside `Herosection` — Figma metadata `7356:12154` / `13491` / `14859`. */
 export const CASE_STUDY_VENUE_STORY_COPY_LAYOUT = {
   desktop: {
     left: 32,
@@ -66,4 +73,11 @@ export const CASE_STUDY_VENUE_STORY_COPY_LAYOUT = {
     gap: 10,
     bodyPaddingRight: 0,
   },
+} as const
+
+/** Outer section shell padding — Figma `Container` around `Herosection`. */
+export const CASE_STUDY_VENUE_STORY_SECTION_PADDING = {
+  mobile: { paddingTop: 48 },
+  tablet: { paddingTop: 64 },
+  desktop: { paddingTop: 80, paddingBottom: 48 },
 } as const

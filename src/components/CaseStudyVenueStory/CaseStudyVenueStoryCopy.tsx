@@ -15,6 +15,17 @@ type CaseStudyVenueStoryCopyProps = {
   headingId: string
 }
 
+/** Matches Figma body heights: D/T 144px (6 lines), M 216px (9 lines) at body/l 16×1.48. */
+const BODY_LINE_CLAMP_CLASS = {
+  desktop: 'line-clamp-6',
+  tablet: 'line-clamp-6',
+  mobile: 'line-clamp-9',
+} as const
+
+/**
+ * Venue story title + body inside `Herosection`.
+ * Overflow uses CSS line-clamp so ellipsis sits at the end of the last full line.
+ */
 export function CaseStudyVenueStoryCopy({
   variant,
   heading,
@@ -52,7 +63,9 @@ export function CaseStudyVenueStoryCopy({
         data-name="Container"
         style={{ paddingRight: layout.bodyPaddingRight }}
       >
-        <p className="oczki-body-l w-full tracking-[-0.24px] text-[var(--oczki-primary-700)]">
+        <p
+          className={`oczki-body-l w-full tracking-[-0.24px] text-[var(--oczki-primary-700)] ${BODY_LINE_CLAMP_CLASS[variant]}`}
+        >
           {body}
         </p>
       </div>

@@ -32,7 +32,7 @@ type RotatedScallopPhotoLayout = {
 export const ROTATED_SCALLOP_PHOTO_LAYOUT: Record<RotatedScallopPhotoVariant, RotatedScallopPhotoLayout> =
   {
     desktop: {
-      figmaNode: '6986:19964',
+      figmaNode: '7356:12146',
       left: 32,
       top: 321,
       boxWidth: 381.22,
@@ -44,8 +44,9 @@ export const ROTATED_SCALLOP_PHOTO_LAYOUT: Record<RotatedScallopPhotoVariant, Ro
       imageInset: { x: 1.36, y: 1.05 },
     },
     tablet: {
-      figmaNode: '7104:20209',
-      left: 415,
+      figmaNode: '7356:13483',
+      // Design-context wrapper — metadata Union x (415) is the post-rotate bbox.
+      left: 57,
       top: 721.92,
       boxWidth: 358,
       boxHeight: 276.38,
@@ -56,7 +57,7 @@ export const ROTATED_SCALLOP_PHOTO_LAYOUT: Record<RotatedScallopPhotoVariant, Ro
       imageInset: { x: 1.45, y: 1.12 },
     },
     mobile: {
-      figmaNode: '7111:8989',
+      figmaNode: '7356:14863',
       left: 16,
       top: 623.52,
       boxWidth: 267.326,

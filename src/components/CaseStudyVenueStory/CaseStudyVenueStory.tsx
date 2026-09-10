@@ -6,17 +6,17 @@ type CaseStudyVenueStoryProps = {
 }
 
 /**
- * Case study venue story — Figma `Container` on gallery case-study page.
+ * Case study venue story — Figma `Container` (`7356:12141` / `13481` / `14857`).
  *
  * <section> full-bleed cream
  * └── inner 1366 cap
  *     └── Herosection (per breakpoint)
- *         ├── LayeredMatCollage → back `Image` + CreamMatPhoto + BrandSygnetBadge
- *         ├── RotatedScallopPhoto → boolean `Union`
- *         └── CaseStudyVenueStoryCopy → SplitDisplayHeading + body
+ *         ├── LayeredMatCollage → back `Image` + CreamMatPhoto
+ *         ├── RotatedScallopPhoto → boolean `Union` (mask + cream rim stroke)
+ *         ├── CaseStudyVenueStoryCopy → SplitDisplayHeading + body
+ *         └── BrandSygnetBadge
  *
- * Section padding (metadata): desktop outer py 48 only; hero child coords use
- * the full cap width (copy x=32, images from y=0). Tablet/mobile: no outer py.
+ * Outer padding (metadata): mobile pt 48; tablet pt 64; desktop pt 80 / pb 48.
  */
 export function CaseStudyVenueStory({ data }: CaseStudyVenueStoryProps) {
   const headingId = 'case-study-venue-story-heading'
@@ -28,18 +28,21 @@ export function CaseStudyVenueStory({ data }: CaseStudyVenueStoryProps) {
       data-figma-node={CASE_STUDY_VENUE_STORY_FIGMA_NODES.desktop}
     >
       <div className="mx-auto w-full max-w-[1366px]">
-        <div className="md:hidden" data-figma-node={CASE_STUDY_VENUE_STORY_FIGMA_NODES.mobile}>
+        <div className="pt-12 md:hidden" data-figma-node={CASE_STUDY_VENUE_STORY_FIGMA_NODES.mobile}>
           <CaseStudyVenueStoryStage data={data} headingId={headingId} variant="mobile" />
         </div>
 
         <div
-          className="hidden md:block lg:hidden"
+          className="hidden pt-16 md:block lg:hidden"
           data-figma-node={CASE_STUDY_VENUE_STORY_FIGMA_NODES.tablet}
         >
           <CaseStudyVenueStoryStage data={data} headingId={headingId} variant="tablet" />
         </div>
 
-        <div className="hidden py-12 lg:block" data-figma-node={CASE_STUDY_VENUE_STORY_FIGMA_NODES.desktop}>
+        <div
+          className="hidden pb-12 pt-20 lg:block"
+          data-figma-node={CASE_STUDY_VENUE_STORY_FIGMA_NODES.desktop}
+        >
           <CaseStudyVenueStoryStage data={data} headingId={headingId} variant="desktop" />
         </div>
       </div>

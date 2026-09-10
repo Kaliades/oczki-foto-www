@@ -17,12 +17,22 @@ type RotatedScallopPhotoProps = {
   imageSrc: string
   imageAlt: string
   /**
-   * `figma-baked` — PNG already sideways (Figma seed export).
-   * `upright` — normal CMS photo; counter-rotate + mask so subjects stay upright.
+   * `figma-baked` — PNG already sideways (Figma seed export, border baked in).
+   * `upright` — normal CMS photo; counter-rotate + mask + cream rim stroke.
    */
   contentMode?: RotatedScallopPhotoContentMode
   className?: string
 }
+
+const SCALLOP_MASK_STYLE = {
+  maskImage: `url(${ROTATED_SCALLOP_PHOTO_MASK})`,
+  maskMode: 'alpha' as const,
+  maskRepeat: 'no-repeat',
+  maskSize: '100% 100%',
+  WebkitMaskImage: `url(${ROTATED_SCALLOP_PHOTO_MASK})`,
+  WebkitMaskRepeat: 'no-repeat',
+  WebkitMaskSize: '100% 100%',
+} as const
 
 function ScallopBitmap({
   imageSrc,
@@ -84,6 +94,9 @@ function ScallopBitmap({
 /**
  * Scalloped photo export rotated 90° — Figma `Union` inside `Herosection`.
  * Positions from `get_design_context` wrappers (metadata bbox x can be misleading).
+ *
+ * Upright (CMS) path: alpha mask + cream rim matching Figma stroke
+ * (`inset-[-1.05%_-1.36%]` / tablet / mobile equivalents via `imageInset`).
  */
 export function RotatedScallopPhoto({
   variant,
@@ -113,30 +126,47 @@ export function RotatedScallopPhoto({
     >
       <div className="flex-none rotate-90">
         <div
-          className="relative overflow-hidden"
+          className="relative"
           style={{
             height: layout.innerHeight,
             width: layout.innerWidth,
-            ...(upright
-              ? {
-                  maskImage: `url(${ROTATED_SCALLOP_PHOTO_MASK})`,
-                  maskMode: 'alpha',
-                  maskRepeat: 'no-repeat',
-                  maskSize: '100% 100%',
-                  WebkitMaskImage: `url(${ROTATED_SCALLOP_PHOTO_MASK})`,
-                  WebkitMaskRepeat: 'no-repeat',
-                  WebkitMaskSize: '100% 100%',
-                }
-              : null),
           }}
         >
-          <ScallopBitmap
-            imageAlt={imageAlt}
-            imageInset={imageInset}
-            imageSrc={imageSrc}
-            layout={layout}
-            upright={upright}
-          />
+          {upright ? (
+            <>
+              {/* Cream rim — same mask, expanded by Figma Union stroke bleed */}
+              <div
+                aria-hidden
+                className="absolute bg-[var(--oczki-primary-200)]"
+                style={{
+                  ...SCALLOP_MASK_STYLE,
+                  bottom: `${-imageInset.y}%`,
+                  left: `${-imageInset.x}%`,
+                  right: `${-imageInset.x}%`,
+                  top: `${-imageInset.y}%`,
+                }}
+              />
+              <div className="absolute inset-0 overflow-hidden" style={SCALLOP_MASK_STYLE}>
+                <ScallopBitmap
+                  imageAlt={imageAlt}
+                  imageInset={imageInset}
+                  imageSrc={imageSrc}
+                  layout={layout}
+                  upright={upright}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="relative size-full overflow-hidden">
+              <ScallopBitmap
+                imageAlt={imageAlt}
+                imageInset={imageInset}
+                imageSrc={imageSrc}
+                layout={layout}
+                upright={upright}
+              />
+            </div>
+          )}
         </div>
       </div>
     </PhotoUnitReveal>

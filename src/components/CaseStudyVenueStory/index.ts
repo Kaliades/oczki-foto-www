@@ -4,4 +4,7 @@ export type {
   CaseStudyVenueStoryHeading,
   CaseStudyVenueStoryPhotoSet,
 } from './constants'
-export { CASE_STUDY_VENUE_STORY_FIGMA_NODES } from './constants'
+export {
+  CASE_STUDY_VENUE_STORY_BODY_MAX_LENGTH,
+  CASE_STUDY_VENUE_STORY_FIGMA_NODES,
+} from './constants'
