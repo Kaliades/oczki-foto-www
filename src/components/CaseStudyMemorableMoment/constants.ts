@@ -114,7 +114,7 @@ export const CASE_STUDY_MEMORABLE_MOMENT_LAYOUT = {
 
 export const caseStudyMemorableMomentDefaults: CaseStudyMemorableMomentData = {
   title: 'To, co zapamiętamy najbardziej',
-  body: 'Był taki moment tuż po przysiędze, kiedy Justyna i Krzyś spojrzeli na siebie tak, jakby na świecie nie było nikogo innego. Żadnego pozowania, żadnej reżyserii – tylko czysta, autentyczna bliskość. To właśnie dla takich kadrów kochamy tę pracę',
+  body: 'Bywają takie chwile tuż po przysiędze — bez pozowania, bez reżyserii — kiedy para patrzy na siebie, jakby na świecie nie było nikogo innego. Właśnie dla takich kadrów kochamy tę pracę.',
   portraitPhoto: {
     alt: 'Para młoda w czarno-białym ujęciu tuż po przysiędze',
     src: '/figma/case-study-memorable-portrait.png',

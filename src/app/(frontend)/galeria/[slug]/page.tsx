@@ -1,4 +1,7 @@
+import { CaseStudyClosingCta } from '@/components/CaseStudyClosingCta'
 import { CaseStudyHero } from '@/components/CaseStudyHero'
+import { CaseStudyPhotoGallery } from '@/components/CaseStudyPhotoGallery'
+import { CaseStudyRelatedStories } from '@/components/CaseStudyRelatedStories'
 import { CaseStudyVenueStory } from '@/components/CaseStudyVenueStory'
 import { SiteFooterNewsletter } from '@/components/SiteFooterNewsletter'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
@@ -144,7 +147,9 @@ export default async function CaseStudyPage({ params }: Args) {
       {draft && <LivePreviewListener />}
       <CaseStudyHero data={caseStudy.hero} />
       <CaseStudyVenueStory data={caseStudy.venueStory} />
-      {/* Remaining case-study sections remount as Figma redesign arrives. */}
+      <CaseStudyPhotoGallery data={caseStudy.photoGallery} />
+      <CaseStudyClosingCta data={caseStudy.closingCta} />
+      <CaseStudyRelatedStories data={caseStudy.relatedStories} />
       <SiteFooterNewsletter variant="gallery" />
     </main>
   )

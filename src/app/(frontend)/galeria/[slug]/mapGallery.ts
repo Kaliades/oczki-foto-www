@@ -12,24 +12,20 @@ import type { CaseStudyVenueStoryData } from '@/components/CaseStudyVenueStory'
 import type { CaseStudyClosingCtaData } from '@/components/CaseStudyClosingCta'
 import { resolvePopulatedMediaUrl } from '@/utilities/resolvePopulatedMediaUrl'
 
-import { CASE_STUDY_CASES, type CaseStudyPageData, type CaseStudySlug } from './constants'
+import { CASE_STUDY_CONTENT_FALLBACKS } from './contentFallbacks'
+import type { CaseStudyPageData, CaseStudySlug } from './constants'
 
 /**
  * Maps a Payload `Gallery` document onto the `CaseStudyPageData` shape the
  * case-study section components already expect.
  *
- * Principle (see `docs/CMS-INSTRUKCJA.md` §7): the canonical case (below) is the
- * technical skeleton — Figma nodes, layout offsets, bento spans, photo-set
- * variants and decorative ordering all live in code. CMS content is overlaid on
- * top; any field or section left blank in the panel falls back to the skeleton,
- * so partial content never breaks the page.
+ * Principle: layout skeleton (Figma nodes, bento spans, offsets) lives in code.
+ * CMS content is overlaid per document. Blank CMS fields fall back to
+ * `CASE_STUDY_CONTENT_FALLBACKS` — brand-safe copy, never another couple’s names.
  *
  * Content images come from CMS only — no `/figma/` PNG fallbacks.
  * The bento `photoGallery` reuses the `photos[]` array from the "Treść" tab.
  */
-
-/** The case used as the technical skeleton for any gallery. */
-const SKELETON_SLUG: CaseStudySlug = 'slub-justyny-i-krzysia'
 
 function pick<T>(value: T | null | undefined | '', fallback: T): T {
   return value === null || value === undefined || value === '' ? fallback : (value as T)
@@ -50,7 +46,8 @@ function mapHero(doc: Gallery, d: CaseStudyHeroData): CaseStudyHeroData {
     ],
     heading: {
       lead: pick(cms?.heading?.lead, d.heading.lead),
-      emphasis: pick(cms?.heading?.emphasis, d.heading.emphasis),
+      // Prefer this gallery’s title over a shared brand emphasis when CMS is blank.
+      emphasis: pick(cms?.heading?.emphasis, doc.title),
       end: pick(cms?.heading?.end, d.heading.end),
     },
   }
@@ -211,9 +208,11 @@ function mapClosingCta(doc: Gallery, d: CaseStudyClosingCtaData): CaseStudyClosi
 }
 
 export function mapRelatedStories(
+  doc: Gallery,
   relatedGalleries: Gallery[],
   defaults: CaseStudyRelatedStoriesData,
 ): CaseStudyRelatedStoriesData {
+  const cms = doc.relatedStories
   const items = relatedGalleries.slice(0, 3).flatMap((gallery, i) => {
     const imageSrc = resolvePopulatedMediaUrl(gallery.coverImage)
     if (!imageSrc) return []
@@ -231,13 +230,16 @@ export function mapRelatedStories(
   })
 
   return {
-    heading: defaults.heading,
+    heading: {
+      start: pick(cms?.heading?.start, defaults.heading.start),
+      emphasis: pick(cms?.heading?.emphasis, defaults.heading.emphasis),
+    },
     items,
   }
 }
 
 export function mapGallery(doc: Gallery, relatedGalleries: Gallery[] = []): CaseStudyPageData {
-  const d = CASE_STUDY_CASES[SKELETON_SLUG]
+  const d = CASE_STUDY_CONTENT_FALLBACKS
   return {
     slug: doc.slug as CaseStudySlug,
     hero: mapHero(doc, d.hero),
@@ -248,6 +250,6 @@ export function mapGallery(doc: Gallery, relatedGalleries: Gallery[] = []): Case
     testimonial: mapTestimonial(doc, d.testimonial),
     memorableMoment: mapMemorableMoment(doc, d.memorableMoment),
     closingCta: mapClosingCta(doc, d.closingCta),
-    relatedStories: mapRelatedStories(relatedGalleries, d.relatedStories),
+    relatedStories: mapRelatedStories(doc, relatedGalleries, d.relatedStories),
   }
 }

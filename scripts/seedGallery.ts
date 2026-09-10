@@ -128,6 +128,12 @@ export async function seedGallery(payload: Payload): Promise<void> {
       body: data.closingCta.body,
       cta: { label: data.closingCta.cta.label, url: data.closingCta.cta.url },
     },
+    relatedStories: {
+      heading: {
+        start: data.relatedStories.heading.start,
+        emphasis: data.relatedStories.heading.emphasis,
+      },
+    },
   }
 
   const existing = await payload.find({

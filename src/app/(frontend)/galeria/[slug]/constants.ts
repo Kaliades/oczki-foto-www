@@ -1,7 +1,4 @@
-import type { CaseStudyClosingCtaData } from '@/components/CaseStudyClosingCta'
-import { caseStudyClosingCtaDefaults } from '@/components/CaseStudyClosingCta'
 import type { CaseStudyMemorableMomentData } from '@/components/CaseStudyMemorableMoment'
-import { caseStudyMemorableMomentDefaults } from '@/components/CaseStudyMemorableMoment'
 import type { CaseStudyRelatedStoriesData } from '@/components/CaseStudyRelatedStories'
 import { caseStudyRelatedStoriesDefaults } from '@/components/CaseStudyRelatedStories'
 import type { CaseStudyDetailsData } from '@/components/CaseStudyDetails'
@@ -12,6 +9,7 @@ import { caseStudyPhotoGalleryDefaults } from '@/components/CaseStudyPhotoGaller
 import type { CaseStudyVenueStoryData } from '@/components/CaseStudyVenueStory'
 import type { CaseStudyTestimonialData } from '@/components/CaseStudyTestimonial/constants'
 import { caseStudyTestimonialDefaults } from '@/components/CaseStudyTestimonial/constants'
+import type { CaseStudyClosingCtaData } from '@/components/CaseStudyClosingCta'
 
 export const CASE_STUDY_SLUGS = ['slub-justyny-i-krzysia'] as const
 
@@ -116,8 +114,32 @@ export const CASE_STUDY_CASES: Record<CaseStudySlug, CaseStudyPageData> = {
       ],
     },
     photoGallery: caseStudyPhotoGalleryDefaults,
-    memorableMoment: caseStudyMemorableMomentDefaults,
-    closingCta: caseStudyClosingCtaDefaults,
+    memorableMoment: {
+      title: 'To, co zapamiętamy najbardziej',
+      body: 'Był taki moment tuż po przysiędze, kiedy Justyna i Krzyś spojrzeli na siebie tak, jakby na świecie nie było nikogo innego. Żadnego pozowania, żadnej reżyserii – tylko czysta, autentyczna bliskość. To właśnie dla takich kadrów kochamy tę pracę',
+      portraitPhoto: {
+        alt: 'Para młoda w czarno-białym ujęciu tuż po przysiędze',
+        src: '/figma/case-study-memorable-portrait.png',
+      },
+      landscapePhoto: {
+        alt: 'Panna młoda z wiankiem kwiatów, pan młody w tle',
+        src: '/figma/case-study-memorable-landscape.png',
+      },
+    },
+    closingCta: {
+      heading: {
+        start: 'Justyno, Krzysiu – ',
+        emphasis: 'dziękujemy',
+        end: ', że mogliśmy być Waszymi „oczami” w tym dniu. Wasz luz i zaufanie do nas sprawiły, że te zdjęcia po prostu „dzieją się” same.',
+      },
+      body: 'Podoba Wam się ten klimat? Marzycie o reportażu, który nie będzie sztuczny, ale pełen Waszych prawdziwych emocji?',
+      cta: {
+        type: 'custom',
+        url: '/kontakt',
+        label: 'Opowiedz też naszą historię',
+        newTab: false,
+      },
+    },
     relatedStories: caseStudyRelatedStoriesDefaults,
     testimonial: caseStudyTestimonialDefaults,
     venueStory: {

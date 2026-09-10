@@ -223,6 +223,11 @@ export const Galleries: CollectionConfig<'galleries'> = {
               name: 'details',
               type: 'group',
               label: 'Detale realizacji',
+              admin: {
+                hidden: true,
+                description:
+                  'Ukryte — sekcja nie jest na aktualnym szablonie case study. Dane zostają w bazie na wypadek przywrócenia.',
+              },
               fields: [
                 splitHeading(),
                 {
@@ -242,6 +247,11 @@ export const Galleries: CollectionConfig<'galleries'> = {
               name: 'duoPerspective',
               type: 'group',
               label: 'Dwa spojrzenia',
+              admin: {
+                hidden: true,
+                description:
+                  'Ukryte — sekcja nie jest na aktualnym szablonie case study. Dane zostają w bazie na wypadek przywrócenia.',
+              },
               fields: [
                 splitHeading(),
                 { name: 'leadParagraph', type: 'textarea', label: 'Akapit wprowadzający' },
@@ -317,6 +327,11 @@ export const Galleries: CollectionConfig<'galleries'> = {
               name: 'testimonial',
               type: 'group',
               label: 'Opinie',
+              admin: {
+                hidden: true,
+                description:
+                  'Ukryte — sekcja nie jest na aktualnym szablonie case study. Dane zostają w bazie na wypadek przywrócenia.',
+              },
               fields: [
                 splitHeading(),
                 {
@@ -341,6 +356,11 @@ export const Galleries: CollectionConfig<'galleries'> = {
               name: 'memorableMoment',
               type: 'group',
               label: 'To, co zapamiętamy',
+              admin: {
+                hidden: true,
+                description:
+                  'Ukryte — sekcja nie jest na aktualnym szablonie case study. Dane zostają w bazie na wypadek przywrócenia.',
+              },
               fields: [
                 { name: 'title', type: 'text', label: 'Tytuł' },
                 { name: 'body', type: 'textarea', label: 'Treść' },
@@ -373,6 +393,16 @@ export const Galleries: CollectionConfig<'galleries'> = {
                   ],
                 },
               ],
+            },
+            {
+              name: 'relatedStories',
+              type: 'group',
+              label: 'Pozostałe opowieści',
+              admin: {
+                description:
+                  'Nagłówek sekcji z innymi galeriami. Karty zdjęć biorą się automatycznie z innych opublikowanych galerii (okładka + slug) — nie są współdzielonym tekstem między stronami.',
+              },
+              fields: [splitHeading()],
             },
           ],
         },

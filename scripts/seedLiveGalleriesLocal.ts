@@ -8,6 +8,7 @@ import sharp from 'sharp'
 import type { Payload } from 'payload'
 
 import { getCaseStudyBySlug } from '@/app/(frontend)/galeria/[slug]/constants'
+import { CASE_STUDY_CONTENT_FALLBACKS } from '@/app/(frontend)/galeria/[slug]/contentFallbacks'
 import type { GallerySessionFilterId } from '@/components/GalleryHero/constants'
 
 import { CASE_STUDY_SLUG, uploadCaseStudySectionMedia, buildCaseStudyImageFields } from './lib/gallerySeedShared'
@@ -153,7 +154,9 @@ function buildCaseStudyFieldsFromPhotos(options: {
   skeletonFrames?: ReturnType<typeof buildCaseStudyImageFields>
 }) {
   const { title, intro, photoIds, isCanonicalCaseStudy, skeletonFrames } = options
-  const defaults = getCaseStudyBySlug(CASE_STUDY_SLUG)!
+  const defaults = isCanonicalCaseStudy
+    ? getCaseStudyBySlug(CASE_STUDY_SLUG)!
+    : CASE_STUDY_CONTENT_FALLBACKS
   const alt = title
 
   const photos = photoIds.map((image, i) => ({

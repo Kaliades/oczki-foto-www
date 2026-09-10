@@ -4,21 +4,21 @@ import type { SectionLink } from '@/utilities/resolveLinkHref'
 /**
  * Case study closing thank-you CTA — Figma `Card Container`.
  *
- * Figma references (desktop / tablet / mobile):
- *   - desktop 1366: https://www.figma.com/design/uukPuuZgLMm4kTbXUJFdLI/?node-id=6952-17279
- *   - tablet  768:  https://www.figma.com/design/uukPuuZgLMm4kTbXUJFdLI/?node-id=7102-12884
- *   - mobile  360:  https://www.figma.com/design/uukPuuZgLMm4kTbXUJFdLI/?node-id=7102-16765
+ * Figma references (desktop / tablet / mobile) — Copy-NNN:
+ *   - desktop 1366: node `7356:12253`
+ *   - tablet  768:  node `7356:13593`
+ *   - mobile  360:  node `7356:14969`
  *
- * Page order (Figma y-coords): after `To, co zapamiętamy najbardziej`, before footer.
+ * Page order: after photo gallery, before related stories.
  */
 export const CASE_STUDY_CLOSING_CTA_FIGMA_NODES = {
-  desktop: '6952:17279',
-  tablet: '7102:12884',
-  mobile: '7102:16765',
+  desktop: '7356:12253',
+  tablet: '7356:13593',
+  mobile: '7356:14969',
   button: {
-    desktop: '7063:14401',
-    tablet: '7102:13029',
-    mobile: '7102:16910',
+    desktop: '7356:12398',
+    tablet: '7356:13738',
+    mobile: '7356:15255',
   },
 } as const
 
@@ -37,11 +37,11 @@ export type CaseStudyClosingCtaData = {
 
 export const caseStudyClosingCtaDefaults: CaseStudyClosingCtaData = {
   heading: {
-    start: 'Justyno, Krzysiu – ',
-    emphasis: 'dziękujemy',
-    end: ', że mogliśmy być Waszymi „oczami” w tym dniu. Wasz luz i zaufanie do nas sprawiły, że te zdjęcia po prostu „dzieją się” same.',
+    start: 'Podoba Wam się ten ',
+    emphasis: 'klimat',
+    end: '?',
   },
-  body: 'Podoba Wam się ten klimat? Marzycie o reportażu, który nie będzie sztuczny, ale pełen Waszych prawdziwych emocji?',
+  body: 'Marzycie o reportażu, który nie będzie sztuczny, ale pełen Waszych prawdziwych emocji?',
   cta: {
     type: 'custom',
     url: '/kontakt',

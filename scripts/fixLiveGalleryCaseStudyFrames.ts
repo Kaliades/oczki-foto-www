@@ -11,6 +11,7 @@ import { loadSeedEnv } from './lib/seedEnv'
 import { CASE_STUDY_SLUG, uploadCaseStudySectionMedia, buildCaseStudyImageFields } from './lib/gallerySeedShared'
 import { createSeedImageUploader } from './lib/createSeedImageUploader'
 import { getCaseStudyBySlug } from '@/app/(frontend)/galeria/[slug]/constants'
+import { CASE_STUDY_CONTENT_FALLBACKS } from '@/app/(frontend)/galeria/[slug]/contentFallbacks'
 
 function assertLocalOnly(): void {
   if (process.env.SEED_TARGET === 'production') {
@@ -27,7 +28,7 @@ async function main(): Promise<void> {
   assertLocalOnly()
   const { getSeedPayload } = await import('./lib/seedPayload')
   const payload = await getSeedPayload()
-  const defaults = getCaseStudyBySlug(CASE_STUDY_SLUG)!
+  const canonicalDefaults = getCaseStudyBySlug(CASE_STUDY_SLUG)!
 
   const galleries = await payload.find({
     collection: 'galleries',
@@ -44,6 +45,7 @@ async function main(): Promise<void> {
   for (const doc of galleries.docs) {
     const slug = doc.slug ?? ''
     const isCanonical = slug === CASE_STUDY_SLUG
+    const defaults = isCanonical ? canonicalDefaults : CASE_STUDY_CONTENT_FALLBACKS
 
     // Keep existing live photos[] + cover; only rewrite case-study frame fields.
     const livePhotos = Array.isArray(doc.photos)

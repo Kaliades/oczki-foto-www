@@ -1,21 +1,21 @@
 /**
  * Case study — “Inne opowieści” related galleries strip.
  *
- * Figma references (desktop / tablet / mobile):
- *   - desktop 1366: https://www.figma.com/design/uukPuuZgLMm4kTbXUJFdLI/?node-id=6952-17288
- *   - tablet  768:  https://www.figma.com/design/uukPuuZgLMm4kTbXUJFdLI/?node-id=7102-13171
- *   - mobile  360:  https://www.figma.com/design/uukPuuZgLMm4kTbXUJFdLI/?node-id=7102-17052
+ * Figma references (desktop / tablet / mobile) — Copy-NNN:
+ *   - desktop 1366: node `7356:12540`
+ *   - tablet  768:  node `7356:13880`
+ *   - mobile  360:  node `7356:15256`
  *
- * Page order (Figma y-coords): after closing CTA (`6952:17279`), before footer.
+ * Page order: after closing CTA, before footer.
  */
 export const CASE_STUDY_RELATED_STORIES_FIGMA_NODES = {
-  desktop: '6952:17288',
-  tablet: '7102:13171',
-  mobile: '7102:17052',
+  desktop: '7356:12540',
+  tablet: '7356:13880',
+  mobile: '7356:15256',
   heading: {
-    desktop: '6952:17292',
-    tablet: '7102:13172',
-    mobile: '7102:17053',
+    desktop: '7356:12541',
+    tablet: '7356:13881',
+    mobile: '7356:15257',
   },
 } as const
 

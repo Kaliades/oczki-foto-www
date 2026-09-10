@@ -1181,6 +1181,9 @@ export interface Gallery {
      */
     backgroundAlt?: string | null;
   };
+  /**
+   * Ukryte — sekcja nie jest na aktualnym szablonie case study. Dane zostają w bazie na wypadek przywrócenia.
+   */
   details?: {
     /**
      * Jedno zdanie podzielone na części. „Wyróżnienie” jest renderowane innym krojem/kolorem.
@@ -1197,6 +1200,9 @@ export interface Gallery {
         }[]
       | null;
   };
+  /**
+   * Ukryte — sekcja nie jest na aktualnym szablonie case study. Dane zostają w bazie na wypadek przywrócenia.
+   */
   duoPerspective?: {
     /**
      * Jedno zdanie podzielone na części. „Wyróżnienie” jest renderowane innym krojem/kolorem.
@@ -1265,6 +1271,9 @@ export interface Gallery {
     };
     loadMoreLabel?: string | null;
   };
+  /**
+   * Ukryte — sekcja nie jest na aktualnym szablonie case study. Dane zostają w bazie na wypadek przywrócenia.
+   */
   testimonial?: {
     /**
      * Jedno zdanie podzielone na części. „Wyróżnienie” jest renderowane innym krojem/kolorem.
@@ -1286,6 +1295,9 @@ export interface Gallery {
         }[]
       | null;
   };
+  /**
+   * Ukryte — sekcja nie jest na aktualnym szablonie case study. Dane zostają w bazie na wypadek przywrócenia.
+   */
   memorableMoment?: {
     title?: string | null;
     body?: string | null;
@@ -1313,6 +1325,18 @@ export interface Gallery {
     cta?: {
       label?: string | null;
       url?: string | null;
+    };
+  };
+  /**
+   * Nagłówek sekcji z innymi galeriami. Karty zdjęć biorą się automatycznie z innych opublikowanych galerii (okładka + slug) — nie są współdzielonym tekstem między stronami.
+   */
+  relatedStories?: {
+    /**
+     * Jedno zdanie podzielone na części. „Wyróżnienie” jest renderowane innym krojem/kolorem.
+     */
+    heading?: {
+      start?: string | null;
+      emphasis?: string | null;
     };
   };
   meta?: {
@@ -2605,6 +2629,16 @@ export interface GalleriesSelect<T extends boolean = true> {
           | {
               label?: T;
               url?: T;
+            };
+      };
+  relatedStories?:
+    | T
+    | {
+        heading?:
+          | T
+          | {
+              start?: T;
+              emphasis?: T;
             };
       };
   meta?:

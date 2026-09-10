@@ -1,18 +1,18 @@
 import type { BentoPhotoTileData } from '@/components/BentoPhotoTile'
 
 export const CASE_STUDY_PHOTO_GALLERY_FIGMA_NODES = {
-  desktop: '6952:17255',
-  tablet: '7102:12747',
-  mobile: '7102:16673',
+  desktop: '7356:12161',
+  tablet: '7356:13501',
+  mobile: '7356:14877',
   imageGallery: {
-    desktop: '6972:19194',
-    tablet: '7102:12749',
-    mobile: '7102:16675',
+    desktop: '7356:12163',
+    tablet: '7356:13503',
+    mobile: '7356:14879',
   },
   loadMore: {
-    desktop: '6972:19208',
-    tablet: '7102:12763',
-    mobile: '7102:16689',
+    desktop: '7356:12178',
+    tablet: '7356:13518',
+    mobile: '7356:14894',
   },
 } as const
 
