@@ -3,6 +3,7 @@ import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
+import { s3Storage } from '@payloadcms/storage-s3'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
@@ -13,6 +14,7 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { isLocalMediaStorage } from '@/utilities/isLocalMediaStorage'
+import { isR2MediaStorage } from '@/utilities/isR2MediaStorage'
 import { getServerSideURL } from '@/utilities/getURL'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
@@ -109,8 +111,36 @@ export const plugins: Plugin[] = [
       },
     },
   }),
+  // Prefer Cloudflare R2 (S3 API) on Vercel. `@payloadcms/storage-r2` is Workers-only.
+  s3Storage({
+    enabled: isR2MediaStorage(),
+    bucket: process.env.R2_BUCKET || '',
+    collections: {
+      media: {
+        disablePayloadAccessControl: true,
+        generateFileURL: ({ filename, prefix }) => {
+          const base = (process.env.R2_PUBLIC_URL || '').replace(/\/$/, '')
+          const key = prefix ? `${prefix}/${filename}` : filename
+          return `${base}/${key}`
+        },
+      },
+    },
+    config: {
+      credentials: {
+        accessKeyId: process.env.R2_ACCESS_KEY_ID || '',
+        secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || '',
+      },
+      region: 'auto',
+      endpoint: process.env.R2_ENDPOINT,
+      forcePathStyle: true,
+    },
+  }),
+  // Legacy fallback while Blob still holds files / during migration cutover.
   vercelBlobStorage({
-    enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN) && !isLocalMediaStorage(),
+    enabled:
+      Boolean(process.env.BLOB_READ_WRITE_TOKEN) &&
+      !isLocalMediaStorage() &&
+      !isR2MediaStorage(),
     collections: {
       media: true,
     },

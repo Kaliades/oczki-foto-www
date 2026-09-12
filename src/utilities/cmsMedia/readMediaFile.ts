@@ -26,6 +26,12 @@ function buildVercelBlobFileUrl(filename: string): string | null {
   return `${base}/${encodeURIComponent(filename)}`
 }
 
+function buildR2PublicFileUrl(filename: string): string | null {
+  const base = process.env.R2_PUBLIC_URL?.replace(/\/$/, '')
+  if (!base) return null
+  return `${base}/${filename.split('/').map(encodeURIComponent).join('/')}`
+}
+
 function getMigrationMediaBaseUrl(): string {
   if (process.env.SEED_TARGET === 'production') {
     const fromEnv = process.env.NEXT_PUBLIC_SERVER_URL?.replace(/\/$/, '')
@@ -124,6 +130,9 @@ export async function readMediaFileBytes(source: Media): Promise<{
   if (source.filename) {
     const blobUrl = buildVercelBlobFileUrl(source.filename)
     if (blobUrl) fetchCandidates.push(blobUrl)
+
+    const r2Url = buildR2PublicFileUrl(source.filename)
+    if (r2Url) fetchCandidates.push(r2Url)
   }
 
   if (source.url) {

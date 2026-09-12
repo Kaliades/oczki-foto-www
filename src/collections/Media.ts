@@ -53,44 +53,39 @@ export const Media: CollectionConfig = {
     staticDir: path.resolve(dirname, '../../public/media'),
     adminThumbnail: 'thumbnail',
     focalPoint: true,
+    // Size ladder from the Payload website template (Simon). No forced WebP q100 —
+    // Payload/Sharp defaults keep variants much lighter on R2.
     imageSizes: [
       {
         name: 'thumbnail',
         width: 300,
-        formatOptions: { format: 'webp', options: { quality: 100 } },
       },
       {
         name: 'square',
         width: 500,
         height: 500,
-        formatOptions: { format: 'webp', options: { quality: 100 } },
       },
       {
         name: 'small',
         width: 600,
-        formatOptions: { format: 'webp', options: { quality: 100 } },
       },
       {
         name: 'medium',
         width: 900,
-        formatOptions: { format: 'webp', options: { quality: 100 } },
       },
       {
         name: 'large',
         width: 1400,
-        formatOptions: { format: 'webp', options: { quality: 100 } },
       },
       {
         name: 'xlarge',
-        width: 2560,
-        formatOptions: { format: 'webp', options: { quality: 100 } },
+        width: 1920,
       },
       {
         name: 'og',
         width: 1200,
         height: 630,
         crop: 'center',
-        formatOptions: { format: 'webp', options: { quality: 100 } },
       },
     ],
   },

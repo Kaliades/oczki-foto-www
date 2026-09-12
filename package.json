@@ -39,6 +39,10 @@
     "export:live-galleries:local": "cross-env NODE_ENV=production tsx scripts/exportLocalLiveGalleriesPackage.ts",
     "import:live-galleries:production": "cross-env NODE_ENV=production SEED_TARGET=production tsx scripts/importLiveGalleriesProduction.ts",
     "import:live-galleries:production:apply": "cross-env NODE_ENV=production SEED_TARGET=production tsx scripts/importLiveGalleriesProduction.ts --apply",
+    "migrate:blob-to-r2": "cross-env NODE_ENV=production SEED_TARGET=production tsx scripts/migrateBlobToR2.ts",
+    "migrate:blob-to-r2:apply": "cross-env NODE_ENV=production SEED_TARGET=production tsx scripts/migrateBlobToR2.ts --apply",
+    "migrate:gallery-hq-r2": "cross-env NODE_ENV=production SEED_TARGET=production tsx scripts/migrateGalleryHqToR2.ts",
+    "migrate:gallery-hq-r2:apply": "cross-env NODE_ENV=production SEED_TARGET=production tsx scripts/migrateGalleryHqToR2.ts --apply",
     "organize:media-folders:production": "cross-env NODE_ENV=production SEED_TARGET=production tsx scripts/organizeMediaFoldersProduction.ts",
     "organize:media-folders:production:apply": "cross-env NODE_ENV=production SEED_TARGET=production tsx scripts/organizeMediaFoldersProduction.ts --apply",
     "placeholders:offers-common:production": "cross-env NODE_ENV=production SEED_TARGET=production tsx scripts/replaceOfferPlaceholdersAndCompressCommon.ts",
@@ -51,7 +55,9 @@
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.1131.0",
     "@payloadcms/admin-bar": "3.84.1",
+    "@payloadcms/db-vercel-postgres": "3.84.1",
     "@payloadcms/live-preview-react": "3.84.1",
     "@payloadcms/next": "3.84.1",
     "@payloadcms/plugin-form-builder": "3.84.1",
@@ -60,6 +66,8 @@
     "@payloadcms/plugin-search": "3.84.1",
     "@payloadcms/plugin-seo": "3.84.1",
     "@payloadcms/richtext-lexical": "3.84.1",
+    "@payloadcms/storage-s3": "3.84.1",
+    "@payloadcms/storage-vercel-blob": "3.84.1",
     "@payloadcms/ui": "3.84.1",
     "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-label": "^2.0.2",
@@ -80,9 +88,7 @@
     "react-dom": "19.2.4",
     "react-hook-form": "7.71.1",
     "sharp": "0.34.2",
-    "tailwind-merge": "^3.4.0",
-    "@payloadcms/db-vercel-postgres": "3.84.1",
-    "@payloadcms/storage-vercel-blob": "3.84.1"
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",

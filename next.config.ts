@@ -35,14 +35,20 @@ const nextConfig: NextConfig = {
     qualities: [100],
     deviceSizes: [640, 750, 828, 1080, 1200, 1366, 1920, 2048, 2560, 3840],
     remotePatterns: [
-      ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
-        const url = new URL(item)
-
-        return {
-          hostname: url.hostname,
-          protocol: url.protocol.replace(':', '') as 'http' | 'https',
-        }
-      }),
+      ...[
+        NEXT_PUBLIC_SERVER_URL,
+        process.env.R2_PUBLIC_URL,
+        // Fallback so builds without R2 env still allow the Oczki R2.dev host.
+        'https://pub-f08ca938f3b44eb9b31d41195f527ff1.r2.dev',
+      ]
+        .filter((item): item is string => Boolean(item))
+        .map((item) => {
+          const url = new URL(item)
+          return {
+            hostname: url.hostname,
+            protocol: url.protocol.replace(':', '') as 'http' | 'https',
+          }
+        }),
     ],
   },
   webpack: (webpackConfig) => {
