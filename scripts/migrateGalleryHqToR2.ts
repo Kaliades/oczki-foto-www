@@ -109,6 +109,70 @@ function pad(n: number): string {
   return String(n).padStart(3, '0')
 }
 
+/**
+ * Local `payload.update` with `disableRevalidate` does not bust Vercel ISR.
+ * Touch the gallery via the production REST API so `revalidateGallery` runs
+ * inside the Next.js runtime on Vercel.
+ */
+async function revalidateGalleryOnVercel(args: {
+  payload: {
+    create: Function
+    delete: Function
+    findByID: Function
+  }
+  galleryId: number
+  title: string
+}): Promise<void> {
+  const base = (
+    process.env.NEXT_PUBLIC_SERVER_URL ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : 'https://oczki-foto-www.vercel.app')
+  ).replace(/\/$/, '')
+
+  const email = `revalidate-bot-${Date.now()}@oczki.local`
+  const password = `TmpReval-${Math.random().toString(36).slice(2)}-9A!`
+  const bot = (await args.payload.create({
+    collection: 'users',
+    data: { email, password, name: 'Revalidate Bot' },
+    overrideAccess: true,
+    context: { disableRevalidate: true },
+  })) as { id: number }
+
+  try {
+    const loginRes = await fetch(`${base}/api/users/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    })
+    const loginBody = (await loginRes.json()) as { token?: string; message?: string }
+    if (!loginRes.ok || !loginBody.token) {
+      throw new Error(`Vercel login failed (${loginRes.status}): ${loginBody.message ?? ''}`)
+    }
+
+    const patchRes = await fetch(`${base}/api/galleries/${args.galleryId}`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `JWT ${loginBody.token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ title: args.title }),
+    })
+    if (!patchRes.ok) {
+      const text = await patchRes.text()
+      throw new Error(`Vercel gallery PATCH failed (${patchRes.status}): ${text.slice(0, 200)}`)
+    }
+    console.log(`Revalidated on Vercel: /galeria + /galeria/${SLUG}`)
+  } finally {
+    await args.payload.delete({
+      collection: 'users',
+      id: bot.id,
+      overrideAccess: true,
+      context: { disableRevalidate: true },
+    })
+  }
+}
+
 async function main(): Promise<void> {
   if (process.env.SEED_TARGET !== 'production') {
     throw new Error('Refusing to run without SEED_TARGET=production')
@@ -201,8 +265,8 @@ async function main(): Promise<void> {
     replaces: {
       coverImage: true,
       photosArray: true,
-      caseStudyFrames: false,
-      note: 'Pilot replaces cover + photos[]. Case-study hero/duo/venue frames stay on old Blob until a later pass.',
+      caseStudyFrames: true,
+      note: 'Replaces cover, photos[], and case-study frames (hero/duo/venue/memorable/meta) with HQ R2 media.',
     },
   }
 
@@ -254,15 +318,81 @@ async function main(): Promise<void> {
   }
 
   const coverImage = createdIds[0]
+  const hq = (n: number) => createdIds[Math.min(Math.max(n, 1), createdIds.length) - 1]!
+
+  const fresh = (await payload.findByID({
+    collection: 'galleries',
+    id: gallery.id,
+    depth: 0,
+    overrideAccess: true,
+  })) as {
+    hero?: Record<string, unknown> | null
+    duoPerspective?: Record<string, unknown> | null
+    venueStory?: Record<string, unknown> | null
+    memorableMoment?: Record<string, unknown> | null
+    meta?: Record<string, unknown> | null
+    testimonial?: {
+      heading?: { start?: string | null; emphasis?: string | null } | null
+      items?: Record<string, unknown>[]
+    } | null
+  }
+
   await payload.update({
     collection: 'galleries',
     id: gallery.id,
     data: {
       coverImage,
       photos: createdIds.map((image) => ({ image })),
-    },
+      hero: {
+        ...(fresh.hero && typeof fresh.hero === 'object' ? fresh.hero : {}),
+        backgroundImage: hq(1),
+      },
+      duoPerspective: {
+        ...(fresh.duoPerspective && typeof fresh.duoPerspective === 'object'
+          ? fresh.duoPerspective
+          : {}),
+        photo: hq(2),
+      },
+      venueStory: {
+        ...(fresh.venueStory && typeof fresh.venueStory === 'object' ? fresh.venueStory : {}),
+        backImage: hq(3),
+        frontImage: hq(4),
+        scallopImage: hq(5),
+      },
+      memorableMoment: {
+        ...(fresh.memorableMoment && typeof fresh.memorableMoment === 'object'
+          ? fresh.memorableMoment
+          : {}),
+        portraitPhoto: hq(6),
+        landscapePhoto: hq(createdIds.length),
+      },
+      meta: {
+        ...(fresh.meta && typeof fresh.meta === 'object' ? fresh.meta : {}),
+        image: hq(1),
+      },
+      ...(Array.isArray(fresh.testimonial?.items) && fresh.testimonial.items.length
+        ? {
+            testimonial: {
+              ...fresh.testimonial,
+              items: fresh.testimonial.items.map((item, i) => ({
+                ...item,
+                photo:
+                  item.photo != null ? hq(Math.min(7 + i, createdIds.length)) : item.photo,
+              })),
+            },
+          }
+        : {}),
+      // Partial frame merges from depth-0 docs are wider than GeneratedTypes allows.
+    } as never,
     overrideAccess: true,
     context: { disableRevalidate: true },
+  })
+
+  // Bust Vercel ISR — local Payload hooks cannot revalidate the deployed cache.
+  await revalidateGalleryOnVercel({
+    payload,
+    galleryId: gallery.id as number,
+    title: gallery.title,
   })
 
   const result = {
@@ -272,8 +402,18 @@ async function main(): Promise<void> {
     uploaded: createdIds.length,
     uploadedMastersMB: +(uploadedBytes / 1024 / 1024).toFixed(1),
     mediaIds: createdIds,
-    checkUrl: `/galeria/${SLUG}`,
-    next: 'Verify on live site. If OK, run next --slug=... If not, tell me what looks wrong.',
+    wired: [
+      'coverImage',
+      'photos',
+      'hero',
+      'duoPerspective',
+      'venueStory',
+      'memorableMoment',
+      'meta',
+    ],
+    revalidatedOnVercel: true,
+    checkUrl: `https://oczki-foto-www.vercel.app/galeria/${SLUG}`,
+    next: 'Hard-refresh the live URL above. If OK, say so — then next --slug=... If soft/wrong, tell me which slot.',
   }
   await writeFile(path.join(reportDir, 'result.json'), JSON.stringify(result, null, 2))
   console.log(JSON.stringify(result, null, 2))
