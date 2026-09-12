@@ -1,9 +1,7 @@
 'use server'
 
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 import { redirect } from 'next/navigation'
-
-import { getServerSideURL } from '@/utilities/getURL'
 
 export type PanelLoginState = {
   error: string | null
@@ -25,8 +23,14 @@ export async function panelLoginAction(
     return { error: 'Podaj e-mail i hasło.' }
   }
 
-  const base = getServerSideURL().replace(/\/$/, '')
-  const res = await fetch(`${base}/api/users/login`, {
+  const headerStore = await headers()
+  const host = headerStore.get('x-forwarded-host') || headerStore.get('host')
+  const proto = headerStore.get('x-forwarded-proto') || 'https'
+  if (!host) {
+    return { error: 'Brak hosta żądania — spróbuj ponownie.' }
+  }
+
+  const res = await fetch(`${proto}://${host}/api/users/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password }),
