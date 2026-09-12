@@ -4,6 +4,7 @@ import { CenteredSectionCopy } from '@/components/CenteredSectionCopy'
 import { GrainDotCluster } from '@/components/GrainDotCluster'
 import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
 import { TertiaryPlaidTile } from '@/components/TertiaryPlaidTile'
+import { objectCoverSizesPx } from '@/constants/image'
 
 import {
   CASE_STUDY_MEMORABLE_MOMENT_FIGMA_NODES,
@@ -98,7 +99,7 @@ export function CaseStudyMemorableMomentStage({
           alt={data.portraitPhoto.alt}
           className="object-cover"
           fill
-          sizes={`${layout.portrait.width}px`}
+          sizes={objectCoverSizesPx(layout.portrait.width, layout.portrait.height)}
           src={data.portraitPhoto.src}
         />
         <div

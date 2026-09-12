@@ -1,7 +1,7 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
-
 import { TertiaryPlaidTile, type TertiaryPlaidTileSize } from '@/components/TertiaryPlaidTile'
+import { objectCoverSizesPx } from '@/constants/image'
 
 type PortraitWithPlaidMatProps = {
   imageAlt: string
@@ -55,7 +55,7 @@ export function PortraitWithPlaidMat({
           alt={imageAlt}
           className="object-cover"
           fill
-          sizes={`${photo.width}px`}
+          sizes={objectCoverSizesPx(photo.width, photo.height)}
           src={imageSrc}
         />
         <div

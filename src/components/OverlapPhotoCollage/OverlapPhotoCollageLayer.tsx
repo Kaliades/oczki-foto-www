@@ -1,5 +1,6 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
+import { objectCoverSizesPx } from '@/constants/image'
 
 import {
   OVERLAP_PHOTO_COLLAGE_FIGMA_NODES,
@@ -127,7 +128,7 @@ export function OverlapPhotoCollageLayer({
             alt={scallopPhotoAlt}
             className="object-cover"
             fill
-            sizes={`${scallopFrame.photoWidth}px`}
+            sizes={objectCoverSizesPx(scallopFrame.photoWidth, scallopFrame.photoHeight)}
             src={scallopPhotoSrc}
           />
         </div>

@@ -1,6 +1,6 @@
 import { OczkiImage as Image } from '@/components/OczkiImage/OczkiImage'
 import { PhotoUnitReveal } from '@/components/PhotoUnitReveal'
-
+import { objectCoverSizesPx } from '@/constants/image'
 import { cn } from '@/utilities/ui'
 
 import type { CreamMatPhotoVariant } from './constants'
@@ -42,7 +42,7 @@ export function CreamMatPhoto({ variant, imageSrc, imageAlt, className }: CreamM
             alt={imageAlt}
             className="object-cover"
             fill
-            sizes={`${layout.imageWidth}px`}
+            sizes={objectCoverSizesPx(layout.imageWidth, layout.imageHeight)}
             src={imageSrc}
           />
         </div>
