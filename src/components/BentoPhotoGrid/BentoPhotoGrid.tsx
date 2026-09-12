@@ -26,14 +26,17 @@ export function BentoPhotoGrid({ items }: BentoPhotoGridProps) {
       className={BENTO_PHOTO_GRID_CLASS}
       data-figma-node={BENTO_PHOTO_GRID_FIGMA_NODES.imageContainer.desktop}
     >
-      {items.map((item, index) => (
-        <BentoPhotoTile
-          key={item.id}
-          item={item}
-          sizes={BENTO_PHOTO_GRID_IMAGE_SIZES}
-          span={BENTO_PHOTO_SPANS[index % BENTO_PHOTO_SPANS.length] ?? 'narrow'}
-        />
-      ))}
+      {items.map((item, index) => {
+        const span = BENTO_PHOTO_SPANS[index % BENTO_PHOTO_SPANS.length] ?? 'narrow'
+        return (
+          <BentoPhotoTile
+            key={item.id}
+            item={item}
+            sizes={BENTO_PHOTO_GRID_IMAGE_SIZES[span]}
+            span={span}
+          />
+        )
+      })}
     </div>
   )
 }

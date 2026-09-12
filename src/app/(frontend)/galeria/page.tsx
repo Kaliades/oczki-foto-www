@@ -18,19 +18,12 @@ import { cache } from 'react'
 import type { Metadata } from 'next'
 
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+import { resolvePopulatedMediaUrl } from '@/utilities/resolvePopulatedMediaUrl'
 
 import { GALLERY_PAGE_BREADCRUMBS } from './constants'
 
 const GALLERY_META_DESCRIPTION =
   'Portfolio ślubne i kobiece z Krakowa i okolic — naturalne kadry, autentyczne emocje. Przeglądaj reportaże ślubne, sesje kobiece i wizerunkowe.'
-
-function mediaUrl(media: unknown): string | null {
-  if (media && typeof media === 'object' && 'url' in media) {
-    const url = (media as { url?: unknown }).url
-    if (typeof url === 'string') return url
-  }
-  return null
-}
 
 /** Hover card caption is a narrow Figma box — keep only a short lead-in. */
 function truncateHoverCaption(text: string, maxChars = 110): string {
@@ -87,7 +80,7 @@ const queryPortfolioListingItems = cache(
       })
 
       return result.docs.flatMap((gallery) => {
-        const imageSrc = mediaUrl(gallery.coverImage)
+        const imageSrc = resolvePopulatedMediaUrl(gallery.coverImage)
         if (!imageSrc) return []
 
         const category = (gallery.portfolioCategory ?? 'kobieca') as GallerySessionFilterId
