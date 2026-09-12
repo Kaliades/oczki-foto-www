@@ -36,5 +36,24 @@ export const redirects: NextConfig['redirects'] = async () => {
     permanent: false,
   }
 
-  return [adminLoginBypass, adminLogoutBypass, homeSlugRedirect, internetExplorerRedirect]
+  // Any other /admin URL without a session cookie → working login (avoids blank shell).
+  const adminUnauthenticatedBypass = {
+    source: '/admin/:path*',
+    missing: [
+      {
+        type: 'cookie' as const,
+        key: 'payload-token',
+      },
+    ],
+    destination: '/panel',
+    permanent: false,
+  }
+
+  return [
+    adminLogoutBypass,
+    adminLoginBypass,
+    adminUnauthenticatedBypass,
+    homeSlugRedirect,
+    internetExplorerRedirect,
+  ]
 }
