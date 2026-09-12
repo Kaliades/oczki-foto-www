@@ -45,8 +45,15 @@ export function OczkiImage({
       {...props}
       onLoad={(event) => {
         if (participateInReveal) {
-          reveal.onLoad?.(event)
-          if (!inUnit) setSoloReady(true)
+          if (inUnit) {
+            reveal.onLoad?.(event)
+          } else {
+            const img = event.currentTarget
+            void img
+              .decode()
+              .catch(() => undefined)
+              .finally(() => setSoloReady(true))
+          }
         }
         onLoad?.(event)
       }}

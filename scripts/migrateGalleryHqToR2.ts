@@ -11,8 +11,9 @@
  *
  * Options:
  *   --slug=...          CMS gallery slug (required)
- *   --limit=12          Max photos to attach to gallery.photos (default 12)
- *   --all-photos        Ignore --limit; upload+attach every matched dump file
+ *   --all-photos        Upload+attach every matched dump file (default when
+ *                       --limit is omitted — UI shows 12 first, then load-more)
+ *   --limit=N           Cap photos attached to gallery.photos (opts out of all)
  *   --apply             Write (default is dry-run)
  */
 import { existsSync } from 'fs'
@@ -29,11 +30,11 @@ const REPO_ROOT = path.resolve(__dirname, '..')
 const MANIFEST_PATH = path.join(REPO_ROOT, 'scripts/live-gallery-staging/manifest.json')
 
 const APPLY = process.argv.includes('--apply')
-const ALL_PHOTOS = process.argv.includes('--all-photos')
 const SLUG = process.argv.find((a) => a.startsWith('--slug='))?.split('=')[1]?.trim()
-const LIMIT = Number(
-  process.argv.find((a) => a.startsWith('--limit='))?.split('=')[1] ?? '12',
-)
+const LIMIT_ARG = process.argv.find((a) => a.startsWith('--limit='))
+/** Full dump by default; `--limit=N` caps. Explicit `--all-photos` always wins. */
+const ALL_PHOTOS = process.argv.includes('--all-photos') || !LIMIT_ARG
+const LIMIT = Number(LIMIT_ARG?.split('=')[1] ?? '12')
 
 /** Agreed “looks like original” master for web */
 const MAX_EDGE = Number(process.env.GALLERY_HQ_MAX_EDGE || '2800')
@@ -102,7 +103,7 @@ async function prepareMaster(absPath: string): Promise<Buffer> {
     })
   }
 
-  return pipeline.jpeg({ quality: JPEG_QUALITY, mozjpeg: true }).toBuffer()
+  return pipeline.jpeg({ quality: JPEG_QUALITY, mozjpeg: true, progressive: false }).toBuffer()
 }
 
 function pad(n: number): string {

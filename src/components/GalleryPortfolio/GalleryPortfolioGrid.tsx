@@ -1,6 +1,6 @@
 import { GalleryPortfolioCard, type GalleryPortfolioCardData } from '@/components/GalleryPortfolioCard'
 
-import { GALLERY_PORTFOLIO_FIGMA_NODES } from './constants'
+import { GALLERY_PORTFOLIO_CARD_IMAGE_SIZES, GALLERY_PORTFOLIO_FIGMA_NODES } from './constants'
 
 type GalleryPortfolioGridProps = {
   items: readonly GalleryPortfolioCardData[]
@@ -23,7 +23,7 @@ export function GalleryPortfolioGrid({ items }: GalleryPortfolioGridProps) {
         >
           <GalleryPortfolioCard
             item={item}
-            sizes="(min-width: 1024px) 318px, (min-width: 768px) 196px, 161px"
+            sizes={GALLERY_PORTFOLIO_CARD_IMAGE_SIZES}
           />
         </li>
       ))}

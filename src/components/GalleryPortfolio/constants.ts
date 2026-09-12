@@ -23,6 +23,13 @@ export const GALLERY_PORTFOLIO_FIGMA_NODES = {
 
 export const GALLERY_PORTFOLIO_LOAD_MORE_LABEL = 'Zobacz więcej zdjęć' as const
 
+/**
+ * Portfolio tiles are portrait (~318×395 desktop) with landscape masters +
+ * object-cover — `sizes` must request enough width (max(w, h×1.5)).
+ */
+export const GALLERY_PORTFOLIO_CARD_IMAGE_SIZES =
+  '(min-width: 1024px) 593px, (min-width: 768px) 366px, 300px' as const
+
 const PORTFOLIO_IMAGE = (index: number) =>
   `/figma/gallery-portfolio-${index}.png` as const
 

@@ -79,10 +79,18 @@ export function usePhotoUnitRevealOnLoad(): {
 
   const onLoad = useCallback<
     NonNullable<ImgHTMLAttributes<HTMLImageElement>['onLoad']>
-  >(() => {
+  >((event) => {
     if (!ctx || notified.current) return
     notified.current = true
-    ctx.notifyPhotoLoaded()
+    const img = event.currentTarget
+    // Progressive JPEGs can fire `load` on the first scan (soft). Wait for full
+    // decode before fading the unit in.
+    void img
+      .decode()
+      .catch(() => undefined)
+      .finally(() => {
+        ctx.notifyPhotoLoaded()
+      })
   }, [ctx])
 
   if (!ctx) return {}
