@@ -14,7 +14,7 @@ export const revalidateHeader: GlobalAfterChangeHook = ({ doc, req: { payload, c
 
   if (!context.disableRevalidate && _status === 'published') {
     payload.logger.info('Revalidating header')
-    revalidateTag('global_header')
+    revalidateTag('global_header', 'max')
   }
 
   return doc

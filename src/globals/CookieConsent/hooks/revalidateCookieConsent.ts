@@ -15,7 +15,7 @@ export const revalidateCookieConsent: GlobalAfterChangeHook = ({
 
   if (!context.disableRevalidate && _status === 'published') {
     payload.logger.info('Revalidating cookie consent global')
-    revalidateTag('global_cookieConsent')
+    revalidateTag('global_cookieConsent', 'max')
     revalidatePath('/', 'layout')
   }
 

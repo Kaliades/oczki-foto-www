@@ -17,7 +17,7 @@ export const revalidateSiteSettings: GlobalAfterChangeHook = ({
 
   if (!context.disableRevalidate && _status === 'published') {
     payload.logger.info('Revalidating site settings')
-    revalidateTag('global_siteSettings')
+    revalidateTag('global_siteSettings', 'max')
     for (const path of [
       '/',
       '/galeria',
