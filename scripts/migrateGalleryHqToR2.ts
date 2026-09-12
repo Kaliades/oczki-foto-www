@@ -262,6 +262,7 @@ async function main(): Promise<void> {
       photos: createdIds.map((image) => ({ image })),
     },
     overrideAccess: true,
+    context: { disableRevalidate: true },
   })
 
   const result = {
