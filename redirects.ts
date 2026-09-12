@@ -21,39 +21,5 @@ export const redirects: NextConfig['redirects'] = async () => {
     permanent: true,
   }
 
-  // Payload admin login is blank on Next.js 16 when logged out
-  // (https://github.com/payloadcms/payload/issues/17545). Use our frontend form instead.
-  const adminLoginBypass = {
-    source: '/admin/login',
-    destination: '/panel',
-    permanent: false,
-  }
-
-  // Same bug hits `/admin/logout` — clear the session via our route, then show `/panel`.
-  const adminLogoutBypass = {
-    source: '/admin/logout',
-    destination: '/panel/logout',
-    permanent: false,
-  }
-
-  // Any other /admin URL without a session cookie → working login (avoids blank shell).
-  const adminUnauthenticatedBypass = {
-    source: '/admin/:path*',
-    missing: [
-      {
-        type: 'cookie' as const,
-        key: 'payload-token',
-      },
-    ],
-    destination: '/panel',
-    permanent: false,
-  }
-
-  return [
-    adminLogoutBypass,
-    adminLoginBypass,
-    adminUnauthenticatedBypass,
-    homeSlugRedirect,
-    internetExplorerRedirect,
-  ]
+  return [homeSlugRedirect, internetExplorerRedirect]
 }

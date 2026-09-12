@@ -189,6 +189,8 @@ async function main(): Promise<void> {
   requireEnv('R2_ACCESS_KEY_ID')
   requireEnv('R2_SECRET_ACCESS_KEY')
   requireEnv('R2_PUBLIC_URL')
+  // Opt-in flag — Vercel must NOT set this during mixed Blob+R2 cutover.
+  process.env.ENABLE_R2_MEDIA_STORAGE = 'true'
 
   const manifest = JSON.parse(await readFile(MANIFEST_PATH, 'utf8')) as Manifest
   const story = resolveStory(manifest, SLUG)
