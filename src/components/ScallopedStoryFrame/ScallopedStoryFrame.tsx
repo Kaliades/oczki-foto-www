@@ -8,9 +8,10 @@ import {
   SCALLOPED_STORY_FRAME_LAYOUT,
 } from './constants'
 import {
-  scallopFrameMetricsFromPanel,
-  type ScallopFrameMetrics,
+  scallopPanelMaxHeightPx,
+  scallopWrapFromPanel,
   type ScallopStoryBreakpoint,
+  type ScallopWrapLayout,
 } from './scallopedStoryFrameUtils'
 
 type ScallopedStoryFrameProps = {
@@ -23,73 +24,84 @@ function resolveBreakpoint(widthPx: number): ScallopStoryBreakpoint {
 
 function resolveBottomChrome(widthPx: number): number {
   const { bottomChrome } = SCALLOPED_STORY_FRAME_LAYOUT
-  if (widthPx < 768) {
-    return bottomChrome.mobile
-  }
-  if (widthPx < 1024) {
-    return bottomChrome.tablet
-  }
+  if (widthPx < 768) return bottomChrome.mobile
+  if (widthPx < 1024) return bottomChrome.tablet
   return bottomChrome.desktop
 }
 
 /**
- * Scalloped double-border story panel — Figma `Group 62`.
+ * Scalloped story card — Figma `Group 62`.
  *
- * Hierarchy:
- * - outer group (Figma base height; grows by whole side-tile steps for long copy)
- *   - `ScallopedFrameEars` (absolute scallop strips)
- *   - cream inner panel (min-height fills the base ≈4-line box) → double rule → children
- *
- * Short (3-line) headings keep the base scallop frame and get extra cream below
- * the text. Longer copy grows the frame in whole tiles.
+ * Order:
+ * 1. Text sizes the cream panel (in-flow).
+ * 2. Measure that rectangle.
+ * 3. Cloud count = cover length ÷ tile step; ears wrap the panel.
  */
 export function ScallopedStoryFrame({ children }: ScallopedStoryFrameProps) {
   const { ruleInset } = SCALLOPED_STORY_FRAME_LAYOUT
   const panelRef = useRef<HTMLDivElement>(null)
-  const [frame, setFrame] = useState<ScallopFrameMetrics | null>(null)
+  const [wrap, setWrap] = useState<ScallopWrapLayout | null>(null)
 
   useLayoutEffect(() => {
     const panelEl = panelRef.current
-    if (!panelEl) {
-      return
-    }
+    if (!panelEl) return
 
-    const syncFrame = () => {
+    const sync = () => {
       const widthPx = window.innerWidth
       const breakpoint = resolveBreakpoint(widthPx)
       const peekPx = resolveBottomChrome(widthPx)
-      const panelBottomPx = panelEl.offsetTop + panelEl.offsetHeight
-      const next = scallopFrameMetricsFromPanel({ panelBottomPx, breakpoint, peekPx })
+      panelEl.style.maxHeight = `${scallopPanelMaxHeightPx(breakpoint, peekPx)}px`
 
-      setFrame((prev) =>
-        prev && prev.extraVerticalTiles === next.extraVerticalTiles && prev.heightPx === next.heightPx
-          ? prev
-          : next,
-      )
+      const next = scallopWrapFromPanel({
+        breakpoint,
+        panelTop: panelEl.offsetTop,
+        panelLeft: panelEl.offsetLeft,
+        panelWidth: panelEl.offsetWidth,
+        panelHeight: panelEl.offsetHeight,
+        peekPx,
+      })
+
+      setWrap((prev) => {
+        if (
+          prev &&
+          prev.groupHeightPx === next.groupHeightPx &&
+          prev.verticalCount === next.verticalCount &&
+          prev.panel.height === next.panel.height &&
+          prev.panel.top === next.panel.top
+        ) {
+          return prev
+        }
+        return next
+      })
     }
 
-    syncFrame()
-
-    const observer = new ResizeObserver(syncFrame)
+    sync()
+    const observer = new ResizeObserver(sync)
     observer.observe(panelEl)
-    window.addEventListener('resize', syncFrame)
+    window.addEventListener('resize', sync)
+
+    let cancelled = false
+    void document.fonts?.ready.then(() => {
+      if (!cancelled) sync()
+    })
 
     return () => {
+      cancelled = true
       observer.disconnect()
-      window.removeEventListener('resize', syncFrame)
+      window.removeEventListener('resize', sync)
     }
   }, [])
 
   return (
     <div
-      className="relative h-[251px] w-[354px] overflow-visible md:h-[310px] md:w-[547px]"
+      className="relative min-h-[251px] w-[354px] overflow-visible md:min-h-[310px] md:w-[547px]"
       data-figma-node={SCALLOPED_STORY_FRAME_FIGMA_NODES.desktop}
-      style={frame ? { height: frame.heightPx } : undefined}
+      style={wrap ? { height: wrap.groupHeightPx } : undefined}
     >
-      <ScallopedFrameEars extraVerticalTiles={frame?.extraVerticalTiles ?? 0} />
+      <ScallopedFrameEars layout={wrap} />
 
       <div
-        className="absolute left-[23px] top-[25px] z-10 flex min-h-[198px] w-[311px] flex-col bg-[var(--oczki-primary-100)] p-1.5 md:left-[25px] md:top-[29px] md:min-h-[241px] md:w-[498px] md:p-3 lg:top-[31px] lg:min-h-[239px]"
+        className="relative z-10 mx-auto mt-[25px] flex min-h-[198px] w-[311px] flex-col overflow-hidden bg-[var(--oczki-primary-100)] p-1.5 md:mt-[29px] md:min-h-[241px] md:w-[498px] md:p-3 lg:mt-[31px] lg:min-h-[239px]"
         data-figma-node={SCALLOPED_STORY_FRAME_FIGMA_NODES.innerPanel.desktop}
         ref={panelRef}
       >

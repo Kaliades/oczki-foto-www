@@ -6,8 +6,13 @@ export {
   SCALLOPED_STORY_FRAME_LAYOUT,
 } from './constants'
 export {
+  SCALLOP_PANEL_MAX_EXTRA_TILES,
   scallopExtraVerticalTiles,
   scallopFrameMetricsFromPanel,
+  scallopPanelMaxHeightPx,
+  scallopTileCountForLength,
   scallopVerticalStepPx,
   scallopVerticalStripLengthPx,
+  scallopWrapFromPanel,
 } from './scallopedStoryFrameUtils'
+export type { ScallopStoryBreakpoint, ScallopWrapLayout } from './scallopedStoryFrameUtils'

@@ -26,6 +26,8 @@ export const SCALLOP_HORIZONTAL_TILE_COUNTS = {
  * Base vertical tile counts — left/right `-rotate-90` strips for the
  * heading-only card. Taller copy adds tiles via `scallopExtraVerticalTiles`.
  * Short copy keeps this base (cream panel min-height fills the Figma frame).
+ * Growth ceiling lives on the cream panel (`scallopPanelMaxHeightPx`), not as
+ * an independent under-cap on the cloud strips.
  */
 export const SCALLOP_VERTICAL_TILE_COUNTS = {
   mobile: 5,
