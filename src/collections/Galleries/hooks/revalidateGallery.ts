@@ -15,14 +15,18 @@ export const revalidateGallery: CollectionAfterChangeHook<Gallery> = ({
     const path = `/galeria/${doc.slug}`
     payload.logger.info(`Revalidating gallery at path: ${path}`)
     revalidatePath(path)
+    revalidatePath(path, 'page')
     revalidatePath('/galeria')
+    revalidatePath('/galeria', 'page')
   }
 
   if (previousDoc?._status === 'published' && doc._status !== 'published') {
     const oldPath = `/galeria/${previousDoc.slug}`
     payload.logger.info(`Revalidating unpublished gallery at path: ${oldPath}`)
     revalidatePath(oldPath)
+    revalidatePath(oldPath, 'page')
     revalidatePath('/galeria')
+    revalidatePath('/galeria', 'page')
   }
 
   return doc

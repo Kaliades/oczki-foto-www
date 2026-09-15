@@ -15,6 +15,9 @@
  *                       --limit is omitted — UI shows 12 first, then load-more)
  *   --limit=N           Cap photos attached to gallery.photos (opts out of all)
  *   --apply             Write (default is dry-run)
+ *
+ * Dump dedupe: WP often ships Foo.jpg + Foo-jpg.webp for the same frame.
+ * We keep JPEG only so consecutive HQ masters are not visual duplicates.
  */
 import { existsSync } from 'fs'
 import { mkdir, readFile, writeFile } from 'fs/promises'
@@ -63,9 +66,12 @@ type ManifestPair = {
 }
 
 type Manifest = {
+  uploadsRoot?: string
   stories: ManifestStory[]
   pairs: ManifestPair[]
 }
+
+const DEFAULT_UPLOADS_ROOT = '/Users/kamilkrzysztof/www/wp-content/uploads'
 
 function requireEnv(name: string): string {
   const v = process.env[name]
@@ -74,7 +80,9 @@ function requireEnv(name: string): string {
 }
 
 function resolveStory(manifest: Manifest, cmsSlug: string): ManifestStory {
-  const pair = manifest.pairs.find((p) => p.cmsSlug === cmsSlug)
+  const pair =
+    manifest.pairs.find((p) => p.cmsSlug === cmsSlug) ||
+    manifest.pairs.find((p) => p.liveSlug === cmsSlug)
   const liveSlug = pair?.liveSlug ?? cmsSlug
   const story =
     manifest.stories.find((s) => s.liveSlug === liveSlug) ||
@@ -84,6 +92,19 @@ function resolveStory(manifest: Manifest, cmsSlug: string): ManifestStory {
     throw new Error(`No manifest story for CMS slug "${cmsSlug}" (liveSlug hint: ${liveSlug})`)
   }
   return story
+}
+
+/** Prefer live file path; fall back to uploadsRoot + relativePath (staging hardlinks may be gone). */
+function resolveDumpAbsolutePath(
+  photo: ManifestPhoto,
+  uploadsRoot: string,
+): string | null {
+  if (photo.dumpAbsolutePath && existsSync(photo.dumpAbsolutePath)) {
+    return photo.dumpAbsolutePath
+  }
+  if (!photo.relativePath) return null
+  const candidate = path.join(uploadsRoot, photo.relativePath)
+  return existsSync(candidate) ? candidate : null
 }
 
 async function prepareMaster(absPath: string): Promise<Buffer> {
@@ -111,10 +132,143 @@ function pad(n: number): string {
 }
 
 /**
+ * WP dump often ships the same frame as both `Foo.jpg` and `Foo-jpg.webp`.
+ * Uploading both → visually identical consecutive HQ JPEGs (1=2, 3=4, …).
+ */
+function dumpStemKey(absPath: string): string {
+  return path
+    .basename(absPath)
+    .replace(/-jpg\.webp$/i, '')
+    .replace(/\.webp$/i, '')
+    .replace(/\.jpe?g$/i, '')
+    .toLowerCase()
+}
+
+function preferJpegDumpPhotos(photos: ManifestPhoto[]): ManifestPhoto[] {
+  const byStem = new Map<string, ManifestPhoto>()
+  for (const photo of photos) {
+    const abs = photo.dumpAbsolutePath
+    if (!abs) continue
+    const key = dumpStemKey(abs)
+    const prev = byStem.get(key)
+    if (!prev) {
+      byStem.set(key, photo)
+      continue
+    }
+    const prevJpg = /\.jpe?g$/i.test(prev.dumpAbsolutePath || '')
+    const curJpg = /\.jpe?g$/i.test(abs)
+    if (!prevJpg && curJpg) byStem.set(key, photo)
+  }
+  const unique = [...byStem.values()]
+  // Stable numeric order by dump filename so HQ -001, -002… match shoot sequence.
+  unique.sort((a, b) => {
+    const an = path.basename(a.dumpAbsolutePath || a.relativePath || '')
+    const bn = path.basename(b.dumpAbsolutePath || b.relativePath || '')
+    return an.localeCompare(bn, undefined, { numeric: true, sensitivity: 'base' })
+  })
+  return unique
+}
+
+async function purgeLiveHqMedia(
+  payload: {
+    find: Function
+    delete: Function
+  },
+  slug: string,
+): Promise<number> {
+  let deleted = 0
+  for (;;) {
+    const res = await payload.find({
+      collection: 'media',
+      where: {
+        and: [
+          { filename: { contains: `live-${slug}-` } },
+          { filename: { contains: '-hq' } },
+        ],
+      },
+      limit: 100,
+      page: 1,
+      depth: 0,
+      overrideAccess: true,
+    })
+    const docs = res.docs as { id: number; filename?: string }[]
+    if (!docs.length) break
+    for (const doc of docs) {
+      await payload.delete({
+        collection: 'media',
+        id: doc.id,
+        overrideAccess: true,
+        context: { disableRevalidate: true },
+      })
+      deleted++
+      console.log(`Purged stale HQ ${doc.filename ?? doc.id}`)
+    }
+  }
+  return deleted
+}
+
+/** CMS textarea max — over-length legacy copy blocks every gallery update. */
+const VENUE_BODY_MAX = 353
+const HERO_HEADING_MAX = { lead: 120, emphasis: 60, end: 8 } as const
+
+function clip(value: unknown, max: number): unknown {
+  if (typeof value !== 'string' || value.length <= max) return value
+  return value.slice(0, max)
+}
+
+function truncateVenueBody(
+  venueStory: Record<string, unknown> | null | undefined,
+): Record<string, unknown> {
+  if (!venueStory || typeof venueStory !== 'object') return {}
+  const body = venueStory.body
+  if (typeof body !== 'string' || body.length <= VENUE_BODY_MAX) return { ...venueStory }
+  console.warn(
+    `Truncating venueStory.body ${body.length}→${VENUE_BODY_MAX} chars so Payload update validates`,
+  )
+  return { ...venueStory, body: body.slice(0, VENUE_BODY_MAX) }
+}
+
+function sanitizeHero(hero: Record<string, unknown> | null | undefined): Record<string, unknown> {
+  if (!hero || typeof hero !== 'object') return {}
+  const heading =
+    hero.heading && typeof hero.heading === 'object'
+      ? (hero.heading as Record<string, unknown>)
+      : null
+  if (!heading) return { ...hero }
+
+  const next = {
+    ...heading,
+    lead: clip(heading.lead, HERO_HEADING_MAX.lead),
+    emphasis: clip(heading.emphasis, HERO_HEADING_MAX.emphasis),
+    end: clip(heading.end, HERO_HEADING_MAX.end),
+  }
+  const changed =
+    next.lead !== heading.lead ||
+    next.emphasis !== heading.emphasis ||
+    next.end !== heading.end
+  if (changed) {
+    console.warn('Truncating hero.heading fields so Payload update validates')
+  }
+  return { ...hero, heading: next }
+}
+
+/**
  * Local `payload.update` with `disableRevalidate` does not bust Vercel ISR.
  * Touch the gallery via the production REST API so `revalidateGallery` runs
  * inside the Next.js runtime on Vercel.
+ *
+ * Never use NEXT_PUBLIC_SERVER_URL when it points at localhost — seed env often
+ * does, and that only revalidates a local Next process, leaving prod ISR stale.
  */
+function productionSiteBase(): string {
+  const fromEnv = (process.env.NEXT_PUBLIC_SERVER_URL || '').replace(/\/$/, '')
+  if (fromEnv && !/localhost|127\.0\.0\.1/i.test(fromEnv)) return fromEnv
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL.replace(/^https?:\/\//, '')}`
+  }
+  return 'https://oczki-foto-www.vercel.app'
+}
+
 async function revalidateGalleryOnVercel(args: {
   payload: {
     create: Function
@@ -123,13 +277,8 @@ async function revalidateGalleryOnVercel(args: {
   }
   galleryId: number
   title: string
-}): Promise<void> {
-  const base = (
-    process.env.NEXT_PUBLIC_SERVER_URL ||
-    (process.env.VERCEL_PROJECT_PRODUCTION_URL
-      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-      : 'https://oczki-foto-www.vercel.app')
-  ).replace(/\/$/, '')
+}): Promise<boolean> {
+  const base = productionSiteBase()
 
   const email = `revalidate-bot-${Date.now()}@oczki.local`
   const password = `TmpReval-${Math.random().toString(36).slice(2)}-9A!`
@@ -148,7 +297,10 @@ async function revalidateGalleryOnVercel(args: {
     })
     const loginBody = (await loginRes.json()) as { token?: string; message?: string }
     if (!loginRes.ok || !loginBody.token) {
-      throw new Error(`Vercel login failed (${loginRes.status}): ${loginBody.message ?? ''}`)
+      console.warn(
+        `Vercel revalidate skipped — login failed (${loginRes.status}) at ${base}: ${loginBody.message ?? ''}`,
+      )
+      return false
     }
 
     const patchRes = await fetch(`${base}/api/galleries/${args.galleryId}`, {
@@ -161,9 +313,13 @@ async function revalidateGalleryOnVercel(args: {
     })
     if (!patchRes.ok) {
       const text = await patchRes.text()
-      throw new Error(`Vercel gallery PATCH failed (${patchRes.status}): ${text.slice(0, 200)}`)
+      console.warn(
+        `Vercel revalidate skipped — gallery PATCH failed (${patchRes.status}): ${text.slice(0, 200)}`,
+      )
+      return false
     }
-    console.log(`Revalidated on Vercel: /galeria + /galeria/${SLUG}`)
+    console.log(`Revalidated on Vercel (${base}): /galeria + /galeria/${SLUG}`)
+    return true
   } finally {
     await args.payload.delete({
       collection: 'users',
@@ -195,10 +351,18 @@ async function main(): Promise<void> {
 
   const manifest = JSON.parse(await readFile(MANIFEST_PATH, 'utf8')) as Manifest
   const story = resolveStory(manifest, SLUG)
+  const uploadsRoot = manifest.uploadsRoot || DEFAULT_UPLOADS_ROOT
 
-  const matched = story.photos.filter((p) => p.matched && p.dumpAbsolutePath)
-  const existing = matched.filter((p) => p.dumpAbsolutePath && existsSync(p.dumpAbsolutePath))
-  const missingOnDisk = matched.length - existing.length
+  const matched = story.photos.filter((p) => p.matched && (p.dumpAbsolutePath || p.relativePath))
+  const onDisk: ManifestPhoto[] = []
+  for (const photo of matched) {
+    const abs = resolveDumpAbsolutePath(photo, uploadsRoot)
+    if (!abs) continue
+    onDisk.push({ ...photo, dumpAbsolutePath: abs })
+  }
+  const missingOnDisk = matched.length - onDisk.length
+  const existing = preferJpegDumpPhotos(onDisk)
+  const skippedWebpDupes = onDisk.length - existing.length
 
   const attachCount = ALL_PHOTOS ? existing.length : Math.min(LIMIT, existing.length)
   const toAttach = existing.slice(0, attachCount)
@@ -243,14 +407,18 @@ async function main(): Promise<void> {
     galleryId: gallery.id,
     galleryTitle: gallery.title,
     manifestLiveSlug: story.liveSlug,
+    uploadsRoot,
     compress: { maxEdge: MAX_EDGE, jpegQuality: JPEG_QUALITY },
     photos: {
       matchedInManifest: matched.length,
-      onDisk: existing.length,
+      onDiskBeforeDedupe: onDisk.length,
+      skippedWebpJpgDupes: skippedWebpDupes,
+      onDiskUnique: existing.length,
       missingOnDisk,
       willUploadAndAttach: toAttach.length,
       allPhotosFlag: ALL_PHOTOS,
       limit: ALL_PHOTOS ? null : LIMIT,
+      willPurgeStaleHqBeforeUpload: skippedWebpDupes > 0,
     },
     naming: {
       pattern: `live-${SLUG}-NNN-hq.jpg`,
@@ -289,13 +457,43 @@ async function main(): Promise<void> {
     process.exit(0)
   }
 
+  // Old odd/even HQ pairs must not be reused after webp+jpg dedupe.
+  if (skippedWebpDupes > 0) {
+    const purged = await purgeLiveHqMedia(payload, SLUG)
+    console.log(`Purged ${purged} stale live-${SLUG}-*-hq* media docs before re-upload`)
+  }
+
   const createdIds: number[] = []
   let uploadedBytes = 0
+  let reused = 0
 
   for (let i = 0; i < toAttach.length; i++) {
     const photo = toAttach[i]!
     const abs = photo.dumpAbsolutePath!
     const filename = `live-${SLUG}-${pad(i + 1)}-hq.jpg`
+
+    // Idempotent re-runs: reuse HQ masters (exact name or Payload uniquely-renamed `-1`).
+    const existingMedia = await payload.find({
+      collection: 'media',
+      where: {
+        or: [
+          { filename: { equals: filename } },
+          { filename: { contains: `live-${SLUG}-${pad(i + 1)}-hq` } },
+        ],
+      },
+      limit: 5,
+      depth: 0,
+      overrideAccess: true,
+      sort: 'createdAt',
+    })
+    const hit = existingMedia.docs[0] as { id: number; filename?: string } | undefined
+    if (hit) {
+      createdIds.push(hit.id)
+      reused++
+      console.log(`Reuse ${hit.filename ?? filename} → media #${hit.id}`)
+      continue
+    }
+
     const buffer = await prepareMaster(abs)
     uploadedBytes += buffer.byteLength
 
@@ -340,59 +538,86 @@ async function main(): Promise<void> {
     } | null
   }
 
-  await payload.update({
-    collection: 'galleries',
-    id: gallery.id,
-    data: {
-      coverImage,
-      photos: createdIds.map((image) => ({ image })),
-      hero: {
-        ...(fresh.hero && typeof fresh.hero === 'object' ? fresh.hero : {}),
-        backgroundImage: hq(1),
-      },
-      duoPerspective: {
-        ...(fresh.duoPerspective && typeof fresh.duoPerspective === 'object'
-          ? fresh.duoPerspective
-          : {}),
-        photo: hq(2),
-      },
-      venueStory: {
-        ...(fresh.venueStory && typeof fresh.venueStory === 'object' ? fresh.venueStory : {}),
-        backImage: hq(3),
-        frontImage: hq(4),
-        scallopImage: hq(5),
-      },
-      memorableMoment: {
-        ...(fresh.memorableMoment && typeof fresh.memorableMoment === 'object'
-          ? fresh.memorableMoment
-          : {}),
-        portraitPhoto: hq(6),
-        landscapePhoto: hq(createdIds.length),
-      },
-      meta: {
-        ...(fresh.meta && typeof fresh.meta === 'object' ? fresh.meta : {}),
-        image: hq(1),
-      },
-      ...(Array.isArray(fresh.testimonial?.items) && fresh.testimonial.items.length
-        ? {
-            testimonial: {
-              ...fresh.testimonial,
-              items: fresh.testimonial.items.map((item, i) => ({
-                ...item,
-                photo:
-                  item.photo != null ? hq(Math.min(7 + i, createdIds.length)) : item.photo,
-              })),
-            },
-          }
+  const fullWireData = {
+    coverImage,
+    photos: createdIds.map((image) => ({ image })),
+    hero: {
+      ...sanitizeHero(fresh.hero && typeof fresh.hero === 'object' ? fresh.hero : undefined),
+      backgroundImage: hq(1),
+    },
+    duoPerspective: {
+      ...(fresh.duoPerspective && typeof fresh.duoPerspective === 'object'
+        ? fresh.duoPerspective
         : {}),
-      // Partial frame merges from depth-0 docs are wider than GeneratedTypes allows.
-    } as never,
-    overrideAccess: true,
-    context: { disableRevalidate: true },
-  })
+      photo: hq(2),
+    },
+    venueStory: {
+      ...truncateVenueBody(
+        fresh.venueStory && typeof fresh.venueStory === 'object' ? fresh.venueStory : undefined,
+      ),
+      backImage: hq(3),
+      frontImage: hq(4),
+      scallopImage: hq(5),
+    },
+    memorableMoment: {
+      ...(fresh.memorableMoment && typeof fresh.memorableMoment === 'object'
+        ? fresh.memorableMoment
+        : {}),
+      portraitPhoto: hq(6),
+      landscapePhoto: hq(createdIds.length),
+    },
+    meta: {
+      ...(fresh.meta && typeof fresh.meta === 'object' ? fresh.meta : {}),
+      image: hq(1),
+    },
+    ...(Array.isArray(fresh.testimonial?.items) && fresh.testimonial.items.length
+      ? {
+          testimonial: {
+            ...fresh.testimonial,
+            items: fresh.testimonial.items.map((item, i) => ({
+              ...item,
+              photo:
+                item.photo != null ? hq(Math.min(7 + i, createdIds.length)) : item.photo,
+            })),
+          },
+        }
+      : {}),
+  }
+
+  let wiredFrames = true
+  try {
+    await payload.update({
+      collection: 'galleries',
+      id: gallery.id,
+      data: fullWireData as never,
+      overrideAccess: true,
+      context: { disableRevalidate: true },
+    })
+  } catch (error) {
+    // Some live galleries have invalid legacy rich text in case-study groups.
+    // Still wire cover + photos so the bento/load-more works.
+    wiredFrames = false
+    const message = error instanceof Error ? error.message : String(error)
+    console.warn(`Full case-study wire failed (${message}) — falling back to cover+photos`)
+    await payload.update({
+      collection: 'galleries',
+      id: gallery.id,
+      data: {
+        coverImage,
+        photos: createdIds.map((image) => ({ image })),
+        // Must fix over-length fields — Payload re-validates the whole doc on any update.
+        hero: sanitizeHero(fresh.hero && typeof fresh.hero === 'object' ? fresh.hero : undefined),
+        venueStory: truncateVenueBody(
+          fresh.venueStory && typeof fresh.venueStory === 'object' ? fresh.venueStory : undefined,
+        ),
+      },
+      overrideAccess: true,
+      context: { disableRevalidate: true },
+    })
+  }
 
   // Bust Vercel ISR — local Payload hooks cannot revalidate the deployed cache.
-  await revalidateGalleryOnVercel({
+  const revalidatedOnVercel = await revalidateGalleryOnVercel({
     payload,
     galleryId: gallery.id as number,
     title: gallery.title,
@@ -402,21 +627,26 @@ async function main(): Promise<void> {
     ok: true,
     galleryId: gallery.id,
     cmsSlug: SLUG,
-    uploaded: createdIds.length,
+    uploaded: createdIds.length - reused,
+    reused,
     uploadedMastersMB: +(uploadedBytes / 1024 / 1024).toFixed(1),
     mediaIds: createdIds,
-    wired: [
-      'coverImage',
-      'photos',
-      'hero',
-      'duoPerspective',
-      'venueStory',
-      'memorableMoment',
-      'meta',
-    ],
-    revalidatedOnVercel: true,
+    wired: wiredFrames
+      ? [
+          'coverImage',
+          'photos',
+          'hero',
+          'duoPerspective',
+          'venueStory',
+          'memorableMoment',
+          'meta',
+        ]
+      : ['coverImage', 'photos'],
+    revalidatedOnVercel,
     checkUrl: `https://oczki-foto-www.vercel.app/galeria/${SLUG}`,
-    next: 'Hard-refresh the live URL above. If OK, say so — then next --slug=... If soft/wrong, tell me which slot.',
+    next: revalidatedOnVercel
+      ? 'Hard-refresh the live URL above. If OK, say so — then next --slug=... If soft/wrong, tell me which slot.'
+      : 'CMS wired but Vercel ISR was NOT busted — hard-refresh may still show Blob. Re-run revalidate or redeploy.',
   }
   await writeFile(path.join(reportDir, 'result.json'), JSON.stringify(result, null, 2))
   console.log(JSON.stringify(result, null, 2))
